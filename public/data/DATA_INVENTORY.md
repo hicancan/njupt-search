@@ -1,6 +1,6 @@
 # 📊 Data Inventory & Quality Report
 
-> **Generated on:** 2026-02-20 02:41:53 (Beijing Time)
+> **Generated on:** 2026-02-26 09:21:39 (Beijing Time)
 >
 > This report provides complete visibility into raw Excel data and processing results.
 > You do NOT need to open the original Excel files - all information is captured here.
@@ -16,78 +16,6 @@
 | Unique Classes | ~1,775 |
 | Unique Courses | ~526 |
 | Campus Distribution | 仙林 (8,670), 三牌楼 (837), 锁金 (62) |
-
----
-
-## ✅ File: `2025-2026学年第一学期考试安排表（学院组织）-学生用表.xlsx`
-
-**Rows:** 3,081 | **Columns:** 9 | **Parse Success:** 3081/3081 | **Date Range:** 2025-11-05 ~ 2026-01-23
-
-### 🔹 Part A: Raw Excel Analysis
-
-#### Original Column Names (as in Excel)
-
-| # | Excel Column Name | Data Type | Non-Null % | Unique Values | Sample Values |
-|---|-------------------|-----------|------------|---------------|---------------|
-| 1 | `校区` | object | 100.0% | 3 | 三牌楼, 仙林, 锁金 |
-| 2 | `开课学院` | object | 100.0% | 18 | 通信与信息工程学院, 物联网学院, 电子与光学工程学院 |
-| 3 | `课程代码` | object | 100.0% | 460 | TX127702C, TX127703C, DS1212F7S |
-| 4 | `课程名称` | object | 100.0% | 407 | 云计算工程, 测绘法律法规与项目管理, 广播电视测量技术 |
-| 5 | `班级名称` | object | 100.0% | 710 | B220118, B220119, B220120 |
-| 6 | `任课教师` | object | 100.0% | 625 | 孙君, 崔斌, 李欣2/王永进 |
-| 7 | `人数` | int64 | 100.0% | 40 | 2, 1, 8 |
-| 8 | `考试时间` | object | 100.0% | 119 | 第10周周1(2025-11-10) 13:30-15:20, 第10周周1(2025-11-10) |
-| 9 | `考试教室` | object | 100.0% | 101 | 无1, 教3－204, 教2－400 |
-
-#### Column Mapping (Excel → Standard Field)
-
-| Standard Field | Excel Column | Status |
-|----------------|--------------|--------|
-| `campus` | `校区` | ✅ Mapped |
-| `course_name` | `课程名称` | ✅ Mapped |
-| `course_code` | `课程代码` | ✅ Mapped |
-| `class_name` | `班级名称` | ✅ Mapped |
-| `teacher` | `任课教师` | ✅ Mapped |
-| `location` | `考试教室` | ✅ Mapped |
-| `raw_time` | `考试时间` | ✅ Mapped |
-| `count` | `人数` | ✅ Mapped |
-| `school` | `开课学院` | ✅ Mapped |
-| `student_school` | _(tried: 学生所在学院, 所在学院)_ | ❌ Not Found |
-| `major` | _(tried: 专业名称, 专业)_ | ❌ Not Found |
-| `grade` | _(tried: 年级)_ | ❌ Not Found |
-| `notes` | _(tried: 备注)_ | ❌ Not Found |
-
-#### Raw Data Sample (First 3 Rows, Unprocessed)
-
-| 校区 | 开课学院 | 课程代码 | 课程名称 | 班级名称 | 任课教师 | 人数 | 考试时间 | 考试教室 |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 三牌楼 | 通信与信息工程学院 | TX127702C | 云计算工程 | B220118 | 孙君 | 2 | 第10周周1(2025-11-10) 1 | 无1 |
-| 三牌楼 | 通信与信息工程学院 | TX127702C | 云计算工程 | B220119 | 孙君 | 2 | 第10周周1(2025-11-10) 1 | 无1 |
-| 三牌楼 | 通信与信息工程学院 | TX127702C | 云计算工程 | B220120 | 孙君 | 1 | 第10周周1(2025-11-10) 1 | 无1 |
-
-### 🔹 Part B: Processing Results
-
-#### Processing Statistics
-
-| Metric | Value |
-|--------|-------|
-| Records Processed | 3,081 |
-| Time Parse Success | 3,081 |
-| Time Parse Failed | 0 |
-| Unique Classes | 710 |
-| Unique Courses | 406 |
-| Avg Exam Duration | 110.0 min |
-| Campus Distribution | 三牌楼 (324), 仙林 (2756), 锁金 (1) |
-
-#### ✅ Validation: All Passed
-
-#### Processed Data Sample (First 3 Rows)
-
-| class_name | course_name | campus | start_timestamp | location | teacher | count |
-| --- | --- | --- | --- | --- | --- | --- |
-| B220118 | 云计算工程 | 三牌楼 | 2025-11-10T13:30:00+08:00 | 无1 | 孙君 | 2 |
-| B220119 | 云计算工程 | 三牌楼 | 2025-11-10T13:30:00+08:00 | 无1 | 孙君 | 2 |
-| B220120 | 云计算工程 | 三牌楼 | 2025-11-10T13:30:00+08:00 | 无1 | 孙君 | 1 |
 
 ---
 
@@ -163,6 +91,78 @@
 | P220006 | 半导体集成电路工艺 | 仙林 | 2025-11-15T10:25:00+08:00 | 教2－209 | 李金泽 | 2 |
 | P220008 | 半导体集成电路工艺 | 仙林 | 2025-11-15T10:25:00+08:00 | 教2－209 | 李金泽 | 1 |
 | P230005 | 半导体集成电路工艺 | 仙林 | 2025-11-15T10:25:00+08:00 | 教2－209 | 李金泽 | 29 |
+
+---
+
+## ✅ File: `2025-2026学年第一学期考试安排表（学院组织）-学生用表.xlsx`
+
+**Rows:** 3,081 | **Columns:** 9 | **Parse Success:** 3081/3081 | **Date Range:** 2025-11-05 ~ 2026-01-23
+
+### 🔹 Part A: Raw Excel Analysis
+
+#### Original Column Names (as in Excel)
+
+| # | Excel Column Name | Data Type | Non-Null % | Unique Values | Sample Values |
+|---|-------------------|-----------|------------|---------------|---------------|
+| 1 | `校区` | object | 100.0% | 3 | 三牌楼, 仙林, 锁金 |
+| 2 | `开课学院` | object | 100.0% | 18 | 通信与信息工程学院, 物联网学院, 电子与光学工程学院 |
+| 3 | `课程代码` | object | 100.0% | 460 | TX127702C, TX127703C, DS1212F7S |
+| 4 | `课程名称` | object | 100.0% | 407 | 云计算工程, 测绘法律法规与项目管理, 广播电视测量技术 |
+| 5 | `班级名称` | object | 100.0% | 710 | B220118, B220119, B220120 |
+| 6 | `任课教师` | object | 100.0% | 625 | 孙君, 崔斌, 李欣2/王永进 |
+| 7 | `人数` | int64 | 100.0% | 40 | 2, 1, 8 |
+| 8 | `考试时间` | object | 100.0% | 119 | 第10周周1(2025-11-10) 13:30-15:20, 第10周周1(2025-11-10) |
+| 9 | `考试教室` | object | 100.0% | 101 | 无1, 教3－204, 教2－400 |
+
+#### Column Mapping (Excel → Standard Field)
+
+| Standard Field | Excel Column | Status |
+|----------------|--------------|--------|
+| `campus` | `校区` | ✅ Mapped |
+| `course_name` | `课程名称` | ✅ Mapped |
+| `course_code` | `课程代码` | ✅ Mapped |
+| `class_name` | `班级名称` | ✅ Mapped |
+| `teacher` | `任课教师` | ✅ Mapped |
+| `location` | `考试教室` | ✅ Mapped |
+| `raw_time` | `考试时间` | ✅ Mapped |
+| `count` | `人数` | ✅ Mapped |
+| `school` | `开课学院` | ✅ Mapped |
+| `student_school` | _(tried: 学生所在学院, 所在学院)_ | ❌ Not Found |
+| `major` | _(tried: 专业名称, 专业)_ | ❌ Not Found |
+| `grade` | _(tried: 年级)_ | ❌ Not Found |
+| `notes` | _(tried: 备注)_ | ❌ Not Found |
+
+#### Raw Data Sample (First 3 Rows, Unprocessed)
+
+| 校区 | 开课学院 | 课程代码 | 课程名称 | 班级名称 | 任课教师 | 人数 | 考试时间 | 考试教室 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 三牌楼 | 通信与信息工程学院 | TX127702C | 云计算工程 | B220118 | 孙君 | 2 | 第10周周1(2025-11-10) 1 | 无1 |
+| 三牌楼 | 通信与信息工程学院 | TX127702C | 云计算工程 | B220119 | 孙君 | 2 | 第10周周1(2025-11-10) 1 | 无1 |
+| 三牌楼 | 通信与信息工程学院 | TX127702C | 云计算工程 | B220120 | 孙君 | 1 | 第10周周1(2025-11-10) 1 | 无1 |
+
+### 🔹 Part B: Processing Results
+
+#### Processing Statistics
+
+| Metric | Value |
+|--------|-------|
+| Records Processed | 3,081 |
+| Time Parse Success | 3,081 |
+| Time Parse Failed | 0 |
+| Unique Classes | 710 |
+| Unique Courses | 406 |
+| Avg Exam Duration | 110.0 min |
+| Campus Distribution | 三牌楼 (324), 仙林 (2756), 锁金 (1) |
+
+#### ✅ Validation: All Passed
+
+#### Processed Data Sample (First 3 Rows)
+
+| class_name | course_name | campus | start_timestamp | location | teacher | count |
+| --- | --- | --- | --- | --- | --- | --- |
+| B220118 | 云计算工程 | 三牌楼 | 2025-11-10T13:30:00+08:00 | 无1 | 孙君 | 2 |
+| B220119 | 云计算工程 | 三牌楼 | 2025-11-10T13:30:00+08:00 | 无1 | 孙君 | 2 |
+| B220120 | 云计算工程 | 三牌楼 | 2025-11-10T13:30:00+08:00 | 无1 | 孙君 | 1 |
 
 ---
 
