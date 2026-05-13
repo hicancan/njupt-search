@@ -1,6 +1,6 @@
 # 📊 Data Inventory & Quality Report
 
-> **Generated on:** 2026-04-30 16:07:33 (Beijing Time)
+> **Generated on:** 2026-05-13 16:35:45 (Beijing Time)
 >
 > This report provides complete visibility into raw Excel data and processing results.
 > You do NOT need to open the original Excel files - all information is captured here.
@@ -10,18 +10,18 @@
 | Metric | Value |
 |--------|-------|
 | Total Files Processed | 2 |
-| Total Records Extracted | 463 |
-| Parse Success Rate | 463/463 (100.0%) |
-| Date Range (All Files) | 2026-04-27 ~ 2026-05-27 |
-| Unique Classes | ~366 |
-| Unique Courses | ~22 |
-| Campus Distribution | 仙林 (419), 三牌楼 (35), 锁金 (9) |
+| Total Records Extracted | 492 |
+| Parse Success Rate | 492/492 (100.0%) |
+| Date Range (All Files) | 2026-04-27 ~ 2026-06-10 |
+| Unique Classes | ~386 |
+| Unique Courses | ~26 |
+| Campus Distribution | 仙林 (448), 三牌楼 (35), 锁金 (9) |
 
 ---
 
 ## ✅ File: `2025-2026学年第二学期考试安排表（学院组织）-学生用表.xlsx`
 
-**Rows:** 212 | **Columns:** 9 | **Parse Success:** 212/212 | **Date Range:** 2026-04-27 ~ 2026-05-27
+**Rows:** 241 | **Columns:** 9 | **Parse Success:** 241/241 | **Date Range:** 2026-04-27 ~ 2026-06-10
 
 ### 🔹 Part A: Raw Excel Analysis
 
@@ -31,13 +31,13 @@
 |---|-------------------|-----------|------------|---------------|---------------|
 | 1 | `校区` | object | 100.0% | 2 | 仙林, 三牌楼 |
 | 2 | `开课学院` | object | 100.0% | 6 | 电子与光学工程学院, 管理学院, 自动化学院 |
-| 3 | `课程代码` | object | 100.0% | 20 | DG1113F4S, DG1219F4S, GL1516GLS |
-| 4 | `课程名称` | object | 100.0% | 19 | 光电子学（全英文）, 电波传播理论, 企业资源规划系统与应用(混合式) |
-| 5 | `班级名称` | object | 100.0% | 161 | B230200, B230205, B220204 |
-| 6 | `任课教师` | object | 100.0% | 35 | 郭艳东/曾红丽, 智婷/汪金, 笪海霞 |
+| 3 | `课程代码` | object | 100.0% | 24 | DG1113F4S, DG1219F4S, GL1516GLS |
+| 4 | `课程名称` | object | 100.0% | 23 | 光电子学（全英文）, 电波传播理论, 企业资源规划系统与应用(混合式) |
+| 5 | `班级名称` | object | 100.0% | 181 | B230200, B230205, B220204 |
+| 6 | `任课教师` | object | 100.0% | 39 | 郭艳东/曾红丽, 智婷/汪金, 笪海霞 |
 | 7 | `人数` | int64 | 100.0% | 30 | 28, 2, 1 |
-| 8 | `考试时间` | object | 100.0% | 12 | 第11周周3(2026-05-13) 13:30-15:20, 第11周周2(2026-05-12) |
-| 9 | `考试教室` | object | 100.0% | 24 | 教2－101, 教2－102, 教2－201 |
+| 8 | `考试时间` | object | 100.0% | 13 | 第11周周3(2026-05-13) 13:30-15:20, 第11周周2(2026-05-12) |
+| 9 | `考试教室` | object | 100.0% | 25 | 教2－101, 教2－102, 教2－201 |
 
 #### Column Mapping (Excel → Standard Field)
 
@@ -71,13 +71,13 @@
 
 | Metric | Value |
 |--------|-------|
-| Records Processed | 212 |
-| Time Parse Success | 212 |
+| Records Processed | 241 |
+| Time Parse Success | 241 |
 | Time Parse Failed | 0 |
-| Unique Classes | 161 |
-| Unique Courses | 19 |
+| Unique Classes | 181 |
+| Unique Courses | 23 |
 | Avg Exam Duration | 110.0 min |
-| Campus Distribution | 仙林 (205), 三牌楼 (7) |
+| Campus Distribution | 仙林 (234), 三牌楼 (7) |
 
 #### ✅ Validation: All Passed
 
