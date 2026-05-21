@@ -21,8 +21,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['assets/logo.png'],
       manifest: {
-        name: 'NJUPT Exam Sync',
-        short_name: 'ExamSync',
+        name: 'njupt-exam',
+        short_name: 'njupt-exam',
         description: '南邮考试日程助手 - 离线也能查',
         theme_color: '#ffffff',
         background_color: '#ffffff',
