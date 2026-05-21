@@ -1,4 +1,4 @@
-import { Exam } from '@/types';
+
 import { APP_CONFIG } from '@/constants';
 
 interface ExamListProps {
