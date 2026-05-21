@@ -19,7 +19,7 @@ export function SearchInput({ value, onChange }: SearchInputProps) {
     };
 
     return (
-        <div className="relative w-full max-w-[690px] mx-auto z-20 group mb-6">
+        <div className="relative w-full max-w-[690px] mx-auto z-20 group">
             <label htmlFor="class-search" className="sr-only">输入班级号进行搜索</label>
             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-[#9aa0a6]">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
