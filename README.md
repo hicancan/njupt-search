@@ -116,7 +116,7 @@ npm run lint
 ## 📂 项目结构 (Project Structure)
 
 ```text
-NJUPT-Exam-Sync/
+NJUPT-Exam/
 ├── .github/workflows/         # 🔄 CI/CD 工作流
 │   ├── auto-update.yml        # 自动爬取教务数据 (每6小时)
 │   └── deploy.yml             # 自动构建部署 GitHub Pages
