@@ -155,7 +155,7 @@ function App() {
                 </div>
             )}
 
-            <div className={`flex-1 w-full flex flex-col ${isHomePage ? 'items-center justify-center px-4 pb-32' : 'max-w-[730px] ml-0 sm:ml-36 px-4 py-4'}`}>
+            <div className={`flex-1 w-full flex flex-col ${isHomePage ? 'items-center justify-center px-4 pb-32' : 'max-w-[730px] mx-auto px-4 py-4'}`}>
                 {isHomePage && (
                     <div className="w-full max-w-[584px] flex flex-col items-center">
                         <div className="text-6xl sm:text-[5.5rem] font-bold mb-8 tracking-tighter select-none" style={{ letterSpacing: '-3px' }}>
