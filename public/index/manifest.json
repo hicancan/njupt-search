@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-05-22T20:17:55.731609+08:00",
-  "total_documents": 113,
+  "generated_at": "2026-05-22T20:23:31.949719+08:00",
+  "total_documents": 153,
   "strategy": "phase1-public-campus-sources-generic-adapter",
   "sources": [
     {
@@ -9,7 +9,7 @@
       "domain": "jwc.njupt.edu.cn",
       "status": "ok",
       "documents": 13,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
       "candidates": 14,
       "filtered_out": 1
     },
@@ -19,7 +19,7 @@
       "domain": "xsc.njupt.edu.cn",
       "status": "ok",
       "documents": 12,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
       "candidates": 14,
       "filtered_out": 2
     },
@@ -29,7 +29,7 @@
       "domain": "pg.njupt.edu.cn",
       "status": "ok",
       "documents": 14,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
       "candidates": 14,
       "filtered_out": 0
     },
@@ -39,7 +39,7 @@
       "domain": "ygb.njupt.edu.cn",
       "status": "ok",
       "documents": 12,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
       "candidates": 14,
       "filtered_out": 2
     },
@@ -49,7 +49,7 @@
       "domain": "youth.njupt.edu.cn",
       "status": "ok",
       "documents": 9,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
       "candidates": 14,
       "filtered_out": 5
     },
@@ -59,7 +59,7 @@
       "domain": "cxcy.njupt.edu.cn",
       "status": "ok",
       "documents": 14,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
       "candidates": 14,
       "filtered_out": 0
     },
@@ -69,7 +69,7 @@
       "domain": "njupt.91job.org.cn",
       "status": "ok",
       "documents": 18,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00"
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00"
     },
     {
       "id": "lib",
@@ -77,7 +77,7 @@
       "domain": "lib.njupt.edu.cn",
       "status": "ok",
       "documents": 11,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
       "candidates": 14,
       "filtered_out": 3
     },
@@ -87,7 +87,7 @@
       "domain": "bwc.njupt.edu.cn",
       "status": "ok",
       "documents": 4,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
       "candidates": 11,
       "filtered_out": 7
     },
@@ -97,7 +97,7 @@
       "domain": "hqc.njupt.edu.cn",
       "status": "ok",
       "documents": 6,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
       "candidates": 14,
       "filtered_out": 8
     },
@@ -105,289 +105,289 @@
       "id": "github:hicancan/njupt-net",
       "name": "njupt-net 校园网络工具",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
-      "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/hicancan/njupt-net"
+      "status": "ok",
+      "documents": 2,
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
+      "candidates": 2
     },
     {
       "id": "github:hicancan/njupt-jwxt-assistant",
       "name": "教务助手资料",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
-      "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/hicancan/njupt-jwxt-assistant"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
+      "candidates": 1
     },
     {
       "id": "github:ZsgsDesign/NOJ",
       "name": "⚡ The most advanced open-sourc...",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
-      "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/ZsgsDesign/NOJ"
+      "status": "ok",
+      "documents": 5,
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
+      "candidates": 5
     },
     {
       "id": "github:NJUPTFreeExams/NJUPT-General-Free-Exams",
       "name": "南京邮电大学课程资源共享平台，此仓库包括门户网站和通识类课程...",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
-      "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-General-Free-Exams"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
+      "candidates": 1
     },
     {
       "id": "github:NJUPTFreeExams/NJUPT-CST-Free-Exams",
       "name": "【Deprecated】南京邮电大学计算机科学与技术专业历年...",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
-      "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-CST-Free-Exams"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
+      "candidates": 1
     },
     {
       "id": "github:NJUPTFreeExams/NJUPT-CS-FREE",
       "name": "南京邮电大学计算机相关专业历年考试资料",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
-      "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-CS-FREE"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
+      "candidates": 1
     },
     {
       "id": "github:bmxbmx3/cn_sort",
       "name": "中文排序：按拼音/笔顺快速排序简体中文词组（百万数量级，可含...",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
-      "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/bmxbmx3/cn_sort"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
+      "candidates": 1
     },
     {
       "id": "github:leftjs/StudentGradesManageSystem",
       "name": "student grades manage system, ...",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
-      "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/leftjs/StudentGradesManageSystem"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
+      "candidates": 1
     },
     {
       "id": "github:renyuanzhe/NJUPT-CS-Courses",
       "name": "NJUPT南京邮电大学,计算机相关课程的实验报告，大作业以及...",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
-      "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/renyuanzhe/NJUPT-CS-Courses"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
+      "candidates": 1
     },
     {
       "id": "github:Wonz5130/NJUPT-Yellow-Page",
       "name": ":yum:南京邮电大学黄页",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
-      "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/Wonz5130/NJUPT-Yellow-Page"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
+      "candidates": 1
     },
     {
       "id": "github:GreenPomelo/Undergraduate",
       "name": "🔧mini program of NJUPT | 南京邮电大...",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
-      "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/GreenPomelo/Undergraduate"
+      "status": "ok",
+      "documents": 3,
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
+      "candidates": 3
     },
     {
       "id": "github:NJUPTFreeExams/NJUPT-AUTO-Free-Exams",
       "name": "南京邮电大学自动化专业历年考试资料",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
-      "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-AUTO-Free-Exams"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
+      "candidates": 1
     },
     {
       "id": "github:NJUPT-CG/NCTF2018",
       "name": "Official repository of NJUPT C...",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
-      "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/NJUPT-CG/NCTF2018"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
+      "candidates": 1
     },
     {
       "id": "github:gzr-lgtm/NJUPThesis-Bachelor",
       "name": "LaTeX template for NJUPT Under...",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
-      "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/gzr-lgtm/NJUPThesis-Bachelor"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
+      "candidates": 1
     },
     {
       "id": "github:gaoliang/NJUPT-API",
       "name": "Python API Wrappers for NJUPT....",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
-      "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/gaoliang/NJUPT-API"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
+      "candidates": 1
     },
     {
       "id": "github:xiafanglongfei/NJUPT-auto-evaluate",
       "name": "🐶 南邮本科生学生评教活动的一键自动评价脚本 #南邮# #一...",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
-      "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/xiafanglongfei/NJUPT-auto-evaluate"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
+      "candidates": 1
     },
     {
       "id": "github:NJUPTFreeExams/NJUPT-TE-Free-Exams",
       "name": "南京邮电大学通信工程专业历年考试资料",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
-      "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-TE-Free-Exams"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
+      "candidates": 1
     },
     {
       "id": "github:kaijy91/NJUPT_NET",
       "name": "南京邮电大学_校园网/电信宽带/移动宽带_路由器共享WiFi...",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
-      "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/kaijy91/NJUPT_NET"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
+      "candidates": 1
     },
     {
       "id": "github:s235784/NJUPT_AutoLogin",
       "name": "南京邮电大学校园网自动登录脚本，支持Linux（OpenWR...",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
-      "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/s235784/NJUPT_AutoLogin"
+      "status": "ok",
+      "documents": 2,
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
+      "candidates": 2
     },
     {
       "id": "github:Freedomisgood/NjuptCmcc",
       "name": "校园网一键上网脚本",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
-      "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/Freedomisgood/NjuptCmcc"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
+      "candidates": 1
     },
     {
       "id": "github:love98ooo/ZhengFangJiaoWuSystemTampermonkeyScript",
       "name": "南京邮电大学正方教务系统油猴脚本，主要用于查询平时分和卷面分",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
-      "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/love98ooo/ZhengFangJiaoWuSystemTampermonkeyScript"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
+      "candidates": 1
     },
     {
       "id": "github:NJUPT-NAVI/NJUPT-Survival-Guide",
       "name": "南京邮电大学生存指南，用于导航和整合各种公开的资源和信息，减...",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
-      "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/NJUPT-NAVI/NJUPT-Survival-Guide"
+      "status": "ok",
+      "documents": 2,
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
+      "candidates": 2
     },
     {
       "id": "github:bmxbmx3/finger_vein_recognition",
       "name": "A python software used to reco...",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
-      "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/bmxbmx3/finger_vein_recognition"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
+      "candidates": 1
     },
     {
       "id": "github:lux-QAQ/NJUPT_Fastlogin",
       "name": "南京邮电大学校园网最快登录脚本 for Android Wi...",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
-      "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/lux-QAQ/NJUPT_Fastlogin"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
+      "candidates": 1
     },
     {
       "id": "github:NJUPTFreeExams/njuptfreeexams.github.io",
       "name": "NJUPTFreeExams 官方文档，现已迁移至 Netl...",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
-      "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/NJUPTFreeExams/njuptfreeexams.github.io"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
+      "candidates": 1
     },
     {
       "id": "github:dhiyu/NJUPT-Bachelor",
       "name": "南京邮电大学本科生毕业设计Latex模板",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
-      "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/dhiyu/NJUPT-Bachelor"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
+      "candidates": 1
     },
     {
       "id": "github:yosunpeng/postgraduate_test_njupt",
       "name": "南京邮电大学研究生期末考试复习资料",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
-      "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/yosunpeng/postgraduate_test_njupt"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
+      "candidates": 1
     },
     {
       "id": "github:NJUPTFreeExams/NJUPT-InfoSec-Free-Exams",
       "name": "【Deprecated】南京邮电大学信息安全专业历年考试资料...",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
-      "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-InfoSec-Free-Exams"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
+      "candidates": 1
     },
     {
       "id": "github:ace-trump-tech/NJUPT-Graduation-thesis",
       "name": "南京邮电大学毕业论文模板（能毕业就行，有时间多回去陪陪家人）",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
-      "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/ace-trump-tech/NJUPT-Graduation-thesis"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
+      "candidates": 1
     },
     {
       "id": "github:Yolumia/NJUPT-NETWORK",
       "name": "南京邮电大学校园网登录脚本-windows&ios&安卓",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
-      "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/Yolumia/NJUPT-NETWORK"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
+      "candidates": 1
     },
     {
       "id": "github:Moonike1217/NJUPTExamICSBuilder",
       "name": "一个将南京邮电大学考试时间文件转换为ics文件的工具",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
-      "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/Moonike1217/NJUPTExamICSBuilder"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
+      "candidates": 1
     },
     {
       "id": "github:musnows/Njupt-Wifi-Login",
       "name": "路由器(刷机) 实现自动连接南京邮电大学校园网",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
-      "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/musnows/Njupt-Wifi-Login"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-22T20:23:31.949719+08:00",
+      "candidates": 1
     }
   ]
 }
