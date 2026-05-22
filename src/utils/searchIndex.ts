@@ -336,9 +336,17 @@ export const formatSearchDate = (dateLike: string | null): string => {
     });
 };
 
+const NEGATIVE_RESOURCE_KEYWORDS = [
+    '报名', '通知', '结果', '名单', '缴费', '公示', '安排', '成绩', '获奖', '选拔', '录取', '审核'
+];
+
 export const getLearningResources = (query: string): SearchDocument[] => {
     const normalizedQuery = normalize(query);
     if (normalizedQuery.length < 2) return [];
+    
+    const hasNegativeIntent = NEGATIVE_RESOURCE_KEYWORDS.some(keyword => normalizedQuery.includes(normalize(keyword)));
+    if (hasNegativeIntent) return [];
+
     const hasResourceIntent = RESOURCE_INTENT_KEYWORDS.some(keyword => normalizedQuery.includes(normalize(keyword)));
     if (!hasResourceIntent) return [];
 
@@ -362,26 +370,6 @@ export const getLearningResources = (query: string): SearchDocument[] => {
             source_weight: 0.68,
             tags: ['复习', '习题', '视频', '课程资料'],
             hash: 'resource-exam-review'
-        },
-        {
-            id: 'resource-project-template',
-            kind: 'resource',
-            title: '课程项目与竞赛项目模板',
-            url: 'https://github.com/hicancan',
-            source: 'hicancan 项目库',
-            source_domain: 'github.com',
-            category: '项目',
-            audience: ['本科生', '研究生'],
-            published_at: null,
-            content: '项目 文档 模板 课程设计 大创 竞赛 实验',
-            summary: '当搜索项目、实验、竞赛、大创时，提供可复用项目文档入口。',
-            attachments: [],
-            student_score: 0.72,
-            freshness_score: 0.66,
-            importance_score: 0.68,
-            source_weight: 0.62,
-            tags: ['项目', '模板', '竞赛', '课程设计'],
-            hash: 'resource-project-template'
         }
     ];
 

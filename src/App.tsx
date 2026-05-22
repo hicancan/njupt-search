@@ -58,6 +58,7 @@ function App() {
     useEffect(() => {
         const trimmed = searchQuery.trim();
         if (classSearchResult.mode === 'DETAIL' && currentClass && classSearchResult.exams.length > 0) {
+            localStorage.setItem('SAVED_CLASS', currentClass);
             const nextUrl = `${window.location.pathname}?${new URLSearchParams({ class: currentClass }).toString()}`;
             window.history.replaceState(null, '', nextUrl);
         } else if (trimmed.length >= 2) {
@@ -103,6 +104,13 @@ function App() {
     };
 
     const handleQuickSearch = (nextQuery: string, category: CategoryFilter) => {
+        if (nextQuery === '考试安排') {
+            const savedClass = localStorage.getItem('SAVED_CLASS');
+            if (savedClass) {
+                handleOpenClass(savedClass);
+                return;
+            }
+        }
         const nextUrl = `${window.location.pathname}?${new URLSearchParams({ q: nextQuery }).toString()}`;
         window.history.pushState(null, '', nextUrl);
         setInputValue(nextQuery);
@@ -114,6 +122,7 @@ function App() {
 
     const handleOpenClass = (className: string) => {
         if (!className) return;
+        localStorage.setItem('SAVED_CLASS', className.toUpperCase());
         const nextUrl = `${window.location.pathname}?${new URLSearchParams({ class: className.toUpperCase() }).toString()}`;
         window.history.pushState(null, '', nextUrl);
         setInputValue(className.toUpperCase());

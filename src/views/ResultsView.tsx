@@ -1,4 +1,4 @@
-import { GraduationCap } from 'lucide-react';
+import { GraduationCap, CalendarDays } from 'lucide-react';
 import { ExamList } from '@/components/ExamList';
 import { ExamDetail } from '@/components/ExamDetail';
 import { SearchCategory, RankedSearchDocument, SearchDocument, SearchResult } from '@/types';
@@ -169,31 +169,48 @@ export function ResultsView({
                     </section>
                 ) : null}
 
-                <section className="mt-8">
-                    <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 mb-4">
-                        <div>
-                            <h2 className="text-xl font-semibold text-[#202124] dark:text-[#e8eaed]">搜索结果</h2>
-                            <p className="mt-1 text-sm text-[#70757a] dark:text-[#9aa0a6]">
-                                {trimmedQuery.length >= 2
-                                    ? `“${trimmedQuery}” 找到 ${results.length} 条结果，按相关度和时间排序。`
-                                    : '未输入关键词时展示当前频道的最新高价值内容。'}
+                {selectedCategory === '考试' && classMode.mode === 'NOT_FOUND' && (trimmedQuery === '考试安排' || trimmedQuery === '') ? (
+                    <section className="mt-8">
+                        <div className="border border-[#dadce0] dark:border-[#3c4043] rounded-xl bg-[#f8fafc] dark:bg-[#2d2e30] p-8 text-center max-w-[692px] mx-auto shadow-sm">
+                            <div className="mx-auto w-16 h-16 bg-[#e8f0fe] dark:bg-[#3b4043] rounded-full flex items-center justify-center mb-4">
+                                <CalendarDays className="w-8 h-8 text-[#1a73e8] dark:text-[#8ab4f8]" aria-hidden="true" />
+                            </div>
+                            <h2 className="text-2xl font-semibold text-[#202124] dark:text-[#e8eaed] mb-2">🎓 考试日程助手已就绪</h2>
+                            <p className="text-[15px] text-[#4d5156] dark:text-[#bdc1c6] mb-6">
+                                请在顶部搜索框输入您的完整班级号（例如：<span className="font-mono bg-[#e8eaed] dark:bg-[#3c4043] px-1.5 py-0.5 rounded text-[#202124] dark:text-[#e8eaed]">B250403</span>）来获取您的专属考试日程表。
+                            </p>
+                            <p className="text-[13px] text-[#70757a] dark:text-[#9aa0a6]">
+                                💡 提示：查询后我们将为您记住该班级，下次点击将一键直达。
                             </p>
                         </div>
-                    </div>
+                    </section>
+                ) : (
+                    <section className="mt-8">
+                        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 mb-4">
+                            <div>
+                                <h2 className="text-xl font-semibold text-[#202124] dark:text-[#e8eaed]">搜索结果</h2>
+                                <p className="mt-1 text-sm text-[#70757a] dark:text-[#9aa0a6]">
+                                    {trimmedQuery.length >= 2
+                                        ? `“${trimmedQuery}” 找到 ${results.length} 条结果，按相关度和时间排序。`
+                                        : '未输入关键词时展示当前频道的最新高价值内容。'}
+                                </p>
+                            </div>
+                        </div>
 
-                    {visibleResults.length > 0 ? (
-                        <div className="space-y-3">
-                            {visibleResults.map(document => (
-                                <SearchResultCard key={document.id} document={document} onOpenClass={onOpenClass} />
-                            ))}
-                        </div>
-                    ) : (
-                        <div className="border border-[#dadce0] dark:border-[#3c4043] rounded-md bg-white dark:bg-[#202124] p-6 text-[#4d5156] dark:text-[#bdc1c6] max-w-[692px]">
-                            <p>没有找到匹配结果。</p>
-                            <p className="mt-2 text-sm">可以尝试“考试安排”“奖学金 公示”“停水 停电”“B250403”这类更具体的关键词。</p>
-                        </div>
-                    )}
-                </section>
+                        {visibleResults.length > 0 ? (
+                            <div className="space-y-3">
+                                {visibleResults.map(document => (
+                                    <SearchResultCard key={document.id} document={document} onOpenClass={onOpenClass} />
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="border border-[#dadce0] dark:border-[#3c4043] rounded-md bg-white dark:bg-[#202124] p-6 text-[#4d5156] dark:text-[#bdc1c6] max-w-[692px]">
+                                <p>没有找到匹配结果。</p>
+                                <p className="mt-2 text-sm">可以尝试“考试安排”“奖学金 公示”“停水 停电”“B250403”这类更具体的关键词。</p>
+                            </div>
+                        )}
+                    </section>
+                )}
             </div>
         </main>
     );
