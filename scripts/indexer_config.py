@@ -25,6 +25,8 @@ MIN_STUDENT_SCORE = 0.55
 GITHUB_TOKEN_ENV = "NJUPT_SEARCH_GITHUB_TOKEN"
 GITHUB_API_BASE = "https://api.github.com"
 GITHUB_FILE_SIZE_LIMIT_BYTES = 250_000
+JOB_API_BASE = "https://njupt.91job.org.cn/web/wsjysc/lbxq"
+JOB_STATION_CODE = "10293"
 
 ATTACHMENT_EXTENSIONS = {
     ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".zip", ".rar",

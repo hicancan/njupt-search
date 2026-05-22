@@ -19,8 +19,8 @@ from indexer_config import (
     BASE_DIR, PUBLIC_DIR, INDEX_DIR, DOCUMENTS_PATH, MANIFEST_PATH, GITHUB_SOURCE_CONFIG_PATH,
     BEIJING_TZ, HEADERS, MAX_DOCS_PER_SOURCE, DETAIL_FETCH_LIMIT_PER_SOURCE, REQUEST_TIMEOUT,
     MIN_STUDENT_SCORE, GITHUB_TOKEN_ENV, GITHUB_API_BASE, GITHUB_FILE_SIZE_LIMIT_BYTES,
-    ATTACHMENT_EXTENSIONS, STATIC_EXTENSIONS, NAV_TITLES, CATEGORY_KEYWORDS, POSITIVE_KEYWORDS,
-    NEGATIVE_KEYWORDS, SourceConfig, GitHubSourceConfig, SOURCES
+    NEGATIVE_KEYWORDS, SourceConfig, GitHubSourceConfig, SOURCES,
+    JOB_API_BASE, JOB_STATION_CODE
 )
 
 
@@ -306,8 +306,6 @@ def build_job_document(
 
 
 def crawl_job_source(source: SourceConfig, now: datetime) -> list[dict[str, Any]]:
-    api_base = "https://njupt.91job.org.cn/web/wsjysc/lbxq"
-    station_code = "10293"
     documents: list[dict[str, Any]] = []
 
     meeting_body = {
@@ -317,9 +315,9 @@ def crawl_job_source(source: SourceConfig, now: datetime) -> list[dict[str, Any]
         "ssxx": "",
         "keyword": "",
         "size": 10,
-        "xxdm": station_code,
+        "xxdm": JOB_STATION_CODE,
     }
-    meeting_payload = post_json(f"{api_base}/getZphPageList", meeting_body)
+    meeting_payload = post_json(f"{JOB_API_BASE}/getZphPageList", meeting_body)
     for item in meeting_payload.get("result", {}).get("records", [])[:10]:
         title = clean_text(str(item.get("zphmc", "")))
         if not title:
@@ -335,7 +333,7 @@ def crawl_job_source(source: SourceConfig, now: datetime) -> list[dict[str, Any]
             f"电话：{item.get('lxdh', '')}",
         ]))
         external_id = str(item.get("zphid", ""))
-        url = f"https://njupt.91job.org.cn/sub-station/recruitmentDetail?zphid={external_id}&xxdm={station_code}"
+        url = f"https://njupt.91job.org.cn/sub-station/recruitmentDetail?zphid={external_id}&xxdm={JOB_STATION_CODE}"
         documents.append(build_job_document(source, external_id, title, url, start_time[:10] or None, content, "就业", now))
 
     lecture_body = {
@@ -345,9 +343,9 @@ def crawl_job_source(source: SourceConfig, now: datetime) -> list[dict[str, Any]
         "ssxx": "",
         "keyword": "",
         "size": 10,
-        "xxdm": station_code,
+        "xxdm": JOB_STATION_CODE,
     }
-    lecture_payload = post_json(f"{api_base}/getXjhPageList", lecture_body)
+    lecture_payload = post_json(f"{JOB_API_BASE}/getXjhPageList", lecture_body)
     for item in lecture_payload.get("result", {}).get("records", [])[:8]:
         title = clean_text(str(item.get("xjhmc", "")))
         if not title:
@@ -365,7 +363,7 @@ def crawl_job_source(source: SourceConfig, now: datetime) -> list[dict[str, Any]
             strip_html(str(item.get("xjhjs", ""))),
         ]))
         external_id = str(item.get("xjhid", ""))
-        url = f"https://njupt.91job.org.cn/sub-station/lectureDetail?xjhid={external_id}&xxdm={station_code}"
+        url = f"https://njupt.91job.org.cn/sub-station/lectureDetail?xjhid={external_id}&xxdm={JOB_STATION_CODE}"
         documents.append(build_job_document(source, external_id, title, url, date or None, content, "就业", now))
 
     return documents[:MAX_DOCS_PER_SOURCE]

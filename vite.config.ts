@@ -44,7 +44,7 @@ export default defineConfig({
       workbox: {
         runtimeCaching: [
           {
-            urlPattern: ({ url }) => url.pathname.startsWith('/data/') || url.pathname.startsWith('/index/'),
+            urlPattern: ({ url }) => url.pathname.includes('/data/') || url.pathname.includes('/index/'),
             handler: 'StaleWhileRevalidate',
             options: {
               cacheName: 'njupt-search-data-cache',

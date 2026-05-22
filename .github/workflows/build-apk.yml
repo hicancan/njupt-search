@@ -45,25 +45,32 @@ jobs:
         id: version
         run: |
           VERSION=$(jq -r .version package.json)
+          
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            RELEASE_TAG="${{ github.ref_name }}"
+          else
+            RELEASE_TAG="v$VERSION"
+          fi
+          
           echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "RELEASE_TAG=$RELEASE_TAG" >> $GITHUB_ENV
           
           # Rename generated APK
           cd android/app/build/outputs/apk/release
-          mv app-release.apk njupt-search-v${VERSION}.apk
-          cp njupt-search-v${VERSION}.apk njupt-search-latest.apk
+          mv app-release.apk njupt-search-${RELEASE_TAG}.apk
+          cp njupt-search-${RELEASE_TAG}.apk njupt-search-latest.apk
           
           # Rename generated AAB
           cd ../../bundle/release
-          mv app-release.aab njupt-search-v${VERSION}.aab
+          mv app-release.aab njupt-search-${RELEASE_TAG}.aab
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: njupt-search-apk
           path: |
-            android/app/build/outputs/apk/release/njupt-search-v*.apk
-            android/app/build/outputs/apk/release/njupt-search-latest.apk
-            android/app/build/outputs/bundle/release/njupt-search-v*.aab
+            android/app/build/outputs/apk/release/njupt-search-*.apk
+            android/app/build/outputs/bundle/release/njupt-search-*.aab
           if-no-files-found: warn
 
       - name: Create GitHub Release
@@ -71,9 +78,8 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            android/app/build/outputs/apk/release/njupt-search-v*.apk
-            android/app/build/outputs/apk/release/njupt-search-latest.apk
-            android/app/build/outputs/bundle/release/njupt-search-v*.aab
-          tag_name: v${{ env.VERSION }}
-          name: Release v${{ env.VERSION }}
+            android/app/build/outputs/apk/release/njupt-search-*.apk
+            android/app/build/outputs/bundle/release/njupt-search-*.aab
+          tag_name: ${{ env.RELEASE_TAG }}
+          name: Release ${{ env.RELEASE_TAG }}
           generate_release_notes: true
