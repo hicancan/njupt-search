@@ -54,14 +54,54 @@ function App() {
         setManualSelection(cls);
     };
 
-    if (loading) return (
-        <div className="min-h-screen flex items-center justify-center bg-white dark:bg-[var(--color-google-bg-dark)] text-[#70757a] dark:text-[#9aa0a6]">
-            <div className="flex flex-col items-center gap-4">
-                <div className="w-8 h-8 border-4 border-[var(--color-google-blue)] dark:border-[var(--color-google-blue-dark)] border-t-transparent rounded-full animate-spin"></div>
-                <span className="text-[14px]">数据同步中...</span>
+    if (loading) {
+        const hasClass = new URLSearchParams(window.location.search).has('class');
+        
+        return (
+            <div className="min-h-screen flex flex-col bg-white dark:bg-[var(--color-google-bg-dark)] text-[#202124] dark:text-[#bdc1c6] font-sans">
+                <main className={`flex-1 w-full flex flex-col ${!hasClass ? 'items-center justify-center px-4 pb-32' : 'max-w-[730px] mx-auto px-4 py-8'}`}>
+                    {!hasClass ? (
+                        <div className="w-full max-w-[584px] flex flex-col items-center mt-12">
+                            <div className="w-[180px] h-[60px] bg-[#f8f9fa] dark:bg-[#303134] rounded mb-8 relative overflow-hidden">
+                                <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/50 dark:via-white/10 to-transparent animate-shimmer"></div>
+                            </div>
+                            <div className="w-full h-[46px] bg-[#f8f9fa] dark:bg-[#303134] rounded-full relative overflow-hidden">
+                                <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/50 dark:via-white/10 to-transparent animate-shimmer"></div>
+                            </div>
+                            <div className="mt-8 flex gap-3">
+                                <div className="w-[140px] h-[36px] bg-[#f8f9fa] dark:bg-[#303134] rounded relative overflow-hidden">
+                                    <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/50 dark:via-white/10 to-transparent animate-shimmer"></div>
+                                </div>
+                                <div className="w-[140px] h-[36px] bg-[#f8f9fa] dark:bg-[#303134] rounded relative overflow-hidden">
+                                    <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/50 dark:via-white/10 to-transparent animate-shimmer"></div>
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="w-full space-y-4">
+                            {[1, 2, 3].map(i => (
+                                <div key={i} className="block p-5 pl-4 border-l-4 border-transparent bg-white dark:bg-[var(--color-google-bg-dark)] shadow-[0_1px_3px_rgba(0,0,0,0.05)] dark:shadow-none dark:border dark:border-[#3c4043] rounded relative overflow-hidden">
+                                    <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/60 dark:via-white/5 to-transparent animate-shimmer"></div>
+                                    <div className="flex items-start gap-4 opacity-50">
+                                        <div className="w-5 h-5 rounded bg-[#f1f3f4] dark:bg-[#303134] shrink-0 mt-1"></div>
+                                        <div className="flex-1">
+                                            <div className="h-6 w-2/3 bg-[#f1f3f4] dark:bg-[#303134] rounded mb-4"></div>
+                                            <div className="h-4 w-1/2 bg-[#f1f3f4] dark:bg-[#303134] rounded mb-3"></div>
+                                            <div className="h-4 w-1/3 bg-[#f1f3f4] dark:bg-[#303134] rounded mb-5"></div>
+                                            <div className="flex gap-4">
+                                                <div className="h-5 w-16 bg-[#f1f3f4] dark:bg-[#303134] rounded"></div>
+                                                <div className="h-5 w-16 bg-[#f1f3f4] dark:bg-[#303134] rounded"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </main>
             </div>
-        </div>
-    );
+        );
+    }
 
     if (error) return (
         <div className="min-h-screen flex items-center justify-center bg-white dark:bg-[var(--color-google-bg-dark)]">

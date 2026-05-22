@@ -20,21 +20,36 @@ export function ExamCard({ exam, isSelected, onToggle }: ExamCardProps) {
     return (
         <label
             className={`
-                block p-5 pl-4 transition-colors cursor-pointer group border-l-4
+                block p-5 pl-4 transition-all duration-300 cursor-pointer group border-l-4
+                hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(0,0,0,0.05)] dark:hover:shadow-none
                 ${isSelected 
-                    ? 'border-[#1a73e8] bg-[#f8fafd] dark:bg-[#1a73e8]/10' 
+                    ? 'border-[#1a73e8] bg-[#f8fafd] dark:bg-[#1a73e8]/10 shadow-[0_1px_3px_rgba(0,0,0,0.02)]' 
                     : 'border-transparent opacity-70 grayscale-[0.5] hover:bg-[#f8f9fa] dark:hover:bg-[#303134]'
                 }
             `}
         >
             <div className="flex items-start gap-4">
-                <div className="pt-1">
+                <div className="pt-1 relative">
                     <input 
                         type="checkbox" 
                         checked={isSelected}
                         onChange={onToggle}
-                        className="w-5 h-5 rounded border-[#dadce0] dark:border-[#5f6368] text-[var(--color-google-blue)] focus:ring-[var(--color-google-blue)] dark:bg-[#202124] cursor-pointer"
+                        className="sr-only peer"
                     />
+                    <div className={`
+                        w-5 h-5 rounded border flex items-center justify-center transition-colors duration-200
+                        peer-focus-visible:ring-2 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-[var(--color-google-blue)]
+                        ${isSelected 
+                            ? 'bg-[var(--color-google-blue)] border-[var(--color-google-blue)] dark:bg-[var(--color-google-blue-dark)] dark:border-[var(--color-google-blue-dark)]' 
+                            : 'border-[#dadce0] dark:border-[#5f6368] bg-white dark:bg-[#202124] group-hover:border-[#9aa0a6] dark:group-hover:border-[#9aa0a6]'
+                        }
+                    `}>
+                        {isSelected && (
+                            <svg className="w-3.5 h-3.5 text-white dark:text-[#202124] draw-check" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        )}
+                    </div>
                 </div>
                 
                 <div className="flex-1">
