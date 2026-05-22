@@ -28,8 +28,8 @@
 
 ## ✨ 核心亮点 (Features)
 
-- ⚡ **极速体验**：基于 React 19 + TypeScript 5.9 + Vite 7 构建，引入企业级 **Stale-While-Revalidate** 缓存架构，实现 0 毫秒视觉秒开。
-- 🛡️ **类型与安全**：全项目采用 TypeScript 严格模式，安卓打包流水线集成 GitHub Secrets 证书隔离注入，遵循业界最高安全规范。
+- ⚡ **极速体验**：基于 React 19 + TypeScript 5.9 + Vite 7 构建，引入企业级 **Stale-While-Revalidate** 缓存架构，实现 0 毫秒视觉秒开。支持跨线程监听后台更新并优雅弹出 Toast 提示。
+- 🛡️ **安全与跨端**：原生支持 PWA 及 Android TWA。安卓打包流水线集成 GitHub Secrets 证书隔离注入，实现零涉密企业级 CI/CD。
 - 🎨 **极简美学**：采用经典 Google 搜索风格的极简 UI，沉浸式搜索，高度克制的设计让信息呈现极其高效。
 - 📱 **极致适配**：完美适配各尺寸移动设备，响应式排版像素级调优，移动端体验媲美原生 App。
 - 🌗 **深色模式**：自动跟随系统切换深色模式，支持手动切换，深夜查分不刺眼。
@@ -137,7 +137,11 @@ njupt-exam/
 │   │   ├── ThemeToggle.tsx    # 深色模式切换
 │   │   └── UptimeDisplay.tsx  # 运行状态显示
 │   ├── hooks/                 # 🪝 自定义 Hooks
-│   │   └── useExamData.ts     # 数据获取与管理
+│   │   ├── useExamData.ts     # 数据获取与管理
+│   │   ├── useDataUpdateNotifier.ts # 跨线程更新监听
+│   │   ├── usePwaInstall.ts   # PWA 原生安装唤起
+│   │   ├── useClassSearch.ts  # 模糊搜索算法
+│   │   └── useSelectedExamIds.ts # 自主勾选状态管理
 │   ├── types/                 # 🏷️ TypeScript 类型定义
 │   │   └── index.ts           # Exam, Manifest 等接口
 │   ├── utils/                 # 🛠️ 工具函数
