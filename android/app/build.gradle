@@ -24,8 +24,8 @@ def twaManifest = [
     applicationId: 'top.hicancan.njupt.twa',
     hostName: 'njupt.hicancan.top', // The domain being opened in the TWA.
     launchUrl: '/', // The start path for the TWA. Must be relative to the domain.
-    name: 'njupt-exam', // The application name.
-    launcherName: 'njupt-exam', // The name shown on the Android Launcher.
+    name: 'njupt-search', // The application name.
+    launcherName: 'njupt-search', // The name shown on the Android Launcher.
     themeColor: '#FFFFFF', // The color used for the status bar.
     themeColorDark: '#000000', // The color used for the dark status bar.
     navigationColor: '#FFFFFF', // The color used for the navigation bar.

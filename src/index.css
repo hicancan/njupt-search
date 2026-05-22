@@ -18,6 +18,9 @@
 
 /* 自定义滚动条样式 (跨浏览器现代方案) */
 @layer base {
+    html {
+        overflow-y: scroll;
+    }
     * {
         scrollbar-width: thin;
         scrollbar-color: #cbd5e1 transparent;

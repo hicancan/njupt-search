@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { APP_CONFIG } from '@/constants';
 
 export function useDataUpdateNotifier() {
     const [newDataAvailable, setNewDataAvailable] = useState(false);
@@ -8,7 +9,7 @@ export function useDataUpdateNotifier() {
             return;
         }
 
-        const channel = new BroadcastChannel('exam-data-update-channel');
+        const channel = new BroadcastChannel(APP_CONFIG.UPDATE_CHANNEL);
         
         channel.addEventListener('message', (event) => {
             if (event.data && event.data.type === 'CACHE_UPDATED') {

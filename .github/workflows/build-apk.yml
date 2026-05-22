@@ -49,21 +49,21 @@ jobs:
           
           # Rename generated APK
           cd android/app/build/outputs/apk/release
-          mv app-release.apk njupt-exam-v${VERSION}.apk
-          cp njupt-exam-v${VERSION}.apk njupt-exam-latest.apk
+          mv app-release.apk njupt-search-v${VERSION}.apk
+          cp njupt-search-v${VERSION}.apk njupt-search-latest.apk
           
           # Rename generated AAB
           cd ../../bundle/release
-          mv app-release.aab njupt-exam-v${VERSION}.aab
+          mv app-release.aab njupt-search-v${VERSION}.aab
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: njupt-exam-apk
+          name: njupt-search-apk
           path: |
-            android/app/build/outputs/apk/release/njupt-exam-v*.apk
-            android/app/build/outputs/apk/release/njupt-exam-latest.apk
-            android/app/build/outputs/bundle/release/njupt-exam-v*.aab
+            android/app/build/outputs/apk/release/njupt-search-v*.apk
+            android/app/build/outputs/apk/release/njupt-search-latest.apk
+            android/app/build/outputs/bundle/release/njupt-search-v*.aab
           if-no-files-found: warn
 
       - name: Create GitHub Release
@@ -71,9 +71,9 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            android/app/build/outputs/apk/release/njupt-exam-v*.apk
-            android/app/build/outputs/apk/release/njupt-exam-latest.apk
-            android/app/build/outputs/bundle/release/njupt-exam-v*.aab
+            android/app/build/outputs/apk/release/njupt-search-v*.apk
+            android/app/build/outputs/apk/release/njupt-search-latest.apk
+            android/app/build/outputs/bundle/release/njupt-search-v*.aab
           tag_name: v${{ env.VERSION }}
           name: Release v${{ env.VERSION }}
           generate_release_notes: true

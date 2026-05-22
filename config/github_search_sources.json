@@ -1,0 +1,709 @@
+{
+  "sources": [
+    {
+      "repo": "hicancan/njupt-net",
+      "label": "njupt-net 校园网络工具",
+      "category": "项目",
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "include": [
+        "README.md",
+        "*.md",
+        "docs/**/*.md"
+      ],
+      "exclude": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/.git/**"
+      ],
+      "max_files": 24,
+      "source_weight": 0.74,
+      "enabled": true
+    },
+    {
+      "repo": "hicancan/njupt-jwxt-assistant",
+      "label": "教务助手资料",
+      "category": "项目",
+      "audience": [
+        "本科生"
+      ],
+      "include": [
+        "README.md",
+        "*.md",
+        "docs/**/*.md"
+      ],
+      "exclude": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/.git/**"
+      ],
+      "max_files": 20,
+      "source_weight": 0.72,
+      "enabled": true
+    },
+    {
+      "repo": "ZsgsDesign/NOJ",
+      "label": "⚡ The most advanced open-sourc...",
+      "category": "竞赛",
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "include": [
+        "README.md",
+        "*.md"
+      ],
+      "exclude": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/.git/**"
+      ],
+      "max_files": 5,
+      "source_weight": 0.5,
+      "enabled": true
+    },
+    {
+      "repo": "NJUPTFreeExams/NJUPT-General-Free-Exams",
+      "label": "南京邮电大学课程资源共享平台，此仓库包括门户网站和通识类课程...",
+      "category": "资料",
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "include": [
+        "README.md",
+        "*.md"
+      ],
+      "exclude": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/.git/**"
+      ],
+      "max_files": 5,
+      "source_weight": 0.5,
+      "enabled": true
+    },
+    {
+      "repo": "NJUPTFreeExams/NJUPT-CST-Free-Exams",
+      "label": "【Deprecated】南京邮电大学计算机科学与技术专业历年...",
+      "category": "资料",
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "include": [
+        "README.md",
+        "*.md"
+      ],
+      "exclude": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/.git/**"
+      ],
+      "max_files": 5,
+      "source_weight": 0.5,
+      "enabled": true
+    },
+    {
+      "repo": "NJUPTFreeExams/NJUPT-CS-FREE",
+      "label": "南京邮电大学计算机相关专业历年考试资料",
+      "category": "资料",
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "include": [
+        "README.md",
+        "*.md"
+      ],
+      "exclude": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/.git/**"
+      ],
+      "max_files": 5,
+      "source_weight": 0.5,
+      "enabled": true
+    },
+    {
+      "repo": "bmxbmx3/cn_sort",
+      "label": "中文排序：按拼音/笔顺快速排序简体中文词组（百万数量级，可含...",
+      "category": "项目",
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "include": [
+        "README.md",
+        "*.md"
+      ],
+      "exclude": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/.git/**"
+      ],
+      "max_files": 5,
+      "source_weight": 0.5,
+      "enabled": true
+    },
+    {
+      "repo": "leftjs/StudentGradesManageSystem",
+      "label": "student grades manage system, ...",
+      "category": "项目",
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "include": [
+        "README.md",
+        "*.md"
+      ],
+      "exclude": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/.git/**"
+      ],
+      "max_files": 5,
+      "source_weight": 0.5,
+      "enabled": true
+    },
+    {
+      "repo": "renyuanzhe/NJUPT-CS-Courses",
+      "label": "NJUPT南京邮电大学,计算机相关课程的实验报告，大作业以及...",
+      "category": "资料",
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "include": [
+        "README.md",
+        "*.md"
+      ],
+      "exclude": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/.git/**"
+      ],
+      "max_files": 5,
+      "source_weight": 0.5,
+      "enabled": true
+    },
+    {
+      "repo": "Wonz5130/NJUPT-Yellow-Page",
+      "label": ":yum:南京邮电大学黄页",
+      "category": "项目",
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "include": [
+        "README.md",
+        "*.md"
+      ],
+      "exclude": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/.git/**"
+      ],
+      "max_files": 5,
+      "source_weight": 0.5,
+      "enabled": true
+    },
+    {
+      "repo": "GreenPomelo/Undergraduate",
+      "label": "🔧mini program of NJUPT | 南京邮电大...",
+      "category": "项目",
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "include": [
+        "README.md",
+        "*.md"
+      ],
+      "exclude": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/.git/**"
+      ],
+      "max_files": 5,
+      "source_weight": 0.5,
+      "enabled": true
+    },
+    {
+      "repo": "NJUPTFreeExams/NJUPT-AUTO-Free-Exams",
+      "label": "南京邮电大学自动化专业历年考试资料",
+      "category": "资料",
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "include": [
+        "README.md",
+        "*.md"
+      ],
+      "exclude": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/.git/**"
+      ],
+      "max_files": 5,
+      "source_weight": 0.5,
+      "enabled": true
+    },
+    {
+      "repo": "NJUPT-CG/NCTF2018",
+      "label": "Official repository of NJUPT C...",
+      "category": "竞赛",
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "include": [
+        "README.md",
+        "*.md"
+      ],
+      "exclude": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/.git/**"
+      ],
+      "max_files": 5,
+      "source_weight": 0.5,
+      "enabled": true
+    },
+    {
+      "repo": "gzr-lgtm/NJUPThesis-Bachelor",
+      "label": "LaTeX template for NJUPT Under...",
+      "category": "项目",
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "include": [
+        "README.md",
+        "*.md"
+      ],
+      "exclude": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/.git/**"
+      ],
+      "max_files": 5,
+      "source_weight": 0.5,
+      "enabled": true
+    },
+    {
+      "repo": "gaoliang/NJUPT-API",
+      "label": "Python API Wrappers for NJUPT....",
+      "category": "项目",
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "include": [
+        "README.md",
+        "*.md"
+      ],
+      "exclude": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/.git/**"
+      ],
+      "max_files": 5,
+      "source_weight": 0.5,
+      "enabled": true
+    },
+    {
+      "repo": "xiafanglongfei/NJUPT-auto-evaluate",
+      "label": "🐶 南邮本科生学生评教活动的一键自动评价脚本 #南邮# #一...",
+      "category": "项目",
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "include": [
+        "README.md",
+        "*.md"
+      ],
+      "exclude": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/.git/**"
+      ],
+      "max_files": 5,
+      "source_weight": 0.5,
+      "enabled": true
+    },
+    {
+      "repo": "NJUPTFreeExams/NJUPT-TE-Free-Exams",
+      "label": "南京邮电大学通信工程专业历年考试资料",
+      "category": "资料",
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "include": [
+        "README.md",
+        "*.md"
+      ],
+      "exclude": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/.git/**"
+      ],
+      "max_files": 5,
+      "source_weight": 0.5,
+      "enabled": true
+    },
+    {
+      "repo": "kaijy91/NJUPT_NET",
+      "label": "南京邮电大学_校园网/电信宽带/移动宽带_路由器共享WiFi...",
+      "category": "项目",
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "include": [
+        "README.md",
+        "*.md"
+      ],
+      "exclude": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/.git/**"
+      ],
+      "max_files": 5,
+      "source_weight": 0.5,
+      "enabled": true
+    },
+    {
+      "repo": "s235784/NJUPT_AutoLogin",
+      "label": "南京邮电大学校园网自动登录脚本，支持Linux（OpenWR...",
+      "category": "项目",
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "include": [
+        "README.md",
+        "*.md"
+      ],
+      "exclude": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/.git/**"
+      ],
+      "max_files": 5,
+      "source_weight": 0.5,
+      "enabled": true
+    },
+    {
+      "repo": "Freedomisgood/NjuptCmcc",
+      "label": "校园网一键上网脚本",
+      "category": "项目",
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "include": [
+        "README.md",
+        "*.md"
+      ],
+      "exclude": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/.git/**"
+      ],
+      "max_files": 5,
+      "source_weight": 0.5,
+      "enabled": true
+    },
+    {
+      "repo": "love98ooo/ZhengFangJiaoWuSystemTampermonkeyScript",
+      "label": "南京邮电大学正方教务系统油猴脚本，主要用于查询平时分和卷面分",
+      "category": "项目",
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "include": [
+        "README.md",
+        "*.md"
+      ],
+      "exclude": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/.git/**"
+      ],
+      "max_files": 5,
+      "source_weight": 0.5,
+      "enabled": true
+    },
+    {
+      "repo": "NJUPT-NAVI/NJUPT-Survival-Guide",
+      "label": "南京邮电大学生存指南，用于导航和整合各种公开的资源和信息，减...",
+      "category": "生活",
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "include": [
+        "README.md",
+        "*.md"
+      ],
+      "exclude": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/.git/**"
+      ],
+      "max_files": 5,
+      "source_weight": 0.5,
+      "enabled": true
+    },
+    {
+      "repo": "bmxbmx3/finger_vein_recognition",
+      "label": "A python software used to reco...",
+      "category": "项目",
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "include": [
+        "README.md",
+        "*.md"
+      ],
+      "exclude": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/.git/**"
+      ],
+      "max_files": 5,
+      "source_weight": 0.5,
+      "enabled": true
+    },
+    {
+      "repo": "lux-QAQ/NJUPT_Fastlogin",
+      "label": "南京邮电大学校园网最快登录脚本 for Android Wi...",
+      "category": "项目",
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "include": [
+        "README.md",
+        "*.md"
+      ],
+      "exclude": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/.git/**"
+      ],
+      "max_files": 5,
+      "source_weight": 0.5,
+      "enabled": true
+    },
+    {
+      "repo": "NJUPTFreeExams/njuptfreeexams.github.io",
+      "label": "NJUPTFreeExams 官方文档，现已迁移至 Netl...",
+      "category": "资料",
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "include": [
+        "README.md",
+        "*.md"
+      ],
+      "exclude": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/.git/**"
+      ],
+      "max_files": 5,
+      "source_weight": 0.5,
+      "enabled": true
+    },
+    {
+      "repo": "dhiyu/NJUPT-Bachelor",
+      "label": "南京邮电大学本科生毕业设计Latex模板",
+      "category": "项目",
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "include": [
+        "README.md",
+        "*.md"
+      ],
+      "exclude": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/.git/**"
+      ],
+      "max_files": 5,
+      "source_weight": 0.5,
+      "enabled": true
+    },
+    {
+      "repo": "yosunpeng/postgraduate_test_njupt",
+      "label": "南京邮电大学研究生期末考试复习资料",
+      "category": "项目",
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "include": [
+        "README.md",
+        "*.md"
+      ],
+      "exclude": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/.git/**"
+      ],
+      "max_files": 5,
+      "source_weight": 0.5,
+      "enabled": true
+    },
+    {
+      "repo": "NJUPTFreeExams/NJUPT-InfoSec-Free-Exams",
+      "label": "【Deprecated】南京邮电大学信息安全专业历年考试资料...",
+      "category": "资料",
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "include": [
+        "README.md",
+        "*.md"
+      ],
+      "exclude": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/.git/**"
+      ],
+      "max_files": 5,
+      "source_weight": 0.5,
+      "enabled": true
+    },
+    {
+      "repo": "ace-trump-tech/NJUPT-Graduation-thesis",
+      "label": "南京邮电大学毕业论文模板（能毕业就行，有时间多回去陪陪家人）",
+      "category": "项目",
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "include": [
+        "README.md",
+        "*.md"
+      ],
+      "exclude": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/.git/**"
+      ],
+      "max_files": 5,
+      "source_weight": 0.5,
+      "enabled": true
+    },
+    {
+      "repo": "Yolumia/NJUPT-NETWORK",
+      "label": "南京邮电大学校园网登录脚本-windows&ios&安卓",
+      "category": "项目",
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "include": [
+        "README.md",
+        "*.md"
+      ],
+      "exclude": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/.git/**"
+      ],
+      "max_files": 5,
+      "source_weight": 0.5,
+      "enabled": true
+    },
+    {
+      "repo": "Moonike1217/NJUPTExamICSBuilder",
+      "label": "一个将南京邮电大学考试时间文件转换为ics文件的工具",
+      "category": "项目",
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "include": [
+        "README.md",
+        "*.md"
+      ],
+      "exclude": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/.git/**"
+      ],
+      "max_files": 5,
+      "source_weight": 0.5,
+      "enabled": true
+    },
+    {
+      "repo": "musnows/Njupt-Wifi-Login",
+      "label": "路由器(刷机) 实现自动连接南京邮电大学校园网",
+      "category": "项目",
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "include": [
+        "README.md",
+        "*.md"
+      ],
+      "exclude": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/.git/**"
+      ],
+      "max_files": 5,
+      "source_weight": 0.5,
+      "enabled": true
+    }
+  ]
+}

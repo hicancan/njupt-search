@@ -35,6 +35,73 @@ export interface Manifest {
     source_title?: string; // Title of the news article
 }
 
+export type SearchDocumentKind = 'notice' | 'exam' | 'resource';
+
+export type SearchCategory =
+    | '考试'
+    | '选课'
+    | '竞赛'
+    | '奖助'
+    | '就业'
+    | '讲座'
+    | '生活'
+    | '学院'
+    | '研究生'
+    | '项目'
+    | '资料'
+    | '公告';
+
+export interface SearchAttachment {
+    name: string;
+    url: string;
+    type?: string;
+}
+
+export interface SearchDocument {
+    id: string;
+    kind: SearchDocumentKind;
+    title: string;
+    url: string;
+    source: string;
+    source_domain: string;
+    category: SearchCategory;
+    audience: string[];
+    published_at: string | null;
+    content: string;
+    summary?: string;
+    attachments: SearchAttachment[];
+    student_score: number;
+    freshness_score: number;
+    importance_score: number;
+    source_weight?: number;
+    tags: string[];
+    hash: string;
+    class_name?: string;
+    exam_id?: string;
+}
+
+export interface RankedSearchDocument extends SearchDocument {
+    score: number;
+    score_reason: string;
+}
+
+export interface SearchManifestSource {
+    id: string;
+    name: string;
+    domain: string;
+    status: 'ok' | 'error';
+    documents: number;
+    last_fetch_at: string | null;
+    error?: string;
+}
+
+export interface SearchManifest {
+    generated_at: string;
+    total_documents: number;
+    sources: SearchManifestSource[];
+    strategy: string;
+}
+
 export type SearchMode = 'EMPTY' | 'NOT_FOUND' | 'LIST' | 'DETAIL';
 
 export interface SearchResult {

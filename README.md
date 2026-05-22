@@ -1,12 +1,12 @@
-# 📅 njupt-exam (南邮考试日程助手)
+# njupt-search
 
 <div align="center">
 
-<img src="public/assets/logo.png" height="80" alt="Logo" />
+<img src="public/assets/logo.png" height="80" alt="njupt-search logo" />
 
-### ✨ 为南邮学子打造的极简考试日程同步工具
+**南邮学生的信息入口：搜公告、搜考试、搜竞赛、搜讲座、搜项目、搜资料。**
 
-[**在线使用**](https://njupt.hicancan.top) · [报告 Bug](https://github.com/hicancan/njupt-exam/issues) · [请求功能](https://github.com/hicancan/njupt-exam/issues)
+[在线使用](https://njupt.hicancan.top) · [报告 Bug](https://github.com/hicancan/njupt-exam/issues) · [路线图](docs/njupt-search-product-roadmap.md)
 
 ![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat-square)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg?style=flat-square)
@@ -18,225 +18,155 @@
 
 ---
 
-## 📖 项目简介 (Introduction)
+## 项目定位
 
-**njupt-exam** 是一个轻量级、无需登录的纯前端工具，旨在解决教务处 Excel 考表查询繁琐、难以保存的问题。
+`njupt-search` 从原来的 `njupt-exam` 升级而来。原项目只解决“按班级查考试”，现在的目标是把分散在南邮公开站点里的学生相关信息变成一个可搜索、可过滤、可持续更新的校园信息入口。
 
-只需输入班级号，即可快速筛选出你的期末考试安排。不仅支持**模糊搜索**，还支持**自主勾选**需要参加的考试（完美解决重修/免修的个性化需求），并一键导出 `.ics` 日历文件。
+当前版本保留 `njupt-exam` 的考试垂直频道：输入班级号仍然可以查看期末考试、手动勾选课程并导出 `.ics` 日历。除此之外，搜索结果接入公开公告、就业宣讲、图书馆/后勤/保卫通知和 GitHub 资料仓库。
 
-导出的日历完美适配 iOS/Android/鸿蒙/Outlook/Google Calendar 等主流系统日历，彻底告别"看错行"和"记错时间"。
+## 已接入数据
 
-## ✨ 核心亮点 (Features)
+当前收录 10 个校园公开源：
 
-- ⚡ **极速体验**：基于 React 19 + TypeScript 5.9 + Vite 7 构建，引入企业级 **Stale-While-Revalidate** 缓存架构，实现 0 毫秒视觉秒开。支持跨线程监听后台更新并优雅弹出 Toast 提示。
-- 🛡️ **安全与跨端**：原生支持 PWA 及 Android TWA。安卓打包流水线集成 GitHub Secrets 证书隔离注入，实现零涉密企业级 CI/CD。
-- 🎨 **极简美学**：采用经典 Google 搜索风格的极简 UI，沉浸式搜索，高度克制的设计让信息呈现极其高效。
-- 📱 **极致适配**：完美适配各尺寸移动设备，响应式排版像素级调优，移动端体验媲美原生 App。
-- 🌗 **深色模式**：自动跟随系统切换深色模式，支持手动切换，深夜查分不刺眼。
-- 🔍 **智能搜索**：输入班级号（支持模糊匹配）自动联想，毫秒级响应。
-- 📅 **按需导出**：支持**手动勾选/反选**考试科目，一键生成标准 iCalendar (.ics) 文件，包含**时区修正**。
-- 🔗 **社交分享**：支持生成带有班级参数的链接（如 `?class=B250403`），复制发给同学，点开即看。
-- 📱 **PWA 支持**：支持"添加到主屏幕"，可离线访问，像原生 App 一样全屏运行。
-- 🔔 **定制提醒**：内置考前 15 分钟、30 分钟、1 小时、1 天等多重提醒选项，绝不缺考。
-- 🔄 **自动同步**：GitHub Actions 每 6 小时自动爬取教务处最新考表，数据持续更新。
-- 🛡️ **隐私安全**：纯静态站点，无后台数据库，所有查询逻辑在浏览器本地完成。
+| 源 | 域名 | 主要内容 |
+| --- | --- | --- |
+| 本科生院 / 教务处 | `jwc.njupt.edu.cn` | 考试、选课、转专业、推免、课程通知 |
+| 学生工作处 | `xsc.njupt.edu.cn` | 奖助、公示、宿舍、学生手册、心理健康 |
+| 研究生院 | `pg.njupt.edu.cn` | 培养、学位、答辩、研究生竞赛 |
+| 研究生工作部 | `ygb.njupt.edu.cn` | 研究生奖助、评优、实践、学术活动 |
+| 团委 / 青春南邮 | `youth.njupt.edu.cn` | 社团、挑战杯、志愿服务、活动 |
+| 创新创业教育学院 | `cxcy.njupt.edu.cn` | 科创竞赛、大创项目、创业基金 |
+| 就业信息网 | `njupt.91job.org.cn` | 招聘会、宣讲会 |
+| 图书馆 | `lib.njupt.edu.cn` | 开放安排、数据库、阅读活动 |
+| 保卫处 | `bwc.njupt.edu.cn` | 交通、安全、消防、车贴、户籍 |
+| 后勤管理处 | `hqc.njupt.edu.cn` | 停水停电、维修、医保、班车 |
 
-## 📸 预览 (Screenshots)
-
-<div align="center">
-
-| **桌面端搜索页** | **移动端详情页** |
-|:---:|:---:|
-| <img src="public/assets/desktop_demo_v2.png" alt="Desktop Demo" width="400"/> | <img src="public/assets/mobile_demo_v2.png" alt="Mobile Demo" width="200"/> |
-| *适配 Tailwind v4 的简约设计* | *支持 PWA 离线访问与日历导出* |
-
-</div>
-
-## 🚀 快速开始 (Getting Started)
-
-### 🌐 在线使用
-
-直接访问部署好的地址（推荐）：**[https://njupt.hicancan.top](https://njupt.hicancan.top)**
-
-### 💻 本地开发运行 (对于开发者)
-
-> **注意**：本项目使用最新的 **React 19** 和 **Tailwind CSS v4**。请确保你的 Node.js 版本 >= 20。
-
-1. **克隆仓库**
-
-    ```bash
-    git clone https://github.com/hicancan/njupt-exam.git
-    cd njupt-exam
-    ```
-
-2. **安装依赖**
-
-    ```bash
-    npm install
-    ```
-
-3. **启动开发服务器**
-
-    ```bash
-    npm run dev
-    # 然后浏览器访问 http://localhost:5173
-    ```
-
-4. **构建生产版本**
-
-    ```bash
-    npm run build
-    # 构建产物位于 dist/ 目录
-    ```
-
-### 🧪 代码质量检查
-
-```bash
-# TypeScript 类型检查
-npm run typecheck
-
-# ESLint 代码检查
-npm run lint
-```
-
-## 🛠️ 技术栈 (Tech Stack)
-
-| 类别 | 技术 |
-|------|------|
-| 前端框架 | React 19 |
-| 类型系统 | TypeScript 5.9 |
-| 构建工具 | Vite 7 |
-| 样式框架 | Tailwind CSS v4 |
-| 图标库 | Heroicons |
-| PWA | vite-plugin-pwa + Workbox |
-| 数据处理 | Python 3 + Pandas + Pydantic |
-| CI/CD | GitHub Actions |
-| 部署 | GitHub Pages |
-
-## 📂 项目结构 (Project Structure)
+索引产物位于：
 
 ```text
-njupt-exam/
-├── .github/workflows/         # 🔄 CI/CD 工作流
-│   ├── auto-update.yml        # 自动爬取教务数据 (每6小时)
-│   └── deploy.yml             # 自动构建部署 GitHub Pages
-├── public/                    # 🌐 公共静态资源
-│   ├── data/                  # 🗄️ 数据产物 (自动生成)
-│   │   ├── all_exams.json     # 考试数据 (核心)
-│   │   ├── data_summary.json  # 数据摘要 (元数据)
-│   │   ├── source_metadata.json # 数据来源信息
-│   │   └── DATA_INVENTORY.md  # 数据质量报告
-│   └── assets/                # 🖼️ 图标与示例图片
-├── src/                       # ⚛️ 源代码 (TypeScript)
-│   ├── components/            # 🧩 UI 组件
-│   │   ├── ExamCard.tsx       # 考试卡片 (含无障碍支持)
-│   │   ├── ExamDetail.tsx     # 考试详情页 + ICS 导出
-│   │   ├── ExamList.tsx       # 班级列表
-│   │   ├── ReminderSettings.tsx # 提醒设置
-│   │   ├── SearchInput.tsx    # 搜索输入框
-│   │   ├── ThemeToggle.tsx    # 深色模式切换
-│   │   └── UptimeDisplay.tsx  # 运行状态显示
-│   ├── hooks/                 # 🪝 自定义 Hooks
-│   │   ├── useExamData.ts     # 数据获取与管理
-│   │   ├── useDataUpdateNotifier.ts # 跨线程更新监听
-│   │   ├── usePwaInstall.ts   # PWA 原生安装唤起
-│   │   ├── useClassSearch.ts  # 模糊搜索算法
-│   │   └── useSelectedExamIds.ts # 自主勾选状态管理
-│   ├── types/                 # 🏷️ TypeScript 类型定义
-│   │   └── index.ts           # Exam, Manifest 等接口
-│   ├── utils/                 # 🛠️ 工具函数
-│   │   └── icsGenerator.ts    # ICS 日历生成 (含时区支持)
-│   ├── constants.ts           # ⚙️ 应用常量配置
-│   ├── App.tsx                # 📱 主应用逻辑
-│   ├── main.tsx               # ⚡ 入口文件
-│   └── index.css              # 🎨 全局样式 (Tailwind v4)
-├── scripts/                   # 🐍 Python 工具脚本
-│   ├── auto_update_exam_data.py # 教务网爬虫
-│   ├── analyze_and_update.py  # Excel 解析 + 数据校验
-│   └── run_locally.bat        # Windows 一键启动
-├── package.json               # 📦 依赖管理
-├── vite.config.ts             # ⚡ Vite 配置 (含 PWA)
-├── tsconfig.json              # 📐 TypeScript 配置
-└── README.md                  # 📄 项目说明文档
+public/index/documents.json
+public/index/manifest.json
 ```
 
-## 🔄 数据更新机制 (Data Pipeline)
+GitHub 资料源配置位于：
 
-项目采用 **全自动化数据同步** 机制：
+```text
+config/github_search_sources.json
+```
+
+考试数据仍位于：
+
+```text
+public/data/all_exams.json
+public/data/data_summary.json
+```
+
+## 核心能力
+
+- 统一搜索：公告、考试记录、就业宣讲、项目文档和学习资源进入同一排序模型。
+- 分类频道：考试 / 竞赛 / 奖助 / 就业 / 讲座 / 生活 / 学院 / 研究生 / 项目 / 资料。
+- 默认过滤：入库时过滤低学生相关内容，结果页按相关度和发布时间展示。
+- 考试垂直频道：班级号搜索、模糊班级选择、手动勾选考试、导出标准 iCalendar。
+- 自动更新：GitHub Actions 每 6 小时更新考试数据、校园搜索索引和已配置 GitHub 资料源。
+- PWA / Android TWA：支持添加到主屏幕，缓存 `/data/` 和 `/index/` 数据并监听后台更新。
+
+## 本地开发
+
+> 需要 Node.js >= 20。Windows 环境建议使用 PowerShell 7。
+
+```powershell
+npm install
+npm run dev
+```
+
+生产构建：
+
+```powershell
+npm run build
+```
+
+质量检查：
+
+```powershell
+npm run typecheck
+npm run lint
+npm test
+```
+
+## 数据更新
+
+安装 Python 依赖：
+
+```powershell
+uv pip install -r requirements.txt
+```
+
+更新考试 Excel 与结构化考试数据：
+
+```powershell
+uv run python scripts\auto_update_exam_data.py
+uv run python scripts\analyze_and_update.py
+```
+
+更新校园搜索索引：
+
+```powershell
+uv run python scripts\update_search_index.py
+```
+
+CI 中如需读取 GitHub 资料仓库，请配置仓库级 Actions secret：
+
+```powershell
+gh auth token | gh secret set NJUPT_SEARCH_GITHUB_TOKEN --repo hicancan/njupt-exam
+```
+
+数据流水线：
 
 ```mermaid
 graph LR
-    A[教务处网站] -->|每6小时| B[GitHub Actions]
-    B -->|auto_update_exam_data.py| C[下载 Excel]
-    C -->|analyze_and_update.py| D[解析 + 校验]
-    D -->|Pydantic| E[all_exams.json]
-    E -->|deploy.yml| F[GitHub Pages]
-    F -->|PWA| G[用户浏览器]
+    A["南邮公开站点"] --> B["update_search_index.py"]
+    X["GitHub 资料仓库"] --> B
+    C["教务处 Excel"] --> D["analyze_and_update.py"]
+    B --> E["public/index/documents.json"]
+    D --> F["public/data/all_exams.json"]
+    E --> G["React + Vite 前端"]
+    F --> G
+    G --> H["GitHub Pages / PWA"]
 ```
 
-### 手动更新数据
+## 项目结构
 
-当教务处发布新的 Excel 考表时，管理员也可手动执行以下步骤：
+```text
+njupt-search/
+├── docs/
+│   └── njupt-search-product-roadmap.md
+├── config/
+│   └── github_search_sources.json
+├── public/
+│   ├── data/                  # 考试垂直频道数据
+│   ├── index/                 # 校园搜索索引
+│   └── assets/
+├── scripts/
+│   ├── auto_update_exam_data.py
+│   ├── analyze_and_update.py
+│   └── update_search_index.py
+├── src/
+│   ├── components/
+│   ├── hooks/
+│   ├── types/
+│   └── utils/
+└── .github/workflows/
+    ├── auto-update.yml
+    ├── deploy.yml
+    └── build-apk.yml
+```
 
-1. 安装 Python 依赖（仅首次需要）：
+## 免责声明
 
-   ```bash
-   pip install -r requirements.txt
-   ```
+- 只抓取公开网页与公开接口，不接入需要登录的系统。
+- 考试信息由教务处公开 Excel 自动解析生成，最终时间地点请以学校教务系统及准考证为准。
+- 公告索引依赖各站点公开页面可用性，若源站短暂异常，`manifest.json` 会记录源级状态。
 
-2. 运行爬虫下载最新数据：
+## License
 
-   ```bash
-   python scripts/auto_update_exam_data.py
-   ```
-
-3. 处理 Excel 生成 JSON：
-
-   ```bash
-   python scripts/analyze_and_update.py
-   ```
-
-4. 提交更改到 GitHub，GitHub Actions 会自动构建并部署更新。
-
-## 🔒 数据校验 (Data Validation)
-
-本项目使用 **Pydantic** 进行严格的数据校验：
-
-- ✅ 自动清洗空白字符和特殊字符
-- ✅ 识别并解析多种时间格式（中文日期、ISO 日期）
-- ✅ 保留解析失败的记录并标记 `parse_error`
-- ✅ 生成 `DATA_INVENTORY.md` 数据质量报告
-
-## ♿ 无障碍支持 (Accessibility)
-
-- 所有交互元素包含 `role`、`aria-*` 属性
-- 支持键盘导航 (Tab + Enter/Space)
-- 隐藏标签使用 `sr-only` 类
-- 动画尊重 `prefers-reduced-motion` 用户偏好
-
-## 🤝 贡献 (Contributing)
-
-欢迎提交 Issue 或 Pull Request！
-
-如果你发现了新的考表格式导致解析失败，请提交 Issue 并附上脱敏后的 Excel 样本的一两行数据。
-
-## ⚠️ 免责声明 (Disclaimer)
-
-- 本工具数据来源于教务处发布的 Excel 汇总表，经程序自动处理生成。
-- 虽然我们使用了 Pydantic 进行严格的数据校验，但**无法保证 100% 无误**。
-- **最终考试时间、地点请务必以学校教务系统及准考证为准！**
-- 开发者不对因依赖本工具而导致的任何考试延误或缺考承担责任。
-
-## 📄 开源协议 (License)
-
-本项目遵循 [MIT License](LICENSE) 开源协议。
-
-------
-
-<div align="center">
-
-Made with ❤️ by <a href="https://hicancan.top">hicancan</a>
-
-**如果这个项目对你有帮助，欢迎给个 ⭐ Star！**
-
-</div>
+[MIT](LICENSE)

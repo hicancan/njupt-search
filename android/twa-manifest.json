@@ -1,8 +1,8 @@
 {
   "packageId": "top.hicancan.njupt.twa",
   "host": "njupt.hicancan.top",
-  "name": "njupt-exam",
-  "launcherName": "njupt-exam",
+  "name": "njupt-search",
+  "launcherName": "njupt-search",
   "display": "standalone",
   "themeColor": "#FFFFFF",
   "themeColorDark": "#000000",

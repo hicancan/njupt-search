@@ -1,4 +1,4 @@
-name: Auto Update Exam Data
+name: Auto Update Search Data
 
 on:
   schedule:
@@ -30,20 +30,34 @@ jobs:
         run: |
           pip install -r requirements.txt
           
-      - name: Run Crawler
+      - name: Run Exam Crawler
         run: |
           python scripts/auto_update_exam_data.py
           
       - name: Process Excel Files
         run: |
           python scripts/analyze_and_update.py
+
+      - name: Fetch High Star GitHub Repos
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NJUPT_SEARCH_GITHUB_TOKEN: ${{ secrets.NJUPT_SEARCH_GITHUB_TOKEN }}
+        run: |
+          python scripts/fetch_github_repos.py
+
+      - name: Build Campus Search Index
+        env:
+          NJUPT_SEARCH_GITHUB_TOKEN: ${{ secrets.NJUPT_SEARCH_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python scripts/update_search_index.py
           
       - name: Check for changes
         id: git-check
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add public/data/
+          git add public/data/ public/index/ config/github_search_sources.json
           if git diff --staged --quiet; then
             echo "changes=false" >> $GITHUB_OUTPUT
           else
@@ -53,5 +67,5 @@ jobs:
       - name: Commit and Push
         if: steps.git-check.outputs.changes == 'true'
         run: |
-          git commit -m "🤖 Auto-update exam data & manifest"
+          git commit -m "🤖 Auto-update njupt-search data"
           git push

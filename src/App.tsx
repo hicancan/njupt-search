@@ -1,256 +1,528 @@
-import { useState, useEffect } from 'react';
-import { UptimeDisplay } from './components/UptimeDisplay';
+import { useEffect, useMemo, useState } from 'react';
+import {
+    AlertCircle,
+    Bell,
+    BookOpen,
+    CalendarDays,
+    Code,
+    Download,
+    GraduationCap,
+    Search,
+    Sparkles,
+    Trophy,
+    Users
+} from 'lucide-react';
 import { ThemeToggle } from './components/ThemeToggle';
+import { UptimeDisplay } from '@/components/UptimeDisplay';
 import { SearchInput } from './components/SearchInput';
 import { ExamList } from './components/ExamList';
 import { ExamDetail } from './components/ExamDetail';
-import { Logo } from './components/Logo';
 import { APP_CONFIG } from '@/constants';
 import { useExamData } from '@/hooks/useExamData';
 import { useClassSearch } from '@/hooks/useClassSearch';
 import { useSelectedExamIds } from '@/hooks/useSelectedExamIds';
-import { usePwaInstall } from '@/hooks/usePwaInstall';
 import { useDataUpdateNotifier } from '@/hooks/useDataUpdateNotifier';
+import { useSearchIndex } from '@/hooks/useSearchIndex';
+import { RankedSearchDocument, SearchCategory, SearchDocument } from '@/types';
+import {
+    buildExamDocuments,
+    formatSearchDate,
+    getCategoryOrder,
+    getLearningResources,
+    rankSearchDocuments
+} from '@/utils/searchIndex';
 
-function App() {
-    const { exams: allExams, loading, error, sourceUrl, sourceTitle, generatedAt, totalRecords } = useExamData();
-    const { canInstall, install } = usePwaInstall();
-    const { newDataAvailable, reloadToUpdate } = useDataUpdateNotifier();
+type CategoryFilter = SearchCategory | '全部';
 
-    // UI State
-    const [inputValue, setInputValue] = useState<string>(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get('class')?.toUpperCase() || '';
-    });
-    const [manualSelection, setManualSelection] = useState<string | null>(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get('class')?.toUpperCase() || null;
-    });
-    const [reminders, setReminders] = useState<number[]>([30, 60]);
+const QUICK_SEARCHES: { label: string; query: string; category: CategoryFilter; icon: typeof Search }[] = [
+    { label: '考试安排', query: '考试安排', category: '考试', icon: CalendarDays },
+    { label: '竞赛报名', query: '竞赛 报名', category: '竞赛', icon: Trophy },
+    { label: '奖助公示', query: '奖学金 公示', category: '奖助', icon: Sparkles },
+    { label: '招聘宣讲', query: '招聘 宣讲会', category: '就业', icon: Users },
+    { label: '图书馆开放', query: '图书馆 开放', category: '生活', icon: BookOpen },
+    { label: '停水停电', query: '停水 停电', category: '生活', icon: Bell },
+];
 
-    const searchResult = useClassSearch(allExams, inputValue, manualSelection);
-    const currentClass = searchResult.mode === 'DETAIL' ? searchResult.classes[0] || null : null;
-    const { selectedIds, toggleExamSelection } = useSelectedExamIds(currentClass, searchResult.exams);
+const isExternalUrl = (url: string): boolean => {
+    return /^https?:\/\//.test(url);
+};
 
-    useEffect(() => {
-        if (searchResult.mode === 'DETAIL' && currentClass && searchResult.exams.length > 0) {
-            const query = new URLSearchParams({ class: currentClass }).toString();
-            const newUrl = `${window.location.pathname}?${query}`;
-            window.history.replaceState(null, '', newUrl);
-        } else if (searchResult.mode === 'EMPTY') {
-            window.history.replaceState(null, '', window.location.pathname);
+interface CategoryTabsProps {
+    active: CategoryFilter;
+    onChange: (category: CategoryFilter) => void;
+}
+
+function CategoryTabs({ active, onChange }: CategoryTabsProps) {
+    const categories = getCategoryOrder();
+
+    return (
+        <div className="flex gap-6 overflow-x-auto pb-0 border-b border-[#dadce0] dark:border-[#3c4043] mb-4">
+            <button
+                type="button"
+                onClick={() => onChange('全部')}
+                className={`pb-3 text-sm font-medium whitespace-nowrap border-b-[3px] transition-colors ${
+                    active === '全部'
+                        ? 'border-[#1a73e8] text-[#1a73e8] dark:border-[#8ab4f8] dark:text-[#8ab4f8]'
+                        : 'border-transparent text-[#5f6368] dark:text-[#9aa0a6] hover:text-[#202124] dark:hover:text-[#e8eaed]'
+                }`}
+            >
+                全部
+            </button>
+            {categories.map(category => (
+                <button
+                    key={category}
+                    type="button"
+                    onClick={() => onChange(category)}
+                    className={`pb-3 text-sm font-medium whitespace-nowrap border-b-[3px] transition-colors ${
+                        active === category
+                            ? 'border-[#1a73e8] text-[#1a73e8] dark:border-[#8ab4f8] dark:text-[#8ab4f8]'
+                            : 'border-transparent text-[#5f6368] dark:text-[#9aa0a6] hover:text-[#202124] dark:hover:text-[#e8eaed]'
+                    }`}
+                >
+                    {category}
+                </button>
+            ))}
+        </div>
+    );
+}
+
+interface SearchResultCardProps {
+    document: RankedSearchDocument | SearchDocument;
+    onOpenClass: (className: string) => void;
+}
+
+function SearchResultCard({ document, onOpenClass }: SearchResultCardProps) {
+    const isExam = document.kind === 'exam' && document.class_name;
+    const Wrapper = isExam ? 'button' : 'a';
+    const wrapperProps = isExam
+        ? {
+            type: 'button' as const,
+            onClick: () => onOpenClass(document.class_name || ''),
         }
-    }, [currentClass, searchResult.exams.length, searchResult.mode]);
+        : {
+            href: document.url,
+            target: isExternalUrl(document.url) ? '_blank' : undefined,
+            rel: isExternalUrl(document.url) ? 'noopener noreferrer' : undefined,
+        };
 
-    const handleInput = (val: string) => {
-        setInputValue(val);
-        if (manualSelection && val !== manualSelection) {
-            setManualSelection(null);
-        }
-    };
-
-    const handleClassClick = (cls: string) => {
-        setInputValue(cls);
-        setManualSelection(cls);
-    };
-
-    if (loading) {
-        const hasClass = new URLSearchParams(window.location.search).has('class');
-        
-        return (
-            <div className="min-h-screen flex flex-col bg-white dark:bg-[var(--color-google-bg-dark)] text-[#202124] dark:text-[#bdc1c6] font-sans">
-                <main className={`flex-1 w-full flex flex-col ${!hasClass ? 'items-center justify-center px-4 pb-32' : 'max-w-[730px] mx-auto px-4 py-8'}`}>
-                    {!hasClass ? (
-                        <div className="w-full max-w-[584px] flex flex-col items-center mt-12">
-                            <div className="w-[180px] h-[60px] bg-[#f8f9fa] dark:bg-[#303134] rounded mb-8 relative overflow-hidden">
-                                <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/50 dark:via-white/10 to-transparent animate-shimmer"></div>
-                            </div>
-                            <div className="w-full h-[46px] bg-[#f8f9fa] dark:bg-[#303134] rounded-full relative overflow-hidden">
-                                <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/50 dark:via-white/10 to-transparent animate-shimmer"></div>
-                            </div>
-                            <div className="mt-8 flex gap-3">
-                                <div className="w-[140px] h-[36px] bg-[#f8f9fa] dark:bg-[#303134] rounded relative overflow-hidden">
-                                    <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/50 dark:via-white/10 to-transparent animate-shimmer"></div>
-                                </div>
-                                <div className="w-[140px] h-[36px] bg-[#f8f9fa] dark:bg-[#303134] rounded relative overflow-hidden">
-                                    <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/50 dark:via-white/10 to-transparent animate-shimmer"></div>
-                                </div>
-                            </div>
-                        </div>
-                    ) : (
-                        <div className="w-full space-y-4">
-                            {[1, 2, 3].map(i => (
-                                <div key={i} className="block p-5 pl-4 border-l-4 border-transparent bg-white dark:bg-[var(--color-google-bg-dark)] shadow-[0_1px_3px_rgba(0,0,0,0.05)] dark:shadow-none dark:border dark:border-[#3c4043] rounded relative overflow-hidden">
-                                    <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/60 dark:via-white/5 to-transparent animate-shimmer"></div>
-                                    <div className="flex items-start gap-4 opacity-50">
-                                        <div className="w-5 h-5 rounded bg-[#f1f3f4] dark:bg-[#303134] shrink-0 mt-1"></div>
-                                        <div className="flex-1">
-                                            <div className="h-6 w-2/3 bg-[#f1f3f4] dark:bg-[#303134] rounded mb-4"></div>
-                                            <div className="h-4 w-1/2 bg-[#f1f3f4] dark:bg-[#303134] rounded mb-3"></div>
-                                            <div className="h-4 w-1/3 bg-[#f1f3f4] dark:bg-[#303134] rounded mb-5"></div>
-                                            <div className="flex gap-4">
-                                                <div className="h-5 w-16 bg-[#f1f3f4] dark:bg-[#303134] rounded"></div>
-                                                <div className="h-5 w-16 bg-[#f1f3f4] dark:bg-[#303134] rounded"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                </main>
+    return (
+        <Wrapper
+            {...wrapperProps}
+            className="block w-full text-left py-4 group"
+        >
+            <div className="flex items-center gap-2 text-[14px] text-[#202124] dark:text-[#bdc1c6] mb-1">
+                <span className="font-medium">{document.source}</span>
+                <span className="text-[#70757a] dark:text-[#9aa0a6]">›</span>
+                <span className="text-[#70757a] dark:text-[#9aa0a6] truncate">{document.category}</span>
+                {isExam ? (
+                    <span className="ml-2 inline-flex items-center justify-center h-5 px-2 rounded text-[11px] bg-[#e8f0fe] text-[#1967d2] dark:bg-[#263850] dark:text-[#8ab4f8] shrink-0">
+                        考试频道
+                    </span>
+                ) : null}
             </div>
-        );
-    }
+            <h3 className="text-[20px] leading-snug font-medium text-[#1a0dab] dark:text-[#8ab4f8] group-hover:underline break-words">
+                {document.title}
+            </h3>
+            <div className="mt-1 text-[14px] text-[#4d5156] dark:text-[#bdc1c6]">
+                <span className="text-[#70757a] dark:text-[#9aa0a6] font-medium mr-2">{formatSearchDate(document.published_at)}</span>
+                <span className="line-clamp-2 inline">
+                    {document.summary || document.content}
+                </span>
+            </div>
+        </Wrapper>
+    );
+}
 
-    if (error) return (
-        <div className="min-h-screen flex items-center justify-center bg-white dark:bg-[var(--color-google-bg-dark)]">
-            <div className="p-6 text-center text-[#d93025] dark:text-[#f28b82]">
-                <div className="text-3xl mb-3">⚠️</div>
-                <p className="text-[14px]">{error}</p>
+interface HeaderProps {
+    inputValue: string;
+    onInputChange: (value: string) => void;
+    onSubmit: (value: string) => void;
+    onGoHome: () => void;
+}
+
+function Header({ inputValue, onInputChange, onSubmit, onGoHome }: HeaderProps) {
+    return (
+        <header className="sticky top-0 z-40 border-b border-[#dadce0] dark:border-[#3c4043] bg-white/95 dark:bg-[#202124]/95 backdrop-blur">
+            <div className="max-w-6xl mx-auto px-4 py-3 flex items-center gap-4">
+                <button
+                    type="button"
+                    onClick={onGoHome}
+                    className="flex items-center gap-2 shrink-0 text-left sm:w-[140px]"
+                    aria-label="回到 njupt-search 首页"
+                >
+                    <img src="/assets/logo.png" alt="" className="w-8 h-8 rounded-md" />
+                    <div className="hidden sm:block font-semibold leading-tight text-[#202124] dark:text-[#e8eaed]">
+                        njupt-search
+                    </div>
+                </button>
+                <div className="flex-1 min-w-0 max-w-[692px]">
+                    <SearchInput value={inputValue} onChange={onInputChange} onSubmit={onSubmit} autoFocus={false} />
+                </div>
+                <ThemeToggle />
+            </div>
+        </header>
+    );
+}
+
+function LoadingScreen() {
+    return (
+        <div className="min-h-screen bg-white dark:bg-[#202124] text-[#202124] dark:text-[#e8eaed]">
+            <div className="max-w-6xl mx-auto px-4 py-10">
+                <div className="h-10 w-52 rounded bg-white dark:bg-[#202124] border border-[#dadce0] dark:border-[#3c4043] relative overflow-hidden">
+                    <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-[#edf2f7] dark:via-white/10 to-transparent animate-shimmer" />
+                </div>
+                <div className="mt-8 h-[52px] max-w-3xl rounded-full bg-white dark:bg-[#202124] border border-[#dadce0] dark:border-[#3c4043] relative overflow-hidden">
+                    <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-[#edf2f7] dark:via-white/10 to-transparent animate-shimmer" />
+                </div>
+                <div className="mt-8 grid grid-cols-1 sm:grid-cols-4 gap-3">
+                    {[0, 1, 2, 3].map(item => (
+                        <div key={item} className="h-28 rounded-md bg-white dark:bg-[#202124] border border-[#dadce0] dark:border-[#3c4043] relative overflow-hidden">
+                            <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-[#edf2f7] dark:via-white/10 to-transparent animate-shimmer" />
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     );
+}
 
-    const isHomePage = searchResult.mode === 'EMPTY';
+interface HomeViewProps {
+    inputValue: string;
+    onQuickSearch: (query: string, category: CategoryFilter) => void;
+    onInputChange: (value: string) => void;
+    onSubmit: (value: string) => void;
+}
+
+function HomeView({
+    inputValue,
+    onQuickSearch,
+    onInputChange,
+    onSubmit
+}: HomeViewProps) {
+    return (
+        <main className="flex-1 px-4">
+            <div className="max-w-6xl mx-auto pt-5 flex justify-end">
+                <ThemeToggle />
+            </div>
+            <section className="max-w-[680px] mx-auto min-h-[calc(100vh-176px)] flex flex-col items-center justify-center pb-20">
+                <img src="/assets/logo.png" alt="" className="w-16 h-16 rounded-2xl" />
+                <h1 className="mt-5 text-5xl sm:text-6xl font-normal text-[#202124] dark:text-[#e8eaed] leading-tight">njupt-search</h1>
+
+                <div className="mt-8 w-full">
+                    <SearchInput value={inputValue} onChange={onInputChange} onSubmit={onSubmit} />
+                </div>
+
+                <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
+                    {QUICK_SEARCHES.map(item => {
+                        const Icon = item.icon;
+                        return (
+                            <button
+                                key={item.label}
+                                type="button"
+                                onClick={() => onQuickSearch(item.query, item.category)}
+                                className="inline-flex items-center gap-2 h-10 px-4 rounded-full border border-[#dadce0] dark:border-[#3c4043] bg-white dark:bg-[#202124] text-sm text-[#3c4043] dark:text-[#e8eaed] hover:border-[#8ab4f8] transition-colors"
+                            >
+                                <Icon className="w-4 h-4" aria-hidden="true" />
+                                {item.label}
+                            </button>
+                        );
+                    })}
+                </div>
+            </section>
+        </main>
+    );
+}
+
+interface ResultsViewProps {
+    query: string;
+    selectedCategory: CategoryFilter;
+    results: RankedSearchDocument[];
+    resources: SearchDocument[];
+    classMode: ReturnType<typeof useClassSearch>;
+    selectedIds: Set<string>;
+    reminders: number[];
+    onCategoryChange: (category: CategoryFilter) => void;
+    onOpenClass: (className: string) => void;
+    onToggleSelection: (id: string) => void;
+    onRemindersChange: (reminders: number[]) => void;
+    sourceUrl: string | null;
+    sourceTitle: string | null;
+    generatedAt: string | null;
+    totalRecords: number | null;
+}
+
+function ResultsView({
+    query,
+    selectedCategory,
+    results,
+    resources,
+    classMode,
+    selectedIds,
+    reminders,
+    onCategoryChange,
+    onOpenClass,
+    onToggleSelection,
+    onRemindersChange,
+    sourceUrl,
+    sourceTitle,
+    generatedAt,
+    totalRecords
+}: ResultsViewProps) {
+    const trimmedQuery = query.trim();
+    const visibleResults = results.slice(0, 30);
 
     return (
-        <div className="min-h-screen flex flex-col bg-white dark:bg-[var(--color-google-bg-dark)] text-[#202124] dark:text-[#bdc1c6] transition-colors duration-200 font-sans">
-            {!isHomePage && (
-                <header className="border-b border-[#ebebeb] dark:border-[#3c4043] pb-4 pt-4 sm:pt-6 relative sticky top-0 bg-white dark:bg-[var(--color-google-bg-dark)] z-30">
-                    {/* Mobile Top Row */}
-                    <div className="w-full flex justify-between items-center mb-4 sm:hidden px-4">
-                        <div className="flex-shrink-0 flex items-center cursor-pointer" onClick={() => handleInput('')}>
-                            <Logo size="small" />
-                        </div>
-                        <div>
-                            <ThemeToggle />
-                        </div>
-                    </div>
+        <main className="max-w-6xl w-full mx-auto px-4 py-6">
+            <div className="w-full">
+                <CategoryTabs active={selectedCategory} onChange={onCategoryChange} />
 
-                    {/* Desktop Absolute Logo */}
-                    <div className="hidden sm:flex sm:absolute sm:left-8 sm:top-1/2 sm:-translate-y-1/2 flex-shrink-0 items-center cursor-pointer" onClick={() => handleInput('')}>
-                        <Logo size="small" />
-                    </div>
-                    
-                    <div className="w-full max-w-[730px] mx-auto flex justify-center px-4 relative z-10">
-                        <SearchInput value={inputValue} onChange={handleInput} />
-                    </div>
-                    
-                    {/* Desktop Absolute Theme Toggle */}
-                    <div className="hidden sm:flex sm:absolute sm:right-8 sm:top-1/2 sm:-translate-y-1/2 items-center gap-4">
-                        <ThemeToggle />
-                    </div>
-                </header>
-            )}
+                {classMode.mode === 'LIST' ? (
+                    <section className="mt-6">
+                        <ExamList classes={classMode.classes} onClassClick={onOpenClass} />
+                    </section>
+                ) : null}
 
-            {isHomePage && (
-                <header className="absolute top-0 left-0 right-0 p-4 sm:px-6 flex justify-between items-center z-50">
-                    <div className="text-[14px] text-[#4d5156] dark:text-[#bdc1c6] pt-1">
-                        <a href={`https://${APP_CONFIG.DOMAIN}`} className="hover:underline">{APP_CONFIG.DOMAIN}</a>
-                    </div>
-                    <div>
-                        <ThemeToggle />
-                    </div>
-                </header>
-            )}
-
-            <main className={`flex-1 w-full flex flex-col ${isHomePage ? 'items-center justify-center px-4 pb-32' : 'max-w-[730px] mx-auto px-4 py-4'}`}>
-                {isHomePage && (
-                    <div className="w-full max-w-[584px] flex flex-col items-center">
-                        <Logo size="large" />
-                        <div className="w-full">
-                            <SearchInput value={inputValue} onChange={handleInput} />
-                        </div>
-                        <div className="mt-8 flex flex-row justify-center gap-3 w-full">
-                            {canInstall ? (
-                                <button 
-                                    onClick={install}
-                                    className="bg-[#f8f9fa] dark:bg-[#303134] text-[#3c4043] dark:text-[#e8eaed] border border-[#f8f9fa] dark:border-[#303134] hover:border-[#dadce0] dark:hover:border-[#5f6368] hover:shadow-sm px-4 py-2 rounded text-sm transition-all focus:outline-none focus:ring-2 focus:ring-[var(--color-google-blue)] whitespace-nowrap"
-                                >
-                                    添加到主屏幕 (PWA)
-                                </button>
-                            ) : (
-                                <button 
-                                    disabled
-                                    className="bg-[#f8f9fa] dark:bg-[#303134] text-[#3c4043] dark:text-[#e8eaed] border border-[#f8f9fa] dark:border-[#303134] opacity-50 cursor-not-allowed px-4 py-2 rounded text-sm whitespace-nowrap"
-                                    title="当前环境不支持或已安装"
-                                >
-                                    添加到主屏幕 (PWA)
-                                </button>
-                            )}
-                            <a 
-                                href="https://github.com/hicancan/njupt-exam/releases/latest/download/njupt-exam-latest.apk"
-                                className="bg-[#f8f9fa] dark:bg-[#303134] text-[#3c4043] dark:text-[#e8eaed] border border-[#f8f9fa] dark:border-[#303134] hover:border-[#dadce0] dark:hover:border-[#5f6368] hover:shadow-sm px-4 py-2 rounded text-sm transition-all focus:outline-none focus:ring-2 focus:ring-[var(--color-google-blue)] whitespace-nowrap"
-                            >
-                                下载 Android APK
-                            </a>
-                        </div>
-                    </div>
-                )}
-
-                <div className="w-full">
-                    {!isHomePage && searchResult.mode === 'NOT_FOUND' && (
-                        <div className="py-4 text-[#4d5156] dark:text-[#bdc1c6]">
-                            <p>找不到和您查询的 <span className="font-bold text-red-500">"{inputValue}"</span> 相符的班级。</p>
-                            <p className="mt-4">建议：</p>
-                            <ul className="list-disc pl-8 mt-2 space-y-1">
-                                <li>请检查输入是否正确。</li>
-                                <li>目前仅支持按班级号搜索（如 B250403）。</li>
-                            </ul>
-                        </div>
-                    )}
-
-                    {!isHomePage && searchResult.mode === 'LIST' && (
-                        <ExamList
-                            classes={searchResult.classes}
-                            onClassClick={handleClassClick}
-                        />
-                    )}
-
-                    {!isHomePage && searchResult.mode === 'DETAIL' && (
+                {classMode.mode === 'DETAIL' ? (
+                    <section className="mt-6 border-b border-[#dadce0] dark:border-[#3c4043] pb-8">
                         <ExamDetail
-                            className={searchResult.classes[0] || ''}
-                            exams={searchResult.exams}
+                            className={classMode.classes[0] || ''}
+                            exams={classMode.exams}
                             selectedIds={selectedIds}
-                            onToggleSelection={toggleExamSelection}
+                            onToggleSelection={onToggleSelection}
                             reminders={reminders}
-                            onRemindersChange={setReminders}
+                            onRemindersChange={onRemindersChange}
                             sourceUrl={sourceUrl}
                             sourceTitle={sourceTitle}
                             generatedAt={generatedAt}
                             totalRecords={totalRecords}
                         />
-                    )}
-                </div>
-            </main>
+                    </section>
+                ) : null}
 
-            <footer className="bg-[#f2f2f2] dark:bg-[#171717] text-[#70757a] dark:text-[#9aa0a6] text-sm border-t border-[#dadce0] dark:border-[#3c4043]">
-                <div className="px-8 py-3 flex flex-col lg:flex-row justify-between lg:items-center gap-4">
-                    <div className="flex w-full lg:w-auto justify-between lg:justify-start items-center gap-6">
-                        <a href={APP_CONFIG.GITHUB_REPO} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 hover:underline group">
-                            <svg className="w-4 h-4 fill-current opacity-70 group-hover:opacity-100 transition-opacity" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" /></svg>
-                            <span>GitHub</span>
+                {resources.length > 0 ? (
+                    <section className="mt-8">
+                        <div className="flex items-center gap-2 mb-3">
+                            <GraduationCap className="w-5 h-5 text-[#1a73e8]" aria-hidden="true" />
+                            <h2 className="text-lg font-semibold text-[#202124] dark:text-[#e8eaed]">相关学习资源</h2>
+                        </div>
+                        <div className="grid md:grid-cols-2 gap-3">
+                            {resources.map(resource => (
+                                <SearchResultCard key={resource.id} document={resource} onOpenClass={onOpenClass} />
+                            ))}
+                        </div>
+                    </section>
+                ) : null}
+
+                <section className="mt-8">
+                    <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 mb-4">
+                        <div>
+                            <h2 className="text-xl font-semibold text-[#202124] dark:text-[#e8eaed]">搜索结果</h2>
+                            <p className="mt-1 text-sm text-[#70757a] dark:text-[#9aa0a6]">
+                                {trimmedQuery.length >= 2
+                                    ? `“${trimmedQuery}” 找到 ${results.length} 条结果，按相关度和时间排序。`
+                                    : '未输入关键词时展示当前频道的最新高价值内容。'}
+                            </p>
+                        </div>
+                    </div>
+
+                    {visibleResults.length > 0 ? (
+                        <div className="space-y-3">
+                            {visibleResults.map(document => (
+                                <SearchResultCard key={document.id} document={document} onOpenClass={onOpenClass} />
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="border border-[#dadce0] dark:border-[#3c4043] rounded-md bg-white dark:bg-[#202124] p-6 text-[#4d5156] dark:text-[#bdc1c6] max-w-[692px]">
+                            <p>没有找到匹配结果。</p>
+                            <p className="mt-2 text-sm">可以尝试“考试安排”“奖学金 公示”“停水 停电”“B250403”这类更具体的关键词。</p>
+                        </div>
+                    )}
+                </section>
+            </div>
+        </main>
+    );
+}
+
+function App() {
+    const { exams: allExams, loading: examLoading, error: examError, sourceUrl, sourceTitle, generatedAt, totalRecords } = useExamData();
+    const { documents: noticeDocuments, loading: searchLoading, error: searchError } = useSearchIndex();
+    const { newDataAvailable, reloadToUpdate } = useDataUpdateNotifier();
+
+    const [inputValue, setInputValue] = useState<string>(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('class')?.toUpperCase() || urlParams.get('q') || '';
+    });
+    const [isHomeState, setIsHomeState] = useState<boolean>(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        return !urlParams.has('class') && !urlParams.has('q');
+    });
+    const [searchQuery, setSearchQuery] = useState<string>(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('class')?.toUpperCase() || urlParams.get('q') || '';
+    });
+    const [manualSelection, setManualSelection] = useState<string | null>(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('class')?.toUpperCase() || null;
+    });
+    const [selectedCategory, setSelectedCategory] = useState<CategoryFilter>(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.has('class') ? '考试' : '全部';
+    });
+    const [reminders, setReminders] = useState<number[]>([30, 60]);
+
+    const examDocuments = useMemo(() => buildExamDocuments(allExams), [allExams]);
+    const allDocuments = useMemo(() => [...noticeDocuments, ...examDocuments], [noticeDocuments, examDocuments]);
+    const rankedResults = useMemo(
+        () => rankSearchDocuments(allDocuments, searchQuery, selectedCategory),
+        [allDocuments, searchQuery, selectedCategory]
+    );
+    const learningResources = useMemo(() => getLearningResources(searchQuery), [searchQuery]);
+    const classSearchResult = useClassSearch(allExams, searchQuery, manualSelection);
+    const currentClass = classSearchResult.mode === 'DETAIL' ? classSearchResult.classes[0] || null : null;
+    const { selectedIds, toggleExamSelection } = useSelectedExamIds(currentClass, classSearchResult.exams);
+
+    useEffect(() => {
+        const trimmed = searchQuery.trim();
+        if (classSearchResult.mode === 'DETAIL' && currentClass && classSearchResult.exams.length > 0) {
+            const nextUrl = `${window.location.pathname}?${new URLSearchParams({ class: currentClass }).toString()}`;
+            window.history.replaceState(null, '', nextUrl);
+        } else if (trimmed.length >= 2) {
+            const nextUrl = `${window.location.pathname}?${new URLSearchParams({ q: trimmed }).toString()}`;
+            window.history.replaceState(null, '', nextUrl);
+        } else {
+            window.history.replaceState(null, '', window.location.pathname);
+        }
+    }, [classSearchResult.exams.length, classSearchResult.mode, currentClass, searchQuery]);
+
+    const handleInputChange = (value: string) => {
+        setInputValue(value);
+    };
+
+    const handleSearchSubmit = (value: string) => {
+        setSearchQuery(value);
+        setIsHomeState(false);
+        if (manualSelection && value.toUpperCase() !== manualSelection) {
+            setManualSelection(null);
+        }
+    };
+
+    const handleQuickSearch = (nextQuery: string, category: CategoryFilter) => {
+        setInputValue(nextQuery);
+        setSearchQuery(nextQuery);
+        setSelectedCategory(category);
+        setManualSelection(null);
+        setIsHomeState(false);
+    };
+
+    const handleOpenClass = (className: string) => {
+        if (!className) return;
+        setInputValue(className.toUpperCase());
+        setSearchQuery(className.toUpperCase());
+        setSelectedCategory('考试');
+        setManualSelection(className.toUpperCase());
+        setIsHomeState(false);
+    };
+
+    const handleGoHome = () => {
+        setInputValue('');
+        setSearchQuery('');
+        setSelectedCategory('全部');
+        setIsHomeState(true);
+        window.history.replaceState(null, '', window.location.pathname);
+    };
+
+    const isLoading = examLoading || searchLoading;
+    const isHome = isHomeState;
+
+    if (isLoading) {
+        return <LoadingScreen />;
+    }
+
+    if (examError && searchError) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-[#f8fafc] dark:bg-[#171717] text-[#202124] dark:text-[#e8eaed] px-4">
+                <div className="max-w-md border border-[#dadce0] dark:border-[#3c4043] rounded-md bg-white dark:bg-[#202124] p-6">
+                    <AlertCircle className="w-8 h-8 text-[#d93025]" aria-hidden="true" />
+                    <h1 className="mt-3 text-xl font-semibold">数据加载失败</h1>
+                    <p className="mt-2 text-sm text-[#4d5156] dark:text-[#bdc1c6]">{examError}</p>
+                    <p className="mt-1 text-sm text-[#4d5156] dark:text-[#bdc1c6]">{searchError}</p>
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <div className="min-h-screen flex flex-col bg-white dark:bg-[#202124] text-[#202124] dark:text-[#e8eaed] transition-colors duration-200 font-sans">
+            {!isHome ? <Header inputValue={inputValue} onInputChange={handleInputChange} onSubmit={handleSearchSubmit} onGoHome={handleGoHome} /> : null}
+
+            {searchError || examError ? (
+                <div className="max-w-6xl mx-auto w-full px-4 pt-4">
+                    <div className="border border-[#f4c7c3] dark:border-[#5f2b26] bg-[#fce8e6] dark:bg-[#2b1715] text-[#b3261e] dark:text-[#f28b82] rounded-md p-3 text-sm flex gap-2">
+                        <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" aria-hidden="true" />
+                        <span>{searchError || examError}</span>
+                    </div>
+                </div>
+            ) : null}
+
+            {isHome ? (
+                <HomeView
+                    inputValue={inputValue}
+                    onQuickSearch={handleQuickSearch}
+                    onInputChange={handleInputChange}
+                    onSubmit={handleSearchSubmit}
+                />
+            ) : (
+                <ResultsView
+                    query={searchQuery}
+                    selectedCategory={selectedCategory}
+                    results={rankedResults}
+                    resources={learningResources}
+                    classMode={classSearchResult}
+                    selectedIds={selectedIds}
+                    reminders={reminders}
+                    onCategoryChange={setSelectedCategory}
+                    onOpenClass={handleOpenClass}
+                    onToggleSelection={toggleExamSelection}
+                    onRemindersChange={setReminders}
+                    sourceUrl={sourceUrl}
+                    sourceTitle={sourceTitle}
+                    generatedAt={generatedAt}
+                    totalRecords={totalRecords}
+                />
+            )}
+
+            <footer className="mt-auto border-t border-[#dadce0] dark:border-[#3c4043] bg-white dark:bg-[#202124] text-sm text-[#70757a] dark:text-[#9aa0a6]">
+                <div className="max-w-6xl mx-auto px-4 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div className="flex flex-wrap items-center gap-6">
+                        <a href={APP_CONFIG.GITHUB_REPO} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 hover:underline text-[#5f6368] dark:text-[#9aa0a6] hover:text-[#202124] dark:hover:text-[#e8eaed] transition-colors">
+                            <Code className="w-4 h-4" aria-hidden="true" />
+                            GitHub
                         </a>
-                        <a href={APP_CONFIG.BILIBILI_PAGE} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 hover:underline group">
-                            <svg className="w-4 h-4 fill-current opacity-70 group-hover:opacity-100 hover:text-[#FB7299] transition-all" viewBox="0 0 24 24"><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773-1.004.996-2.264 1.52-3.773 1.574H5.333c-1.51-.054-2.77-.578-3.773-1.574-1.005-.995-1.525-2.249-1.561-3.76v-7.36c.036-1.511.556-2.765 1.561-3.76 1.003-.996 2.264-1.52 3.773-1.574h.854l-1.99-1.99a.633.633 0 0 1-.186-.464.633.633 0 0 1 .186-.465c.123-.124.278-.186.464-.186.186 0 .341.062.465.186l2.36 2.36h2.827l2.365-2.36a.633.633 0 0 1 .465-.186.633.633 0 0 1 .186.465.633.633 0 0 1-.186.464l-1.995 1.99zM6.933 9.453c-.63 0-1.14.51-1.14 1.14 0 .63.51 1.14 1.14 1.14.63 0 1.14-.51 1.14-1.14 0-.63-.51-1.14-1.14-1.14zm9.334 0c-.63 0-1.14.51-1.14 1.14 0 .63.51 1.14 1.14 1.14.63 0 1.14-.51 1.14-1.14 0-.63-.51-1.14-1.14-1.14z" /></svg>
-                            <span>Bilibili</span>
+                        <a href={APP_CONFIG.BILIBILI_PAGE} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 hover:underline text-[#5f6368] dark:text-[#9aa0a6] hover:text-[#202124] dark:hover:text-[#e8eaed] transition-colors">
+                            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <path d="M17.813 4.653h.854c1.51.054 2.769.657 3.773 1.811 1.004 1.154 1.515 2.649 1.536 4.485v5.23c-.021 1.84-.533 3.337-1.536 4.492-1.004 1.154-2.263 1.758-3.773 1.811H5.333c-1.51-.053-2.769-.657-3.773-1.811C.557 19.518.046 18.021.025 16.18V10.95c.021-1.836.532-3.331 1.535-4.485 1.004-1.154 2.263-1.757 3.773-1.81h.854l-1.84-2.002a.81.81 0 01-.137-.735c.05-.24.238-.41.498-.445.195-.027.391.047.525.2l2.361 2.583c.125.136.216.31.263.504h8.286c.046-.194.137-.368.262-.504l2.361-2.583c.134-.153.33-.227.525-.2.26-.035.448.135.498.376.028.14-.012.285-.107.395l-1.871 2.002zm-12.48 2.083c-1.082.02-1.954.4-2.617 1.14-.662.74-1 1.706-1.013 2.898v5.229c.013 1.192.35 2.158 1.013 2.898.663.74 1.535 1.12 2.617 1.14h13.334c1.082-.02 1.954-.4 2.617-1.14.662-.74 1-1.706 1.013-2.898V10.774c-.013-1.192-.35-2.158-1.013-2.898-.663-.74-1.535-1.12-2.617-1.14H5.333zm2.593 3.65c0-.629.566-1.139 1.263-1.139.697 0 1.263.51 1.263 1.139v1.94c0 .63-.566 1.14-1.263 1.14-.697 0-1.263-.51-1.263-1.14v-1.94zm8.258 0c0-.629.566-1.139 1.263-1.139.697 0 1.263.51 1.263 1.139v1.94c0 .63-.566 1.14-1.263 1.14-.697 0-1.263-.51-1.263-1.14v-1.94z"/>
+                            </svg>
+                            Bilibili
+                        </a>
+                        <a href="https://github.com/hicancan/njupt-exam/releases/latest/download/njupt-search-latest.apk" className="inline-flex items-center gap-1.5 hover:underline text-[#5f6368] dark:text-[#9aa0a6] hover:text-[#202124] dark:hover:text-[#e8eaed] transition-colors">
+                            <Download className="w-4 h-4" aria-hidden="true" />
+                            Android APK
                         </a>
                     </div>
-                    <div className="flex w-full lg:w-auto justify-between lg:justify-end items-center gap-6">
+                    <div className="flex flex-wrap items-center gap-3 text-xs sm:text-sm">
                         <UptimeDisplay />
                     </div>
                 </div>
             </footer>
 
-            {/* Update Toast */}
             {newDataAvailable && (
                 <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] fade-in">
-                    <div className="bg-[#1a73e8] dark:bg-[var(--color-google-blue-dark)] text-white px-5 py-3 rounded-full shadow-lg flex items-center gap-3 text-sm font-medium whitespace-nowrap border border-transparent dark:border-[#3c4043]">
-                        <span>✨ 发现最新的考试数据</span>
-                        <button 
+                    <div className="bg-[#1a73e8] text-white px-5 py-3 rounded-full shadow-lg flex items-center gap-3 text-sm font-medium whitespace-nowrap border border-transparent dark:border-[#3c4043]">
+                        <span>发现最新校园索引数据</span>
+                        <button
+                            type="button"
                             onClick={reloadToUpdate}
-                            className="bg-white text-[#1a73e8] dark:text-[var(--color-google-blue-dark)] px-4 py-1.5 rounded-full hover:bg-gray-100 transition-colors cursor-pointer"
+                            className="bg-white text-[#1a73e8] px-4 py-1.5 rounded-full hover:bg-gray-100 transition-colors cursor-pointer"
                         >
                             立刻刷新
                         </button>

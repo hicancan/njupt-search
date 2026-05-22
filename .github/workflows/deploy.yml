@@ -10,7 +10,7 @@ on:
       - 'scripts/**'
       - '.gitignore'
   workflow_run:
-    workflows: ["Auto Update Exam Data"]
+    workflows: ["Auto Update Search Data"]
     types:
       - completed
   workflow_dispatch:
