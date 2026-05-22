@@ -1,3 +1,4 @@
+import { z } from 'zod';
 import { Exam, RankedSearchDocument, SearchCategory, SearchDocument, SearchManifest } from '@/types';
 
 class SearchContractError extends Error {
@@ -42,9 +43,7 @@ const RESOURCE_INTENT_KEYWORDS = [
     '竞赛'
 ];
 
-const isRecord = (value: unknown): value is Record<string, unknown> => {
-    return typeof value === 'object' && value !== null && !Array.isArray(value);
-};
+
 
 const clamp01 = (value: number): number => {
     if (!Number.isFinite(value)) return 0;
@@ -67,42 +66,53 @@ const tokenize = (query: string): string[] => {
     return parts.length > 0 ? parts : [normalized];
 };
 
-const readRequiredString = (record: Record<string, unknown>, key: string, label: string): string => {
-    const value = record[key];
-    if (typeof value !== 'string' || value.trim() === '') {
-        throw new SearchContractError(`${label}.${key} must be a non-empty string`);
-    }
-    return value;
-};
+const SearchAttachmentSchema = z.object({
+    name: z.string(),
+    url: z.string(),
+    type: z.string().optional()
+});
 
-const readOptionalString = (record: Record<string, unknown>, key: string): string | null => {
-    const value = record[key];
-    return typeof value === 'string' && value.trim() ? value : null;
-};
+const SearchDocumentSchema = z.object({
+    id: z.string().min(1),
+    kind: z.enum(['notice', 'exam', 'resource']).catch('notice'),
+    title: z.string().min(1),
+    url: z.string().min(1),
+    source: z.string().min(1),
+    source_domain: z.string().min(1),
+    category: z.enum([
+        '考试', '选课', '竞赛', '奖助', '就业', '讲座', '生活', '学院', '研究生', '项目', '资料', '公告'
+    ]).catch('公告'),
+    audience: z.array(z.string()),
+    published_at: z.string().nullable().optional(),
+    content: z.string().min(1),
+    summary: z.string().optional(),
+    attachments: z.array(SearchAttachmentSchema).default([]),
+    student_score: z.number().transform(clamp01),
+    freshness_score: z.number().transform(clamp01),
+    importance_score: z.number().transform(clamp01),
+    source_weight: z.number().transform(clamp01).optional(),
+    tags: z.array(z.string()),
+    hash: z.string().min(1),
+    class_name: z.string().optional(),
+    exam_id: z.string().optional()
+}).passthrough();
 
-const readNumber = (record: Record<string, unknown>, key: string, label: string): number => {
-    const value = record[key];
-    if (typeof value !== 'number' || !Number.isFinite(value)) {
-        throw new SearchContractError(`${label}.${key} must be a finite number`);
-    }
-    return value;
-};
+const SearchManifestSourceSchema = z.object({
+    id: z.string().min(1),
+    name: z.string().min(1),
+    domain: z.string().min(1),
+    status: z.enum(['ok', 'error']).catch('error'),
+    documents: z.number(),
+    last_fetch_at: z.string().nullable().optional(),
+    error: z.string().optional()
+}).passthrough();
 
-const readStringArray = (record: Record<string, unknown>, key: string, label: string): string[] => {
-    const value = record[key];
-    if (!Array.isArray(value) || value.some(item => typeof item !== 'string')) {
-        throw new SearchContractError(`${label}.${key} must be a string array`);
-    }
-    return value;
-};
-
-const readCategory = (record: Record<string, unknown>, label: string): SearchCategory => {
-    const category = readRequiredString(record, 'category', label);
-    if (!CATEGORY_ORDER.includes(category as SearchCategory)) {
-        return '公告';
-    }
-    return category as SearchCategory;
-};
+const SearchManifestSchema = z.object({
+    generated_at: z.string().min(1),
+    total_documents: z.number(),
+    strategy: z.string().min(1),
+    sources: z.array(SearchManifestSourceSchema)
+}).passthrough();
 
 const daysFromNow = (dateLike: string | null): number | null => {
     if (!dateLike) return null;
@@ -170,79 +180,27 @@ const buildScoreReason = (document: SearchDocument): string => {
 };
 
 export const parseSearchDocuments = (payload: unknown, source = 'search documents'): SearchDocument[] => {
-    if (!Array.isArray(payload)) {
-        throw new SearchContractError(`${source} must be an array`);
+    try {
+        const docs = z.array(SearchDocumentSchema).parse(payload);
+        const ids = new Set<string>();
+        for (const item of docs) {
+            if (ids.has(item.id)) {
+                throw new SearchContractError(`${source} contains duplicate id: ${item.id}`);
+            }
+            ids.add(item.id);
+        }
+        return docs as unknown as SearchDocument[];
+    } catch (e) {
+        throw new SearchContractError(`Validation failed for ${source}: ${e instanceof Error ? e.message : String(e)}`);
     }
-
-    const ids = new Set<string>();
-    return payload.map((item, index) => {
-        const label = `${source}[${index}]`;
-        if (!isRecord(item)) {
-            throw new SearchContractError(`${label} must be an object`);
-        }
-
-        const id = readRequiredString(item, 'id', label);
-        if (ids.has(id)) {
-            throw new SearchContractError(`${source} contains duplicate id: ${id}`);
-        }
-        ids.add(id);
-
-        return {
-            id,
-            kind: item.kind === 'exam' || item.kind === 'resource' ? item.kind : 'notice',
-            title: readRequiredString(item, 'title', label),
-            url: readRequiredString(item, 'url', label),
-            source: readRequiredString(item, 'source', label),
-            source_domain: readRequiredString(item, 'source_domain', label),
-            category: readCategory(item, label),
-            audience: readStringArray(item, 'audience', label),
-            published_at: readOptionalString(item, 'published_at'),
-            content: readRequiredString(item, 'content', label),
-            summary: readOptionalString(item, 'summary') || undefined,
-            attachments: Array.isArray(item.attachments) ? item.attachments as SearchDocument['attachments'] : [],
-            student_score: clamp01(readNumber(item, 'student_score', label)),
-            freshness_score: clamp01(readNumber(item, 'freshness_score', label)),
-            importance_score: clamp01(readNumber(item, 'importance_score', label)),
-            source_weight: typeof item.source_weight === 'number' ? clamp01(item.source_weight) : undefined,
-            tags: readStringArray(item, 'tags', label),
-            hash: readRequiredString(item, 'hash', label),
-            class_name: readOptionalString(item, 'class_name') || undefined,
-            exam_id: readOptionalString(item, 'exam_id') || undefined
-        };
-    });
 };
 
 export const parseSearchManifest = (payload: unknown, source = 'search manifest'): SearchManifest => {
-    if (!isRecord(payload)) {
-        throw new SearchContractError(`${source} must be an object`);
+    try {
+        return SearchManifestSchema.parse(payload) as unknown as SearchManifest;
+    } catch (e) {
+        throw new SearchContractError(`Validation failed for ${source}: ${e instanceof Error ? e.message : String(e)}`);
     }
-
-    const sources = payload.sources;
-    if (!Array.isArray(sources)) {
-        throw new SearchContractError(`${source}.sources must be an array`);
-    }
-
-    return {
-        generated_at: readRequiredString(payload, 'generated_at', source),
-        total_documents: readNumber(payload, 'total_documents', source),
-        strategy: readRequiredString(payload, 'strategy', source),
-        sources: sources.map((item, index) => {
-            const label = `${source}.sources[${index}]`;
-            if (!isRecord(item)) {
-                throw new SearchContractError(`${label} must be an object`);
-            }
-
-            return {
-                id: readRequiredString(item, 'id', label),
-                name: readRequiredString(item, 'name', label),
-                domain: readRequiredString(item, 'domain', label),
-                status: item.status === 'error' ? 'error' : 'ok',
-                documents: readNumber(item, 'documents', label),
-                last_fetch_at: readOptionalString(item, 'last_fetch_at'),
-                error: readOptionalString(item, 'error') || undefined
-            };
-        })
-    };
 };
 
 export const buildExamDocuments = (exams: Exam[]): SearchDocument[] => {

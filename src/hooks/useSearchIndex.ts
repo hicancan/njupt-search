@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { APP_CONFIG } from '@/constants';
 import { SearchDocument, SearchManifest } from '@/types';
 import { parseSearchDocuments, parseSearchManifest } from '@/utils/searchIndex';
+import { fetchJson } from '@/utils/fetch';
 
 interface UseSearchIndexResult {
     documents: SearchDocument[];
@@ -10,15 +11,7 @@ interface UseSearchIndexResult {
     error: string | null;
 }
 
-const fetchJson = async (url: string, signal: AbortSignal): Promise<unknown> => {
-    const response = await fetch(url, { cache: 'no-cache', signal });
 
-    if (!response.ok) {
-        throw new Error(`数据请求失败: ${url} HTTP ${response.status}`);
-    }
-
-    return response.json();
-};
 
 export function useSearchIndex(): UseSearchIndexResult {
     const [documents, setDocuments] = useState<SearchDocument[]>([]);

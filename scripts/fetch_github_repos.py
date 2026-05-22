@@ -1,8 +1,7 @@
 import os
 import json
-import urllib.request
-import urllib.error
-from update_search_index import infer_category
+import requests
+from indexer_scoring import infer_category
 
 # This script fetches high star njupt repos and appends them to config/github_search_sources.json
 CONFIG_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "config", "github_search_sources.json")
@@ -10,16 +9,18 @@ GITHUB_TOKEN = os.environ.get("NJUPT_SEARCH_GITHUB_TOKEN") or os.environ.get("GI
 
 def fetch_top_njupt_repos():
     url = "https://api.github.com/search/repositories?q=njupt&sort=stars&order=desc&per_page=30"
-    req = urllib.request.Request(url)
+    headers = {
+        "Accept": "application/vnd.github.v3+json",
+        "User-Agent": "njupt-search-auto-updater"
+    }
     if GITHUB_TOKEN:
-        req.add_header("Authorization", f"Bearer {GITHUB_TOKEN}")
-    req.add_header("Accept", "application/vnd.github.v3+json")
-    req.add_header("User-Agent", "njupt-search-auto-updater")
+        headers["Authorization"] = f"Bearer {GITHUB_TOKEN}"
     
     try:
-        with urllib.request.urlopen(req) as response:
-            data = json.loads(response.read().decode())
-            return data.get("items", [])
+        response = requests.get(url, headers=headers, timeout=15)
+        response.raise_for_status()
+        data = response.json()
+        return data.get("items", [])
     except Exception as e:
         print(f"Error fetching github repos: {e}")
         return []

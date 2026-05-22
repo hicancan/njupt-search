@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Exam, Manifest } from '@/types';
 import { APP_CONFIG } from '@/constants';
 import { assertManifestMatchesExams, parseExamData, parseManifest } from '@/utils/examDataContract';
+import { fetchJson } from '@/utils/fetch';
 
 interface UseExamDataResult {
     exams: Exam[];
@@ -13,19 +14,7 @@ interface UseExamDataResult {
     totalRecords: number | null;
 }
 
-const fetchJson = async (url: string, signal: AbortSignal): Promise<unknown> => {
-    const response = await fetch(url, { cache: 'no-cache', signal });
 
-    if (!response.ok) {
-        throw new Error(`数据请求失败: ${url} HTTP ${response.status}`);
-    }
-
-    try {
-        return await response.json();
-    } catch {
-        throw new Error(`数据文件不是有效 JSON: ${url}`);
-    }
-};
 
 export function useExamData(): UseExamDataResult {
     const [exams, setExams] = useState<Exam[]>([]);
