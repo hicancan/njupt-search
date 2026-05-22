@@ -6,7 +6,7 @@
 
 **南邮学生的信息入口：搜公告、搜考试、搜竞赛、搜讲座、搜项目、搜资料。**
 
-[在线使用](https://njupt.hicancan.top) · [报告 Bug](https://github.com/hicancan/njupt-exam/issues) · [路线图](docs/njupt-search-product-roadmap.md)
+[在线使用](https://njupt.hicancan.top) · [报告 Bug](https://github.com/hicancan/njupt-search/issues) · [路线图](docs/njupt-search-product-roadmap.md)
 
 ![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat-square)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg?style=flat-square)
@@ -117,7 +117,7 @@ uv run python scripts\update_search_index.py
 CI 中如需读取 GitHub 资料仓库，请配置仓库级 Actions secret：
 
 ```powershell
-gh auth token | gh secret set NJUPT_SEARCH_GITHUB_TOKEN --repo hicancan/njupt-exam
+gh auth token | gh secret set NJUPT_SEARCH_GITHUB_TOKEN --repo hicancan/njupt-search
 ```
 
 数据流水线：

@@ -530,7 +530,7 @@ function App() {
                             </svg>
                             Bilibili
                         </a>
-                        <a href="https://github.com/hicancan/njupt-exam/releases/latest/download/njupt-search-latest.apk" className="inline-flex items-center gap-1.5 hover:underline text-[#5f6368] dark:text-[#9aa0a6] hover:text-[#202124] dark:hover:text-[#e8eaed] transition-colors">
+                        <a href="https://github.com/hicancan/njupt-search/releases/latest/download/njupt-search-latest.apk" className="inline-flex items-center gap-1.5 hover:underline text-[#5f6368] dark:text-[#9aa0a6] hover:text-[#202124] dark:hover:text-[#e8eaed] transition-colors">
                             <Download className="w-4 h-4" aria-hidden="true" />
                             Android APK
                         </a>
