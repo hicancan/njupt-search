@@ -195,7 +195,7 @@ function App() {
                             <span>Bilibili</span>
                         </a>
                     </div>
-                    <div className="flex flex-wrap lg:justify-end items-center gap-6">
+                    <div className="flex w-full lg:w-auto justify-between lg:justify-end items-center gap-6">
                         <UptimeDisplay />
                     </div>
                 </div>

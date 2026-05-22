@@ -26,19 +26,17 @@ export function UptimeDisplay({
     }, [startTime]);
 
     return (
-        <div className="flex flex-col lg:flex-row items-start lg:items-center gap-y-3 lg:gap-x-6 w-full lg:w-auto">
-            <div className="flex flex-wrap items-center gap-3">
-                <span className="whitespace-nowrap">
-                    已运行 <span className="font-mono text-[var(--color-google-blue)] dark:text-[var(--color-google-blue-dark)]">{uptime}</span>
-                </span>
-                <span className="hidden lg:inline text-[#dadce0] dark:text-[#3c4043]">|</span>
-                <img
-                    src={APP_CONFIG.VISITOR_BADGE_URL}
-                    className="h-4 w-auto opacity-80 hover:opacity-100 transition-opacity grayscale hover:grayscale-0"
-                    alt="visitor count"
-                    loading="lazy"
-                />
-            </div>
-        </div>
+        <>
+            <span className="whitespace-nowrap">
+                已运行 <span className="font-mono text-[var(--color-google-blue)] dark:text-[var(--color-google-blue-dark)]">{uptime}</span>
+            </span>
+            <span className="hidden lg:inline text-[#dadce0] dark:text-[#3c4043]">|</span>
+            <img
+                src={APP_CONFIG.VISITOR_BADGE_URL}
+                className="h-4 w-auto opacity-80 hover:opacity-100 transition-opacity grayscale hover:grayscale-0"
+                alt="visitor count"
+                loading="lazy"
+            />
+        </>
     );
 }
