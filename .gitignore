@@ -47,3 +47,7 @@ android/local.properties
 *smoke.png
 project_structure.txt
 file_list.txt
+project_tree.txt
+project_structure_utf8.txt
+project_structure_v2.txt
+*.bak

@@ -82,6 +82,12 @@ const SearchDocumentSchema = z.object({
     category: z.enum([
         '考试', '选课', '竞赛', '奖助', '就业', '讲座', '生活', '学院', '研究生', '项目', '资料', '公告'
     ]).catch('公告'),
+    sub_category: z.string().nullable().optional(),
+    deadline: z.string().nullable().optional(),
+    action_required: z.boolean().optional().default(false),
+    action_type: z.string().nullable().optional(),
+    action_summary: z.string().nullable().optional(),
+    sensitive: z.boolean().optional().default(false),
     audience: z.array(z.string()),
     published_at: z.string().nullable().optional(),
     content: z.string().min(1),

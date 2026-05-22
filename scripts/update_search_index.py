@@ -4,7 +4,6 @@ import hashlib
 import json
 import os
 import re
-from dataclasses import dataclass
 from datetime import datetime, timezone, timedelta
 from typing import Any
 from urllib.parse import quote, urljoin, urlparse, urlunparse

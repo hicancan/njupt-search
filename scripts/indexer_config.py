@@ -2,6 +2,12 @@ import os
 from dataclasses import dataclass
 from datetime import timezone, timedelta
 
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PUBLIC_DIR = os.path.join(BASE_DIR, "public")
 INDEX_DIR = os.path.join(PUBLIC_DIR, "index")
@@ -23,11 +29,6 @@ DETAIL_FETCH_LIMIT_PER_SOURCE = 14
 REQUEST_TIMEOUT = 16
 MIN_STUDENT_SCORE = 0.55
 GITHUB_TOKEN_ENV = "NJUPT_SEARCH_GITHUB_TOKEN"
-try:
-    from dotenv import load_dotenv
-    load_dotenv()
-except ImportError:
-    pass
 
 GEMINI_API_KEYS = os.environ.get("GEMINI_API_KEYS") or os.environ.get("GEMINI_API_KEY", "")
 GITHUB_API_BASE = "https://api.github.com"
