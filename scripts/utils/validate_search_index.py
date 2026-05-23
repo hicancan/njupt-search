@@ -4,6 +4,10 @@ import sys
 from datetime import datetime
 from urllib.parse import urlparse
 
+SCRIPTS_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if SCRIPTS_DIR not in sys.path:
+    sys.path.insert(0, SCRIPTS_DIR)
+
 from config.indexer_config import BASE_DIR, CAMPUS_SOURCE_CONFIG_PATH, DOCUMENTS_PATH, MANIFEST_PATH
 from core.llm_scorer import BatchLLMResult, LLMResult
 from models.semantic_model import SEARCH_DOMAINS, SEARCH_INTENTS, SEARCH_LIFECYCLES, SEARCH_SOURCE_TYPES

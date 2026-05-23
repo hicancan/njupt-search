@@ -92,6 +92,28 @@ class LLMResult(BaseModel):
         text = str(value).strip()
         return text or None
 
+    @field_validator("attachment_roles", mode="before")
+    @classmethod
+    def _coerce_attachment_roles(cls, value: Any) -> list[dict[str, Any]]:
+        if value is None:
+            return []
+        if isinstance(value, str):
+            text = value.strip()
+            return [{"role": text}] if text else []
+        if isinstance(value, dict):
+            return [value]
+        if isinstance(value, list):
+            roles: list[dict[str, Any]] = []
+            for item in value:
+                if isinstance(item, dict):
+                    roles.append(item)
+                    continue
+                text = str(item).strip()
+                if text:
+                    roles.append({"role": text})
+            return roles
+        return []
+
     @field_validator("domain", mode="before")
     @classmethod
     def _coerce_domain(cls, value: Any) -> str:

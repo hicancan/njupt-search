@@ -9,7 +9,7 @@ try:
 except ImportError:
     pass
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 PUBLIC_DIR = os.path.join(BASE_DIR, "public")
 INDEX_DIR = os.path.join(PUBLIC_DIR, "index")
 DOCUMENTS_PATH = os.path.join(INDEX_DIR, "documents.json")

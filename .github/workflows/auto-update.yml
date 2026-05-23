@@ -46,6 +46,8 @@ concurrency:
 jobs:
   update-data:
     runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: ${{ github.workspace }}/scripts
     
     steps:
       - name: Checkout code

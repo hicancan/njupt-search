@@ -1,10 +1,16 @@
 import json
+import os
 import re
+import sys
 from urllib.parse import urljoin, urlparse
 
 import requests
 import urllib3
 from bs4 import BeautifulSoup
+
+SCRIPTS_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if SCRIPTS_DIR not in sys.path:
+    sys.path.insert(0, SCRIPTS_DIR)
 
 from config.indexer_config import CAMPUS_SOURCE_CONFIG_PATH, HEADERS, REQUEST_TIMEOUT
 

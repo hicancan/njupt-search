@@ -1,10 +1,17 @@
 import os
 import json
+import sys
 import requests
+
+SCRIPTS_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if SCRIPTS_DIR not in sys.path:
+    sys.path.insert(0, SCRIPTS_DIR)
+
+from config.indexer_config import GITHUB_SOURCE_CONFIG_PATH
 from core.indexer_scoring import infer_category
 
 # This script fetches high star njupt repos and appends them to config/github_search_sources.json
-CONFIG_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "config", "github_search_sources.json")
+CONFIG_PATH = GITHUB_SOURCE_CONFIG_PATH
 GITHUB_TOKEN = os.environ.get("NJUPT_SEARCH_GITHUB_TOKEN") or os.environ.get("GITHUB_TOKEN")
 
 def fetch_top_njupt_repos():

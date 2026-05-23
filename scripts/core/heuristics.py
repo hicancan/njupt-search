@@ -162,16 +162,18 @@ def enrich_attachment_metadata(
     attachments: list[dict[str, Any]],
     llm_roles: list[dict[str, Any]] | None = None,
 ) -> list[dict[str, Any]]:
+    normalized_roles = [item for item in (llm_roles or []) if isinstance(item, dict)]
     role_by_name = {
         clean_text(str(item.get("name", ""))): item
-        for item in (llm_roles or [])
-        if isinstance(item, dict) and clean_text(str(item.get("name", "")))
+        for item in normalized_roles
+        if clean_text(str(item.get("name", "")))
     }
+    unnamed_roles = [item for item in normalized_roles if not clean_text(str(item.get("name", "")))]
     enriched: list[dict[str, Any]] = []
-    for attachment in attachments:
+    for index, attachment in enumerate(attachments):
         name = clean_text(str(attachment.get("name", "")))
         inferred_role, inferred_sensitive = infer_attachment_role(name)
-        llm_role = role_by_name.get(name, {})
+        llm_role = role_by_name.get(name) or (unnamed_roles[index] if index < len(unnamed_roles) else {})
         role = clean_text(str(llm_role.get("role") or inferred_role or "")) or None
         description = clean_text(str(llm_role.get("description") or "")) or None
         sensitive = bool(llm_role.get("sensitive", False)) or inferred_sensitive
