@@ -1,6 +1,6 @@
 {
   "schema_version": "llm-v5",
-  "updated_at": "2026-05-23T22:27:17.825099+08:00",
+  "updated_at": "2026-05-24T02:58:43.916645+08:00",
   "entries": {
     "2c1479f4bf8b94d14d0f": {
       "schema_version": "llm-v5",
@@ -16631,6 +16631,540 @@
           "使用shell脚本 Router automatically connects to the campus network of Nanjing University of Posts and Telecommunications"
         ],
         "confidence": 0.8,
+        "review_required": false
+      }
+    },
+    "182b15654f29cb82c549": {
+      "schema_version": "llm-v5",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "source_id": "jwc",
+      "url": "https://jwc.njupt.edu.cn/2026/0228/c1594a297197/page.htm",
+      "normalized_url": "https://jwc.njupt.edu.cn/2026/0228/c1594a297197/page.htm",
+      "title": "【创新创业教育学院】海外访学交流项目汇总（2025-2026学年第二学期发布）（陆续更新中）",
+      "content_hash": "8491e9e32dbe89bbb93f",
+      "attachment_hash": "cac152d40d0ae8baaaae",
+      "updated_at": "2026-05-24T02:58:43.916645+08:00",
+      "result": {
+        "is_student_facing": true,
+        "student_relevance": 0.95,
+        "audience": [
+          "本科生"
+        ],
+        "category": "项目",
+        "domain": "project",
+        "intent": "apply",
+        "sub_category": null,
+        "tags": [
+          "海外访学",
+          "交流项目",
+          "报名"
+        ],
+        "importance_score": 0.85,
+        "deadline": null,
+        "action_required": true,
+        "action_type": "apply",
+        "action_summary": "报名海外访学项目，需填写《南京邮电大学本科生海外访学申请表》并在各项目截止日期前交至所在学院。",
+        "required_materials": [
+          "南京邮电大学本科生海外访学申请表"
+        ],
+        "student_summary": "汇总了2025-2026学年第二学期多个海外访学项目，包括美国、英国、新加坡等高校的短期和长期项目，报名截止时间各不相同，需填写申请表并交至学院。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "risk_flags": [],
+        "evidence": [
+          "下表为与我校合作的海外交流访学项目",
+          "请务必填写《南京邮电大学本科生海外访学申请表》，并在项目报名截止日期前交至所在学院"
+        ],
+        "confidence": 0.95,
+        "review_required": false
+      }
+    },
+    "c5d2bc934be899845eed": {
+      "schema_version": "llm-v5",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "source_id": "jwc",
+      "url": "https://jwc.njupt.edu.cn/2026/0327/c1594a298565/page.htm",
+      "normalized_url": "https://jwc.njupt.edu.cn/2026/0327/c1594a298565/page.htm",
+      "title": "【教务管理办公室】2025-2026学年第二学期在线开放课程（慕课）线下考试报名通知",
+      "content_hash": "a91ceb8695e20c5e2b77",
+      "attachment_hash": "54bfe89fcf242ccdf206",
+      "updated_at": "2026-05-24T02:58:43.916645+08:00",
+      "result": {
+        "is_student_facing": true,
+        "student_relevance": 0.95,
+        "audience": [
+          "本科生"
+        ],
+        "category": "选课",
+        "domain": "course",
+        "intent": "apply",
+        "sub_category": null,
+        "tags": [
+          "慕课",
+          "线下考试",
+          "学分认定",
+          "报名"
+        ],
+        "importance_score": 0.85,
+        "deadline": "2026-04-03T16:00:00",
+        "action_required": true,
+        "action_type": "register",
+        "action_summary": "报名在线开放课程线下考试（学分认定），在教务管理系统选课，截止时间4月3日16:00。",
+        "required_materials": [],
+        "student_summary": "2025-2026学年第二学期慕课线下考试报名，时间3月30日9:00至4月3日16:00，需登录教务系统选课，注意本部学生需调整校区为仙林。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "risk_flags": [],
+        "evidence": [
+          "时间：2026年3月30日9：00至2026年4月3日16：00",
+          "报名在线开放课程线下考试的学生，应在课程开课初期已加入中国大学 MOOC平台相应课程和对应的慕课堂"
+        ],
+        "confidence": 0.95,
+        "review_required": false
+      }
+    },
+    "3eaaa64b813ffb7afbb1": {
+      "schema_version": "llm-v5",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "source_id": "jwc",
+      "url": "https://jwc.njupt.edu.cn/2026/0306/c1594a297495/page.htm",
+      "normalized_url": "https://jwc.njupt.edu.cn/2026/0306/c1594a297495/page.htm",
+      "title": "【教务管理办公室】2025-2026学年第二学期部分在线开放课程学习通知（陆续更新中）",
+      "content_hash": "86a7207312a268ea855c",
+      "attachment_hash": "a7c9ecfc1660af2bef6e",
+      "updated_at": "2026-05-24T02:58:43.916645+08:00",
+      "result": {
+        "is_student_facing": true,
+        "student_relevance": 0.9,
+        "audience": [
+          "本科生"
+        ],
+        "category": "选课",
+        "domain": "course",
+        "intent": "read",
+        "sub_category": null,
+        "tags": [
+          "在线开放课程",
+          "学习通知"
+        ],
+        "importance_score": 0.7,
+        "deadline": null,
+        "action_required": false,
+        "action_type": null,
+        "action_summary": null,
+        "required_materials": [],
+        "student_summary": "发布了2025-2026学年第二学期部分在线开放课程的学习通知，需按通知要求学习。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "risk_flags": [],
+        "evidence": [
+          "附件为我校部分在线开放课程的学习通知，请务必按通知要求进行学习"
+        ],
+        "confidence": 0.9,
+        "review_required": false
+      }
+    },
+    "565ac8a7f8c06bb69edf": {
+      "schema_version": "llm-v5",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "source_id": "jwc",
+      "url": "https://jwc.njupt.edu.cn/2026/0312/c1594a297730/page.htm",
+      "normalized_url": "https://jwc.njupt.edu.cn/2026/0312/c1594a297730/page.htm",
+      "title": "【教务管理办公室】关于学习慕课的学生加入“慕课堂”的通知（陆续更新中）",
+      "content_hash": "b8126158af24c21319d3",
+      "attachment_hash": "868e2d60fe8f7371e5f6",
+      "updated_at": "2026-05-24T02:58:43.916645+08:00",
+      "result": {
+        "is_student_facing": true,
+        "student_relevance": 0.9,
+        "audience": [
+          "本科生"
+        ],
+        "category": "选课",
+        "domain": "course",
+        "intent": "read",
+        "sub_category": null,
+        "tags": [
+          "慕课",
+          "慕课堂",
+          "加入课堂"
+        ],
+        "importance_score": 0.8,
+        "deadline": null,
+        "action_required": true,
+        "action_type": "register",
+        "action_summary": "在中国大学慕课平台学习的学生需加入对应课程的慕课堂，否则线上成绩零分。",
+        "required_materials": [],
+        "student_summary": "通知学习慕课的学生务必加入对应课程的慕课堂，否则线上成绩以零分计算，提供了加入方法。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "risk_flags": [],
+        "evidence": [
+          "请通知在中国大学慕课平台学习的学生，务必按照任课教师要求，加入课程对应的慕课堂，否则线上成绩将以零分计算"
+        ],
+        "confidence": 0.95,
+        "review_required": false
+      }
+    },
+    "37dbeb2c4f2d44aead22": {
+      "schema_version": "llm-v5",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "source_id": "jwc",
+      "url": "https://jwc.njupt.edu.cn/2026/0522/c1594a302493/page.htm",
+      "normalized_url": "https://jwc.njupt.edu.cn/2026/0522/c1594a302493/page.htm",
+      "title": "【教务管理办公室】2025-2026学年第二学期考试安排表",
+      "content_hash": "238b893cbea058c7155f",
+      "attachment_hash": "12921da9aa77479979ef",
+      "updated_at": "2026-05-24T02:58:43.916645+08:00",
+      "result": {
+        "is_student_facing": true,
+        "student_relevance": 0.95,
+        "audience": [
+          "本科生"
+        ],
+        "category": "考试",
+        "domain": "exam",
+        "intent": "check_result",
+        "sub_category": null,
+        "tags": [
+          "考试安排",
+          "期末考试"
+        ],
+        "importance_score": 0.9,
+        "deadline": null,
+        "action_required": false,
+        "action_type": null,
+        "action_summary": null,
+        "required_materials": [],
+        "student_summary": "公布了2025-2026学年第二学期考试安排表，包括学校组织和学院组织的考试，需及时查看。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "risk_flags": [],
+        "evidence": [
+          "现公布2025-2026学年第二学期考试安排表，考试分为学校组织和学院组织，请及时通知相关学生参加考试"
+        ],
+        "confidence": 0.95,
+        "review_required": false
+      }
+    },
+    "c4959ffa07e10cea896f": {
+      "schema_version": "llm-v5",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "source_id": "jwc",
+      "url": "https://jwc.njupt.edu.cn/2026/0518/c1594a302043/page.htm",
+      "normalized_url": "https://jwc.njupt.edu.cn/2026/0518/c1594a302043/page.htm",
+      "title": "【教务管理办公室】关于做好2025-2026学年第二学期期末考试工作安排的通知",
+      "content_hash": "b15ae18a9c6b7c5f9834",
+      "attachment_hash": "cf1cbb66a638b4860a51",
+      "updated_at": "2026-05-24T02:58:43.916645+08:00",
+      "result": {
+        "is_student_facing": true,
+        "student_relevance": 0.9,
+        "audience": [
+          "本科生"
+        ],
+        "category": "考试",
+        "domain": "exam",
+        "intent": "read",
+        "sub_category": null,
+        "tags": [
+          "期末考试",
+          "工作安排"
+        ],
+        "importance_score": 0.7,
+        "deadline": null,
+        "action_required": false,
+        "action_type": null,
+        "action_summary": null,
+        "required_materials": [],
+        "student_summary": "发布了关于做好2025-2026学年第二学期期末考试工作安排的通知，但正文内容为空，仅标题。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "risk_flags": [],
+        "evidence": [
+          "【教务管理办公室】关于做好2025-2026学年第二学期期末考试工作安排的通知"
+        ],
+        "confidence": 0.5,
+        "review_required": true
+      }
+    },
+    "ebee25bcaaed81360b12": {
+      "schema_version": "llm-v5",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "source_id": "jwc",
+      "url": "https://jwc.njupt.edu.cn/2026/0422/c1594a300594/page.htm",
+      "normalized_url": "https://jwc.njupt.edu.cn/2026/0422/c1594a300594/page.htm",
+      "title": "【创新创业教育学院】关于选派学生参加2026年“鲲鹏计划—江苏优秀大学生暑期境外学习奖学金项目”的通知",
+      "content_hash": "18455fe58a8d98ad2663",
+      "attachment_hash": "dcf2c508605425d5e72b",
+      "updated_at": "2026-05-24T02:58:43.916645+08:00",
+      "result": {
+        "is_student_facing": true,
+        "student_relevance": 0.95,
+        "audience": [
+          "本科生"
+        ],
+        "category": "项目",
+        "domain": "project",
+        "intent": "apply",
+        "sub_category": null,
+        "tags": [
+          "鲲鹏计划",
+          "境外学习",
+          "奖学金",
+          "报名"
+        ],
+        "importance_score": 0.9,
+        "deadline": "2026-04-23T12:00:00",
+        "action_required": true,
+        "action_type": "apply",
+        "action_summary": "申请鲲鹏计划奖学金项目，需填写申请表并交至学院，截止时间4月23日中午12:00。",
+        "required_materials": [
+          "南京邮电大学本科生海外访学申请表",
+          "英语成绩证明",
+          "省级及以上获奖证书复印件"
+        ],
+        "student_summary": "选派学生参加2026年鲲鹏计划，资助赴境外学习，报名条件包括成绩前15%、英语水平等，需在4月23日中午前提交材料至学院。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "risk_flags": [],
+        "evidence": [
+          "于4月23日中午12:00前将候选人申请材料及汇总表交至本科生院",
+          "申请人填写《南京邮电大学本科生海外访学申请表》"
+        ],
+        "confidence": 0.95,
+        "review_required": false
+      }
+    },
+    "27511dd3c56e76586a8e": {
+      "schema_version": "llm-v5",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "source_id": "jwc",
+      "url": "https://jwc.njupt.edu.cn/2026/0422/c1594a300556/page.htm",
+      "normalized_url": "https://jwc.njupt.edu.cn/2026/0422/c1594a300556/page.htm",
+      "title": "【教务管理办公室】关于2026年“五一”劳动节期间相关教学活动安排的通知",
+      "content_hash": "baad6453254327d44297",
+      "attachment_hash": "cf1cbb66a638b4860a51",
+      "updated_at": "2026-05-24T02:58:43.916645+08:00",
+      "result": {
+        "is_student_facing": true,
+        "student_relevance": 0.9,
+        "audience": [
+          "本科生"
+        ],
+        "category": "生活",
+        "domain": "policy",
+        "intent": "schedule",
+        "sub_category": null,
+        "tags": [
+          "五一",
+          "放假",
+          "调课"
+        ],
+        "importance_score": 0.8,
+        "deadline": null,
+        "action_required": false,
+        "action_type": null,
+        "action_summary": null,
+        "required_materials": [],
+        "student_summary": "五一劳动节放假5天（5月1日至5日），5月9日补5月5日的课，停课由教师安排补课。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "risk_flags": [],
+        "evidence": [
+          "2026年5月1日至2026年5月5日放假调休，共5天",
+          "5月9日（星期六）上班，开展5月5日（星期二）的教学活动"
+        ],
+        "confidence": 0.95,
+        "review_required": false
+      }
+    },
+    "5cbdb22bff8b96b3daef": {
+      "schema_version": "llm-v5",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "source_id": "jwc",
+      "url": "https://jwc.njupt.edu.cn/2016/1125/c1768a54057/page.htm",
+      "normalized_url": "https://jwc.njupt.edu.cn/2016/1125/c1768a54057/page.htm",
+      "title": "南京邮电大学在线课程中心",
+      "content_hash": "17ef6777060a16c3cef4",
+      "attachment_hash": "64e2d38fe2782930ba0a",
+      "updated_at": "2026-05-24T02:58:43.916645+08:00",
+      "result": {
+        "is_student_facing": true,
+        "student_relevance": 0.85,
+        "audience": [
+          "本科生",
+          "研究生"
+        ],
+        "category": "资料",
+        "domain": "resource",
+        "intent": "read",
+        "sub_category": null,
+        "tags": [
+          "在线课程",
+          "FAQ",
+          "帮助"
+        ],
+        "importance_score": 0.6,
+        "deadline": null,
+        "action_required": false,
+        "action_type": null,
+        "action_summary": null,
+        "required_materials": [],
+        "student_summary": "南京邮电大学在线课程中心页面，提供常见问题解答，包括MOOC选课、学习流程、学分认定等。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "risk_flags": [],
+        "evidence": [
+          "点击进入选课 >> 常见问题解答（教师&学生）"
+        ],
+        "confidence": 0.9,
+        "review_required": false
+      }
+    },
+    "763edec575637465544f": {
+      "schema_version": "llm-v5",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "source_id": "ygb",
+      "url": "https://ygb.njupt.edu.cn/2024/0326/c3808a258396/page.htm",
+      "normalized_url": "https://ygb.njupt.edu.cn/2024/0326/c3808a258396/page.htm",
+      "title": "郭宇锋书记为研究生新生讲授“思政第一课”",
+      "content_hash": "77c497dce2d679b52292",
+      "attachment_hash": "cf1cbb66a638b4860a51",
+      "updated_at": "2026-05-24T02:58:43.916645+08:00",
+      "result": {
+        "is_student_facing": true,
+        "student_relevance": 0.9,
+        "audience": [
+          "研究生"
+        ],
+        "category": "讲座",
+        "domain": "lecture",
+        "intent": "attend",
+        "sub_category": null,
+        "tags": [
+          "思政教育",
+          "新生教育"
+        ],
+        "importance_score": 0.7,
+        "deadline": null,
+        "action_required": false,
+        "action_type": null,
+        "action_summary": null,
+        "required_materials": [],
+        "student_summary": "郭宇锋书记为研究生新生讲授思政第一课，建议研究生新生参加。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "risk_flags": [],
+        "evidence": [
+          "郭宇锋书记为研究生新生讲授“思政第一课”"
+        ],
+        "confidence": 0.6,
+        "review_required": true
+      }
+    },
+    "31fef4bb5e2ab5402204": {
+      "schema_version": "llm-v5",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "source_id": "hqc",
+      "url": "https://hqc.njupt.edu.cn/2026/0520/c4999a302294/page.htm",
+      "normalized_url": "https://hqc.njupt.edu.cn/2026/0520/c4999a302294/page.htm",
+      "title": "“衔”而有道，“接”而共融 幼儿园邀请三牌楼小学校长开展幼小衔接讲座",
+      "content_hash": "32a3af3804ed04436187",
+      "attachment_hash": "cf1cbb66a638b4860a51",
+      "updated_at": "2026-05-24T02:58:43.916645+08:00",
+      "result": {
+        "is_student_facing": false,
+        "student_relevance": 0.0,
+        "audience": [],
+        "category": "讲座",
+        "domain": "lecture",
+        "intent": "read",
+        "sub_category": null,
+        "tags": [
+          "幼小衔接",
+          "幼儿园",
+          "家长讲座"
+        ],
+        "importance_score": 0.1,
+        "deadline": null,
+        "action_required": false,
+        "action_type": null,
+        "action_summary": null,
+        "required_materials": [],
+        "student_summary": "幼儿园邀请三牌楼小学校长为大班家长举办幼小衔接讲座，不涉及学生事务。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "risk_flags": [],
+        "evidence": [
+          "为帮助家长树立正确的幼小衔接观",
+          "为大班家长进行“做一名优秀的家长”为主题的幼小衔接专题讲座"
+        ],
+        "confidence": 0.95,
+        "review_required": false
+      }
+    },
+    "feefabb557172c02c259": {
+      "schema_version": "llm-v5",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "source_id": "coa",
+      "url": "https://coa.njupt.edu.cn/2024/0711/c2272a267745/page.htm",
+      "normalized_url": "https://coa.njupt.edu.cn/2024/0711/c2272a267745/page.htm",
+      "title": "我院两位老师获江苏省高校教师教学创新大赛特等奖",
+      "content_hash": "1a7c0a269b17c2d1c24a",
+      "attachment_hash": "cf1cbb66a638b4860a51",
+      "updated_at": "2026-05-24T02:58:43.916645+08:00",
+      "result": {
+        "is_student_facing": false,
+        "student_relevance": 0.2,
+        "audience": [],
+        "category": "公告",
+        "domain": "news",
+        "intent": "read",
+        "sub_category": null,
+        "tags": [
+          "教师获奖",
+          "教学创新大赛"
+        ],
+        "importance_score": 0.3,
+        "deadline": null,
+        "action_required": false,
+        "action_type": null,
+        "action_summary": null,
+        "required_materials": [],
+        "student_summary": "我院两位老师获得江苏省高校教师教学创新大赛特等奖，展示了教学水平。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "risk_flags": [],
+        "evidence": [
+          "我院郑昱老师获新教师赛道特等奖",
+          "赵勃老师获江苏省高校教师教学创新大赛特等奖"
+        ],
+        "confidence": 0.95,
         "review_required": false
       }
     }
