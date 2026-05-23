@@ -221,6 +221,7 @@ export function ResultsView({
     }, [domainFilter, intentFilter, results]);
     const [visibleCount, setVisibleCount] = useState(20);
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setVisibleCount(20);
     }, [query, selectedCategory, domainFilter, intentFilter]);
 
