@@ -1,6 +1,6 @@
 {
   "schema_version": "hytask-taskframe-v1",
-  "updated_at": "2026-05-24T16:55:15.338793+08:00",
+  "updated_at": "2026-05-24T19:44:23.183125+08:00",
   "entries": {
     "2c1479f4bf8b94d14d0f": {
       "schema_version": "llm-v5",
@@ -30213,38 +30213,35 @@
     },
     "333b9407ea77ea37f53a": {
       "schema_version": "hytask-taskframe-v1",
-      "provider": "gemini",
-      "model": "gemini-3.1-flash-lite",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
       "source_id": "github:ZsgsDesign/NOJ",
       "url": "https://github.com/ZsgsDesign/NOJ/blob/master/README.md",
       "normalized_url": "https://github.com/ZsgsDesign/NOJ/blob/master/README.md",
       "title": "⚡ The most advanced open-sourc... · NOJ - Automatic Algorithm Test Platform",
       "content_hash": "8fb8998dee7b6508e29d",
       "attachment_hash": "cf1cbb66a638b4860a51",
-      "updated_at": "2026-05-24T16:55:15.338793+08:00",
+      "updated_at": "2026-05-24T19:44:23.183125+08:00",
       "result": {
-        "is_student_facing": true,
-        "student_relevance": 0.8,
-        "audience": [
-          "本科生",
-          "研究生"
-        ],
+        "is_student_facing": false,
+        "student_relevance": 0.1,
+        "audience": [],
         "category": "资料",
-        "domain": "academic",
+        "domain": "resource",
         "intent": "read",
         "sub_category": null,
         "tags": [
+          "github",
           "NOJ",
-          "在线评测",
-          "开源项目"
+          "online judge"
         ],
-        "importance_score": 0.6,
+        "importance_score": 0.1,
         "deadline": null,
         "action_required": false,
         "action_type": null,
         "action_summary": null,
         "required_materials": [],
-        "student_summary": "NOJ (NJUPT Online Judge) 是南京邮电大学的在线算法评测平台，提供在线评测及虚拟评测功能，支持多种编程语言。",
+        "student_summary": "NOJ是南京邮电大学开源在线判题系统，提供安装文档和技术支持。",
         "sensitive": false,
         "sensitive_types": [],
         "attachment_roles": [],
@@ -30254,7 +30251,8 @@
           "github_resource"
         ],
         "evidence": [
-          "NOJ /noj banner.png NOJ's another online judge platform, stands for NJUPT Online Judge."
+          "NOJ - Automatic Algorithm Test Platform",
+          "stands for NJUPT Online Judge"
         ],
         "confidence": 0.95,
         "review_required": false
@@ -30262,36 +30260,35 @@
     },
     "f83184877318e559531b": {
       "schema_version": "hytask-taskframe-v1",
-      "provider": "gemini",
-      "model": "gemini-3.1-flash-lite",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
       "source_id": "github:ZsgsDesign/NOJ",
       "url": "https://github.com/ZsgsDesign/NOJ/blob/master/CHANGELOG.md",
       "normalized_url": "https://github.com/ZsgsDesign/NOJ/blob/master/CHANGELOG.md",
       "title": "⚡ The most advanced open-sourc... · Changelog",
       "content_hash": "94bc86ab17b34b03dc70",
       "attachment_hash": "cf1cbb66a638b4860a51",
-      "updated_at": "2026-05-24T16:55:15.338793+08:00",
+      "updated_at": "2026-05-24T19:44:23.183125+08:00",
       "result": {
-        "is_student_facing": true,
-        "student_relevance": 0.5,
-        "audience": [
-          "开发者"
-        ],
+        "is_student_facing": false,
+        "student_relevance": 0.1,
+        "audience": [],
         "category": "资料",
-        "domain": "academic",
+        "domain": "resource",
         "intent": "read",
         "sub_category": null,
         "tags": [
-          "更新日志",
-          "NOJ"
+          "github",
+          "NOJ",
+          "changelog"
         ],
-        "importance_score": 0.4,
+        "importance_score": 0.1,
         "deadline": null,
         "action_required": false,
         "action_type": null,
         "action_summary": null,
         "required_materials": [],
-        "student_summary": "NOJ 平台的版本更新日志，记录了各版本的修复、新增功能及安全更新。",
+        "student_summary": "NOJ项目的版本更新日志，记录功能改进和安全更新。",
         "sensitive": false,
         "sensitive_types": [],
         "attachment_roles": [],
@@ -30301,7 +30298,8 @@
           "github_resource"
         ],
         "evidence": [
-          "Changelog All notable changes to this project will be documented in this file."
+          "Changelog",
+          "NOJ 0.17.4 Characinae Build Pack 4"
         ],
         "confidence": 0.95,
         "review_required": false
@@ -30309,35 +30307,34 @@
     },
     "de55c0770c36cd678f67": {
       "schema_version": "hytask-taskframe-v1",
-      "provider": "gemini",
-      "model": "gemini-3.1-flash-lite",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
       "source_id": "github:ZsgsDesign/NOJ",
       "url": "https://github.com/ZsgsDesign/NOJ/blob/master/CODE_OF_CONDUCT.md",
       "normalized_url": "https://github.com/ZsgsDesign/NOJ/blob/master/CODE_OF_CONDUCT.md",
       "title": "⚡ The most advanced open-sourc... · Contributor Covenant Code of Conduct",
       "content_hash": "e6b8df345a9a88d65ba4",
       "attachment_hash": "cf1cbb66a638b4860a51",
-      "updated_at": "2026-05-24T16:55:15.338793+08:00",
+      "updated_at": "2026-05-24T19:44:23.183125+08:00",
       "result": {
-        "is_student_facing": true,
-        "student_relevance": 0.4,
-        "audience": [
-          "开发者"
-        ],
+        "is_student_facing": false,
+        "student_relevance": 0.1,
+        "audience": [],
         "category": "公告",
-        "domain": "news",
+        "domain": "policy",
         "intent": "read",
         "sub_category": null,
         "tags": [
-          "行为准则"
+          "github",
+          "code of conduct"
         ],
-        "importance_score": 0.3,
+        "importance_score": 0.1,
         "deadline": null,
         "action_required": false,
         "action_type": null,
         "action_summary": null,
         "required_materials": [],
-        "student_summary": "NOJ 开源项目的贡献者行为准则，旨在营造包容、无骚扰的社区环境。",
+        "student_summary": "NOJ项目的贡献者行为准则，要求尊重和包容。",
         "sensitive": false,
         "sensitive_types": [],
         "attachment_roles": [],
@@ -30347,7 +30344,7 @@
           "github_resource"
         ],
         "evidence": [
-          "Contributor Covenant Code of Conduct Our Pledge In the interest of fostering an open and welcoming environment"
+          "Contributor Covenant Code of Conduct"
         ],
         "confidence": 0.95,
         "review_required": false
@@ -30355,35 +30352,34 @@
     },
     "b9dc073e39bf9e447db6": {
       "schema_version": "hytask-taskframe-v1",
-      "provider": "gemini",
-      "model": "gemini-3.1-flash-lite",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
       "source_id": "github:ZsgsDesign/NOJ",
       "url": "https://github.com/ZsgsDesign/NOJ/blob/master/CONTRIBUTING.md",
       "normalized_url": "https://github.com/ZsgsDesign/NOJ/blob/master/CONTRIBUTING.md",
       "title": "⚡ The most advanced open-sourc... · Notice",
       "content_hash": "02c7555ab40fe6f4bf4f",
       "attachment_hash": "cf1cbb66a638b4860a51",
-      "updated_at": "2026-05-24T16:55:15.338793+08:00",
+      "updated_at": "2026-05-24T19:44:23.183125+08:00",
       "result": {
-        "is_student_facing": true,
-        "student_relevance": 0.6,
-        "audience": [
-          "开发者"
-        ],
-        "category": "资料",
-        "domain": "academic",
+        "is_student_facing": false,
+        "student_relevance": 0.1,
+        "audience": [],
+        "category": "公告",
+        "domain": "policy",
         "intent": "read",
         "sub_category": null,
         "tags": [
-          "贡献指南"
+          "github",
+          "contribution"
         ],
-        "importance_score": 0.5,
+        "importance_score": 0.1,
         "deadline": null,
         "action_required": false,
         "action_type": null,
         "action_summary": null,
         "required_materials": [],
-        "student_summary": "NOJ 项目的贡献说明，欢迎开发者参与贡献并遵循 MIT 协议。",
+        "student_summary": "NOJ项目欢迎贡献，需遵循MIT许可，并检查依赖和数据库。",
         "sensitive": false,
         "sensitive_types": [],
         "attachment_roles": [],
@@ -30393,7 +30389,8 @@
           "github_resource"
         ],
         "evidence": [
-          "NOJ welcomes all kinds of contribution, but do remember to follow the MIT license."
+          "NOJ welcomes all kinds of contribution",
+          "follow the MIT license"
         ],
         "confidence": 0.95,
         "review_required": false
@@ -30401,35 +30398,34 @@
     },
     "dc33aa67bb2ec8a9a28a": {
       "schema_version": "hytask-taskframe-v1",
-      "provider": "gemini",
-      "model": "gemini-3.1-flash-lite",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
       "source_id": "github:ZsgsDesign/NOJ",
       "url": "https://github.com/ZsgsDesign/NOJ/blob/master/SECURITY.md",
       "normalized_url": "https://github.com/ZsgsDesign/NOJ/blob/master/SECURITY.md",
       "title": "⚡ The most advanced open-sourc... · Security Policy",
       "content_hash": "b622adcbb758fa5794c8",
       "attachment_hash": "cf1cbb66a638b4860a51",
-      "updated_at": "2026-05-24T16:55:15.338793+08:00",
+      "updated_at": "2026-05-24T19:44:23.183125+08:00",
       "result": {
-        "is_student_facing": true,
-        "student_relevance": 0.5,
-        "audience": [
-          "开发者"
-        ],
-        "category": "资料",
-        "domain": "security",
+        "is_student_facing": false,
+        "student_relevance": 0.1,
+        "audience": [],
+        "category": "公告",
+        "domain": "policy",
         "intent": "read",
         "sub_category": null,
         "tags": [
-          "安全策略"
+          "github",
+          "security"
         ],
-        "importance_score": 0.5,
+        "importance_score": 0.1,
         "deadline": null,
         "action_required": false,
         "action_type": null,
         "action_summary": null,
         "required_materials": [],
-        "student_summary": "NOJ 项目的安全策略，说明了当前支持的版本及漏洞报告方式。",
+        "student_summary": "NOJ项目的安全策略，仅支持0.17.x版本的安全更新。",
         "sensitive": false,
         "sensitive_types": [],
         "attachment_roles": [],
@@ -30439,7 +30435,8 @@
           "github_resource"
         ],
         "evidence": [
-          "Security Policy Supported Versions Currently only NOJ 0.17.x are being supported with security updates."
+          "Security Policy",
+          "only NOJ 0.17.x are being supported with security updates"
         ],
         "confidence": 0.95,
         "review_required": false
@@ -31812,6 +31809,987 @@
           "使用shell脚本"
         ],
         "confidence": 0.7,
+        "review_required": false
+      }
+    },
+    "b8ddef0e2fa029b1fffd": {
+      "schema_version": "hytask-taskframe-v1",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-lite",
+      "source_id": "exchange",
+      "url": "https://exchange.njupt.edu.cn/2026/0430/c7465a301286/page.htm",
+      "normalized_url": "https://exchange.njupt.edu.cn/2026/0430/c7465a301286/page.htm",
+      "title": "我校与哈萨克斯坦阿拉木图能源与通信大学举行合作交流座谈会",
+      "content_hash": "87f9e33801de1dcc9a57",
+      "attachment_hash": "cf1cbb66a638b4860a51",
+      "updated_at": "2026-05-24T19:44:23.183125+08:00",
+      "result": {
+        "is_student_facing": true,
+        "student_relevance": 0.5,
+        "audience": [
+          "本科生",
+          "研究生"
+        ],
+        "category": "公告",
+        "domain": "news",
+        "intent": "read",
+        "sub_category": null,
+        "tags": [
+          "国际交流",
+          "座谈会"
+        ],
+        "importance_score": 0.3,
+        "deadline": null,
+        "action_required": false,
+        "action_type": null,
+        "action_summary": null,
+        "required_materials": [],
+        "student_summary": "学校与哈萨克斯坦阿拉木图能源与通信大学举行合作交流座谈会，探讨人才培养与师生互访等事宜。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "task_frames": [],
+        "risk_flags": [],
+        "evidence": [
+          "我校与哈萨克斯坦阿拉木图能源与通信大学合作交流座谈会在仙林校区行政楼第三会议室顺利举行"
+        ],
+        "confidence": 0.95,
+        "review_required": false
+      }
+    },
+    "a6b0fe97f2c0b439c8b6": {
+      "schema_version": "hytask-taskframe-v1",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-lite",
+      "source_id": "exchange",
+      "url": "https://exchange.njupt.edu.cn/2026/0424/c7465a300776/page.htm",
+      "normalized_url": "https://exchange.njupt.edu.cn/2026/0424/c7465a300776/page.htm",
+      "title": "我校召开2026年国际化工作推进会",
+      "content_hash": "76f9728536894199c87a",
+      "attachment_hash": "cf1cbb66a638b4860a51",
+      "updated_at": "2026-05-24T19:44:23.183125+08:00",
+      "result": {
+        "is_student_facing": false,
+        "student_relevance": 0.2,
+        "audience": [
+          "教职工"
+        ],
+        "category": "公告",
+        "domain": "news",
+        "intent": "read",
+        "sub_category": null,
+        "tags": [
+          "国际化工作",
+          "工作推进会"
+        ],
+        "importance_score": 0.2,
+        "deadline": null,
+        "action_required": false,
+        "action_type": null,
+        "action_summary": null,
+        "required_materials": [],
+        "student_summary": "学校召开2026年国际化工作推进会，总结国际化指标并部署年度重点工作。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "task_frames": [],
+        "risk_flags": [],
+        "evidence": [
+          "我校召开2026年国际化工作推进会"
+        ],
+        "confidence": 0.95,
+        "review_required": false
+      }
+    },
+    "30323c9f1401eb570a47": {
+      "schema_version": "hytask-taskframe-v1",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-lite",
+      "source_id": "exchange",
+      "url": "https://exchange.njupt.edu.cn/2026/0424/c7465a300821/page.htm",
+      "normalized_url": "https://exchange.njupt.edu.cn/2026/0424/c7465a300821/page.htm",
+      "title": "我校港澳台学生赴梅园新村纪念馆开展国情教育实践活动",
+      "content_hash": "f45340dabdd819310b9e",
+      "attachment_hash": "cf1cbb66a638b4860a51",
+      "updated_at": "2026-05-24T19:44:23.183125+08:00",
+      "result": {
+        "is_student_facing": true,
+        "student_relevance": 0.4,
+        "audience": [
+          "港澳台学生"
+        ],
+        "category": "公告",
+        "domain": "life",
+        "intent": "read",
+        "sub_category": null,
+        "tags": [
+          "国情教育",
+          "实践活动"
+        ],
+        "importance_score": 0.3,
+        "deadline": null,
+        "action_required": false,
+        "action_type": null,
+        "action_summary": null,
+        "required_materials": [],
+        "student_summary": "国际合作交流处组织港澳台学生代表赴梅园新村纪念馆开展国情教育实践活动。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "task_frames": [],
+        "risk_flags": [],
+        "evidence": [
+          "国际合作交流处组织港澳台学生代表前往梅园新村纪念馆，开展主题为“寻访红色足迹，传承革命精神”的国情教育实践活动"
+        ],
+        "confidence": 0.95,
+        "review_required": false
+      }
+    },
+    "efd62f7943d80ccbc60c": {
+      "schema_version": "hytask-taskframe-v1",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-lite",
+      "source_id": "exchange",
+      "url": "https://exchange.njupt.edu.cn/2026/0330/c7465a298681/page.htm",
+      "normalized_url": "https://exchange.njupt.edu.cn/2026/0330/c7465a298681/page.htm",
+      "title": "我校与哈萨克斯坦卡拉干达萨金诺夫技术大学举行合作交流会议",
+      "content_hash": "902d2973316cdcc6cf43",
+      "attachment_hash": "cf1cbb66a638b4860a51",
+      "updated_at": "2026-05-24T19:44:23.183125+08:00",
+      "result": {
+        "is_student_facing": true,
+        "student_relevance": 0.5,
+        "audience": [
+          "本科生",
+          "研究生"
+        ],
+        "category": "公告",
+        "domain": "news",
+        "intent": "read",
+        "sub_category": null,
+        "tags": [
+          "国际交流",
+          "合作会议"
+        ],
+        "importance_score": 0.3,
+        "deadline": null,
+        "action_required": false,
+        "action_type": null,
+        "action_summary": null,
+        "required_materials": [],
+        "student_summary": "学校与哈萨克斯坦卡拉干达萨金诺夫技术大学举行合作交流会议，签署教育合作备忘录。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "task_frames": [],
+        "risk_flags": [],
+        "evidence": [
+          "我校与哈萨克斯坦卡拉干达萨金诺夫技术大学举行合作交流会议"
+        ],
+        "confidence": 0.95,
+        "review_required": false
+      }
+    },
+    "b20979c13d8536f92023": {
+      "schema_version": "hytask-taskframe-v1",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-lite",
+      "source_id": "exchange",
+      "url": "https://exchange.njupt.edu.cn/2026/0325/c7465a298430/page.htm",
+      "normalized_url": "https://exchange.njupt.edu.cn/2026/0325/c7465a298430/page.htm",
+      "title": "江苏第二师范学院来我校调研",
+      "content_hash": "d4c60794d2b2b6ccde80",
+      "attachment_hash": "cf1cbb66a638b4860a51",
+      "updated_at": "2026-05-24T19:44:23.183125+08:00",
+      "result": {
+        "is_student_facing": false,
+        "student_relevance": 0.2,
+        "audience": [
+          "教职工"
+        ],
+        "category": "公告",
+        "domain": "news",
+        "intent": "read",
+        "sub_category": null,
+        "tags": [
+          "校际交流",
+          "调研"
+        ],
+        "importance_score": 0.2,
+        "deadline": null,
+        "action_required": false,
+        "action_type": null,
+        "action_summary": null,
+        "required_materials": [],
+        "student_summary": "江苏第二师范学院来我校调研中外合作办学相关工作。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "task_frames": [],
+        "risk_flags": [],
+        "evidence": [
+          "江苏第二师范学院来我校调研"
+        ],
+        "confidence": 0.95,
+        "review_required": false
+      }
+    },
+    "31a6643539345dcdc318": {
+      "schema_version": "hytask-taskframe-v1",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-lite",
+      "source_id": "exchange",
+      "url": "http://exchange.njupt.edu.cn/2026/0416/c14424a300157/page.htm",
+      "normalized_url": "http://exchange.njupt.edu.cn/2026/0416/c14424a300157/page.htm",
+      "title": "关于申报2026年度国家外国专家项目的通知",
+      "content_hash": "c46de521b21c0e4e3505",
+      "attachment_hash": "cf1cbb66a638b4860a51",
+      "updated_at": "2026-05-24T19:44:23.183125+08:00",
+      "result": {
+        "is_student_facing": false,
+        "student_relevance": 0.1,
+        "audience": [
+          "教职工"
+        ],
+        "category": "公告",
+        "domain": "project",
+        "intent": "read",
+        "sub_category": null,
+        "tags": [
+          "项目申报"
+        ],
+        "importance_score": 0.5,
+        "deadline": null,
+        "action_required": false,
+        "action_type": null,
+        "action_summary": null,
+        "required_materials": [],
+        "student_summary": "关于申报2026年度国家外国专家项目的通知，正文内容缺失。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "task_frames": [],
+        "risk_flags": [
+          "low_evidence"
+        ],
+        "evidence": [
+          "关于申报2026年度国家外国专家项目的通知"
+        ],
+        "confidence": 0.5,
+        "review_required": true
+      }
+    },
+    "45ef81c52e2017928124": {
+      "schema_version": "hytask-taskframe-v1",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-lite",
+      "source_id": "exchange",
+      "url": "https://exchange.njupt.edu.cn/2026/0320/c7442a298116/page.htm",
+      "normalized_url": "https://exchange.njupt.edu.cn/2026/0320/c7442a298116/page.htm",
+      "title": "关于申报2026年度国际青年人才来华交流项目的通知",
+      "content_hash": "bf3ef48862e480e1a041",
+      "attachment_hash": "8ea5c8648a3553624619",
+      "updated_at": "2026-05-24T19:44:23.183125+08:00",
+      "result": {
+        "is_student_facing": true,
+        "student_relevance": 0.8,
+        "audience": [
+          "外国青年人才"
+        ],
+        "category": "项目",
+        "domain": "project",
+        "intent": "apply",
+        "sub_category": null,
+        "tags": [
+          "国际交流",
+          "项目申报"
+        ],
+        "importance_score": 0.8,
+        "deadline": "2026-04-10T23:59:00+08:00",
+        "action_required": true,
+        "action_type": "contact",
+        "action_summary": "意向申报人请在4月10日前联系国际处张老师。",
+        "required_materials": [
+          "国际青年人才来华交流项目申报表（短期工作类）",
+          "国际青年人才来华交流项目申报表（访问交流类）",
+          "国际青年人才来华交流项目申报表（国际实习类）",
+          "申报指南"
+        ],
+        "student_summary": "学校开展2026年度国际青年人才来华交流项目申报，包含访问交流、国际实习、短期工作三类，意向申报人需在4月10日前联系国际处。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [
+          {
+            "name": "",
+            "role": "申请表",
+            "description": null,
+            "sensitive": false
+          },
+          {
+            "name": "",
+            "role": "申请表",
+            "description": null,
+            "sensitive": false
+          },
+          {
+            "name": "",
+            "role": "申请表",
+            "description": null,
+            "sensitive": false
+          },
+          {
+            "name": "",
+            "role": "指南",
+            "description": null,
+            "sensitive": false
+          },
+          {
+            "name": "",
+            "role": "提示",
+            "description": null,
+            "sensitive": false
+          }
+        ],
+        "task_frames": [
+          {
+            "task_id": "apply_2026_intl_youth",
+            "doc_id": "exchange-06d7a85422b76ecad291",
+            "task_type": "application",
+            "who": {
+              "audience": [
+                "外国青年人才"
+              ]
+            },
+            "what": "申报2026年度国际青年人才来华交流项目",
+            "action": {
+              "required": true,
+              "verb": "联系",
+              "object": "国际处张老师",
+              "summary": "意向申报人请在4月10日前联系国际处张老师进行申报"
+            },
+            "time": {
+              "published_at": "2026-03-20",
+              "deadline": "2026-04-10T23:59:00+08:00",
+              "lifecycle": "expired",
+              "urgency_days": null
+            },
+            "materials": [
+              {
+                "name": "申报表模板",
+                "role": "申请表",
+                "required": true,
+                "sensitive": false
+              }
+            ],
+            "location": {
+              "place": null,
+              "online": null,
+              "contact": "张老师，电话：85866246"
+            },
+            "source": {
+              "source_id": "exchange",
+              "channel_id": "exchange_notice",
+              "authority": 0.9,
+              "official": true
+            },
+            "evidence": [
+              {
+                "field": "deadline",
+                "text": "请意向申报人在 4 月 10 日前联系国际处"
+              }
+            ],
+            "risk": {
+              "sensitive": false,
+              "restricted": false,
+              "low_evidence": false,
+              "review_required": false
+            },
+            "confidence": 0.95
+          }
+        ],
+        "risk_flags": [
+          "evergreen"
+        ],
+        "evidence": [
+          "请意向申报人在 4 月 10 日前联系国际处"
+        ],
+        "confidence": 0.95,
+        "review_required": false
+      }
+    },
+    "a79389fe1b7d111c82a8": {
+      "schema_version": "hytask-taskframe-v1",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-lite",
+      "source_id": "exchange",
+      "url": "http://exchange.njupt.edu.cn/2025/0527/c7449a284432/page.htm",
+      "normalized_url": "http://exchange.njupt.edu.cn/2025/0527/c7449a284432/page.htm",
+      "title": "南京邮电大学学生国境外交流项目一览表",
+      "content_hash": "52d770be48f9ba79a9eb",
+      "attachment_hash": "cf1cbb66a638b4860a51",
+      "updated_at": "2026-05-24T19:44:23.183125+08:00",
+      "result": {
+        "is_student_facing": true,
+        "student_relevance": 0.7,
+        "audience": [
+          "本科生",
+          "研究生"
+        ],
+        "category": "资料",
+        "domain": "international",
+        "intent": "read",
+        "sub_category": null,
+        "tags": [
+          "交流项目",
+          "一览表"
+        ],
+        "importance_score": 0.6,
+        "deadline": null,
+        "action_required": false,
+        "action_type": null,
+        "action_summary": null,
+        "required_materials": [],
+        "student_summary": "南京邮电大学学生国境外交流项目一览表，正文内容缺失。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "task_frames": [],
+        "risk_flags": [
+          "low_evidence"
+        ],
+        "evidence": [
+          "南京邮电大学学生国境外交流项目一览表"
+        ],
+        "confidence": 0.5,
+        "review_required": true
+      }
+    },
+    "c9c536c7631677481ac3": {
+      "schema_version": "hytask-taskframe-v1",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-lite",
+      "source_id": "exchange",
+      "url": "https://exchange.njupt.edu.cn/2021/0511/c7467a192932/page.htm",
+      "normalized_url": "https://exchange.njupt.edu.cn/2021/0511/c7467a192932/page.htm",
+      "title": "香港理工大学暑假“科技创新”访学项目",
+      "content_hash": "7d8ba49b7704e1e85444",
+      "attachment_hash": "cf1cbb66a638b4860a51",
+      "updated_at": "2026-05-24T19:44:23.183125+08:00",
+      "result": {
+        "is_student_facing": true,
+        "student_relevance": 0.9,
+        "audience": [
+          "本科生"
+        ],
+        "category": "项目",
+        "domain": "international",
+        "intent": "apply",
+        "sub_category": null,
+        "tags": [
+          "访学项目",
+          "香港理工大学"
+        ],
+        "importance_score": 0.8,
+        "deadline": null,
+        "action_required": true,
+        "action_type": "submit",
+        "action_summary": "每年5月报名，向所在学院提交申请材料。",
+        "required_materials": [
+          "南京邮电大学本科生海外访学申请表",
+          "英语水平证明",
+          "学术科研能力证明",
+          "获奖证书"
+        ],
+        "student_summary": "香港理工大学暑假“科技创新”访学项目，每年5月报名，7-8月派出，采取个人申请、学院推荐方式。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "task_frames": [
+          {
+            "task_id": "apply_hkpoly_summer",
+            "doc_id": "exchange-176cb6ec00a0d59cab1e",
+            "task_type": "application",
+            "who": {
+              "audience": [
+                "本科生"
+              ]
+            },
+            "what": "香港理工大学暑假“科技创新”访学项目申请",
+            "action": {
+              "required": true,
+              "verb": "提交",
+              "object": "申请材料",
+              "summary": "向所在学院提交申请表及相关证明材料"
+            },
+            "time": {
+              "published_at": null,
+              "deadline": null,
+              "lifecycle": "upcoming",
+              "urgency_days": null
+            },
+            "materials": [
+              {
+                "name": "南京邮电大学本科生海外访学申请表",
+                "role": "申请表",
+                "required": true,
+                "sensitive": false
+              }
+            ],
+            "location": {
+              "place": "所在学院",
+              "online": null,
+              "contact": "国际合作交流处 朱老师 85866716"
+            },
+            "source": {
+              "source_id": "exchange",
+              "channel_id": "exchange_notice",
+              "authority": 0.9,
+              "official": true
+            },
+            "evidence": [
+              {
+                "field": "deadline",
+                "text": "每年 5 月报名"
+              }
+            ],
+            "risk": {
+              "sensitive": false,
+              "restricted": false,
+              "low_evidence": false,
+              "review_required": false
+            },
+            "confidence": 0.9
+          }
+        ],
+        "risk_flags": [],
+        "evidence": [
+          "每年 5 月报名， 7 月－ 8 月派出"
+        ],
+        "confidence": 0.9,
+        "review_required": false
+      }
+    },
+    "967c79d0086ae9320038": {
+      "schema_version": "hytask-taskframe-v1",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-lite",
+      "source_id": "exchange",
+      "url": "https://exchange.njupt.edu.cn/2021/0511/c7467a192930/page.htm",
+      "normalized_url": "https://exchange.njupt.edu.cn/2021/0511/c7467a192930/page.htm",
+      "title": "香港大学 “创新创业”赴港交流项目",
+      "content_hash": "8fbcd89f886a7d97f96c",
+      "attachment_hash": "cf1cbb66a638b4860a51",
+      "updated_at": "2026-05-24T19:44:23.183125+08:00",
+      "result": {
+        "is_student_facing": true,
+        "student_relevance": 0.9,
+        "audience": [
+          "本科生"
+        ],
+        "category": "项目",
+        "domain": "international",
+        "intent": "apply",
+        "sub_category": null,
+        "tags": [
+          "访学项目",
+          "香港大学"
+        ],
+        "importance_score": 0.8,
+        "deadline": null,
+        "action_required": true,
+        "action_type": "submit",
+        "action_summary": "每年5月报名，向所在学院提交申请材料。",
+        "required_materials": [
+          "南京邮电大学本科生海外访学申请表",
+          "英语水平证明",
+          "学术科研能力证明",
+          "获奖证书"
+        ],
+        "student_summary": "香港大学“创新创业”赴港交流项目，每年5月报名，7-8月派出，采取个人申请、学院推荐方式。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "task_frames": [
+          {
+            "task_id": "apply_hku_summer",
+            "doc_id": "exchange-5b8b5d43475cad50110e",
+            "task_type": "application",
+            "who": {
+              "audience": [
+                "本科生"
+              ]
+            },
+            "what": "香港大学“创新创业”赴港交流项目申请",
+            "action": {
+              "required": true,
+              "verb": "提交",
+              "object": "申请材料",
+              "summary": "向所在学院提交申请表及相关证明材料"
+            },
+            "time": {
+              "published_at": null,
+              "deadline": null,
+              "lifecycle": "upcoming",
+              "urgency_days": null
+            },
+            "materials": [
+              {
+                "name": "南京邮电大学本科生海外访学申请表",
+                "role": "申请表",
+                "required": true,
+                "sensitive": false
+              }
+            ],
+            "location": {
+              "place": "所在学院",
+              "online": null,
+              "contact": "国际合作交流处 朱老师 85866716"
+            },
+            "source": {
+              "source_id": "exchange",
+              "channel_id": "exchange_notice",
+              "authority": 0.9,
+              "official": true
+            },
+            "evidence": [
+              {
+                "field": "deadline",
+                "text": "每年 5 月报名"
+              }
+            ],
+            "risk": {
+              "sensitive": false,
+              "restricted": false,
+              "low_evidence": false,
+              "review_required": false
+            },
+            "confidence": 0.9
+          }
+        ],
+        "risk_flags": [],
+        "evidence": [
+          "每年 5 月报名， 7 月－ 8 月派出"
+        ],
+        "confidence": 0.9,
+        "review_required": false
+      }
+    },
+    "7c16f44e909811431b04": {
+      "schema_version": "hytask-taskframe-v1",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-lite",
+      "source_id": "exchange",
+      "url": "https://exchange.njupt.edu.cn/2021/0511/c7467a192928/page.htm",
+      "normalized_url": "https://exchange.njupt.edu.cn/2021/0511/c7467a192928/page.htm",
+      "title": "南洋理工大学寒暑假交流项目",
+      "content_hash": "dd3fd86c289c8cb826f2",
+      "attachment_hash": "cf1cbb66a638b4860a51",
+      "updated_at": "2026-05-24T19:44:23.183125+08:00",
+      "result": {
+        "is_student_facing": true,
+        "student_relevance": 0.9,
+        "audience": [
+          "本科生",
+          "研究生"
+        ],
+        "category": "项目",
+        "domain": "international",
+        "intent": "apply",
+        "sub_category": null,
+        "tags": [
+          "访学项目",
+          "南洋理工大学"
+        ],
+        "importance_score": 0.8,
+        "deadline": null,
+        "action_required": true,
+        "action_type": "submit",
+        "action_summary": "每年11月或4月报名，向所在学院提交申请材料。",
+        "required_materials": [
+          "南京邮电大学本科生海外访学申请表",
+          "英语水平证明",
+          "学术科研能力证明",
+          "获奖证书"
+        ],
+        "student_summary": "南洋理工大学寒暑假交流项目，每年11月报名次年1月开课，每年4月报名7月开课，采取个人申请、学院推荐方式。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "task_frames": [
+          {
+            "task_id": "apply_ntu_exchange",
+            "doc_id": "exchange-8c940f9a9a38972abe4d",
+            "task_type": "application",
+            "who": {
+              "audience": [
+                "本科生",
+                "研究生"
+              ]
+            },
+            "what": "南洋理工大学寒暑假交流项目申请",
+            "action": {
+              "required": true,
+              "verb": "提交",
+              "object": "申请材料",
+              "summary": "向所在学院提交申请表及相关证明材料"
+            },
+            "time": {
+              "published_at": null,
+              "deadline": null,
+              "lifecycle": "upcoming",
+              "urgency_days": null
+            },
+            "materials": [
+              {
+                "name": "南京邮电大学本科生海外访学申请表",
+                "role": "申请表",
+                "required": true,
+                "sensitive": false
+              }
+            ],
+            "location": {
+              "place": "所在学院",
+              "online": null,
+              "contact": "国际合作交流处 朱老师 85866716"
+            },
+            "source": {
+              "source_id": "exchange",
+              "channel_id": "exchange_notice",
+              "authority": 0.9,
+              "official": true
+            },
+            "evidence": [
+              {
+                "field": "deadline",
+                "text": "每年 11 月报名，次年 1 月开课；每年 4 月报名， 7 月开课"
+              }
+            ],
+            "risk": {
+              "sensitive": false,
+              "restricted": false,
+              "low_evidence": false,
+              "review_required": false
+            },
+            "confidence": 0.9
+          }
+        ],
+        "risk_flags": [],
+        "evidence": [
+          "每年 11 月报名，次年 1 月开课；每年 4 月报名， 7 月开课"
+        ],
+        "confidence": 0.9,
+        "review_required": false
+      }
+    },
+    "a3e2bf542f7ac594af71": {
+      "schema_version": "hytask-taskframe-v1",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "source_id": "github:GreenPomelo/Undergraduate",
+      "url": "https://github.com/GreenPomelo/Undergraduate/blob/master/README.md",
+      "normalized_url": "https://github.com/GreenPomelo/Undergraduate/blob/master/README.md",
+      "title": "🔧mini program of NJUPT | 南京邮电大... · MiniProgram of Nanjing University of Posts and Telecommunications",
+      "content_hash": "1cf252b0ad4c8f53808a",
+      "attachment_hash": "cf1cbb66a638b4860a51",
+      "updated_at": "2026-05-24T19:44:23.183125+08:00",
+      "result": {
+        "is_student_facing": true,
+        "student_relevance": 0.85,
+        "audience": [
+          "本科生"
+        ],
+        "category": "资料",
+        "domain": "resource",
+        "intent": "read",
+        "sub_category": null,
+        "tags": [
+          "小程序",
+          "开源",
+          "青柚工作室"
+        ],
+        "importance_score": 0.5,
+        "deadline": null,
+        "action_required": false,
+        "action_type": null,
+        "action_summary": null,
+        "required_materials": [],
+        "student_summary": "南京邮电大学小程序由青柚工作室开发，可在微信中即开即用，提供校园服务。项目开源，并持续招新。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "task_frames": [],
+        "risk_flags": [
+          "evergreen",
+          "github_resource"
+        ],
+        "evidence": [
+          "MiniProgram of Nanjing University of Posts and Telecommunications",
+          "developed by QingYou Studio of NJUPT"
+        ],
+        "confidence": 0.85,
+        "review_required": false
+      }
+    },
+    "f1865fbdccbb67b104d3": {
+      "schema_version": "hytask-taskframe-v1",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "source_id": "github:GreenPomelo/Undergraduate",
+      "url": "https://github.com/GreenPomelo/Undergraduate/blob/master/CHANGELOG.md",
+      "normalized_url": "https://github.com/GreenPomelo/Undergraduate/blob/master/CHANGELOG.md",
+      "title": "🔧mini program of NJUPT | 南京邮电大... · 3.4.6 (2018-12-25)",
+      "content_hash": "a4aeb46a25254628ae5a",
+      "attachment_hash": "cf1cbb66a638b4860a51",
+      "updated_at": "2026-05-24T19:44:23.183125+08:00",
+      "result": {
+        "is_student_facing": true,
+        "student_relevance": 0.8,
+        "audience": [
+          "本科生"
+        ],
+        "category": "资料",
+        "domain": "resource",
+        "intent": "read",
+        "sub_category": null,
+        "tags": [
+          "小程序",
+          "更新日志",
+          "功能"
+        ],
+        "importance_score": 0.4,
+        "deadline": null,
+        "action_required": false,
+        "action_type": null,
+        "action_summary": null,
+        "required_materials": [],
+        "student_summary": "南京邮电大学小程序的版本更新日志，记录了从2017年到2018年的功能迭代，如电费查询、一卡通充值、课表查询等。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "task_frames": [],
+        "risk_flags": [
+          "evergreen",
+          "github_resource"
+        ],
+        "evidence": [
+          "3.4.6 2018-12-25 - 添加电费余额查询",
+          "3.4.5 2018-12-22 - 添加 wx.updateManager"
+        ],
+        "confidence": 0.8,
+        "review_required": false
+      }
+    },
+    "46251346e5c74f3b7614": {
+      "schema_version": "hytask-taskframe-v1",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "source_id": "github:GreenPomelo/Undergraduate",
+      "url": "https://github.com/GreenPomelo/Undergraduate/blob/master/README-zh_CN.md",
+      "normalized_url": "https://github.com/GreenPomelo/Undergraduate/blob/master/README-zh_CN.md",
+      "title": "🔧mini program of NJUPT | 南京邮电大... · 南京邮电大学小程序",
+      "content_hash": "608972646811e1281566",
+      "attachment_hash": "cf1cbb66a638b4860a51",
+      "updated_at": "2026-05-24T19:44:23.183125+08:00",
+      "result": {
+        "is_student_facing": true,
+        "student_relevance": 0.85,
+        "audience": [
+          "本科生"
+        ],
+        "category": "资料",
+        "domain": "resource",
+        "intent": "read",
+        "sub_category": null,
+        "tags": [
+          "小程序",
+          "开源",
+          "青柚工作室",
+          "招新"
+        ],
+        "importance_score": 0.5,
+        "deadline": null,
+        "action_required": false,
+        "action_type": null,
+        "action_summary": null,
+        "required_materials": [],
+        "student_summary": "南京邮电大学小程序介绍及青柚工作室招新信息，招新对象为全日制本科生，可投递简历至qingyou@njupt.edu.cn。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "task_frames": [
+          {
+            "task_id": "",
+            "doc_id": "46251346e5c74f3b7614",
+            "task_type": "opportunity",
+            "who": {
+              "audience": [
+                "本科生"
+              ],
+              "college": [],
+              "grade": [
+                "大二",
+                "大三",
+                "大一"
+              ],
+              "major": [],
+              "class_name": []
+            },
+            "what": "青柚工作室招新",
+            "action": {
+              "required": true,
+              "verb": "投递",
+              "object": "简历",
+              "summary": "青柚工作室持续招新，对象为南京邮电大学全日制本科生，主要以大二大三在校学生为主，大一能力强者亦可。希望有兴趣的同学能投递简历至 qingyou@njupt.edu.cn"
+            },
+            "time": {
+              "published_at": "2020-01-11T00:00:00+08:00",
+              "deadline": null,
+              "lifecycle": "evergreen",
+              "urgency_days": null
+            },
+            "materials": [
+              {
+                "name": "简历",
+                "role": "申请材料",
+                "required": true,
+                "sensitive": false
+              }
+            ],
+            "location": {
+              "place": null,
+              "online": "qingyou@njupt.edu.cn",
+              "contact": "qingyou@njupt.edu.cn"
+            },
+            "source": {
+              "source_id": "github:GreenPomelo/Undergraduate",
+              "channel_id": "github:GreenPomelo/Undergraduate:resource",
+              "authority": 0.7,
+              "official": false
+            },
+            "evidence": [
+              {
+                "field": "action",
+                "text": "希望有兴趣的同学能投递简历至 qingyou@njupt.edu.cn"
+              }
+            ],
+            "risk": {
+              "sensitive": false,
+              "restricted": false,
+              "low_evidence": false,
+              "review_required": false
+            },
+            "confidence": 0.7
+          }
+        ],
+        "risk_flags": [
+          "evergreen",
+          "github_resource"
+        ],
+        "evidence": [
+          "青柚工作室持续招新，对象为南京邮电大学全日制本科生",
+          "投递简历至 qingyou@njupt.edu.cn"
+        ],
+        "confidence": 0.85,
         "review_required": false
       }
     }

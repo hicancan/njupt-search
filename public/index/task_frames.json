@@ -2020,38 +2020,43 @@
     "confidence": 0.9
   },
   {
-    "task_id": "task_dcffda52727e8b7f",
+    "task_id": "apply_hkpoly_summer",
     "doc_id": "exchange-176cb6ec00a0d59cab1e",
     "task_type": "application",
     "who": {
       "audience": [
-        "本科生",
-        "研究生",
-        "国际学生"
+        "本科生"
       ],
       "college": [],
       "grade": [],
       "major": [],
       "class_name": []
     },
-    "what": "香港理工大学暑假“科技创新”访学项目",
+    "what": "香港理工大学暑假“科技创新”访学项目申请",
     "action": {
       "required": true,
-      "verb": "报名",
-      "object": null,
-      "summary": "报名及派出时间：每年 5 月报名， 7 月－ 8 月派出 8"
+      "verb": "提交",
+      "object": "申请材料",
+      "summary": "向所在学院提交申请表及相关证明材料"
     },
     "time": {
       "published_at": null,
       "deadline": null,
-      "lifecycle": "unknown",
+      "lifecycle": "upcoming",
       "urgency_days": null
     },
-    "materials": [],
+    "materials": [
+      {
+        "name": "南京邮电大学本科生海外访学申请表",
+        "role": "申请表",
+        "required": true,
+        "sensitive": false
+      }
+    ],
     "location": {
-      "place": null,
+      "place": "所在学院",
       "online": null,
-      "contact": null
+      "contact": "国际合作交流处 朱老师 85866716"
     },
     "source": {
       "source_id": "exchange",
@@ -2061,16 +2066,8 @@
     },
     "evidence": [
       {
-        "field": "general",
-        "text": "香港理工大学暑假“科技创新”访学项目 1. 学校排名： USNEWS 234 ；"
-      },
-      {
-        "field": "general",
-        "text": "QS 95 2. 合作模式：短期 8 天 3. 合作层次：不限 4. 合作专业：不限 5. 费用 （1） 大学课程费 + 企业实训费： 5200 元 （2） 住宿 2100 元，其他 600 元 （3） 共 7900 元，南邮学生减免 1300 元，合计 6600 元 6. 语言要求：具备良好的英语听说读写能力 7."
-      },
-      {
-        "field": "general",
-        "text": "C. 学术科研能力证明材料及复印件（包括论文发表、参与竞赛、项目等）；"
+        "field": "deadline",
+        "text": "每年 5 月报名"
       }
     ],
     "risk": {
@@ -2079,196 +2076,47 @@
       "low_evidence": false,
       "review_required": false
     },
-    "confidence": 0.58
+    "confidence": 0.9
   },
   {
-    "task_id": "task_30cf2a083234d74a",
+    "task_id": "apply_ntu_exchange",
     "doc_id": "exchange-8c940f9a9a38972abe4d",
     "task_type": "application",
     "who": {
       "audience": [
         "本科生",
-        "研究生",
-        "国际学生"
+        "研究生"
       ],
       "college": [],
       "grade": [],
       "major": [],
       "class_name": []
     },
-    "what": "南洋理工大学寒暑假交流项目",
+    "what": "南洋理工大学寒暑假交流项目申请",
     "action": {
       "required": true,
-      "verb": "报名",
-      "object": null,
-      "summary": "报名及派出时间：每年 11 月报名，次年 1 月开课"
+      "verb": "提交",
+      "object": "申请材料",
+      "summary": "向所在学院提交申请表及相关证明材料"
     },
     "time": {
       "published_at": null,
       "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "exchange",
-      "channel_id": "exchange_notice",
-      "authority": 0.8,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "南洋理工大学寒暑假交流项目 1. 学校排名： QS No.13 2. 合作模式： 6 周 3. 合作层次：本科生和研究生 4. 合作专业：专业不限 5. 费用 项目费总计： 5580 （课程项目） /6980 （科研项目）含大学学费、管理费等。"
-      },
-      {
-        "field": "general",
-        "text": "6. 语言要求：英语听说读写有一定基础，能接受全英文授课 7. 报名及派出时间：每年 11 月报名，次年 1 月开课；"
-      },
-      {
-        "field": "general",
-        "text": "每年 4 月报名， 7 月开课 8. 报名程序： 采取“个人申请、学院推荐、专家评审、择优录取”的方式进行选拔。"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.58
-  },
-  {
-    "task_id": "task_320257d6dd408797",
-    "doc_id": "exchange-5b8b5d43475cad50110e",
-    "task_type": "application",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生",
-        "国际学生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "香港大学 “创新创业”赴港交流项目",
-    "action": {
-      "required": true,
-      "verb": "报名",
-      "object": null,
-      "summary": "报名及派出时间：每年 5 月报名， 7 月－ 8 月派出 8"
-    },
-    "time": {
-      "published_at": null,
-      "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "exchange",
-      "channel_id": "exchange_notice",
-      "authority": 0.8,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "香港大学 “创新创业”赴港交流项目 1. 学校排名： USNEWS 103 ；"
-      },
-      {
-        "field": "general",
-        "text": "QS 26 2. 合作模式：短期 8 天 3. 合作层次：不限 4. 合作专业：不限 5. 费用： 30 人以下，每人 6600 港币， 30 人以上，超出人数每人增加 2200 港币 6. 语言要求：具备良好的英语听说读写能力 7. 报名及派出时间：每年 5 月报名， 7 月－ 8 月派出 8. 报名程序： （ 1"
-      },
-      {
-        "field": "general",
-        "text": "C. 学术科研能力证明材料及复印件（包括论文发表、参与竞赛、项目等）；"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.58
-  },
-  {
-    "task_id": "task_a1bd3469bb6fca44",
-    "doc_id": "exchange-06d7a85422b76ecad291",
-    "task_type": "download",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生",
-        "国际学生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "关于申报2026年度国际青年人才来华交流项目的通知",
-    "action": {
-      "required": true,
-      "verb": "申报",
-      "object": null,
-      "summary": "关于申报2026年度国际青年人才来华交流项目的通知 关于转发中国国际人才交流基金会申报 202 6 年度国际青年人才来华交流项目的通知 各学院、各相关单位： 国际青年人才来华交流项目以开放包容促发展、双向赋能共成长、择优遴选重实效为原则，资助优秀外国 青年人才 来华 开展 访问交流、国际实习 和 短期工作，促进 外国 青年人"
-    },
-    "time": {
-      "published_at": null,
-      "deadline": null,
-      "lifecycle": "unknown",
+      "lifecycle": "upcoming",
       "urgency_days": null
     },
     "materials": [
       {
-        "name": "1.国际青年人才来华交流项目申报表（短期工作类）模板.pdf",
+        "name": "南京邮电大学本科生海外访学申请表",
         "role": "申请表",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "2.国际青年人才来华交流项目申报表（访问交流类）模板.pdf",
-        "role": "申请表",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "3.国际青年人才来华交流项目申报表（国际实习类）模板.pdf",
-        "role": "申请表",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "4.申报指南（挂网版）.doc",
-        "role": null,
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "5.关于开展2026年度国际青年人才来华交项目申报工作的提示.docx",
-        "role": null,
         "required": true,
         "sensitive": false
       }
     ],
     "location": {
-      "place": null,
+      "place": "所在学院",
       "online": null,
-      "contact": null
+      "contact": "国际合作交流处 朱老师 85866716"
     },
     "source": {
       "source_id": "exchange",
@@ -2278,16 +2126,8 @@
     },
     "evidence": [
       {
-        "field": "general",
-        "text": "关于申报2026年度国际青年人才来华交流项目的通知 关于转发中国国际人才交流基金会申报 202 6 年度国际青年人才来华交流项目的通知 各学院、各相关单位： 国际青年人才来华交流项目以开放包容促发展、双向赋能共成长、择优遴选重实效为原则，资助优秀外国 青年人才 来华 开展 访问交流、国际实习 和 短期工作，促进 外国"
-      },
-      {
-        "field": "general",
-        "text": "申报国际青年人才来华交流项目的具体要求请见附件。"
-      },
-      {
-        "field": "general",
-        "text": "我校每类项目限项填报 2 项，超过 2 项时，将进行线下遴选，再为拟申报项目分配子账号，进入申报流程。"
+        "field": "deadline",
+        "text": "每年 11 月报名，次年 1 月开课；每年 4 月报名， 7 月开课"
       }
     ],
     "risk": {
@@ -2296,41 +2136,46 @@
       "low_evidence": false,
       "review_required": false
     },
-    "confidence": 0.58
+    "confidence": 0.9
   },
   {
-    "task_id": "task_bb812591a647fa98",
-    "doc_id": "exchange-a288ffbf9073e6e1862c",
-    "task_type": "opportunity",
+    "task_id": "apply_hku_summer",
+    "doc_id": "exchange-5b8b5d43475cad50110e",
+    "task_type": "application",
     "who": {
       "audience": [
-        "本科生",
-        "研究生",
-        "国际学生"
+        "本科生"
       ],
       "college": [],
       "grade": [],
       "major": [],
       "class_name": []
     },
-    "what": "我校召开2026年国际化工作推进会",
+    "what": "香港大学“创新创业”赴港交流项目申请",
     "action": {
       "required": true,
-      "verb": "申报",
-      "object": null,
-      "summary": "在 2026 年重点工作 提要 环节， 她 聚焦高水平国际合作 提质 、 海外 引智创新 赋能 、 高端外专项目申报、 国际联合实验室建设 、 国际组织合作、 海外师生来校交流、港澳台侨生招培、 涉外风险防控 等领域展开详细介绍"
+      "verb": "提交",
+      "object": "申请材料",
+      "summary": "向所在学院提交申请表及相关证明材料"
     },
     "time": {
       "published_at": null,
       "deadline": null,
-      "lifecycle": "unknown",
+      "lifecycle": "upcoming",
       "urgency_days": null
     },
-    "materials": [],
+    "materials": [
+      {
+        "name": "南京邮电大学本科生海外访学申请表",
+        "role": "申请表",
+        "required": true,
+        "sensitive": false
+      }
+    ],
     "location": {
-      "place": null,
+      "place": "所在学院",
       "online": null,
-      "contact": null
+      "contact": "国际合作交流处 朱老师 85866716"
     },
     "source": {
       "source_id": "exchange",
@@ -2340,12 +2185,8 @@
     },
     "evidence": [
       {
-        "field": "general",
-        "text": "我校召开2026年国际化工作推进会 凝心聚力谋开放 提质增效促发展—— 我校 召开 2026 年国际化工作推进会 立足高等教育对外开放新形势，紧扣党建与业务融合要求，持续夯实国际化办学根基、赋能学校高质量发展 ， 4 月 22 日 -23 日 ， 国际合作交流处（以下简称国际处） 在仙林校区行政楼第二会议室召开 三场"
-      },
-      {
-        "field": "general",
-        "text": "在 2026 年重点工作 提要 环节， 她 聚焦高水平国际合作 提质 、 海外 引智创新 赋能 、 高端外专项目申报、 国际联合实验室建设 、 国际组织合作、 海外师生来校交流、港澳台侨生招培、 涉外风险防控 等领域展开详细介绍。"
+        "field": "deadline",
+        "text": "每年 5 月报名"
       }
     ],
     "risk": {
@@ -2354,7 +2195,7 @@
       "low_evidence": false,
       "review_required": false
     },
-    "confidence": 0.58
+    "confidence": 0.9
   },
   {
     "task_id": "task-3a4f831a8d9bccc11145-1",
@@ -4055,59 +3896,6 @@
     "confidence": 0.95
   },
   {
-    "task_id": "task_581ac29de6101ad7",
-    "doc_id": "github-GreenPomelo-Undergraduate-91eaaa87a70b6ee72793",
-    "task_type": "result_check",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "🔧mini program of NJUPT | 南京邮电大... · 3.4.6 (2018-12-25)",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": "2020-01-11",
-      "deadline": null,
-      "lifecycle": "evergreen",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "github:GreenPomelo/Undergraduate",
-      "channel_id": "github:GreenPomelo/Undergraduate:resource",
-      "authority": 0.5,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "🔧mini program of NJUPT | 南京邮电大... · 3.4.6 (2018-12-25) 3.4.6 2018-12-25 - 添加电费余额查询 3.4.5 2018-12-22 - 添加 wx.updateManager 3.4.4 2018-12-21 - 添加金额操作记录页面 3.4.3 20"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.58
-  },
-  {
     "task_id": "e66500af396e72245244-download",
     "doc_id": "github-NJUPTFreeExams-NJUPT-CS-FREE-2c2417a9008388b2e50e",
     "task_type": "download",
@@ -4499,6 +4287,69 @@
       "review_required": false
     },
     "confidence": 0.9
+  },
+  {
+    "task_id": "task_b3cbb6766c82e138",
+    "doc_id": "github-GreenPomelo-Undergraduate-1328d4737a1ed6714c87",
+    "task_type": "opportunity",
+    "who": {
+      "audience": [
+        "本科生"
+      ],
+      "college": [],
+      "grade": [
+        "大二",
+        "大三",
+        "大一"
+      ],
+      "major": [],
+      "class_name": []
+    },
+    "what": "青柚工作室招新",
+    "action": {
+      "required": true,
+      "verb": "投递",
+      "object": "简历",
+      "summary": "青柚工作室持续招新，对象为南京邮电大学全日制本科生，主要以大二大三在校学生为主，大一能力强者亦可。希望有兴趣的同学能投递简历至 qingyou@njupt.edu.cn"
+    },
+    "time": {
+      "published_at": "2020-01-11T00:00:00+08:00",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [
+      {
+        "name": "简历",
+        "role": "申请材料",
+        "required": true,
+        "sensitive": false
+      }
+    ],
+    "location": {
+      "place": null,
+      "online": "qingyou@njupt.edu.cn",
+      "contact": "qingyou@njupt.edu.cn"
+    },
+    "source": {
+      "source_id": "github:GreenPomelo/Undergraduate",
+      "channel_id": "github:GreenPomelo/Undergraduate:resource",
+      "authority": 0.5,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "action",
+        "text": "希望有兴趣的同学能投递简历至 qingyou@njupt.edu.cn"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.7
   },
   {
     "task_id": "task_dc58d10ca0976caa",
@@ -4992,66 +4843,5 @@
       "review_required": false
     },
     "confidence": 0.7
-  },
-  {
-    "task_id": "task_77d9d20fef063d59",
-    "doc_id": "github-GreenPomelo-Undergraduate-1328d4737a1ed6714c87",
-    "task_type": "download",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "🔧mini program of NJUPT | 南京邮电大... · 南京邮电大学小程序",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": "2020-01-11",
-      "deadline": null,
-      "lifecycle": "evergreen",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "github:GreenPomelo/Undergraduate",
-      "channel_id": "github:GreenPomelo/Undergraduate:resource",
-      "authority": 0.5,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "🔧mini program of NJUPT | 南京邮电大... · 南京邮电大学小程序 南京邮电大学小程序 English ./README.md 简体中文 介绍 南京邮电大学小程序是由南京邮电大学青柚工作室开发，一款方便快捷，无需下载安装即可在微信客户端即开即用的 APP，有别于一般需要下载安装的 APP，也不同"
-      },
-      {
-        "field": "general",
-        "text": "<p align=\"center\" <img src=\"https://static.airbob.org/under-graduate/undergraduate-qrcode.jpg\" alt=\"菊花码\" width=\"200\" height=\"200\" </p 学习本项目 整套前端使用 Wepy https://"
-      },
-      {
-        "field": "general",
-        "text": "项目文件结构 安装（更新） wepy 命令行工具 node = 8.9 安装依赖 & 开发实时编译 ------ 青柚工作室 青柚工作室的主页 https://qingyou.njupt.edu.cn 青柚工作室是由南京邮电大学信息办指导建设，以学生开发为核心的互联网工作团队。"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.58
   }
 ]

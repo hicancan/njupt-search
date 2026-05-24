@@ -145,7 +145,7 @@
       "dedupe_key": "40c404d77dc666604255",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -165,7 +165,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T08:55:33.406719Z"
+      "evaluated_at": "2026-05-24T11:44:37.755995Z"
     },
     "task_frames": []
   },
@@ -317,7 +317,7 @@
       "dedupe_key": "d49538e92761155200e7",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -339,7 +339,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T08:57:35.523734Z"
+      "evaluated_at": "2026-05-24T11:45:37.263647Z"
     },
     "task_frames": []
   },
@@ -421,7 +421,7 @@
       "dedupe_key": "21cd3576e4672c9392bd",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -442,7 +442,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T08:57:30.369592Z"
+      "evaluated_at": "2026-05-24T11:45:33.126557Z"
     },
     "task_frames": []
   },
@@ -526,7 +526,7 @@
       "dedupe_key": "d030136cceedee9b74b3",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -547,7 +547,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T08:57:36.812736Z"
+      "evaluated_at": "2026-05-24T11:45:38.337599Z"
     },
     "task_frames": []
   },
@@ -631,7 +631,7 @@
       "dedupe_key": "743d992b050c0f6ad168",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -652,7 +652,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T09:00:11.147529Z"
+      "evaluated_at": "2026-05-24T11:46:51.076787Z"
     },
     "task_frames": []
   },
@@ -736,7 +736,7 @@
       "dedupe_key": "e7e55f93e1374e0f9f47",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -757,7 +757,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T08:57:32.917674Z"
+      "evaluated_at": "2026-05-24T11:45:35.192135Z"
     },
     "task_frames": []
   },
@@ -840,7 +840,7 @@
       "dedupe_key": "28d080d208cca72e681b",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -861,167 +861,9 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T08:57:34.200107Z"
+      "evaluated_at": "2026-05-24T11:45:36.227775Z"
     },
     "task_frames": []
-  },
-  {
-    "id": "exchange-176cb6ec00a0d59cab1e",
-    "kind": "notice",
-    "source_id": "exchange",
-    "channel_id": "exchange_notice",
-    "channel": "国际交流通知",
-    "title": "香港理工大学暑假“科技创新”访学项目",
-    "url": "https://exchange.njupt.edu.cn/2021/0511/c7467a192932/page.htm",
-    "source": "国际合作交流处",
-    "source_domain": "exchange.njupt.edu.cn",
-    "source_type": "central_admin",
-    "category": "项目",
-    "domain": "international",
-    "intent": "apply",
-    "lifecycle": "unknown",
-    "evidence": [
-      "香港理工大学暑假“科技创新”访学项目 1. 学校排名： USNEWS 234 ；",
-      "QS 95 2. 合作模式：短期 8 天 3. 合作层次：不限 4. 合作专业：不限 5. 费用 （1） 大学课程费 + 企业实训费： 5200 元 （2） 住宿 2100 元，其他 600 元 （3） 共 7900 元，南邮学生减免 1300 元，合计 6600 元 6. 语言要求：具备良好的英语听说读写能力 7. ",
-      "C. 学术科研能力证明材料及复印件（包括论文发表、参与竞赛、项目等）；"
-    ],
-    "confidence": null,
-    "sub_category": null,
-    "deadline": null,
-    "action_required": true,
-    "action_type": "报名",
-    "action_summary": "报名及派出时间：每年 5 月报名， 7 月－ 8 月派出 8",
-    "required_materials": [],
-    "sensitive": false,
-    "sensitive_types": [],
-    "review_required": false,
-    "risk_flags": [],
-    "audience": [
-      "本科生",
-      "研究生",
-      "国际学生"
-    ],
-    "published_at": null,
-    "content": "1. 学校排名： USNEWS 234 ； QS 95 2. 合作模式：短期 8 天 3. 合作层次：不限 4. 合作专业：不限 5. 费用 （1） 大学课程费 + 企业实训费： 5200 元 （2） 住宿 2100 元，其他 600 元 （3） 共 7900 元，南邮学生减免 1300 元，合计 6600 元 6. 语言要求：具备良好的英语听说读写能力 7. 报名及派出时间：每年 5 月报名， 7 月－ 8 月派出 8. 报名程序： （ 1 ）采取“个人申请、学院推荐、专家评审、择优录取”的方式进行选拔。 （ 2 ）申请人应向所在学院提交以下材料： A. 《南京邮电大学本科生海外访学申请表》； B. 英语水平证明及复印件； C. 学术科研能力证明材料及复印件（包括论文发表、参与竞赛、项目等）； D. 获奖证书及复印件（校级以上奖励）。 （ 3 ）申请人将申请材料交至各学院，各学院根据申请资格与条件对申请人进行筛选、排序并填写《南京邮电大学本科生海外访学申请汇总表》，将申请材料及汇总表交至教务处实践教学科，申请材料电子版本发送到 jwc-sjjxk@njupt.edu.cn 。 （ 4 ）教务处审核通过后予以公示，公示期满无异议，通知申请人自行办理赴港手续。 9. 项目咨询 国际合作交流处 朱老师 85866716",
-    "summary": "1. 学校排名： USNEWS 234 ； QS 95 2. 合作模式：短期 8 天 3. 合作层次：不限 4. 合作专业：不限 5. 费用 （1） 大学课程费 + 企业实训费： 5200 元 （2） 住宿 2100 元，其他 600 元 （3） 共 7900 元，南邮学生减免 1300 元，合计 6600 元 6. 语言要求：具备良好的英语听说读写能力 7",
-    "attachments": [],
-    "student_score": 1.0,
-    "freshness_score": 0.45,
-    "importance_score": 0.854,
-    "source_weight": 0.8,
-    "tags": [
-      "项目",
-      "竞赛",
-      "课程",
-      "公示",
-      "报名"
-    ],
-    "hash": "176cb6ec00a0d59cab1e",
-    "cache_key": "c9c536c7631677481ac3",
-    "llm_schema_version": "hytask-taskframe-v1",
-    "llm": {
-      "used": false,
-      "provider": null,
-      "model": null,
-      "prompt_version": "hytask-taskframe-v1",
-      "confidence": null,
-      "review_required": false
-    },
-    "canonical": {
-      "doc_id": "exchange-176cb6ec00a0d59cab1e",
-      "source_id": "exchange",
-      "channel_id": "exchange_notice",
-      "title": "香港理工大学暑假“科技创新”访学项目",
-      "canonical_url": "https://exchange.njupt.edu.cn/2021/0511/c7467a192932/page.htm",
-      "published_at": null,
-      "clean_text": "1. 学校排名： USNEWS 234 ； QS 95 2. 合作模式：短期 8 天 3. 合作层次：不限 4. 合作专业：不限 5. 费用 （1） 大学课程费 + 企业实训费： 5200 元 （2） 住宿 2100 元，其他 600 元 （3） 共 7900 元，南邮学生减免 1300 元，合计 6600 元 6. 语言要求：具备良好的英语听说读写能力 7. 报名及派出时间：每年 5 月报名， 7 月－ 8 月派出 8. 报名程序： （ 1 ）采取“个人申请、学院推荐、专家评审、择优录取”的方式进行选拔。 （ 2 ）申请人应向所在学院提交以下材料： A. 《南京邮电大学本科生海外访学申请表》； B. 英语水平证明及复印件； C. 学术科研能力证明材料及复印件（包括论文发表、参与竞赛、项目等）； D. 获奖证书及复印件（校级以上奖励）。 （ 3 ）申请人将申请材料交至各学院，各学院根据申请资格与条件对申请人进行筛选、排序并填写《南京邮电大学本科生海外访学申请汇总表》，将申请材料及汇总表交至教务处实践教学科，申请材料电子版本发送到 jwc-sjjxk@njupt.edu.cn 。 （ 4 ）教务处审核通过后予以公示，公示期满无异议，通知申请人自行办理赴港手续。 9. 项目咨询 国际合作交流处 朱老师 85866716",
-      "attachments": [],
-      "content_hash": "6049f7e71eba14d7d056",
-      "dedupe_key": "c25dd1eec35588d18a95",
-      "language": "zh",
-      "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
-      "http_status": 200
-    },
-    "rule_guard": {
-      "restricted": false,
-      "sensitive": false,
-      "sensitive_types": [],
-      "low_evidence": false,
-      "duplicate": false,
-      "expired": false,
-      "evergreen": false,
-      "administrative_noise": false,
-      "risk_flags": [],
-      "allow_llm": true,
-      "allow_full_text_display": true,
-      "review_required": false,
-      "evaluated_at": "2026-05-24T09:06:34.157144Z"
-    },
-    "task_frames": [
-      {
-        "task_id": "task_dcffda52727e8b7f",
-        "doc_id": "exchange-176cb6ec00a0d59cab1e",
-        "task_type": "application",
-        "who": {
-          "audience": [
-            "本科生",
-            "研究生",
-            "国际学生"
-          ],
-          "college": [],
-          "grade": [],
-          "major": [],
-          "class_name": []
-        },
-        "what": "香港理工大学暑假“科技创新”访学项目",
-        "action": {
-          "required": true,
-          "verb": "报名",
-          "object": null,
-          "summary": "报名及派出时间：每年 5 月报名， 7 月－ 8 月派出 8"
-        },
-        "time": {
-          "published_at": null,
-          "deadline": null,
-          "lifecycle": "unknown",
-          "urgency_days": null
-        },
-        "materials": [],
-        "location": {
-          "place": null,
-          "online": null,
-          "contact": null
-        },
-        "source": {
-          "source_id": "exchange",
-          "channel_id": "exchange_notice",
-          "authority": 0.8,
-          "official": true
-        },
-        "evidence": [
-          {
-            "field": "general",
-            "text": "香港理工大学暑假“科技创新”访学项目 1. 学校排名： USNEWS 234 ；"
-          },
-          {
-            "field": "general",
-            "text": "QS 95 2. 合作模式：短期 8 天 3. 合作层次：不限 4. 合作专业：不限 5. 费用 （1） 大学课程费 + 企业实训费： 5200 元 （2） 住宿 2100 元，其他 600 元 （3） 共 7900 元，南邮学生减免 1300 元，合计 6600 元 6. 语言要求：具备良好的英语听说读写能力 7."
-          },
-          {
-            "field": "general",
-            "text": "C. 学术科研能力证明材料及复印件（包括论文发表、参与竞赛、项目等）；"
-          }
-        ],
-        "risk": {
-          "sensitive": false,
-          "restricted": false,
-          "low_evidence": false,
-          "review_required": false
-        },
-        "confidence": 0.58
-      }
-    ]
   },
   {
     "id": "simp-3567f2f1c5697d1c40a5",
@@ -1104,7 +946,7 @@
       "dedupe_key": "95db128ac8541481b53e",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -1124,7 +966,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T09:11:07.342814Z"
+      "evaluated_at": "2026-05-24T11:51:24.282148Z"
     },
     "task_frames": []
   },
@@ -1211,7 +1053,7 @@
       "dedupe_key": "c769466f90ab0a6f0f1d",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -1232,7 +1074,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T09:11:17.582502Z"
+      "evaluated_at": "2026-05-24T11:51:32.636544Z"
     },
     "task_frames": []
   },
@@ -1321,7 +1163,7 @@
       "dedupe_key": "b25ad94bbc9e397c35b4",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -1343,7 +1185,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T09:12:59.001212Z"
+      "evaluated_at": "2026-05-24T11:52:12.314307Z"
     },
     "task_frames": []
   },
@@ -1427,7 +1269,7 @@
       "dedupe_key": "ee60a913479ef3537eca",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -1448,7 +1290,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T09:11:43.346021Z"
+      "evaluated_at": "2026-05-24T11:51:38.339489Z"
     },
     "task_frames": []
   },
@@ -4211,6 +4053,162 @@
     ]
   },
   {
+    "id": "exchange-176cb6ec00a0d59cab1e",
+    "kind": "notice",
+    "source_id": "exchange",
+    "channel_id": "exchange_notice",
+    "channel": "国际交流通知",
+    "title": "香港理工大学暑假“科技创新”访学项目",
+    "url": "https://exchange.njupt.edu.cn/2021/0511/c7467a192932/page.htm",
+    "source": "国际合作交流处",
+    "source_domain": "exchange.njupt.edu.cn",
+    "source_type": "central_admin",
+    "category": "项目",
+    "domain": "international",
+    "intent": "apply",
+    "lifecycle": "unknown",
+    "evidence": [
+      "每年 5 月报名， 7 月－ 8 月派出"
+    ],
+    "confidence": 0.9,
+    "sub_category": null,
+    "deadline": null,
+    "action_required": true,
+    "action_type": "submit",
+    "action_summary": "每年5月报名，向所在学院提交申请材料。",
+    "required_materials": [
+      "南京邮电大学本科生海外访学申请表",
+      "英语水平证明",
+      "学术科研能力证明",
+      "获奖证书"
+    ],
+    "sensitive": false,
+    "sensitive_types": [],
+    "review_required": false,
+    "risk_flags": [],
+    "audience": [
+      "本科生",
+      "研究生",
+      "国际学生"
+    ],
+    "published_at": null,
+    "content": "1. 学校排名： USNEWS 234 ； QS 95 2. 合作模式：短期 8 天 3. 合作层次：不限 4. 合作专业：不限 5. 费用 （1） 大学课程费 + 企业实训费： 5200 元 （2） 住宿 2100 元，其他 600 元 （3） 共 7900 元，南邮学生减免 1300 元，合计 6600 元 6. 语言要求：具备良好的英语听说读写能力 7. 报名及派出时间：每年 5 月报名， 7 月－ 8 月派出 8. 报名程序： （ 1 ）采取“个人申请、学院推荐、专家评审、择优录取”的方式进行选拔。 （ 2 ）申请人应向所在学院提交以下材料： A. 《南京邮电大学本科生海外访学申请表》； B. 英语水平证明及复印件； C. 学术科研能力证明材料及复印件（包括论文发表、参与竞赛、项目等）； D. 获奖证书及复印件（校级以上奖励）。 （ 3 ）申请人将申请材料交至各学院，各学院根据申请资格与条件对申请人进行筛选、排序并填写《南京邮电大学本科生海外访学申请汇总表》，将申请材料及汇总表交至教务处实践教学科，申请材料电子版本发送到 jwc-sjjxk@njupt.edu.cn 。 （ 4 ）教务处审核通过后予以公示，公示期满无异议，通知申请人自行办理赴港手续。 9. 项目咨询 国际合作交流处 朱老师 85866716",
+    "summary": "香港理工大学暑假“科技创新”访学项目，每年5月报名，7-8月派出，采取个人申请、学院推荐方式。",
+    "attachments": [],
+    "student_score": 0.935,
+    "freshness_score": 0.45,
+    "importance_score": 0.8135,
+    "source_weight": 0.8,
+    "tags": [
+      "项目",
+      "访学项目",
+      "香港理工大学"
+    ],
+    "hash": "176cb6ec00a0d59cab1e",
+    "cache_key": "c9c536c7631677481ac3",
+    "llm_schema_version": "hytask-taskframe-v1",
+    "llm": {
+      "used": true,
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-lite",
+      "prompt_version": "hytask-taskframe-v1",
+      "confidence": 0.9,
+      "review_required": false
+    },
+    "canonical": {
+      "doc_id": "exchange-176cb6ec00a0d59cab1e",
+      "source_id": "exchange",
+      "channel_id": "exchange_notice",
+      "title": "香港理工大学暑假“科技创新”访学项目",
+      "canonical_url": "https://exchange.njupt.edu.cn/2021/0511/c7467a192932/page.htm",
+      "published_at": null,
+      "clean_text": "1. 学校排名： USNEWS 234 ； QS 95 2. 合作模式：短期 8 天 3. 合作层次：不限 4. 合作专业：不限 5. 费用 （1） 大学课程费 + 企业实训费： 5200 元 （2） 住宿 2100 元，其他 600 元 （3） 共 7900 元，南邮学生减免 1300 元，合计 6600 元 6. 语言要求：具备良好的英语听说读写能力 7. 报名及派出时间：每年 5 月报名， 7 月－ 8 月派出 8. 报名程序： （ 1 ）采取“个人申请、学院推荐、专家评审、择优录取”的方式进行选拔。 （ 2 ）申请人应向所在学院提交以下材料： A. 《南京邮电大学本科生海外访学申请表》； B. 英语水平证明及复印件； C. 学术科研能力证明材料及复印件（包括论文发表、参与竞赛、项目等）； D. 获奖证书及复印件（校级以上奖励）。 （ 3 ）申请人将申请材料交至各学院，各学院根据申请资格与条件对申请人进行筛选、排序并填写《南京邮电大学本科生海外访学申请汇总表》，将申请材料及汇总表交至教务处实践教学科，申请材料电子版本发送到 jwc-sjjxk@njupt.edu.cn 。 （ 4 ）教务处审核通过后予以公示，公示期满无异议，通知申请人自行办理赴港手续。 9. 项目咨询 国际合作交流处 朱老师 85866716",
+      "attachments": [],
+      "content_hash": "6049f7e71eba14d7d056",
+      "dedupe_key": "c25dd1eec35588d18a95",
+      "language": "zh",
+      "status": "ok",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "http_status": 200
+    },
+    "rule_guard": {
+      "restricted": false,
+      "sensitive": false,
+      "sensitive_types": [],
+      "low_evidence": false,
+      "duplicate": false,
+      "expired": false,
+      "evergreen": false,
+      "administrative_noise": false,
+      "risk_flags": [],
+      "allow_llm": true,
+      "allow_full_text_display": true,
+      "review_required": false,
+      "evaluated_at": "2026-05-24T11:48:54.503944Z"
+    },
+    "task_frames": [
+      {
+        "task_id": "apply_hkpoly_summer",
+        "doc_id": "exchange-176cb6ec00a0d59cab1e",
+        "task_type": "application",
+        "who": {
+          "audience": [
+            "本科生"
+          ],
+          "college": [],
+          "grade": [],
+          "major": [],
+          "class_name": []
+        },
+        "what": "香港理工大学暑假“科技创新”访学项目申请",
+        "action": {
+          "required": true,
+          "verb": "提交",
+          "object": "申请材料",
+          "summary": "向所在学院提交申请表及相关证明材料"
+        },
+        "time": {
+          "published_at": null,
+          "deadline": null,
+          "lifecycle": "upcoming",
+          "urgency_days": null
+        },
+        "materials": [
+          {
+            "name": "南京邮电大学本科生海外访学申请表",
+            "role": "申请表",
+            "required": true,
+            "sensitive": false
+          }
+        ],
+        "location": {
+          "place": "所在学院",
+          "online": null,
+          "contact": "国际合作交流处 朱老师 85866716"
+        },
+        "source": {
+          "source_id": "exchange",
+          "channel_id": "exchange_notice",
+          "authority": 0.8,
+          "official": true
+        },
+        "evidence": [
+          {
+            "field": "deadline",
+            "text": "每年 5 月报名"
+          }
+        ],
+        "risk": {
+          "sensitive": false,
+          "restricted": false,
+          "low_evidence": false,
+          "review_required": false
+        },
+        "confidence": 0.9
+      }
+    ]
+  },
+  {
     "id": "yzb-77804ccfbb22c5c5f6dd",
     "kind": "notice",
     "source_id": "yzb",
@@ -4361,320 +4359,6 @@
           "review_required": false
         },
         "confidence": 0.85
-      }
-    ]
-  },
-  {
-    "id": "exchange-8c940f9a9a38972abe4d",
-    "kind": "notice",
-    "source_id": "exchange",
-    "channel_id": "exchange_notice",
-    "channel": "国际交流通知",
-    "title": "南洋理工大学寒暑假交流项目",
-    "url": "https://exchange.njupt.edu.cn/2021/0511/c7467a192928/page.htm",
-    "source": "国际合作交流处",
-    "source_domain": "exchange.njupt.edu.cn",
-    "source_type": "central_admin",
-    "category": "项目",
-    "domain": "international",
-    "intent": "apply",
-    "lifecycle": "unknown",
-    "evidence": [
-      "南洋理工大学寒暑假交流项目 1. 学校排名： QS No.13 2. 合作模式： 6 周 3. 合作层次：本科生和研究生 4. 合作专业：专业不限 5. 费用 项目费总计： 5580 （课程项目） /6980 （科研项目）含大学学费、管理费等。",
-      "6. 语言要求：英语听说读写有一定基础，能接受全英文授课 7. 报名及派出时间：每年 11 月报名，次年 1 月开课；",
-      "每年 4 月报名， 7 月开课 8. 报名程序： 采取“个人申请、学院推荐、专家评审、择优录取”的方式进行选拔。"
-    ],
-    "confidence": null,
-    "sub_category": null,
-    "deadline": null,
-    "action_required": true,
-    "action_type": "报名",
-    "action_summary": "报名及派出时间：每年 11 月报名，次年 1 月开课",
-    "required_materials": [],
-    "sensitive": false,
-    "sensitive_types": [],
-    "review_required": false,
-    "risk_flags": [],
-    "audience": [
-      "本科生",
-      "研究生",
-      "国际学生"
-    ],
-    "published_at": null,
-    "content": "1. 学校排名： QS No.13 2. 合作模式： 6 周 3. 合作层次：本科生和研究生 4. 合作专业：专业不限 5. 费用 项目费总计： 5580 （课程项目） /6980 （科研项目）含大学学费、管理费等。 6. 语言要求：英语听说读写有一定基础，能接受全英文授课 7. 报名及派出时间：每年 11 月报名，次年 1 月开课；每年 4 月报名， 7 月开课 8. 报名程序： 采取“个人申请、学院推荐、专家评审、择优录取”的方式进行选拔。 （ 1 ）申请人将申请材料交至各学院，申请人应向所在学院提交以下材料： （ a ）《南京邮电大学本科生海外访学申请表》； （ b ）英语水平证明复印件； （ c ）学术科研能力证明材料复印件（包括论文发表、参与竞赛、项目等）； （ d ）获奖证书复印件（校级以上奖励）。 （ 2 ）各学院根据申请资格与条件对申请人进行筛选、排序并填写《南京邮电大学本科生海外访学申请汇总表》，汇总表交至教务处实践教学科，申请材料电子版本发送到 jwc-sjjxk@njupt.edu.cn 。 （ 3 ）教务处会同相关职能部门，共同组织专家对学院推荐的候选人材料进行审核，确定选派学生名单并发布。 （ 4 ）开始课程。 9. 项目咨询 国际合作交流处 朱老师 85866716",
-    "summary": "1. 学校排名： QS No.13 2. 合作模式： 6 周 3. 合作层次：本科生和研究生 4. 合作专业：专业不限 5. 费用 项目费总计： 5580 （课程项目） /6980 （科研项目）含大学学费、管理费等。 6. 语言要求：英语听说读写有一定基础，能接受全英文授课 7. 报名及派出时间：每年 11 月报名，次年 1 月开课；每年 4 月报名， 7 ",
-    "attachments": [],
-    "student_score": 0.929,
-    "freshness_score": 0.45,
-    "importance_score": 0.854,
-    "source_weight": 0.8,
-    "tags": [
-      "项目",
-      "竞赛",
-      "课程",
-      "报名"
-    ],
-    "hash": "8c940f9a9a38972abe4d",
-    "cache_key": "7c16f44e909811431b04",
-    "llm_schema_version": "hytask-taskframe-v1",
-    "llm": {
-      "used": false,
-      "provider": null,
-      "model": null,
-      "prompt_version": "hytask-taskframe-v1",
-      "confidence": null,
-      "review_required": false
-    },
-    "canonical": {
-      "doc_id": "exchange-8c940f9a9a38972abe4d",
-      "source_id": "exchange",
-      "channel_id": "exchange_notice",
-      "title": "南洋理工大学寒暑假交流项目",
-      "canonical_url": "https://exchange.njupt.edu.cn/2021/0511/c7467a192928/page.htm",
-      "published_at": null,
-      "clean_text": "1. 学校排名： QS No.13 2. 合作模式： 6 周 3. 合作层次：本科生和研究生 4. 合作专业：专业不限 5. 费用 项目费总计： 5580 （课程项目） /6980 （科研项目）含大学学费、管理费等。 6. 语言要求：英语听说读写有一定基础，能接受全英文授课 7. 报名及派出时间：每年 11 月报名，次年 1 月开课；每年 4 月报名， 7 月开课 8. 报名程序： 采取“个人申请、学院推荐、专家评审、择优录取”的方式进行选拔。 （ 1 ）申请人将申请材料交至各学院，申请人应向所在学院提交以下材料： （ a ）《南京邮电大学本科生海外访学申请表》； （ b ）英语水平证明复印件； （ c ）学术科研能力证明材料复印件（包括论文发表、参与竞赛、项目等）； （ d ）获奖证书复印件（校级以上奖励）。 （ 2 ）各学院根据申请资格与条件对申请人进行筛选、排序并填写《南京邮电大学本科生海外访学申请汇总表》，汇总表交至教务处实践教学科，申请材料电子版本发送到 jwc-sjjxk@njupt.edu.cn 。 （ 3 ）教务处会同相关职能部门，共同组织专家对学院推荐的候选人材料进行审核，确定选派学生名单并发布。 （ 4 ）开始课程。 9. 项目咨询 国际合作交流处 朱老师 85866716",
-      "attachments": [],
-      "content_hash": "d0848d7202571ce9191c",
-      "dedupe_key": "121d563974a807c1a63a",
-      "language": "zh",
-      "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
-      "http_status": 200
-    },
-    "rule_guard": {
-      "restricted": false,
-      "sensitive": false,
-      "sensitive_types": [],
-      "low_evidence": false,
-      "duplicate": false,
-      "expired": false,
-      "evergreen": false,
-      "administrative_noise": false,
-      "risk_flags": [],
-      "allow_llm": true,
-      "allow_full_text_display": true,
-      "review_required": false,
-      "evaluated_at": "2026-05-24T09:06:36.681454Z"
-    },
-    "task_frames": [
-      {
-        "task_id": "task_30cf2a083234d74a",
-        "doc_id": "exchange-8c940f9a9a38972abe4d",
-        "task_type": "application",
-        "who": {
-          "audience": [
-            "本科生",
-            "研究生",
-            "国际学生"
-          ],
-          "college": [],
-          "grade": [],
-          "major": [],
-          "class_name": []
-        },
-        "what": "南洋理工大学寒暑假交流项目",
-        "action": {
-          "required": true,
-          "verb": "报名",
-          "object": null,
-          "summary": "报名及派出时间：每年 11 月报名，次年 1 月开课"
-        },
-        "time": {
-          "published_at": null,
-          "deadline": null,
-          "lifecycle": "unknown",
-          "urgency_days": null
-        },
-        "materials": [],
-        "location": {
-          "place": null,
-          "online": null,
-          "contact": null
-        },
-        "source": {
-          "source_id": "exchange",
-          "channel_id": "exchange_notice",
-          "authority": 0.8,
-          "official": true
-        },
-        "evidence": [
-          {
-            "field": "general",
-            "text": "南洋理工大学寒暑假交流项目 1. 学校排名： QS No.13 2. 合作模式： 6 周 3. 合作层次：本科生和研究生 4. 合作专业：专业不限 5. 费用 项目费总计： 5580 （课程项目） /6980 （科研项目）含大学学费、管理费等。"
-          },
-          {
-            "field": "general",
-            "text": "6. 语言要求：英语听说读写有一定基础，能接受全英文授课 7. 报名及派出时间：每年 11 月报名，次年 1 月开课；"
-          },
-          {
-            "field": "general",
-            "text": "每年 4 月报名， 7 月开课 8. 报名程序： 采取“个人申请、学院推荐、专家评审、择优录取”的方式进行选拔。"
-          }
-        ],
-        "risk": {
-          "sensitive": false,
-          "restricted": false,
-          "low_evidence": false,
-          "review_required": false
-        },
-        "confidence": 0.58
-      }
-    ]
-  },
-  {
-    "id": "exchange-5b8b5d43475cad50110e",
-    "kind": "notice",
-    "source_id": "exchange",
-    "channel_id": "exchange_notice",
-    "channel": "国际交流通知",
-    "title": "香港大学 “创新创业”赴港交流项目",
-    "url": "https://exchange.njupt.edu.cn/2021/0511/c7467a192930/page.htm",
-    "source": "国际合作交流处",
-    "source_domain": "exchange.njupt.edu.cn",
-    "source_type": "central_admin",
-    "category": "项目",
-    "domain": "international",
-    "intent": "apply",
-    "lifecycle": "unknown",
-    "evidence": [
-      "香港大学 “创新创业”赴港交流项目 1. 学校排名： USNEWS 103 ；",
-      "QS 26 2. 合作模式：短期 8 天 3. 合作层次：不限 4. 合作专业：不限 5. 费用： 30 人以下，每人 6600 港币， 30 人以上，超出人数每人增加 2200 港币 6. 语言要求：具备良好的英语听说读写能力 7. 报名及派出时间：每年 5 月报名， 7 月－ 8 月派出 8. 报名程序： （ 1 ",
-      "C. 学术科研能力证明材料及复印件（包括论文发表、参与竞赛、项目等）；"
-    ],
-    "confidence": null,
-    "sub_category": null,
-    "deadline": null,
-    "action_required": true,
-    "action_type": "报名",
-    "action_summary": "报名及派出时间：每年 5 月报名， 7 月－ 8 月派出 8",
-    "required_materials": [],
-    "sensitive": false,
-    "sensitive_types": [],
-    "review_required": false,
-    "risk_flags": [],
-    "audience": [
-      "本科生",
-      "研究生",
-      "国际学生"
-    ],
-    "published_at": null,
-    "content": "1. 学校排名： USNEWS 103 ； QS 26 2. 合作模式：短期 8 天 3. 合作层次：不限 4. 合作专业：不限 5. 费用： 30 人以下，每人 6600 港币， 30 人以上，超出人数每人增加 2200 港币 6. 语言要求：具备良好的英语听说读写能力 7. 报名及派出时间：每年 5 月报名， 7 月－ 8 月派出 8. 报名程序： （ 1 ）采取“个人申请、学院推荐、专家评审、择优录取”的方式进行选拔。 （ 2 ）申请人应向所在学院提交以下材料： A. 《南京邮电大学本科生海外访学申请表》； B. 英语水平证明及复印件； C. 学术科研能力证明材料及复印件（包括论文发表、参与竞赛、项目等）； D. 获奖证书及复印件（校级以上奖励）。 （ 3 ）申请人将申请材料交至各学院，各学院根据申请资格与条件对申请人进行筛选、排序并填写《南京邮电大学本科生海外访学申请汇总表》，将申请材料及汇总表交至教务处实践教学科，申请材料电子版本发送到 jwc-sjjxk@njupt.edu.cn 。 （ 4 ）教务处审核通过后予以公示，公示期满无异议，通知申请人自行办理赴港手续。 9. 项目咨询 国际合作交流处 朱老师 85866716",
-    "summary": "1. 学校排名： USNEWS 103 ； QS 26 2. 合作模式：短期 8 天 3. 合作层次：不限 4. 合作专业：不限 5. 费用： 30 人以下，每人 6600 港币， 30 人以上，超出人数每人增加 2200 港币 6. 语言要求：具备良好的英语听说读写能力 7. 报名及派出时间：每年 5 月报名， 7 月－ 8 月派出 8. 报名程序： （ ",
-    "attachments": [],
-    "student_score": 0.929,
-    "freshness_score": 0.45,
-    "importance_score": 0.854,
-    "source_weight": 0.8,
-    "tags": [
-      "项目",
-      "竞赛",
-      "公示",
-      "报名"
-    ],
-    "hash": "5b8b5d43475cad50110e",
-    "cache_key": "967c79d0086ae9320038",
-    "llm_schema_version": "hytask-taskframe-v1",
-    "llm": {
-      "used": false,
-      "provider": null,
-      "model": null,
-      "prompt_version": "hytask-taskframe-v1",
-      "confidence": null,
-      "review_required": false
-    },
-    "canonical": {
-      "doc_id": "exchange-5b8b5d43475cad50110e",
-      "source_id": "exchange",
-      "channel_id": "exchange_notice",
-      "title": "香港大学 “创新创业”赴港交流项目",
-      "canonical_url": "https://exchange.njupt.edu.cn/2021/0511/c7467a192930/page.htm",
-      "published_at": null,
-      "clean_text": "1. 学校排名： USNEWS 103 ； QS 26 2. 合作模式：短期 8 天 3. 合作层次：不限 4. 合作专业：不限 5. 费用： 30 人以下，每人 6600 港币， 30 人以上，超出人数每人增加 2200 港币 6. 语言要求：具备良好的英语听说读写能力 7. 报名及派出时间：每年 5 月报名， 7 月－ 8 月派出 8. 报名程序： （ 1 ）采取“个人申请、学院推荐、专家评审、择优录取”的方式进行选拔。 （ 2 ）申请人应向所在学院提交以下材料： A. 《南京邮电大学本科生海外访学申请表》； B. 英语水平证明及复印件； C. 学术科研能力证明材料及复印件（包括论文发表、参与竞赛、项目等）； D. 获奖证书及复印件（校级以上奖励）。 （ 3 ）申请人将申请材料交至各学院，各学院根据申请资格与条件对申请人进行筛选、排序并填写《南京邮电大学本科生海外访学申请汇总表》，将申请材料及汇总表交至教务处实践教学科，申请材料电子版本发送到 jwc-sjjxk@njupt.edu.cn 。 （ 4 ）教务处审核通过后予以公示，公示期满无异议，通知申请人自行办理赴港手续。 9. 项目咨询 国际合作交流处 朱老师 85866716",
-      "attachments": [],
-      "content_hash": "12e5b62064de8e23a5d0",
-      "dedupe_key": "7262b4c4684ec36f1a61",
-      "language": "zh",
-      "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
-      "http_status": 200
-    },
-    "rule_guard": {
-      "restricted": false,
-      "sensitive": false,
-      "sensitive_types": [],
-      "low_evidence": false,
-      "duplicate": false,
-      "expired": false,
-      "evergreen": false,
-      "administrative_noise": false,
-      "risk_flags": [],
-      "allow_llm": true,
-      "allow_full_text_display": true,
-      "review_required": false,
-      "evaluated_at": "2026-05-24T09:06:35.432062Z"
-    },
-    "task_frames": [
-      {
-        "task_id": "task_320257d6dd408797",
-        "doc_id": "exchange-5b8b5d43475cad50110e",
-        "task_type": "application",
-        "who": {
-          "audience": [
-            "本科生",
-            "研究生",
-            "国际学生"
-          ],
-          "college": [],
-          "grade": [],
-          "major": [],
-          "class_name": []
-        },
-        "what": "香港大学 “创新创业”赴港交流项目",
-        "action": {
-          "required": true,
-          "verb": "报名",
-          "object": null,
-          "summary": "报名及派出时间：每年 5 月报名， 7 月－ 8 月派出 8"
-        },
-        "time": {
-          "published_at": null,
-          "deadline": null,
-          "lifecycle": "unknown",
-          "urgency_days": null
-        },
-        "materials": [],
-        "location": {
-          "place": null,
-          "online": null,
-          "contact": null
-        },
-        "source": {
-          "source_id": "exchange",
-          "channel_id": "exchange_notice",
-          "authority": 0.8,
-          "official": true
-        },
-        "evidence": [
-          {
-            "field": "general",
-            "text": "香港大学 “创新创业”赴港交流项目 1. 学校排名： USNEWS 103 ；"
-          },
-          {
-            "field": "general",
-            "text": "QS 26 2. 合作模式：短期 8 天 3. 合作层次：不限 4. 合作专业：不限 5. 费用： 30 人以下，每人 6600 港币， 30 人以上，超出人数每人增加 2200 港币 6. 语言要求：具备良好的英语听说读写能力 7. 报名及派出时间：每年 5 月报名， 7 月－ 8 月派出 8. 报名程序： （ 1"
-          },
-          {
-            "field": "general",
-            "text": "C. 学术科研能力证明材料及复印件（包括论文发表、参与竞赛、项目等）；"
-          }
-        ],
-        "risk": {
-          "sensitive": false,
-          "restricted": false,
-          "low_evidence": false,
-          "review_required": false
-        },
-        "confidence": 0.58
       }
     ]
   },
@@ -5526,7 +5210,7 @@
       "dedupe_key": "25c78db5ee8a9ce3d568",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -5547,7 +5231,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T09:00:13.687564Z"
+      "evaluated_at": "2026-05-24T11:46:53.161882Z"
     },
     "task_frames": []
   },
@@ -5754,82 +5438,82 @@
     ]
   },
   {
-    "id": "github-GreenPomelo-Undergraduate-91eaaa87a70b6ee72793",
-    "kind": "resource",
-    "source_id": "github:GreenPomelo/Undergraduate",
-    "channel_id": "github:GreenPomelo/Undergraduate:resource",
-    "channel": "GitHub 资源",
-    "title": "🔧mini program of NJUPT | 南京邮电大... · 3.4.6 (2018-12-25)",
-    "url": "https://github.com/GreenPomelo/Undergraduate/blob/master/CHANGELOG.md",
-    "source": "🔧mini program of NJUPT | 南京邮电大...",
-    "source_domain": "github.com",
-    "source_type": "github_resource",
-    "category": "考试",
-    "domain": "exam",
-    "intent": "check_result",
-    "lifecycle": "evergreen",
+    "id": "exchange-8c940f9a9a38972abe4d",
+    "kind": "notice",
+    "source_id": "exchange",
+    "channel_id": "exchange_notice",
+    "channel": "国际交流通知",
+    "title": "南洋理工大学寒暑假交流项目",
+    "url": "https://exchange.njupt.edu.cn/2021/0511/c7467a192928/page.htm",
+    "source": "国际合作交流处",
+    "source_domain": "exchange.njupt.edu.cn",
+    "source_type": "central_admin",
+    "category": "项目",
+    "domain": "international",
+    "intent": "apply",
+    "lifecycle": "unknown",
     "evidence": [
-      "🔧mini program of NJUPT | 南京邮电大... · 3.4.6 (2018-12-25) 3.4.6 2018-12-25 - 添加电费余额查询 3.4.5 2018-12-22 - 添加 wx.updateManager 3.4.4 2018-12-21 - 添加金额操作记录页面 3.4.3 20"
+      "每年 11 月报名，次年 1 月开课；每年 4 月报名， 7 月开课"
     ],
-    "confidence": null,
+    "confidence": 0.9,
     "sub_category": null,
     "deadline": null,
-    "action_required": false,
-    "action_type": null,
-    "action_summary": null,
-    "required_materials": [],
+    "action_required": true,
+    "action_type": "submit",
+    "action_summary": "每年11月或4月报名，向所在学院提交申请材料。",
+    "required_materials": [
+      "南京邮电大学本科生海外访学申请表",
+      "英语水平证明",
+      "学术科研能力证明",
+      "获奖证书"
+    ],
     "sensitive": false,
     "sensitive_types": [],
     "review_required": false,
-    "risk_flags": [
-      "evergreen",
-      "github_resource"
-    ],
+    "risk_flags": [],
     "audience": [
       "本科生",
-      "研究生"
+      "研究生",
+      "国际学生"
     ],
-    "published_at": "2020-01-11",
-    "content": "3.4.6 2018-12-25 - 添加电费余额查询 3.4.5 2018-12-22 - 添加 wx.updateManager 3.4.4 2018-12-21 - 添加金额操作记录页面 3.4.3 2018-12-16 - 更改一卡通支付逻辑 - 修复电费充值的若干 bug 3.4.2 2018-12-07 - module 接口改为到具体页面接入,让首页顶部的 icon 加载更快 3.4.1 2018-12-04 - 将体育部,问卷页面和 userInfo 解耦 - 问卷,考试倒计时,体育部页面添加 Loading 3.4.0 2018-11-10 - 消息盒子的提示红点 - 资讯 TabBar 的小红点 - 拦截器的 API 替换 - 校园卡拾取的匿名 3.3.4 2018-10-23 - 修复消息盒子不提示的 bug - 优化图书馆模块的代码 - 修复淘宝口令会弹出社团招新模态框的 bug 以及添加可以关闭模态框 3.3.1 2018-10-17 - 增加 wx-axios 模块以及拦截器的整合,重构 API 列表 - 修复来回登录的 bug 以及更新错误处理 - 首页的逻辑,代码优化 3.3.0 2018-10-16 - 整合开源版本 - 修复充值组件需要嵌套 $parent 的 bug 3.2.2 2018-10-01 - 导航栏切换为迎国庆 3.2.1 2018-09-07 - 导航栏切换为开学季 3.2.0 2018-8-13 - 修改注册登录的逻辑 - 增加了修改绑定手机功能 - 更新了一卡通的页面风格 - 增加了电费充值绑定宿舍的功能 - 增加了学费查询功能 - 添加跳转到校谈的入口 - 微调了一些 ui，修复了一些 bug - 运营在痛骂程序员不给力 3.0.1 2018-4-20 - 登录注册添加友好错误提示 - 修复图书馆搜索结果 bug - 修复反馈对话界面的消息排版出错 bug - 修复挂失列表加载问题 - 完成考试倒计时 3.0.0 2018-4-8 - 新增绑定用户手机号功能 - 新增电费、网费充值 - 新增用户消息系统 - 新增搜索功能页 - 新增 GPA 计算器 - 完善课表查询 - 完善考试倒计时 - 祭天了一个产品经理 2.4.0 2017-10-12 - 增加了青柚工作室招新 - 更改了欢迎页面 - 增加了我的反馈页面，大家可以看到自己的反馈状态 - 程序员已经快要祭不动了 2.3.0 2017-9-1 - 修复社团招新的一些 bug - 校园卡功能恢复 - 新增了欢迎页面 - 体育部功能恢复正常使用 - 祭天的程序员被拉出来又祭了一次 2.0.0 2017-8-10 - 新增更多功能入口 - 新增考试查询、补考查询，等级考试，补考辅导课查询功能 - 新增查学费功能 - 新增图书馆荐购功能 - 新增校园卡挂失，解挂失，发布挂失消息功能 - 新增资讯详情页附件在线预览功能 - 完善更新密码的方式 - 完善课表查询功能",
-    "summary": "3.4.6 2018-12-25 - 添加电费余额查询 3.4.5 2018-12-22 - 添加 wx.updateManager 3.4.4 2018-12-21 - 添加金额操作记录页面 3.4.3 2018-12-16 - 更改一卡通支付逻辑 - 修复电费充值的若干 bug 3.4.2 2018-12-07 - module 接口改为到具体页面接入,",
+    "published_at": null,
+    "content": "1. 学校排名： QS No.13 2. 合作模式： 6 周 3. 合作层次：本科生和研究生 4. 合作专业：专业不限 5. 费用 项目费总计： 5580 （课程项目） /6980 （科研项目）含大学学费、管理费等。 6. 语言要求：英语听说读写有一定基础，能接受全英文授课 7. 报名及派出时间：每年 11 月报名，次年 1 月开课；每年 4 月报名， 7 月开课 8. 报名程序： 采取“个人申请、学院推荐、专家评审、择优录取”的方式进行选拔。 （ 1 ）申请人将申请材料交至各学院，申请人应向所在学院提交以下材料： （ a ）《南京邮电大学本科生海外访学申请表》； （ b ）英语水平证明复印件； （ c ）学术科研能力证明材料复印件（包括论文发表、参与竞赛、项目等）； （ d ）获奖证书复印件（校级以上奖励）。 （ 2 ）各学院根据申请资格与条件对申请人进行筛选、排序并填写《南京邮电大学本科生海外访学申请汇总表》，汇总表交至教务处实践教学科，申请材料电子版本发送到 jwc-sjjxk@njupt.edu.cn 。 （ 3 ）教务处会同相关职能部门，共同组织专家对学院推荐的候选人材料进行审核，确定选派学生名单并发布。 （ 4 ）开始课程。 9. 项目咨询 国际合作交流处 朱老师 85866716",
+    "summary": "南洋理工大学寒暑假交流项目，每年11月报名次年1月开课，每年4月报名7月开课，采取个人申请、学院推荐方式。",
     "attachments": [],
-    "student_score": 0.91,
-    "freshness_score": 0.42,
-    "importance_score": 0.61,
-    "source_weight": 0.5,
+    "student_score": 0.9102,
+    "freshness_score": 0.45,
+    "importance_score": 0.8135,
+    "source_weight": 0.8,
     "tags": [
       "项目",
-      "考试",
-      "补考",
-      "宿舍",
-      "社团",
-      "GitHub资料"
+      "访学项目",
+      "南洋理工大学"
     ],
-    "hash": "91eaaa87a70b6ee72793",
-    "cache_key": "f1865fbdccbb67b104d3",
+    "hash": "8c940f9a9a38972abe4d",
+    "cache_key": "7c16f44e909811431b04",
     "llm_schema_version": "hytask-taskframe-v1",
     "llm": {
-      "used": false,
-      "provider": null,
-      "model": null,
+      "used": true,
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-lite",
       "prompt_version": "hytask-taskframe-v1",
-      "confidence": null,
+      "confidence": 0.9,
       "review_required": false
     },
     "canonical": {
-      "doc_id": "github-GreenPomelo-Undergraduate-91eaaa87a70b6ee72793",
-      "source_id": "github:GreenPomelo/Undergraduate",
-      "channel_id": "github:GreenPomelo/Undergraduate:resource",
-      "title": "🔧mini program of NJUPT | 南京邮电大... · 3.4.6 (2018-12-25)",
-      "canonical_url": "https://github.com/GreenPomelo/Undergraduate/blob/master/CHANGELOG.md",
-      "published_at": "2020-01-11T00:00:00",
-      "clean_text": "3.4.6 2018-12-25 - 添加电费余额查询 3.4.5 2018-12-22 - 添加 wx.updateManager 3.4.4 2018-12-21 - 添加金额操作记录页面 3.4.3 2018-12-16 - 更改一卡通支付逻辑 - 修复电费充值的若干 bug 3.4.2 2018-12-07 - module 接口改为到具体页面接入,让首页顶部的 icon 加载更快 3.4.1 2018-12-04 - 将体育部,问卷页面和 userInfo 解耦 - 问卷,考试倒计时,体育部页面添加 Loading 3.4.0 2018-11-10 - 消息盒子的提示红点 - 资讯 TabBar 的小红点 - 拦截器的 API 替换 - 校园卡拾取的匿名 3.3.4 2018-10-23 - 修复消息盒子不提示的 bug - 优化图书馆模块的代码 - 修复淘宝口令会弹出社团招新模态框的 bug 以及添加可以关闭模态框 3.3.1 2018-10-17 - 增加 wx-axios 模块以及拦截器的整合,重构 API 列表 - 修复来回登录的 bug 以及更新错误处理 - 首页的逻辑,代码优化 3.3.0 2018-10-16 - 整合开源版本 - 修复充值组件需要嵌套 $parent 的 bug 3.2.2 2018-10-01 - 导航栏切换为迎国庆 3.2.1 2018-09-07 - 导航栏切换为开学季 3.2.0 2018-8-13 - 修改注册登录的逻辑 - 增加了修改绑定手机功能 - 更新了一卡通的页面风格 - 增加了电费充值绑定宿舍的功能 - 增加了学费查询功能 - 添加跳转到校谈的入口 - 微调了一些 ui，修复了一些 bug - 运营在痛骂程序员不给力 3.0.1 2018-4-20 - 登录注册添加友好错误提示 - 修复图书馆搜索结果 bug - 修复反馈对话界面的消息排版出错 bug - 修复挂失列表加载问题 - 完成考试倒计时 3.0.0 2018-4-8 - 新增绑定用户手机号功能 - 新增电费、网费充值 - 新增用户消息系统 - 新增搜索功能页 - 新增 GPA 计算器 - 完善课表查询 - 完善考试倒计时 - 祭天了一个产品经理 2.4.0 2017-10-12 - 增加了青柚工作室招新 - 更改了欢迎页面 - 增加了我的反馈页面，大家可以看到自己的反馈状态 - 程序员已经快要祭不动了 2.3.0 2017-9-1 - 修复社团招新的一些 bug - 校园卡功能恢复 - 新增了欢迎页面 - 体育部功能恢复正常使用 - 祭天的程序员被拉出来又祭了一次 2.0.0 2017-8-10 - 新增更多功能入口 - 新增考试查询、补考查询，等级考试，补考辅导课查询功能 - 新增查学费功能 - 新增图书馆荐购功能 - 新增校园卡挂失，解挂失，发布挂失消息功能 - 新增资讯详情页附件在线预览功能 - 完善更新密码的方式 - 完善课表查询功能",
+      "doc_id": "exchange-8c940f9a9a38972abe4d",
+      "source_id": "exchange",
+      "channel_id": "exchange_notice",
+      "title": "南洋理工大学寒暑假交流项目",
+      "canonical_url": "https://exchange.njupt.edu.cn/2021/0511/c7467a192928/page.htm",
+      "published_at": null,
+      "clean_text": "1. 学校排名： QS No.13 2. 合作模式： 6 周 3. 合作层次：本科生和研究生 4. 合作专业：专业不限 5. 费用 项目费总计： 5580 （课程项目） /6980 （科研项目）含大学学费、管理费等。 6. 语言要求：英语听说读写有一定基础，能接受全英文授课 7. 报名及派出时间：每年 11 月报名，次年 1 月开课；每年 4 月报名， 7 月开课 8. 报名程序： 采取“个人申请、学院推荐、专家评审、择优录取”的方式进行选拔。 （ 1 ）申请人将申请材料交至各学院，申请人应向所在学院提交以下材料： （ a ）《南京邮电大学本科生海外访学申请表》； （ b ）英语水平证明复印件； （ c ）学术科研能力证明材料复印件（包括论文发表、参与竞赛、项目等）； （ d ）获奖证书复印件（校级以上奖励）。 （ 2 ）各学院根据申请资格与条件对申请人进行筛选、排序并填写《南京邮电大学本科生海外访学申请汇总表》，汇总表交至教务处实践教学科，申请材料电子版本发送到 jwc-sjjxk@njupt.edu.cn 。 （ 3 ）教务处会同相关职能部门，共同组织专家对学院推荐的候选人材料进行审核，确定选派学生名单并发布。 （ 4 ）开始课程。 9. 项目咨询 国际合作交流处 朱老师 85866716",
       "attachments": [],
-      "content_hash": "4bb4bd7f252951686096",
-      "dedupe_key": "a1a4115989e993481ed6",
+      "content_hash": "d0848d7202571ce9191c",
+      "dedupe_key": "121d563974a807c1a63a",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -5839,22 +5523,19 @@
       "low_evidence": false,
       "duplicate": false,
       "expired": false,
-      "evergreen": true,
+      "evergreen": false,
       "administrative_noise": false,
-      "risk_flags": [
-        "evergreen",
-        "github_resource"
-      ],
+      "risk_flags": [],
       "allow_llm": true,
       "allow_full_text_display": true,
       "review_required": false,
-      "evaluated_at": "2026-05-24T09:12:59.754085Z"
+      "evaluated_at": "2026-05-24T11:48:56.708309Z"
     },
     "task_frames": [
       {
-        "task_id": "task_581ac29de6101ad7",
-        "doc_id": "github-GreenPomelo-Undergraduate-91eaaa87a70b6ee72793",
-        "task_type": "result_check",
+        "task_id": "apply_ntu_exchange",
+        "doc_id": "exchange-8c940f9a9a38972abe4d",
+        "task_type": "application",
         "who": {
           "audience": [
             "本科生",
@@ -5865,35 +5546,42 @@
           "major": [],
           "class_name": []
         },
-        "what": "🔧mini program of NJUPT | 南京邮电大... · 3.4.6 (2018-12-25)",
+        "what": "南洋理工大学寒暑假交流项目申请",
         "action": {
-          "required": false,
-          "verb": null,
-          "object": null,
-          "summary": null
+          "required": true,
+          "verb": "提交",
+          "object": "申请材料",
+          "summary": "向所在学院提交申请表及相关证明材料"
         },
         "time": {
-          "published_at": "2020-01-11",
+          "published_at": null,
           "deadline": null,
-          "lifecycle": "evergreen",
+          "lifecycle": "upcoming",
           "urgency_days": null
         },
-        "materials": [],
+        "materials": [
+          {
+            "name": "南京邮电大学本科生海外访学申请表",
+            "role": "申请表",
+            "required": true,
+            "sensitive": false
+          }
+        ],
         "location": {
-          "place": null,
+          "place": "所在学院",
           "online": null,
-          "contact": null
+          "contact": "国际合作交流处 朱老师 85866716"
         },
         "source": {
-          "source_id": "github:GreenPomelo/Undergraduate",
-          "channel_id": "github:GreenPomelo/Undergraduate:resource",
-          "authority": 0.5,
+          "source_id": "exchange",
+          "channel_id": "exchange_notice",
+          "authority": 0.8,
           "official": true
         },
         "evidence": [
           {
-            "field": "general",
-            "text": "🔧mini program of NJUPT | 南京邮电大... · 3.4.6 (2018-12-25) 3.4.6 2018-12-25 - 添加电费余额查询 3.4.5 2018-12-22 - 添加 wx.updateManager 3.4.4 2018-12-21 - 添加金额操作记录页面 3.4.3 20"
+            "field": "deadline",
+            "text": "每年 11 月报名，次年 1 月开课；每年 4 月报名， 7 月开课"
           }
         ],
         "risk": {
@@ -5902,7 +5590,163 @@
           "low_evidence": false,
           "review_required": false
         },
-        "confidence": 0.58
+        "confidence": 0.9
+      }
+    ]
+  },
+  {
+    "id": "exchange-5b8b5d43475cad50110e",
+    "kind": "notice",
+    "source_id": "exchange",
+    "channel_id": "exchange_notice",
+    "channel": "国际交流通知",
+    "title": "香港大学 “创新创业”赴港交流项目",
+    "url": "https://exchange.njupt.edu.cn/2021/0511/c7467a192930/page.htm",
+    "source": "国际合作交流处",
+    "source_domain": "exchange.njupt.edu.cn",
+    "source_type": "central_admin",
+    "category": "项目",
+    "domain": "international",
+    "intent": "apply",
+    "lifecycle": "unknown",
+    "evidence": [
+      "每年 5 月报名， 7 月－ 8 月派出"
+    ],
+    "confidence": 0.9,
+    "sub_category": null,
+    "deadline": null,
+    "action_required": true,
+    "action_type": "submit",
+    "action_summary": "每年5月报名，向所在学院提交申请材料。",
+    "required_materials": [
+      "南京邮电大学本科生海外访学申请表",
+      "英语水平证明",
+      "学术科研能力证明",
+      "获奖证书"
+    ],
+    "sensitive": false,
+    "sensitive_types": [],
+    "review_required": false,
+    "risk_flags": [],
+    "audience": [
+      "本科生",
+      "研究生",
+      "国际学生"
+    ],
+    "published_at": null,
+    "content": "1. 学校排名： USNEWS 103 ； QS 26 2. 合作模式：短期 8 天 3. 合作层次：不限 4. 合作专业：不限 5. 费用： 30 人以下，每人 6600 港币， 30 人以上，超出人数每人增加 2200 港币 6. 语言要求：具备良好的英语听说读写能力 7. 报名及派出时间：每年 5 月报名， 7 月－ 8 月派出 8. 报名程序： （ 1 ）采取“个人申请、学院推荐、专家评审、择优录取”的方式进行选拔。 （ 2 ）申请人应向所在学院提交以下材料： A. 《南京邮电大学本科生海外访学申请表》； B. 英语水平证明及复印件； C. 学术科研能力证明材料及复印件（包括论文发表、参与竞赛、项目等）； D. 获奖证书及复印件（校级以上奖励）。 （ 3 ）申请人将申请材料交至各学院，各学院根据申请资格与条件对申请人进行筛选、排序并填写《南京邮电大学本科生海外访学申请汇总表》，将申请材料及汇总表交至教务处实践教学科，申请材料电子版本发送到 jwc-sjjxk@njupt.edu.cn 。 （ 4 ）教务处审核通过后予以公示，公示期满无异议，通知申请人自行办理赴港手续。 9. 项目咨询 国际合作交流处 朱老师 85866716",
+    "summary": "香港大学“创新创业”赴港交流项目，每年5月报名，7-8月派出，采取个人申请、学院推荐方式。",
+    "attachments": [],
+    "student_score": 0.9102,
+    "freshness_score": 0.45,
+    "importance_score": 0.8135,
+    "source_weight": 0.8,
+    "tags": [
+      "项目",
+      "访学项目",
+      "香港大学"
+    ],
+    "hash": "5b8b5d43475cad50110e",
+    "cache_key": "967c79d0086ae9320038",
+    "llm_schema_version": "hytask-taskframe-v1",
+    "llm": {
+      "used": true,
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-lite",
+      "prompt_version": "hytask-taskframe-v1",
+      "confidence": 0.9,
+      "review_required": false
+    },
+    "canonical": {
+      "doc_id": "exchange-5b8b5d43475cad50110e",
+      "source_id": "exchange",
+      "channel_id": "exchange_notice",
+      "title": "香港大学 “创新创业”赴港交流项目",
+      "canonical_url": "https://exchange.njupt.edu.cn/2021/0511/c7467a192930/page.htm",
+      "published_at": null,
+      "clean_text": "1. 学校排名： USNEWS 103 ； QS 26 2. 合作模式：短期 8 天 3. 合作层次：不限 4. 合作专业：不限 5. 费用： 30 人以下，每人 6600 港币， 30 人以上，超出人数每人增加 2200 港币 6. 语言要求：具备良好的英语听说读写能力 7. 报名及派出时间：每年 5 月报名， 7 月－ 8 月派出 8. 报名程序： （ 1 ）采取“个人申请、学院推荐、专家评审、择优录取”的方式进行选拔。 （ 2 ）申请人应向所在学院提交以下材料： A. 《南京邮电大学本科生海外访学申请表》； B. 英语水平证明及复印件； C. 学术科研能力证明材料及复印件（包括论文发表、参与竞赛、项目等）； D. 获奖证书及复印件（校级以上奖励）。 （ 3 ）申请人将申请材料交至各学院，各学院根据申请资格与条件对申请人进行筛选、排序并填写《南京邮电大学本科生海外访学申请汇总表》，将申请材料及汇总表交至教务处实践教学科，申请材料电子版本发送到 jwc-sjjxk@njupt.edu.cn 。 （ 4 ）教务处审核通过后予以公示，公示期满无异议，通知申请人自行办理赴港手续。 9. 项目咨询 国际合作交流处 朱老师 85866716",
+      "attachments": [],
+      "content_hash": "12e5b62064de8e23a5d0",
+      "dedupe_key": "7262b4c4684ec36f1a61",
+      "language": "zh",
+      "status": "ok",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "http_status": 200
+    },
+    "rule_guard": {
+      "restricted": false,
+      "sensitive": false,
+      "sensitive_types": [],
+      "low_evidence": false,
+      "duplicate": false,
+      "expired": false,
+      "evergreen": false,
+      "administrative_noise": false,
+      "risk_flags": [],
+      "allow_llm": true,
+      "allow_full_text_display": true,
+      "review_required": false,
+      "evaluated_at": "2026-05-24T11:48:55.516619Z"
+    },
+    "task_frames": [
+      {
+        "task_id": "apply_hku_summer",
+        "doc_id": "exchange-5b8b5d43475cad50110e",
+        "task_type": "application",
+        "who": {
+          "audience": [
+            "本科生"
+          ],
+          "college": [],
+          "grade": [],
+          "major": [],
+          "class_name": []
+        },
+        "what": "香港大学“创新创业”赴港交流项目申请",
+        "action": {
+          "required": true,
+          "verb": "提交",
+          "object": "申请材料",
+          "summary": "向所在学院提交申请表及相关证明材料"
+        },
+        "time": {
+          "published_at": null,
+          "deadline": null,
+          "lifecycle": "upcoming",
+          "urgency_days": null
+        },
+        "materials": [
+          {
+            "name": "南京邮电大学本科生海外访学申请表",
+            "role": "申请表",
+            "required": true,
+            "sensitive": false
+          }
+        ],
+        "location": {
+          "place": "所在学院",
+          "online": null,
+          "contact": "国际合作交流处 朱老师 85866716"
+        },
+        "source": {
+          "source_id": "exchange",
+          "channel_id": "exchange_notice",
+          "authority": 0.8,
+          "official": true
+        },
+        "evidence": [
+          {
+            "field": "deadline",
+            "text": "每年 5 月报名"
+          }
+        ],
+        "risk": {
+          "sensitive": false,
+          "restricted": false,
+          "low_evidence": false,
+          "review_required": false
+        },
+        "confidence": 0.9
       }
     ]
   },
@@ -7823,7 +7667,7 @@
       "dedupe_key": "5e01d70d08dcf466bcc0",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -7843,7 +7687,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T09:03:48.096732Z"
+      "evaluated_at": "2026-05-24T11:47:55.539905Z"
     },
     "task_frames": []
   },
@@ -8164,7 +8008,7 @@
       "dedupe_key": "db1c80229a93ddfc6a2a",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -8185,7 +8029,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T09:00:14.924082Z"
+      "evaluated_at": "2026-05-24T11:46:54.156515Z"
     },
     "task_frames": []
   },
@@ -8331,7 +8175,7 @@
       "dedupe_key": "ee16689f9d3bcd1d3445",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -8353,7 +8197,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T08:55:39.882149Z"
+      "evaluated_at": "2026-05-24T11:44:42.971644Z"
     },
     "task_frames": []
   },
@@ -8621,7 +8465,7 @@
       "dedupe_key": "a92ae53189abb26300e1",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -8641,7 +8485,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T08:58:17.141448Z"
+      "evaluated_at": "2026-05-24T11:45:58.814367Z"
     },
     "task_frames": []
   },
@@ -9644,280 +9488,6 @@
     "task_frames": []
   },
   {
-    "id": "exchange-06d7a85422b76ecad291",
-    "kind": "notice",
-    "source_id": "exchange",
-    "channel_id": "exchange_notice",
-    "channel": "国际交流通知",
-    "title": "关于申报2026年度国际青年人才来华交流项目的通知",
-    "url": "https://exchange.njupt.edu.cn/2026/0320/c7442a298116/page.htm",
-    "source": "国际合作交流处",
-    "source_domain": "exchange.njupt.edu.cn",
-    "source_type": "central_admin",
-    "category": "资料",
-    "domain": "resource",
-    "intent": "download",
-    "lifecycle": "unknown",
-    "evidence": [
-      "关于申报2026年度国际青年人才来华交流项目的通知 关于转发中国国际人才交流基金会申报 202 6 年度国际青年人才来华交流项目的通知 各学院、各相关单位： 国际青年人才来华交流项目以开放包容促发展、双向赋能共成长、择优遴选重实效为原则，资助优秀外国 青年人才 来华 开展 访问交流、国际实习 和 短期工作，促进 外国 ",
-      "申报国际青年人才来华交流项目的具体要求请见附件。",
-      "我校每类项目限项填报 2 项，超过 2 项时，将进行线下遴选，再为拟申报项目分配子账号，进入申报流程。"
-    ],
-    "confidence": null,
-    "sub_category": null,
-    "deadline": null,
-    "action_required": true,
-    "action_type": "申报",
-    "action_summary": "关于申报2026年度国际青年人才来华交流项目的通知 关于转发中国国际人才交流基金会申报 202 6 年度国际青年人才来华交流项目的通知 各学院、各相关单位： 国际青年人才来华交流项目以开放包容促发展、双向赋能共成长、择优遴选重实效为原则，资助优秀外国 青年人才 来华 开展 访问交流、国际实习 和 短期工作，促进 外国 青年人",
-    "required_materials": [],
-    "sensitive": false,
-    "sensitive_types": [],
-    "review_required": false,
-    "risk_flags": [
-      "evergreen"
-    ],
-    "audience": [
-      "本科生",
-      "研究生",
-      "国际学生"
-    ],
-    "published_at": null,
-    "content": "关于转发中国国际人才交流基金会申报 202 6 年度国际青年人才来华交流项目的通知 各学院、各相关单位： 国际青年人才来华交流项目以开放包容促发展、双向赋能共成长、择优遴选重实效为原则，资助优秀外国 青年人才 来华 开展 访问交流、国际实习 和 短期工作，促进 外国 青年人才了解和认识 中国 ，推动中外青年在交流中“增进了解、收获友谊、共同成长” 。 资助 类型 和额度 一、访问交流。 资助外国青年在华以团组形式参加不超过 30 日 的 交流活动 ， 10000 元人民币 / 人（税前）。 二、国际实习。 资助在读的外国青年在其学习或研究领域，在华进行不超过 60 日 的实习 。 国际实习，在华实习时长 30 日以内（含 30 日）的， 15000 元人民币 / 人（税前）；在华实习时长 31-60 日（含 60 日）的， 20000 元人民币 / 人（税前）。 三、 短期工作。 资助已毕业的外国青年在其学习或研究领域，在华进行不超过 90 日的短期工作。在华工作时长 30 日以内（含 30 日）的， 15000 元人民币 / 人（税前）；在华工作时长 31-60 日（含 60 日）的， 20000 元人民币 / 人（税前）；在华工作时长 61-90 日（含 90 日）的， 25000 元人民币 / 人（税前）。 申报国际青年人才来华交流项目的具体要求请见附件。我校每类项目限项填报 2 项，超过 2 项时，将进行线下遴选，再为拟申报项目分配子账号，进入申报流程。请意向申报人在 4 月 10 日前联系国际处。 联系人：张老师，电话： 85866246 。 2026 年 3 月 20 日 1.国际青年人才来华交流项目申报表（短期工作类）模板.pdf 2.国际青年人才来华交流项目申报表（访问交流类）模板.pdf 3.国际青年人才来华交流项目申报表（国际实习类）模板.pdf 4.申报指南（挂网版）.doc 5.关于开展2026年度国际青年人才来华交项目申报工作的提示.docx",
-    "summary": "关于转发中国国际人才交流基金会申报 202 6 年度国际青年人才来华交流项目的通知 各学院、各相关单位： 国际青年人才来华交流项目以开放包容促发展、双向赋能共成长、择优遴选重实效为原则，资助优秀外国 青年人才 来华 开展 访问交流、国际实习 和 短期工作，促进 外国 青年人才了解和认识 中国 ，推动中外青年在交流中“增进了解、收获友谊、共同成长” 。 资助 ",
-    "attachments": [
-      {
-        "name": "1.国际青年人才来华交流项目申报表（短期工作类）模板.pdf",
-        "url": "https://exchange.njupt.edu.cn/_upload/article/files/76/04/f0ca6b5340dc8651fa162fedce69/aeb368be-60d8-4bff-9a64-1d84efa064c0.pdf",
-        "type": "pdf",
-        "role": "申请表",
-        "description": null,
-        "sensitive": false
-      },
-      {
-        "name": "2.国际青年人才来华交流项目申报表（访问交流类）模板.pdf",
-        "url": "https://exchange.njupt.edu.cn/_upload/article/files/76/04/f0ca6b5340dc8651fa162fedce69/ce7c66ad-26f4-45de-93ff-d23ca7d2188a.pdf",
-        "type": "pdf",
-        "role": "申请表",
-        "description": null,
-        "sensitive": false
-      },
-      {
-        "name": "3.国际青年人才来华交流项目申报表（国际实习类）模板.pdf",
-        "url": "https://exchange.njupt.edu.cn/_upload/article/files/76/04/f0ca6b5340dc8651fa162fedce69/84f9d6be-b74a-4c4f-8dba-fb1708e67190.pdf",
-        "type": "pdf",
-        "role": "申请表",
-        "description": null,
-        "sensitive": false
-      },
-      {
-        "name": "4.申报指南（挂网版）.doc",
-        "url": "https://exchange.njupt.edu.cn/_upload/article/files/76/04/f0ca6b5340dc8651fa162fedce69/5897e283-a71d-4648-be3b-16681e82b835.doc",
-        "type": "doc",
-        "role": null,
-        "description": null,
-        "sensitive": false
-      },
-      {
-        "name": "5.关于开展2026年度国际青年人才来华交项目申报工作的提示.docx",
-        "url": "https://exchange.njupt.edu.cn/_upload/article/files/76/04/f0ca6b5340dc8651fa162fedce69/a0f721b2-aaeb-403a-9f7d-64f74d010e14.docx",
-        "type": "docx",
-        "role": null,
-        "description": null,
-        "sensitive": false
-      }
-    ],
-    "student_score": 0.849,
-    "freshness_score": 0.45,
-    "importance_score": 0.844,
-    "source_weight": 0.8,
-    "tags": [
-      "资料",
-      "项目",
-      "实习",
-      "开放"
-    ],
-    "hash": "06d7a85422b76ecad291",
-    "cache_key": "45ef81c52e2017928124",
-    "llm_schema_version": "hytask-taskframe-v1",
-    "llm": {
-      "used": false,
-      "provider": null,
-      "model": null,
-      "prompt_version": "hytask-taskframe-v1",
-      "confidence": null,
-      "review_required": false
-    },
-    "canonical": {
-      "doc_id": "exchange-06d7a85422b76ecad291",
-      "source_id": "exchange",
-      "channel_id": "exchange_notice",
-      "title": "关于申报2026年度国际青年人才来华交流项目的通知",
-      "canonical_url": "https://exchange.njupt.edu.cn/2026/0320/c7442a298116/page.htm",
-      "published_at": null,
-      "clean_text": "关于转发中国国际人才交流基金会申报 202 6 年度国际青年人才来华交流项目的通知 各学院、各相关单位： 国际青年人才来华交流项目以开放包容促发展、双向赋能共成长、择优遴选重实效为原则，资助优秀外国 青年人才 来华 开展 访问交流、国际实习 和 短期工作，促进 外国 青年人才了解和认识 中国 ，推动中外青年在交流中“增进了解、收获友谊、共同成长” 。 资助 类型 和额度 一、访问交流。 资助外国青年在华以团组形式参加不超过 30 日 的 交流活动 ， 10000 元人民币 / 人（税前）。 二、国际实习。 资助在读的外国青年在其学习或研究领域，在华进行不超过 60 日 的实习 。 国际实习，在华实习时长 30 日以内（含 30 日）的， 15000 元人民币 / 人（税前）；在华实习时长 31-60 日（含 60 日）的， 20000 元人民币 / 人（税前）。 三、 短期工作。 资助已毕业的外国青年在其学习或研究领域，在华进行不超过 90 日的短期工作。在华工作时长 30 日以内（含 30 日）的， 15000 元人民币 / 人（税前）；在华工作时长 31-60 日（含 60 日）的， 20000 元人民币 / 人（税前）；在华工作时长 61-90 日（含 90 日）的， 25000 元人民币 / 人（税前）。 申报国际青年人才来华交流项目的具体要求请见附件。我校每类项目限项填报 2 项，超过 2 项时，将进行线下遴选，再为拟申报项目分配子账号，进入申报流程。请意向申报人在 4 月 10 日前联系国际处。 联系人：张老师，电话： 85866246 。 2026 年 3 月 20 日 1.国际青年人才来华交流项目申报表（短期工作类）模板.pdf 2.国际青年人才来华交流项目申报表（访问交流类）模板.pdf 3.国际青年人才来华交流项目申报表（国际实习类）模板.pdf 4.申报指南（挂网版）.doc 5.关于开展2026年度国际青年人才来华交项目申报工作的提示.docx",
-      "attachments": [
-        {
-          "name": "1.国际青年人才来华交流项目申报表（短期工作类）模板.pdf",
-          "url": "https://exchange.njupt.edu.cn/_upload/article/files/76/04/f0ca6b5340dc8651fa162fedce69/aeb368be-60d8-4bff-9a64-1d84efa064c0.pdf",
-          "type": "pdf",
-          "role": null,
-          "description": null,
-          "sensitive": false
-        },
-        {
-          "name": "2.国际青年人才来华交流项目申报表（访问交流类）模板.pdf",
-          "url": "https://exchange.njupt.edu.cn/_upload/article/files/76/04/f0ca6b5340dc8651fa162fedce69/ce7c66ad-26f4-45de-93ff-d23ca7d2188a.pdf",
-          "type": "pdf",
-          "role": null,
-          "description": null,
-          "sensitive": false
-        },
-        {
-          "name": "3.国际青年人才来华交流项目申报表（国际实习类）模板.pdf",
-          "url": "https://exchange.njupt.edu.cn/_upload/article/files/76/04/f0ca6b5340dc8651fa162fedce69/84f9d6be-b74a-4c4f-8dba-fb1708e67190.pdf",
-          "type": "pdf",
-          "role": null,
-          "description": null,
-          "sensitive": false
-        },
-        {
-          "name": "4.申报指南（挂网版）.doc",
-          "url": "https://exchange.njupt.edu.cn/_upload/article/files/76/04/f0ca6b5340dc8651fa162fedce69/5897e283-a71d-4648-be3b-16681e82b835.doc",
-          "type": "doc",
-          "role": null,
-          "description": null,
-          "sensitive": false
-        },
-        {
-          "name": "5.关于开展2026年度国际青年人才来华交项目申报工作的提示.docx",
-          "url": "https://exchange.njupt.edu.cn/_upload/article/files/76/04/f0ca6b5340dc8651fa162fedce69/a0f721b2-aaeb-403a-9f7d-64f74d010e14.docx",
-          "type": "docx",
-          "role": null,
-          "description": null,
-          "sensitive": false
-        }
-      ],
-      "content_hash": "b602099bb22d3f889a63",
-      "dedupe_key": "87b828fa80804358853f",
-      "language": "zh",
-      "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
-      "http_status": 200
-    },
-    "rule_guard": {
-      "restricted": false,
-      "sensitive": false,
-      "sensitive_types": [],
-      "low_evidence": false,
-      "duplicate": false,
-      "expired": false,
-      "evergreen": true,
-      "administrative_noise": false,
-      "risk_flags": [
-        "evergreen"
-      ],
-      "allow_llm": true,
-      "allow_full_text_display": true,
-      "review_required": false,
-      "evaluated_at": "2026-05-24T09:06:31.036223Z"
-    },
-    "task_frames": [
-      {
-        "task_id": "task_a1bd3469bb6fca44",
-        "doc_id": "exchange-06d7a85422b76ecad291",
-        "task_type": "download",
-        "who": {
-          "audience": [
-            "本科生",
-            "研究生",
-            "国际学生"
-          ],
-          "college": [],
-          "grade": [],
-          "major": [],
-          "class_name": []
-        },
-        "what": "关于申报2026年度国际青年人才来华交流项目的通知",
-        "action": {
-          "required": true,
-          "verb": "申报",
-          "object": null,
-          "summary": "关于申报2026年度国际青年人才来华交流项目的通知 关于转发中国国际人才交流基金会申报 202 6 年度国际青年人才来华交流项目的通知 各学院、各相关单位： 国际青年人才来华交流项目以开放包容促发展、双向赋能共成长、择优遴选重实效为原则，资助优秀外国 青年人才 来华 开展 访问交流、国际实习 和 短期工作，促进 外国 青年人"
-        },
-        "time": {
-          "published_at": null,
-          "deadline": null,
-          "lifecycle": "unknown",
-          "urgency_days": null
-        },
-        "materials": [
-          {
-            "name": "1.国际青年人才来华交流项目申报表（短期工作类）模板.pdf",
-            "role": "申请表",
-            "required": true,
-            "sensitive": false
-          },
-          {
-            "name": "2.国际青年人才来华交流项目申报表（访问交流类）模板.pdf",
-            "role": "申请表",
-            "required": true,
-            "sensitive": false
-          },
-          {
-            "name": "3.国际青年人才来华交流项目申报表（国际实习类）模板.pdf",
-            "role": "申请表",
-            "required": true,
-            "sensitive": false
-          },
-          {
-            "name": "4.申报指南（挂网版）.doc",
-            "role": null,
-            "required": true,
-            "sensitive": false
-          },
-          {
-            "name": "5.关于开展2026年度国际青年人才来华交项目申报工作的提示.docx",
-            "role": null,
-            "required": true,
-            "sensitive": false
-          }
-        ],
-        "location": {
-          "place": null,
-          "online": null,
-          "contact": null
-        },
-        "source": {
-          "source_id": "exchange",
-          "channel_id": "exchange_notice",
-          "authority": 0.8,
-          "official": true
-        },
-        "evidence": [
-          {
-            "field": "general",
-            "text": "关于申报2026年度国际青年人才来华交流项目的通知 关于转发中国国际人才交流基金会申报 202 6 年度国际青年人才来华交流项目的通知 各学院、各相关单位： 国际青年人才来华交流项目以开放包容促发展、双向赋能共成长、择优遴选重实效为原则，资助优秀外国 青年人才 来华 开展 访问交流、国际实习 和 短期工作，促进 外国"
-          },
-          {
-            "field": "general",
-            "text": "申报国际青年人才来华交流项目的具体要求请见附件。"
-          },
-          {
-            "field": "general",
-            "text": "我校每类项目限项填报 2 项，超过 2 项时，将进行线下遴选，再为拟申报项目分配子账号，进入申报流程。"
-          }
-        ],
-        "risk": {
-          "sensitive": false,
-          "restricted": false,
-          "low_evidence": false,
-          "review_required": false
-        },
-        "confidence": 0.58
-      }
-    ]
-  },
-  {
     "id": "jwc-ddc58ef858e63bf151e0",
     "kind": "notice",
     "source_id": "jwc",
@@ -10901,6 +10471,105 @@
     "task_frames": []
   },
   {
+    "id": "github-GreenPomelo-Undergraduate-91eaaa87a70b6ee72793",
+    "kind": "resource",
+    "source_id": "github:GreenPomelo/Undergraduate",
+    "channel_id": "github:GreenPomelo/Undergraduate:resource",
+    "channel": "GitHub 资源",
+    "title": "🔧mini program of NJUPT | 南京邮电大... · 3.4.6 (2018-12-25)",
+    "url": "https://github.com/GreenPomelo/Undergraduate/blob/master/CHANGELOG.md",
+    "source": "🔧mini program of NJUPT | 南京邮电大...",
+    "source_domain": "github.com",
+    "source_type": "github_resource",
+    "category": "资料",
+    "domain": "resource",
+    "intent": "read",
+    "lifecycle": "evergreen",
+    "evidence": [
+      "3.4.6 2018-12-25 - 添加电费余额查询",
+      "3.4.5 2018-12-22 - 添加 wx.updateManager"
+    ],
+    "confidence": 0.8,
+    "sub_category": null,
+    "deadline": null,
+    "action_required": false,
+    "action_type": null,
+    "action_summary": null,
+    "required_materials": [],
+    "sensitive": false,
+    "sensitive_types": [],
+    "review_required": false,
+    "risk_flags": [
+      "evergreen",
+      "github_resource"
+    ],
+    "audience": [
+      "本科生",
+      "研究生"
+    ],
+    "published_at": "2020-01-11",
+    "content": "3.4.6 2018-12-25 - 添加电费余额查询 3.4.5 2018-12-22 - 添加 wx.updateManager 3.4.4 2018-12-21 - 添加金额操作记录页面 3.4.3 2018-12-16 - 更改一卡通支付逻辑 - 修复电费充值的若干 bug 3.4.2 2018-12-07 - module 接口改为到具体页面接入,让首页顶部的 icon 加载更快 3.4.1 2018-12-04 - 将体育部,问卷页面和 userInfo 解耦 - 问卷,考试倒计时,体育部页面添加 Loading 3.4.0 2018-11-10 - 消息盒子的提示红点 - 资讯 TabBar 的小红点 - 拦截器的 API 替换 - 校园卡拾取的匿名 3.3.4 2018-10-23 - 修复消息盒子不提示的 bug - 优化图书馆模块的代码 - 修复淘宝口令会弹出社团招新模态框的 bug 以及添加可以关闭模态框 3.3.1 2018-10-17 - 增加 wx-axios 模块以及拦截器的整合,重构 API 列表 - 修复来回登录的 bug 以及更新错误处理 - 首页的逻辑,代码优化 3.3.0 2018-10-16 - 整合开源版本 - 修复充值组件需要嵌套 $parent 的 bug 3.2.2 2018-10-01 - 导航栏切换为迎国庆 3.2.1 2018-09-07 - 导航栏切换为开学季 3.2.0 2018-8-13 - 修改注册登录的逻辑 - 增加了修改绑定手机功能 - 更新了一卡通的页面风格 - 增加了电费充值绑定宿舍的功能 - 增加了学费查询功能 - 添加跳转到校谈的入口 - 微调了一些 ui，修复了一些 bug - 运营在痛骂程序员不给力 3.0.1 2018-4-20 - 登录注册添加友好错误提示 - 修复图书馆搜索结果 bug - 修复反馈对话界面的消息排版出错 bug - 修复挂失列表加载问题 - 完成考试倒计时 3.0.0 2018-4-8 - 新增绑定用户手机号功能 - 新增电费、网费充值 - 新增用户消息系统 - 新增搜索功能页 - 新增 GPA 计算器 - 完善课表查询 - 完善考试倒计时 - 祭天了一个产品经理 2.4.0 2017-10-12 - 增加了青柚工作室招新 - 更改了欢迎页面 - 增加了我的反馈页面，大家可以看到自己的反馈状态 - 程序员已经快要祭不动了 2.3.0 2017-9-1 - 修复社团招新的一些 bug - 校园卡功能恢复 - 新增了欢迎页面 - 体育部功能恢复正常使用 - 祭天的程序员被拉出来又祭了一次 2.0.0 2017-8-10 - 新增更多功能入口 - 新增考试查询、补考查询，等级考试，补考辅导课查询功能 - 新增查学费功能 - 新增图书馆荐购功能 - 新增校园卡挂失，解挂失，发布挂失消息功能 - 新增资讯详情页附件在线预览功能 - 完善更新密码的方式 - 完善课表查询功能",
+    "summary": "南京邮电大学小程序的版本更新日志，记录了从2017年到2018年的功能迭代，如电费查询、一卡通充值、课表查询等。",
+    "attachments": [],
+    "student_score": 0.8385,
+    "freshness_score": 0.42,
+    "importance_score": 0.4525,
+    "source_weight": 0.5,
+    "tags": [
+      "资料",
+      "小程序",
+      "更新日志",
+      "功能",
+      "GitHub资料"
+    ],
+    "hash": "91eaaa87a70b6ee72793",
+    "cache_key": "f1865fbdccbb67b104d3",
+    "llm_schema_version": "hytask-taskframe-v1",
+    "llm": {
+      "used": true,
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "prompt_version": "hytask-taskframe-v1",
+      "confidence": 0.8,
+      "review_required": false
+    },
+    "canonical": {
+      "doc_id": "github-GreenPomelo-Undergraduate-91eaaa87a70b6ee72793",
+      "source_id": "github:GreenPomelo/Undergraduate",
+      "channel_id": "github:GreenPomelo/Undergraduate:resource",
+      "title": "🔧mini program of NJUPT | 南京邮电大... · 3.4.6 (2018-12-25)",
+      "canonical_url": "https://github.com/GreenPomelo/Undergraduate/blob/master/CHANGELOG.md",
+      "published_at": "2020-01-11T00:00:00",
+      "clean_text": "3.4.6 2018-12-25 - 添加电费余额查询 3.4.5 2018-12-22 - 添加 wx.updateManager 3.4.4 2018-12-21 - 添加金额操作记录页面 3.4.3 2018-12-16 - 更改一卡通支付逻辑 - 修复电费充值的若干 bug 3.4.2 2018-12-07 - module 接口改为到具体页面接入,让首页顶部的 icon 加载更快 3.4.1 2018-12-04 - 将体育部,问卷页面和 userInfo 解耦 - 问卷,考试倒计时,体育部页面添加 Loading 3.4.0 2018-11-10 - 消息盒子的提示红点 - 资讯 TabBar 的小红点 - 拦截器的 API 替换 - 校园卡拾取的匿名 3.3.4 2018-10-23 - 修复消息盒子不提示的 bug - 优化图书馆模块的代码 - 修复淘宝口令会弹出社团招新模态框的 bug 以及添加可以关闭模态框 3.3.1 2018-10-17 - 增加 wx-axios 模块以及拦截器的整合,重构 API 列表 - 修复来回登录的 bug 以及更新错误处理 - 首页的逻辑,代码优化 3.3.0 2018-10-16 - 整合开源版本 - 修复充值组件需要嵌套 $parent 的 bug 3.2.2 2018-10-01 - 导航栏切换为迎国庆 3.2.1 2018-09-07 - 导航栏切换为开学季 3.2.0 2018-8-13 - 修改注册登录的逻辑 - 增加了修改绑定手机功能 - 更新了一卡通的页面风格 - 增加了电费充值绑定宿舍的功能 - 增加了学费查询功能 - 添加跳转到校谈的入口 - 微调了一些 ui，修复了一些 bug - 运营在痛骂程序员不给力 3.0.1 2018-4-20 - 登录注册添加友好错误提示 - 修复图书馆搜索结果 bug - 修复反馈对话界面的消息排版出错 bug - 修复挂失列表加载问题 - 完成考试倒计时 3.0.0 2018-4-8 - 新增绑定用户手机号功能 - 新增电费、网费充值 - 新增用户消息系统 - 新增搜索功能页 - 新增 GPA 计算器 - 完善课表查询 - 完善考试倒计时 - 祭天了一个产品经理 2.4.0 2017-10-12 - 增加了青柚工作室招新 - 更改了欢迎页面 - 增加了我的反馈页面，大家可以看到自己的反馈状态 - 程序员已经快要祭不动了 2.3.0 2017-9-1 - 修复社团招新的一些 bug - 校园卡功能恢复 - 新增了欢迎页面 - 体育部功能恢复正常使用 - 祭天的程序员被拉出来又祭了一次 2.0.0 2017-8-10 - 新增更多功能入口 - 新增考试查询、补考查询，等级考试，补考辅导课查询功能 - 新增查学费功能 - 新增图书馆荐购功能 - 新增校园卡挂失，解挂失，发布挂失消息功能 - 新增资讯详情页附件在线预览功能 - 完善更新密码的方式 - 完善课表查询功能",
+      "attachments": [],
+      "content_hash": "4bb4bd7f252951686096",
+      "dedupe_key": "a1a4115989e993481ed6",
+      "language": "zh",
+      "status": "ok",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "http_status": 200
+    },
+    "rule_guard": {
+      "restricted": false,
+      "sensitive": false,
+      "sensitive_types": [],
+      "low_evidence": false,
+      "duplicate": false,
+      "expired": false,
+      "evergreen": true,
+      "administrative_noise": false,
+      "risk_flags": [
+        "evergreen",
+        "github_resource"
+      ],
+      "allow_llm": true,
+      "allow_full_text_display": true,
+      "review_required": false,
+      "evaluated_at": "2026-05-24T11:52:13.536525Z"
+    },
+    "task_frames": []
+  },
+  {
     "id": "yzb-5d42eeefadb4244c4ac1",
     "kind": "notice",
     "source_id": "yzb",
@@ -11075,7 +10744,7 @@
       "dedupe_key": "fe393a5478f9cac244fd",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -11096,7 +10765,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T09:07:28.709559Z"
+      "evaluated_at": "2026-05-24T11:49:50.863412Z"
     },
     "task_frames": []
   },
@@ -11700,7 +11369,7 @@
       "dedupe_key": "06e55e901874fb4be596",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -11722,7 +11391,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T09:12:55.195304Z"
+      "evaluated_at": "2026-05-24T11:52:10.340495Z"
     },
     "task_frames": []
   },
@@ -13748,7 +13417,7 @@
       "dedupe_key": "1e219d21b7eaba4d521c",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -13769,7 +13438,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T09:09:56.886579Z"
+      "evaluated_at": "2026-05-24T11:50:49.140744Z"
     },
     "task_frames": []
   },
@@ -14877,7 +14546,7 @@
       "dedupe_key": "288c755e829eea2c5491",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -14899,7 +14568,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T09:13:52.615845Z"
+      "evaluated_at": "2026-05-24T11:52:32.305274Z"
     },
     "task_frames": []
   },
@@ -15010,7 +14679,7 @@
       "dedupe_key": "210d97d8b3fa6a04ee17",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -15028,7 +14697,7 @@
       "allow_llm": false,
       "allow_full_text_display": true,
       "review_required": true,
-      "evaluated_at": "2026-05-24T08:55:47.302166Z"
+      "evaluated_at": "2026-05-24T11:44:49.074596Z"
     },
     "task_frames": []
   },
@@ -17124,7 +16793,7 @@
       "dedupe_key": "b8d1ae146238902ef0bc",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -17144,7 +16813,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T09:06:27.916531Z"
+      "evaluated_at": "2026-05-24T11:48:49.449983Z"
     },
     "task_frames": []
   },
@@ -17405,7 +17074,7 @@
       "dedupe_key": "f3675d58c55b67497e6a",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -17426,7 +17095,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T09:09:58.172951Z"
+      "evaluated_at": "2026-05-24T11:50:50.208275Z"
     },
     "task_frames": []
   },
@@ -17926,7 +17595,7 @@
       "dedupe_key": "12641df096f11c86c297",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -17948,7 +17617,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T09:14:20.689683Z"
+      "evaluated_at": "2026-05-24T11:52:42.124133Z"
     },
     "task_frames": []
   },
@@ -18232,7 +17901,7 @@
       "dedupe_key": "a79575f543fea332fd4c",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -18253,9 +17922,173 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T08:56:42.728256Z"
+      "evaluated_at": "2026-05-24T11:45:16.903355Z"
     },
     "task_frames": []
+  },
+  {
+    "id": "github-GreenPomelo-Undergraduate-1328d4737a1ed6714c87",
+    "kind": "resource",
+    "source_id": "github:GreenPomelo/Undergraduate",
+    "channel_id": "github:GreenPomelo/Undergraduate:resource",
+    "channel": "GitHub 资源",
+    "title": "🔧mini program of NJUPT | 南京邮电大... · 南京邮电大学小程序",
+    "url": "https://github.com/GreenPomelo/Undergraduate/blob/master/README-zh_CN.md",
+    "source": "🔧mini program of NJUPT | 南京邮电大...",
+    "source_domain": "github.com",
+    "source_type": "github_resource",
+    "category": "资料",
+    "domain": "resource",
+    "intent": "read",
+    "lifecycle": "evergreen",
+    "evidence": [
+      "青柚工作室持续招新，对象为南京邮电大学全日制本科生",
+      "投递简历至 qingyou@njupt.edu.cn"
+    ],
+    "confidence": 0.85,
+    "sub_category": null,
+    "deadline": null,
+    "action_required": false,
+    "action_type": null,
+    "action_summary": null,
+    "required_materials": [],
+    "sensitive": false,
+    "sensitive_types": [],
+    "review_required": false,
+    "risk_flags": [
+      "evergreen",
+      "github_resource"
+    ],
+    "audience": [
+      "本科生",
+      "研究生"
+    ],
+    "published_at": "2020-01-11",
+    "content": "南京邮电大学小程序 English ./README.md 简体中文 介绍 南京邮电大学小程序是由南京邮电大学青柚工作室开发，一款方便快捷，无需下载安装即可在微信客户端即开即用的 APP，有别于一般需要下载安装的 APP，也不同于微信公众号，具有方便快捷的特点。 <p align=\"center\" <img src=\"https://static.airbob.org/under-graduate/undergraduate-qrcode.jpg\" alt=\"菊花码\" width=\"200\" height=\"200\" </p 学习本项目 整套前端使用 Wepy https://github.com/tencent/wepy 开发，提倡前端组件化工程化，高效的完成前端项目。 项目文件结构 安装（更新） wepy 命令行工具 node = 8.9 安装依赖 & 开发实时编译 ------ 青柚工作室 青柚工作室的主页 https://qingyou.njupt.edu.cn 青柚工作室是由南京邮电大学信息办指导建设，以学生开发为核心的互联网工作团队。 倡导使用新技术、优秀的技术去实现智慧校园，服务同学。 本项目至少会持续维护到南京邮电大学本科生 3.x 版本结束。 ------ 开源许可 本项目使用开源许可证 License AGPLv3 ，代码开源仅供学习。 请认真阅读并遵守以下开源协议 AGPLv3 GNU Affero General Public License v3.0 https://github.com/GreenPomelo/Undergraduate/blob/master/LICENSE 青柚工作室开源计划： 希望能够将实战中的技术成果回报社区，并且鼓励社区为这个项目做出贡献，大家可以通过 Pull Requests 的方式帮我们解决目前存在的不足，或者通过 Issues 告知我们。 ------ 青柚工作室招新计划： 青柚工作室持续招新，对象为南京邮电大学全日制本科生，主要以大二大三在校学生为主，大一能力强者亦可。招新岗位为技术、外联、运营、办公、程序员鼓励师......希望有兴趣的同学能投递简历至 qingyou@njupt.edu.cn ，一起来用爱发电，为南邮做出更多方便师生的项目。 ------ 更新日志 CHANGELOG ./CHANGELOG.md <table <tr <td align=\"center\" <a href=\"https://github.com/solojiang\" <img src=\"https://github.com/solojiang.png?s=64\" width=\"100px;\"/ <br / <sub <b 狒狒神</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/Bosspwn\" <img src=\"https://github.com/Bosspwn.png?s=64\" width=\"100px;\"/ <br / <sub <b Boss Pwn</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/flytam\" <img src=\"https://github.com/flytam.png?s=64\" width=\"100px;\"/ <br / <sub <b Flytam</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/GooeyNyan\" <img src=\"https://github.com/GooeyNyan.png?s=64\" width=\"100px;\"/ <br / <sub <b GooeyNyan</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/UZIhuhuhu\" <img src=\"https://github.com/UZIhuhuhu.png?s=64\" width=\"100px;\"/ <br / <sub <b WynnXin</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/niffler-bkkkk\" <img src=\"https://github.com/niffler-bkkkkk.png?s=64\" width=\"100px;\"/ <br / <sub <b niffler-bkkkk</b </sub </a <br / </td </tr <tr <td align=\"center\" <a href=\"https://github.com/kishivn\" <img src=\"https://github.com/kishivn.png?s=64\" width=\"100px;\"/ <br / <sub <b kishivn</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/ChenKS12138\" <img src=\"https://github.com/ChenKS12138.png?s=64\" width=\"100px;\"/ <br / <sub <b ChenKS12138</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/cucu6\" <img src=\"https://github.com/cucu6.png?s=64\" width=\"100px;\"/ <br / <sub <b cucu6</b </sub </a <br / </td </tr </table",
+    "summary": "南京邮电大学小程序介绍及青柚工作室招新信息，招新对象为全日制本科生，可投递简历至qingyou@njupt.edu.cn。",
+    "attachments": [],
+    "student_score": 0.7432,
+    "freshness_score": 0.42,
+    "importance_score": 0.5275,
+    "source_weight": 0.5,
+    "tags": [
+      "资料",
+      "小程序",
+      "开源",
+      "青柚工作室",
+      "招新",
+      "GitHub资料"
+    ],
+    "hash": "1328d4737a1ed6714c87",
+    "cache_key": "46251346e5c74f3b7614",
+    "llm_schema_version": "hytask-taskframe-v1",
+    "llm": {
+      "used": true,
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "prompt_version": "hytask-taskframe-v1",
+      "confidence": 0.85,
+      "review_required": false
+    },
+    "canonical": {
+      "doc_id": "github-GreenPomelo-Undergraduate-1328d4737a1ed6714c87",
+      "source_id": "github:GreenPomelo/Undergraduate",
+      "channel_id": "github:GreenPomelo/Undergraduate:resource",
+      "title": "🔧mini program of NJUPT | 南京邮电大... · 南京邮电大学小程序",
+      "canonical_url": "https://github.com/GreenPomelo/Undergraduate/blob/master/README-zh_CN.md",
+      "published_at": "2020-01-11T00:00:00",
+      "clean_text": "南京邮电大学小程序 English ./README.md 简体中文 介绍 南京邮电大学小程序是由南京邮电大学青柚工作室开发，一款方便快捷，无需下载安装即可在微信客户端即开即用的 APP，有别于一般需要下载安装的 APP，也不同于微信公众号，具有方便快捷的特点。 <p align=\"center\" <img src=\"https://static.airbob.org/under-graduate/undergraduate-qrcode.jpg\" alt=\"菊花码\" width=\"200\" height=\"200\" </p 学习本项目 整套前端使用 Wepy https://github.com/tencent/wepy 开发，提倡前端组件化工程化，高效的完成前端项目。 项目文件结构 安装（更新） wepy 命令行工具 node = 8.9 安装依赖 & 开发实时编译 ------ 青柚工作室 青柚工作室的主页 https://qingyou.njupt.edu.cn 青柚工作室是由南京邮电大学信息办指导建设，以学生开发为核心的互联网工作团队。 倡导使用新技术、优秀的技术去实现智慧校园，服务同学。 本项目至少会持续维护到南京邮电大学本科生 3.x 版本结束。 ------ 开源许可 本项目使用开源许可证 License AGPLv3 ，代码开源仅供学习。 请认真阅读并遵守以下开源协议 AGPLv3 GNU Affero General Public License v3.0 https://github.com/GreenPomelo/Undergraduate/blob/master/LICENSE 青柚工作室开源计划： 希望能够将实战中的技术成果回报社区，并且鼓励社区为这个项目做出贡献，大家可以通过 Pull Requests 的方式帮我们解决目前存在的不足，或者通过 Issues 告知我们。 ------ 青柚工作室招新计划： 青柚工作室持续招新，对象为南京邮电大学全日制本科生，主要以大二大三在校学生为主，大一能力强者亦可。招新岗位为技术、外联、运营、办公、程序员鼓励师......希望有兴趣的同学能投递简历至 qingyou@njupt.edu.cn ，一起来用爱发电，为南邮做出更多方便师生的项目。 ------ 更新日志 CHANGELOG ./CHANGELOG.md <table <tr <td align=\"center\" <a href=\"https://github.com/solojiang\" <img src=\"https://github.com/solojiang.png?s=64\" width=\"100px;\"/ <br / <sub <b 狒狒神</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/Bosspwn\" <img src=\"https://github.com/Bosspwn.png?s=64\" width=\"100px;\"/ <br / <sub <b Boss Pwn</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/flytam\" <img src=\"https://github.com/flytam.png?s=64\" width=\"100px;\"/ <br / <sub <b Flytam</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/GooeyNyan\" <img src=\"https://github.com/GooeyNyan.png?s=64\" width=\"100px;\"/ <br / <sub <b GooeyNyan</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/UZIhuhuhu\" <img src=\"https://github.com/UZIhuhuhu.png?s=64\" width=\"100px;\"/ <br / <sub <b WynnXin</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/niffler-bkkkk\" <img src=\"https://github.com/niffler-bkkkkk.png?s=64\" width=\"100px;\"/ <br / <sub <b niffler-bkkkk</b </sub </a <br / </td </tr <tr <td align=\"center\" <a href=\"https://github.com/kishivn\" <img src=\"https://github.com/kishivn.png?s=64\" width=\"100px;\"/ <br / <sub <b kishivn</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/ChenKS12138\" <img src=\"https://github.com/ChenKS12138.png?s=64\" width=\"100px;\"/ <br / <sub <b ChenKS12138</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/cucu6\" <img src=\"https://github.com/cucu6.png?s=64\" width=\"100px;\"/ <br / <sub <b cucu6</b </sub </a <br / </td </tr </table",
+      "attachments": [],
+      "content_hash": "759b296a63755d5d38e0",
+      "dedupe_key": "8c8fbacfc90c1e099a6a",
+      "language": "zh",
+      "status": "ok",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "http_status": 200
+    },
+    "rule_guard": {
+      "restricted": false,
+      "sensitive": false,
+      "sensitive_types": [],
+      "low_evidence": false,
+      "duplicate": false,
+      "expired": false,
+      "evergreen": true,
+      "administrative_noise": false,
+      "risk_flags": [
+        "evergreen",
+        "github_resource"
+      ],
+      "allow_llm": true,
+      "allow_full_text_display": true,
+      "review_required": false,
+      "evaluated_at": "2026-05-24T11:52:13.760632Z"
+    },
+    "task_frames": [
+      {
+        "task_id": "task_b3cbb6766c82e138",
+        "doc_id": "github-GreenPomelo-Undergraduate-1328d4737a1ed6714c87",
+        "task_type": "opportunity",
+        "who": {
+          "audience": [
+            "本科生"
+          ],
+          "college": [],
+          "grade": [
+            "大二",
+            "大三",
+            "大一"
+          ],
+          "major": [],
+          "class_name": []
+        },
+        "what": "青柚工作室招新",
+        "action": {
+          "required": true,
+          "verb": "投递",
+          "object": "简历",
+          "summary": "青柚工作室持续招新，对象为南京邮电大学全日制本科生，主要以大二大三在校学生为主，大一能力强者亦可。希望有兴趣的同学能投递简历至 qingyou@njupt.edu.cn"
+        },
+        "time": {
+          "published_at": "2020-01-11T00:00:00+08:00",
+          "deadline": null,
+          "lifecycle": "evergreen",
+          "urgency_days": null
+        },
+        "materials": [
+          {
+            "name": "简历",
+            "role": "申请材料",
+            "required": true,
+            "sensitive": false
+          }
+        ],
+        "location": {
+          "place": null,
+          "online": "qingyou@njupt.edu.cn",
+          "contact": "qingyou@njupt.edu.cn"
+        },
+        "source": {
+          "source_id": "github:GreenPomelo/Undergraduate",
+          "channel_id": "github:GreenPomelo/Undergraduate:resource",
+          "authority": 0.5,
+          "official": true
+        },
+        "evidence": [
+          {
+            "field": "action",
+            "text": "希望有兴趣的同学能投递简历至 qingyou@njupt.edu.cn"
+          }
+        ],
+        "risk": {
+          "sensitive": false,
+          "restricted": false,
+          "low_evidence": false,
+          "review_required": false
+        },
+        "confidence": 0.7
+      }
+    ]
   },
   {
     "id": "lib-f3e58588ec5a3b984b8b",
@@ -18518,7 +18351,7 @@
       "dedupe_key": "f4ac6224a346a908838b",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -18539,7 +18372,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T09:11:57.404794Z"
+      "evaluated_at": "2026-05-24T11:51:49.747716Z"
     },
     "task_frames": []
   },
@@ -19131,247 +18964,6 @@
     "task_frames": []
   },
   {
-    "id": "exchange-a288ffbf9073e6e1862c",
-    "kind": "notice",
-    "source_id": "exchange",
-    "channel_id": "exchange_notice",
-    "channel": "国际交流通知",
-    "title": "我校召开2026年国际化工作推进会",
-    "url": "https://exchange.njupt.edu.cn/2026/0424/c7465a300776/page.htm",
-    "source": "国际合作交流处",
-    "source_domain": "exchange.njupt.edu.cn",
-    "source_type": "central_admin",
-    "category": "项目",
-    "domain": "international",
-    "intent": "contact",
-    "lifecycle": "unknown",
-    "evidence": [
-      "我校召开2026年国际化工作推进会 凝心聚力谋开放 提质增效促发展—— 我校 召开 2026 年国际化工作推进会 立足高等教育对外开放新形势，紧扣党建与业务融合要求，持续夯实国际化办学根基、赋能学校高质量发展 ， 4 月 22 日 -23 日 ， 国际合作交流处（以下简称国际处） 在仙林校区行政楼第二会议室召开 三场 ",
-      "在 2026 年重点工作 提要 环节， 她 聚焦高水平国际合作 提质 、 海外 引智创新 赋能 、 高端外专项目申报、 国际联合实验室建设 、 国际组织合作、 海外师生来校交流、港澳台侨生招培、 涉外风险防控 等领域展开详细介绍。"
-    ],
-    "confidence": null,
-    "sub_category": null,
-    "deadline": null,
-    "action_required": true,
-    "action_type": "申报",
-    "action_summary": "在 2026 年重点工作 提要 环节， 她 聚焦高水平国际合作 提质 、 海外 引智创新 赋能 、 高端外专项目申报、 国际联合实验室建设 、 国际组织合作、 海外师生来校交流、港澳台侨生招培、 涉外风险防控 等领域展开详细介绍",
-    "required_materials": [],
-    "sensitive": false,
-    "sensitive_types": [],
-    "review_required": false,
-    "risk_flags": [],
-    "audience": [
-      "本科生",
-      "研究生",
-      "国际学生"
-    ],
-    "published_at": null,
-    "content": "凝心聚力谋开放 提质增效促发展—— 我校 召开 2026 年国际化工作推进会 立足高等教育对外开放新形势，紧扣党建与业务融合要求，持续夯实国际化办学根基、赋能学校高质量发展 ， 4 月 22 日 -23 日 ， 国际合作交流处（以下简称国际处） 在仙林校区行政楼第二会议室召开 三场 国际化工作 系列 推进会。会议由 国际处 副处长张舒主持，各学院外事工作负责人、 学院副书记、外事联系人、 国际处全体工作人员参会。 会上，张舒副处长首先通报 2025 年学校国际化指标完成情况 ，总结过去一年在中外合作办学、 境外办学、 师生国际交流 、国际会议举办、留学生招培、 国际影响力提升等方面的工作成效，客观分析存在的短板与不足，为 2026 年工作找准发力点与突破方向。随后， 她 围绕 2026 年国际化核心指标进行专项解读 ，对照省高质量 考核和学校 国际化发展 指标 要求，明确年度目标 与 推进路径，推动各学院精准对标、靶向发力。在 2026 年重点工作 提要 环节， 她 聚焦高水平国际合作 提质 、 海外 引智创新 赋能 、 高端外专项目申报、 国际联合实验室建设 、 国际组织合作、 海外师生来校交流、港澳台侨生招培、 涉外风险防控 等领域展开详细介绍。 在 学院需求与难点交流 环节，各学院结合自身学科特色与国际化办学实际，深入梳理发展瓶颈与现实堵点，立足长远发展提出务实诉求和优化建议，各方互通工作思路、凝聚发展共识、共议破解举措，形成协同推进国际化建设的良好氛围。 本次全校外事工作会议紧扣学校高质量发展主线，进一步 明目标、解难题、定任务、聚合力 。下一步，国际处将以此次会议为抓手，持续强化校院协同、上下联动，不断拓宽对外开放格局， 筑牢 国际化办学 成效 ，以更高水平的国际交流合作，为学校事业高质量发展筑牢支撑、注入动能。 撰稿： 程丰宁 审核 ：张舒",
-    "summary": "凝心聚力谋开放 提质增效促发展—— 我校 召开 2026 年国际化工作推进会 立足高等教育对外开放新形势，紧扣党建与业务融合要求，持续夯实国际化办学根基、赋能学校高质量发展 ， 4 月 22 日 -23 日 ， 国际合作交流处（以下简称国际处） 在仙林校区行政楼第二会议室召开 三场 国际化工作 系列 推进会。会议由 国际处 副处长张舒主持，各学院外事工作负责",
-    "attachments": [],
-    "student_score": 0.724,
-    "freshness_score": 0.45,
-    "importance_score": 0.764,
-    "source_weight": 0.8,
-    "tags": [
-      "项目",
-      "开放"
-    ],
-    "hash": "a288ffbf9073e6e1862c",
-    "cache_key": "a6b0fe97f2c0b439c8b6",
-    "llm_schema_version": "hytask-taskframe-v1",
-    "llm": {
-      "used": false,
-      "provider": null,
-      "model": null,
-      "prompt_version": "hytask-taskframe-v1",
-      "confidence": null,
-      "review_required": false
-    },
-    "canonical": {
-      "doc_id": "exchange-a288ffbf9073e6e1862c",
-      "source_id": "exchange",
-      "channel_id": "exchange_notice",
-      "title": "我校召开2026年国际化工作推进会",
-      "canonical_url": "https://exchange.njupt.edu.cn/2026/0424/c7465a300776/page.htm",
-      "published_at": null,
-      "clean_text": "凝心聚力谋开放 提质增效促发展—— 我校 召开 2026 年国际化工作推进会 立足高等教育对外开放新形势，紧扣党建与业务融合要求，持续夯实国际化办学根基、赋能学校高质量发展 ， 4 月 22 日 -23 日 ， 国际合作交流处（以下简称国际处） 在仙林校区行政楼第二会议室召开 三场 国际化工作 系列 推进会。会议由 国际处 副处长张舒主持，各学院外事工作负责人、 学院副书记、外事联系人、 国际处全体工作人员参会。 会上，张舒副处长首先通报 2025 年学校国际化指标完成情况 ，总结过去一年在中外合作办学、 境外办学、 师生国际交流 、国际会议举办、留学生招培、 国际影响力提升等方面的工作成效，客观分析存在的短板与不足，为 2026 年工作找准发力点与突破方向。随后， 她 围绕 2026 年国际化核心指标进行专项解读 ，对照省高质量 考核和学校 国际化发展 指标 要求，明确年度目标 与 推进路径，推动各学院精准对标、靶向发力。在 2026 年重点工作 提要 环节， 她 聚焦高水平国际合作 提质 、 海外 引智创新 赋能 、 高端外专项目申报、 国际联合实验室建设 、 国际组织合作、 海外师生来校交流、港澳台侨生招培、 涉外风险防控 等领域展开详细介绍。 在 学院需求与难点交流 环节，各学院结合自身学科特色与国际化办学实际，深入梳理发展瓶颈与现实堵点，立足长远发展提出务实诉求和优化建议，各方互通工作思路、凝聚发展共识、共议破解举措，形成协同推进国际化建设的良好氛围。 本次全校外事工作会议紧扣学校高质量发展主线，进一步 明目标、解难题、定任务、聚合力 。下一步，国际处将以此次会议为抓手，持续强化校院协同、上下联动，不断拓宽对外开放格局， 筑牢 国际化办学 成效 ，以更高水平的国际交流合作，为学校事业高质量发展筑牢支撑、注入动能。 撰稿： 程丰宁 审核 ：张舒",
-      "attachments": [],
-      "content_hash": "bb3ae6e0463b2e028fc6",
-      "dedupe_key": "3df7232c3d7d1c50d601",
-      "language": "zh",
-      "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
-      "http_status": 200
-    },
-    "rule_guard": {
-      "restricted": false,
-      "sensitive": false,
-      "sensitive_types": [],
-      "low_evidence": false,
-      "duplicate": false,
-      "expired": false,
-      "evergreen": false,
-      "administrative_noise": false,
-      "risk_flags": [],
-      "allow_llm": true,
-      "allow_full_text_display": true,
-      "review_required": false,
-      "evaluated_at": "2026-05-24T09:06:22.871333Z"
-    },
-    "task_frames": [
-      {
-        "task_id": "task_bb812591a647fa98",
-        "doc_id": "exchange-a288ffbf9073e6e1862c",
-        "task_type": "opportunity",
-        "who": {
-          "audience": [
-            "本科生",
-            "研究生",
-            "国际学生"
-          ],
-          "college": [],
-          "grade": [],
-          "major": [],
-          "class_name": []
-        },
-        "what": "我校召开2026年国际化工作推进会",
-        "action": {
-          "required": true,
-          "verb": "申报",
-          "object": null,
-          "summary": "在 2026 年重点工作 提要 环节， 她 聚焦高水平国际合作 提质 、 海外 引智创新 赋能 、 高端外专项目申报、 国际联合实验室建设 、 国际组织合作、 海外师生来校交流、港澳台侨生招培、 涉外风险防控 等领域展开详细介绍"
-        },
-        "time": {
-          "published_at": null,
-          "deadline": null,
-          "lifecycle": "unknown",
-          "urgency_days": null
-        },
-        "materials": [],
-        "location": {
-          "place": null,
-          "online": null,
-          "contact": null
-        },
-        "source": {
-          "source_id": "exchange",
-          "channel_id": "exchange_notice",
-          "authority": 0.8,
-          "official": true
-        },
-        "evidence": [
-          {
-            "field": "general",
-            "text": "我校召开2026年国际化工作推进会 凝心聚力谋开放 提质增效促发展—— 我校 召开 2026 年国际化工作推进会 立足高等教育对外开放新形势，紧扣党建与业务融合要求，持续夯实国际化办学根基、赋能学校高质量发展 ， 4 月 22 日 -23 日 ， 国际合作交流处（以下简称国际处） 在仙林校区行政楼第二会议室召开 三场"
-          },
-          {
-            "field": "general",
-            "text": "在 2026 年重点工作 提要 环节， 她 聚焦高水平国际合作 提质 、 海外 引智创新 赋能 、 高端外专项目申报、 国际联合实验室建设 、 国际组织合作、 海外师生来校交流、港澳台侨生招培、 涉外风险防控 等领域展开详细介绍。"
-          }
-        ],
-        "risk": {
-          "sensitive": false,
-          "restricted": false,
-          "low_evidence": false,
-          "review_required": false
-        },
-        "confidence": 0.58
-      }
-    ]
-  },
-  {
-    "id": "exchange-ac73b79eb6cbbd76d3f8",
-    "kind": "notice",
-    "source_id": "exchange",
-    "channel_id": "exchange_notice",
-    "channel": "国际交流通知",
-    "title": "我校与哈萨克斯坦卡拉干达萨金诺夫技术大学举行合作交流会议",
-    "url": "https://exchange.njupt.edu.cn/2026/0330/c7465a298681/page.htm",
-    "source": "国际合作交流处",
-    "source_domain": "exchange.njupt.edu.cn",
-    "source_type": "central_admin",
-    "category": "项目",
-    "domain": "international",
-    "intent": "attend",
-    "lifecycle": "unknown",
-    "evidence": [
-      "我校与哈萨克斯坦卡拉干达萨金诺夫技术大学举行合作交流会议 我校与哈萨克斯坦卡拉干达萨金诺夫技术大学（原卡拉干达国立技术大学）举行合作交流会议 3 月 27 日下午，我校与哈萨克斯坦卡拉干达萨金诺夫技术大学（原卡拉干达国立技术大学）合作交流会议在仙林校区行政楼第三会议室举行。",
-      "就两校教师互访、科研项目联合攻关等合作方向交换了意见，达成了广泛共识；"
-    ],
-    "confidence": null,
-    "sub_category": null,
-    "deadline": null,
-    "action_required": false,
-    "action_type": null,
-    "action_summary": null,
-    "required_materials": [],
-    "sensitive": false,
-    "sensitive_types": [],
-    "review_required": false,
-    "risk_flags": [],
-    "audience": [
-      "本科生",
-      "研究生",
-      "国际学生"
-    ],
-    "published_at": null,
-    "content": "我校与哈萨克斯坦卡拉干达萨金诺夫技术大学（原卡拉干达国立技术大学）举行合作交流会议 3 月 27 日下午，我校与哈萨克斯坦卡拉干达萨金诺夫技术大学（原卡拉干达国立技术大学）合作交流会议在仙林校区行政楼第三会议室举行。卡拉干达萨金诺夫技术大学校长 Saule Sagintayeva 一行，我校副校长刘青山，原校党委副书记、卓越工程师学院院长蒋国平出席会议，海外教育学院、国际合作交流处 、江苏凤凰高等教育出版有限公司出版部 相关负责人参与座谈。 刘青山副校长代表我校对卡拉干达萨金诺夫技术大学代表团的到访表示热烈欢迎，并介绍了我校的办学历史、学科特色、科研成果、国际交流合作等情况。他表示，南京邮电大学始终致力于推动高水平国际教育合作，期待与卡拉干达萨金诺夫技术大学携手并进，共同开启两校合作新篇章。 卡拉干达萨金诺夫技术大学 Saule 校长详细介绍了学校概况、办学理念、学科布局、产教融合情况、国际合作成果等，使我校参会人员对其有了全面深入的了解。 在交流讨论环节，两校围绕多方面合作事宜展开深入探讨。双方重点就设立海外卓越工程师学院的合作模式及推进路径进行了细致交流；就两校教师互访、科研项目联合攻关等合作方向交换了意见，达成了广泛共识；并签署了两校教育合作备忘录，为后续合作的规范化、常态化奠定坚实基础。 通过此次会议，两校进一步明确了合作方向，深化了互信理解。期待以此次会议为契机，加快推进各项合作事宜落地见效，实现资源共享、优势互补，共同培养具有国际视野的高素质人才，为两国高等教育事业发展贡献力量。 撰稿：李晨 审核：张舒",
-    "summary": "我校与哈萨克斯坦卡拉干达萨金诺夫技术大学（原卡拉干达国立技术大学）举行合作交流会议 3 月 27 日下午，我校与哈萨克斯坦卡拉干达萨金诺夫技术大学（原卡拉干达国立技术大学）合作交流会议在仙林校区行政楼第三会议室举行。卡拉干达萨金诺夫技术大学校长 Saule Sagintayeva 一行，我校副校长刘青山，原校党委副书记、卓越工程师学院院长蒋国平出席会议，海外",
-    "attachments": [],
-    "student_score": 0.724,
-    "freshness_score": 0.45,
-    "importance_score": 0.664,
-    "source_weight": 0.8,
-    "tags": [
-      "项目",
-      "培养"
-    ],
-    "hash": "ac73b79eb6cbbd76d3f8",
-    "cache_key": "efd62f7943d80ccbc60c",
-    "llm_schema_version": "hytask-taskframe-v1",
-    "llm": {
-      "used": false,
-      "provider": null,
-      "model": null,
-      "prompt_version": "hytask-taskframe-v1",
-      "confidence": null,
-      "review_required": false
-    },
-    "canonical": {
-      "doc_id": "exchange-ac73b79eb6cbbd76d3f8",
-      "source_id": "exchange",
-      "channel_id": "exchange_notice",
-      "title": "我校与哈萨克斯坦卡拉干达萨金诺夫技术大学举行合作交流会议",
-      "canonical_url": "https://exchange.njupt.edu.cn/2026/0330/c7465a298681/page.htm",
-      "published_at": null,
-      "clean_text": "我校与哈萨克斯坦卡拉干达萨金诺夫技术大学（原卡拉干达国立技术大学）举行合作交流会议 3 月 27 日下午，我校与哈萨克斯坦卡拉干达萨金诺夫技术大学（原卡拉干达国立技术大学）合作交流会议在仙林校区行政楼第三会议室举行。卡拉干达萨金诺夫技术大学校长 Saule Sagintayeva 一行，我校副校长刘青山，原校党委副书记、卓越工程师学院院长蒋国平出席会议，海外教育学院、国际合作交流处 、江苏凤凰高等教育出版有限公司出版部 相关负责人参与座谈。 刘青山副校长代表我校对卡拉干达萨金诺夫技术大学代表团的到访表示热烈欢迎，并介绍了我校的办学历史、学科特色、科研成果、国际交流合作等情况。他表示，南京邮电大学始终致力于推动高水平国际教育合作，期待与卡拉干达萨金诺夫技术大学携手并进，共同开启两校合作新篇章。 卡拉干达萨金诺夫技术大学 Saule 校长详细介绍了学校概况、办学理念、学科布局、产教融合情况、国际合作成果等，使我校参会人员对其有了全面深入的了解。 在交流讨论环节，两校围绕多方面合作事宜展开深入探讨。双方重点就设立海外卓越工程师学院的合作模式及推进路径进行了细致交流；就两校教师互访、科研项目联合攻关等合作方向交换了意见，达成了广泛共识；并签署了两校教育合作备忘录，为后续合作的规范化、常态化奠定坚实基础。 通过此次会议，两校进一步明确了合作方向，深化了互信理解。期待以此次会议为契机，加快推进各项合作事宜落地见效，实现资源共享、优势互补，共同培养具有国际视野的高素质人才，为两国高等教育事业发展贡献力量。 撰稿：李晨 审核：张舒",
-      "attachments": [],
-      "content_hash": "d4a8d0a64a1f97f0f382",
-      "dedupe_key": "9e258b2a18e12ac96966",
-      "language": "zh",
-      "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
-      "http_status": 200
-    },
-    "rule_guard": {
-      "restricted": false,
-      "sensitive": false,
-      "sensitive_types": [],
-      "low_evidence": false,
-      "duplicate": false,
-      "expired": false,
-      "evergreen": false,
-      "administrative_noise": false,
-      "risk_flags": [],
-      "allow_llm": true,
-      "allow_full_text_display": true,
-      "review_required": false,
-      "evaluated_at": "2026-05-24T09:06:25.399038Z"
-    },
-    "task_frames": []
-  },
-  {
     "id": "bc-c7527839fb07f5988066",
     "kind": "notice",
     "source_id": "bc",
@@ -19540,7 +19132,7 @@
       "dedupe_key": "d476556598d9c6ed8945",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -19562,7 +19154,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T09:12:25.404518Z"
+      "evaluated_at": "2026-05-24T11:51:55.540702Z"
     },
     "task_frames": []
   },
@@ -19638,7 +19230,7 @@
       "dedupe_key": "b25260dd7e6fc29b0449",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -19658,7 +19250,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T08:57:38.452568Z"
+      "evaluated_at": "2026-05-24T11:45:39.832369Z"
     },
     "task_frames": []
   },
@@ -19808,6 +19400,105 @@
         "confidence": 0.5
       }
     ]
+  },
+  {
+    "id": "github-GreenPomelo-Undergraduate-3e1f1c39d70e6997c55f",
+    "kind": "resource",
+    "source_id": "github:GreenPomelo/Undergraduate",
+    "channel_id": "github:GreenPomelo/Undergraduate:resource",
+    "channel": "GitHub 资源",
+    "title": "🔧mini program of NJUPT | 南京邮电大... · MiniProgram of Nanjing University of Posts and Telecommunications",
+    "url": "https://github.com/GreenPomelo/Undergraduate/blob/master/README.md",
+    "source": "🔧mini program of NJUPT | 南京邮电大...",
+    "source_domain": "github.com",
+    "source_type": "github_resource",
+    "category": "资料",
+    "domain": "resource",
+    "intent": "read",
+    "lifecycle": "evergreen",
+    "evidence": [
+      "MiniProgram of Nanjing University of Posts and Telecommunications",
+      "developed by QingYou Studio of NJUPT"
+    ],
+    "confidence": 0.85,
+    "sub_category": null,
+    "deadline": null,
+    "action_required": false,
+    "action_type": null,
+    "action_summary": null,
+    "required_materials": [],
+    "sensitive": false,
+    "sensitive_types": [],
+    "review_required": false,
+    "risk_flags": [
+      "evergreen",
+      "github_resource"
+    ],
+    "audience": [
+      "本科生",
+      "研究生"
+    ],
+    "published_at": "2020-01-11",
+    "content": "MiniProgram of Nanjing University of Posts and Telecommunications English 简体中文 ./README-zh CN.md Introduction The MiniProgram of Nanjing University of Posts and Telecommunications hereinafter called NJUPT MiniProgram , developed by QingYou Studio of NJUPT, which is a convenient and swift application that can launch in WeChat client immediately dispense with download and install. Different from the common applications that need to download and install and WeChat Official Account, it is convenient and efficient. <p align=\"center\" <img src=\"https://static.airbob.org/under-graduate/undergraduate-qrcode.jpg\" alt=\"菊花码\" width=\"200\" height=\"200\" </p Learn this Project Advocating componentization and engineering of front-end, this project is developed by Wepy https://github.com/tencent/wepy , to finish front-end project efficiently. Files Structure Install Update Wepy-Cli node = 8.9 Install Dependencies & Serve with Hot Reload ------ QingYou Studio Homepage of QingYou Studio https://qingyou.njupt.edu.cn Built up by Information Office of NJUPT, QingYou Studio is an Internet working team with student developement as its core. We advocate to use new and excellent technologies to achieve the Smart Campus and to serve students. This project will be maintained at least until the end of the 3.x version of NJUPT-Undergraduate. ------ License This project uses the license License AGPLv3 ,and the code is open source for learning. Please read and abide by the following open source agreements: AGPLv3 GNU Affero General Public License v3.0 https://github.com/GreenPomelo/Undergraduate/blob/master/LICENSE QingYou Studio Open Source We hope that we can return the technical achievements to the community, and we encourage the community to contribute to this project. You can help us resolve the existing deficiencises through Pull Request , or tell us through Issue . ------ QingYou Studio Recruitment Mainly in the sophomore and junior students, QingYou Studio is recruiting new members from the full-time undergraduates in NJUPT, and the freshman who has excellent ability can be also recruited. Our posts contain technology, outreach, operations, office and ...... We hope anyone interested in can submit your resume to qingyou@njupt.edu.cn , together with us to do more projects for teachers and students in NJUPT. ------ Update Log CHANGELOG ./CHANGELOG.md ----- Core Team Contributors <table <tr <td align=\"center\" <a href=\"https://github.com/solojiang\" <img src=\"https://github.com/solojiang.png?s=64\" width=\"100px;\"/ <br / <sub <b 狒狒神</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/Bosspwn\" <img src=\"https://github.com/Bosspwn.png?s=64\" width=\"100px;\"/ <br / <sub <b Boss Pwn</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/flytam\" <img src=\"https://github.com/flytam.png?s=64\" width=\"100px;\"/ <br / <sub <b Flytam</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/GooeyNyan\" <img src=\"https://github.com/GooeyNyan.png?s=64\" width=\"100px;\"/ <br / <sub <b GooeyNyan</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/UZIhuhuhu\" <img src=\"https://github.com/UZIhuhuhu.png?s=64\" width=\"100px;\"/ <br / <sub <b WynnXin</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/niffler-bkkkk\" <img src=\"https://github.com/niffler-bkkkkk.png?s=64\" width=\"100px;\"/ <br / <sub <b niffler-bkkkk</b </sub </a <br / </td </tr <tr <td align=\"center\" <a href=\"https://github.com/kishivn\" <img src=\"https://github.com/kishivn.png?s=64\" width=\"100px;\"/ <br / <sub <b kishivn</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/ChenKS12138\" <img src=\"https://github.com/ChenKS12138.png?s=64\" width=\"100px;\"/ <br / <sub <b ChenKS12138</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/cucu6\" <img src=\"https://github.com/cucu6.png?s=64\" width=\"100px;\"/ <br / <sub <b cucu6</b </sub </a <br / </td </tr </table",
+    "summary": "南京邮电大学小程序由青柚工作室开发，可在微信中即开即用，提供校园服务。项目开源，并持续招新。",
+    "attachments": [],
+    "student_score": 0.696,
+    "freshness_score": 0.42,
+    "importance_score": 0.5275,
+    "source_weight": 0.5,
+    "tags": [
+      "资料",
+      "小程序",
+      "开源",
+      "青柚工作室",
+      "GitHub资料"
+    ],
+    "hash": "3e1f1c39d70e6997c55f",
+    "cache_key": "a3e2bf542f7ac594af71",
+    "llm_schema_version": "hytask-taskframe-v1",
+    "llm": {
+      "used": true,
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "prompt_version": "hytask-taskframe-v1",
+      "confidence": 0.85,
+      "review_required": false
+    },
+    "canonical": {
+      "doc_id": "github-GreenPomelo-Undergraduate-3e1f1c39d70e6997c55f",
+      "source_id": "github:GreenPomelo/Undergraduate",
+      "channel_id": "github:GreenPomelo/Undergraduate:resource",
+      "title": "🔧mini program of NJUPT | 南京邮电大... · MiniProgram of Nanjing University of Posts and Telecommunications",
+      "canonical_url": "https://github.com/GreenPomelo/Undergraduate/blob/master/README.md",
+      "published_at": "2020-01-11T00:00:00",
+      "clean_text": "MiniProgram of Nanjing University of Posts and Telecommunications English 简体中文 ./README-zh CN.md Introduction The MiniProgram of Nanjing University of Posts and Telecommunications hereinafter called NJUPT MiniProgram , developed by QingYou Studio of NJUPT, which is a convenient and swift application that can launch in WeChat client immediately dispense with download and install. Different from the common applications that need to download and install and WeChat Official Account, it is convenient and efficient. <p align=\"center\" <img src=\"https://static.airbob.org/under-graduate/undergraduate-qrcode.jpg\" alt=\"菊花码\" width=\"200\" height=\"200\" </p Learn this Project Advocating componentization and engineering of front-end, this project is developed by Wepy https://github.com/tencent/wepy , to finish front-end project efficiently. Files Structure Install Update Wepy-Cli node = 8.9 Install Dependencies & Serve with Hot Reload ------ QingYou Studio Homepage of QingYou Studio https://qingyou.njupt.edu.cn Built up by Information Office of NJUPT, QingYou Studio is an Internet working team with student developement as its core. We advocate to use new and excellent technologies to achieve the Smart Campus and to serve students. This project will be maintained at least until the end of the 3.x version of NJUPT-Undergraduate. ------ License This project uses the license License AGPLv3 ,and the code is open source for learning. Please read and abide by the following open source agreements: AGPLv3 GNU Affero General Public License v3.0 https://github.com/GreenPomelo/Undergraduate/blob/master/LICENSE QingYou Studio Open Source We hope that we can return the technical achievements to the community, and we encourage the community to contribute to this project. You can help us resolve the existing deficiencises through Pull Request , or tell us through Issue . ------ QingYou Studio Recruitment Mainly in the sophomore and junior students, QingYou Studio is recruiting new members from the full-time undergraduates in NJUPT, and the freshman who has excellent ability can be also recruited. Our posts contain technology, outreach, operations, office and ...... We hope anyone interested in can submit your resume to qingyou@njupt.edu.cn , together with us to do more projects for teachers and students in NJUPT. ------ Update Log CHANGELOG ./CHANGELOG.md ----- Core Team Contributors <table <tr <td align=\"center\" <a href=\"https://github.com/solojiang\" <img src=\"https://github.com/solojiang.png?s=64\" width=\"100px;\"/ <br / <sub <b 狒狒神</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/Bosspwn\" <img src=\"https://github.com/Bosspwn.png?s=64\" width=\"100px;\"/ <br / <sub <b Boss Pwn</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/flytam\" <img src=\"https://github.com/flytam.png?s=64\" width=\"100px;\"/ <br / <sub <b Flytam</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/GooeyNyan\" <img src=\"https://github.com/GooeyNyan.png?s=64\" width=\"100px;\"/ <br / <sub <b GooeyNyan</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/UZIhuhuhu\" <img src=\"https://github.com/UZIhuhuhu.png?s=64\" width=\"100px;\"/ <br / <sub <b WynnXin</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/niffler-bkkkk\" <img src=\"https://github.com/niffler-bkkkkk.png?s=64\" width=\"100px;\"/ <br / <sub <b niffler-bkkkk</b </sub </a <br / </td </tr <tr <td align=\"center\" <a href=\"https://github.com/kishivn\" <img src=\"https://github.com/kishivn.png?s=64\" width=\"100px;\"/ <br / <sub <b kishivn</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/ChenKS12138\" <img src=\"https://github.com/ChenKS12138.png?s=64\" width=\"100px;\"/ <br / <sub <b ChenKS12138</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/cucu6\" <img src=\"https://github.com/cucu6.png?s=64\" width=\"100px;\"/ <br / <sub <b cucu6</b </sub </a <br / </td </tr </table",
+      "attachments": [],
+      "content_hash": "6084fffd7042860a34d1",
+      "dedupe_key": "b775200c4c6dc4ffad8c",
+      "language": "zh",
+      "status": "ok",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "http_status": 200
+    },
+    "rule_guard": {
+      "restricted": false,
+      "sensitive": false,
+      "sensitive_types": [],
+      "low_evidence": false,
+      "duplicate": false,
+      "expired": false,
+      "evergreen": true,
+      "administrative_noise": false,
+      "risk_flags": [
+        "evergreen",
+        "github_resource"
+      ],
+      "allow_llm": true,
+      "allow_full_text_display": true,
+      "review_required": false,
+      "evaluated_at": "2026-05-24T11:52:13.309455Z"
+    },
+    "task_frames": []
   },
   {
     "id": "archives-b38698c994ad71856b52",
@@ -20644,7 +20335,7 @@
       "dedupe_key": "fc595a56c637ec838fd1",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -20665,98 +20356,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T09:08:54.472639Z"
-    },
-    "task_frames": []
-  },
-  {
-    "id": "exchange-c0a2013de17ff0152274",
-    "kind": "notice",
-    "source_id": "exchange",
-    "channel_id": "exchange_notice",
-    "channel": "国际交流通知",
-    "title": "我校与哈萨克斯坦阿拉木图能源与通信大学举行合作交流座谈会",
-    "url": "https://exchange.njupt.edu.cn/2026/0430/c7465a301286/page.htm",
-    "source": "国际合作交流处",
-    "source_domain": "exchange.njupt.edu.cn",
-    "source_type": "central_admin",
-    "category": "项目",
-    "domain": "international",
-    "intent": "attend",
-    "lifecycle": "unknown",
-    "evidence": [
-      "我校与哈萨克斯坦阿拉木图能源与通信大学举行合作交流座谈会 4 月 30 日上午， 我校 与哈萨克斯坦 阿拉木图能源与通信大学 合作交流座谈会在仙林校区行政楼第三会议室顺利举行。"
-    ],
-    "confidence": null,
-    "sub_category": null,
-    "deadline": null,
-    "action_required": false,
-    "action_type": null,
-    "action_summary": null,
-    "required_materials": [],
-    "sensitive": false,
-    "sensitive_types": [],
-    "review_required": false,
-    "risk_flags": [],
-    "audience": [
-      "本科生",
-      "研究生",
-      "国际学生"
-    ],
-    "published_at": null,
-    "content": "4 月 30 日上午， 我校 与哈萨克斯坦 阿拉木图能源与通信大学 合作交流座谈会在仙林校区行政楼第三会议室顺利举行。 哈萨克斯坦 阿拉木图能源与通信大学校长 Gani Nygymetov 一行，我校校长叶美兰、副校长刘青山出席会议，国际合作交流处、通信与信息工程学院、计算机学院 、软件学院、网络空间安全学院、 数字媒体与设计艺术学院相关负责人参加座谈。 叶美兰校长对 Gani Nygymetov 校长 的再次到访 表示热烈欢迎 。 她表示，南京邮电大学 高度 重视与哈萨克斯坦高校的合作 ， 期待以本次座谈为新起点，与阿拉木图能源与通信大学在优势学科领域深化对接， 进一步扩大合作领域、提升合作层次，共同探索建立两校合作新范式。 Gani Nygymetov 校长 对叶美兰校长的热情接待表达衷心感谢。 他表示，阿拉木图能源与通信大学在能源工程、通信技术、信息技术等领域积淀深厚，希望与南京邮电大学在人才联合培养、学术交流等方面开展全方位合作，实现共赢发展。 交流环节中，双方围绕 电子信息工程、 网络安全、 数字媒体 等 领域 ，就 建设海外卓越工程师学院、人才 培养、师生互访等事宜 进行 深入探讨 。双方达成高度共识，将共同推动各项合作落地见效。 撰稿：李晨 审核：张舒",
-    "summary": "4 月 30 日上午， 我校 与哈萨克斯坦 阿拉木图能源与通信大学 合作交流座谈会在仙林校区行政楼第三会议室顺利举行。 哈萨克斯坦 阿拉木图能源与通信大学校长 Gani Nygymetov 一行，我校校长叶美兰、副校长刘青山出席会议，国际合作交流处、通信与信息工程学院、计算机学院 、软件学院、网络空间安全学院、 数字媒体与设计艺术学院相关负责人参加座谈。 叶",
-    "attachments": [],
-    "student_score": 0.679,
-    "freshness_score": 0.45,
-    "importance_score": 0.664,
-    "source_weight": 0.8,
-    "tags": [
-      "项目",
-      "讲座",
-      "培养"
-    ],
-    "hash": "c0a2013de17ff0152274",
-    "cache_key": "b8ddef0e2fa029b1fffd",
-    "llm_schema_version": "hytask-taskframe-v1",
-    "llm": {
-      "used": false,
-      "provider": null,
-      "model": null,
-      "prompt_version": "hytask-taskframe-v1",
-      "confidence": null,
-      "review_required": false
-    },
-    "canonical": {
-      "doc_id": "exchange-c0a2013de17ff0152274",
-      "source_id": "exchange",
-      "channel_id": "exchange_notice",
-      "title": "我校与哈萨克斯坦阿拉木图能源与通信大学举行合作交流座谈会",
-      "canonical_url": "https://exchange.njupt.edu.cn/2026/0430/c7465a301286/page.htm",
-      "published_at": null,
-      "clean_text": "4 月 30 日上午， 我校 与哈萨克斯坦 阿拉木图能源与通信大学 合作交流座谈会在仙林校区行政楼第三会议室顺利举行。 哈萨克斯坦 阿拉木图能源与通信大学校长 Gani Nygymetov 一行，我校校长叶美兰、副校长刘青山出席会议，国际合作交流处、通信与信息工程学院、计算机学院 、软件学院、网络空间安全学院、 数字媒体与设计艺术学院相关负责人参加座谈。 叶美兰校长对 Gani Nygymetov 校长 的再次到访 表示热烈欢迎 。 她表示，南京邮电大学 高度 重视与哈萨克斯坦高校的合作 ， 期待以本次座谈为新起点，与阿拉木图能源与通信大学在优势学科领域深化对接， 进一步扩大合作领域、提升合作层次，共同探索建立两校合作新范式。 Gani Nygymetov 校长 对叶美兰校长的热情接待表达衷心感谢。 他表示，阿拉木图能源与通信大学在能源工程、通信技术、信息技术等领域积淀深厚，希望与南京邮电大学在人才联合培养、学术交流等方面开展全方位合作，实现共赢发展。 交流环节中，双方围绕 电子信息工程、 网络安全、 数字媒体 等 领域 ，就 建设海外卓越工程师学院、人才 培养、师生互访等事宜 进行 深入探讨 。双方达成高度共识，将共同推动各项合作落地见效。 撰稿：李晨 审核：张舒",
-      "attachments": [],
-      "content_hash": "95e5ef2e1e225fd9fbe4",
-      "dedupe_key": "ed77803451010fa002ed",
-      "language": "zh",
-      "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
-      "http_status": 200
-    },
-    "rule_guard": {
-      "restricted": false,
-      "sensitive": false,
-      "sensitive_types": [],
-      "low_evidence": false,
-      "duplicate": false,
-      "expired": false,
-      "evergreen": false,
-      "administrative_noise": false,
-      "risk_flags": [],
-      "allow_llm": true,
-      "allow_full_text_display": true,
-      "review_required": false,
-      "evaluated_at": "2026-05-24T09:06:21.607521Z"
+      "evaluated_at": "2026-05-24T11:50:31.263384Z"
     },
     "task_frames": []
   },
@@ -21101,7 +20701,7 @@
       "dedupe_key": "1ccca9b58623fee89427",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -21120,7 +20720,7 @@
       "allow_llm": true,
       "allow_full_text_display": true,
       "review_required": false,
-      "evaluated_at": "2026-05-24T09:14:08.631785Z"
+      "evaluated_at": "2026-05-24T11:52:36.739607Z"
     },
     "task_frames": [
       {
@@ -21358,104 +20958,6 @@
       "allow_full_text_display": true,
       "review_required": false,
       "evaluated_at": "2026-05-24T09:02:20.420157Z"
-    },
-    "task_frames": []
-  },
-  {
-    "id": "github-ZsgsDesign-NOJ-1d95645a99c9776e0857",
-    "kind": "resource",
-    "source_id": "github:ZsgsDesign/NOJ",
-    "channel_id": "github:ZsgsDesign/NOJ:resource",
-    "channel": "GitHub 资源",
-    "title": "⚡ The most advanced open-sourc... · NOJ - Automatic Algorithm Test Platform",
-    "url": "https://github.com/ZsgsDesign/NOJ/blob/master/README.md",
-    "source": "⚡ The most advanced open-sourc...",
-    "source_domain": "github.com",
-    "source_type": "github_resource",
-    "category": "学院",
-    "domain": "academic",
-    "intent": "read",
-    "lifecycle": "evergreen",
-    "evidence": [
-      "NOJ /noj banner.png NOJ's another online judge platform, stands for NJUPT Online Judge."
-    ],
-    "confidence": 0.95,
-    "sub_category": null,
-    "deadline": null,
-    "action_required": false,
-    "action_type": null,
-    "action_summary": null,
-    "required_materials": [],
-    "sensitive": false,
-    "sensitive_types": [],
-    "review_required": false,
-    "risk_flags": [
-      "evergreen",
-      "github_resource"
-    ],
-    "audience": [
-      "本科生",
-      "研究生"
-    ],
-    "published_at": "2024-03-26",
-    "content": "NOJ - Automatic Algorithm Test Platform ! NOJ /noj banner.png NOJ's another online judge platform, stands for NJUPT Online Judge. It's written in PHP, GO, Python and other function-supporting languages and supports both online judges and virtual judges, we called it mixed judge . ! Build Status https://img.shields.io/scrutinizer/build/g/ZsgsDesign/NOJ.svg?style=flat-square https://scrutinizer-ci.com/g/ZsgsDesign/NOJ/build-status/master ! License https://img.shields.io/github/license/ZsgsDesign/NOJ.svg?style=flat-square ! Scrutinizer Code Quality https://img.shields.io/scrutinizer/g/ZsgsDesign/NOJ.svg?style=flat-square https://scrutinizer-ci.com/g/ZsgsDesign/NOJ/?branch=master ! FOSSA Status https://img.shields.io/badge/license%20scan-passing-green.svg?style=flat-square https://app.fossa.io/projects/git%2Bgithub.com%2FZsgsDesign%2FCodeMaster?ref=badge shield ! GitHub repo size https://img.shields.io/github/repo-size/ZsgsDesign/NOJ.svg?style=flat-square ! GitHub release https://img.shields.io/github/release/zsgsdesign/noj.svg?style=flat-square ! Stars https://img.shields.io/github/stars/zsgsdesign/noj.svg?style=flat-square ! Forks https://img.shields.io/github/forks/zsgsdesign/noj.svg?style=flat-square Built using Jet Brains Open Source License <img style=\"width: 10rem;\" src=\"https://resources.jetbrains.com/storage/products/company/brand/logos/jb beam.png\" alt=\"JetBrains Logo Main logo.\" v0.17.0 Characinae For more information, please visit v0.17.0 Characinae Release Log https://github.com/ZsgsDesign/NOJ/releases/tag/0.17.0 page. Installation :exclamation: If you are having trouble installing NOJ or requires additional help setting up, you can contact us via noj@njupt.edu.cn or start an issue. :-----------: :---------------------------------------------------------------------------------------------------------------------------- CentOS 8 will be recommended for hosting NOJ, but all major operating systems are theoretically supported. We recommend running NOJ on the following platforms: - Ubuntu 20.04 and above - CentOS Linux release 8.0 and above - Windows 10 Professional requires additional setup Your web browser should be one of the following: <img src=\"https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome 48x48.png\" alt=\"Chrome\" width=\"24px\" height=\"24px\" / http://godban.github.io/browsers-support-badges/ </br Chrome <img src=\"https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox 48x48.png\" alt=\"Firefox\" width=\"24px\" height=\"24px\" / http://godban.github.io/browsers-support-badges/ </br Firefox <img src=\"https://raw.githubusercontent.com/alrra/browser-logos/main/src/archive/internet-explorer-tile 10-11/internet-explorer-tile 10-11 48x48.png\" alt=\"IE\" width=\"24px\" height=\"24px\" / http://godban.github.io/browsers-support-badges/ </br Internet Explorer <img src=\"https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge 48x48.png\" alt=\"Edge\" width=\"24px\" height=\"24px\" / http://godban.github.io/browsers-support-badges/ </br Edge <img src=\"https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera 48x48.png\" alt=\"Opera\" width=\"24px\" height=\"24px\" / http://godban.github.io/browsers-support-badges/ </br Opera <img src=\"https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari 48x48.png\" alt=\"Safari\" width=\"24px\" height=\"24px\" / http://godban.github.io/browsers-support-badges/ </br Safari :---------: :-----------: :-------------: :-----------------: :----------------: :----------------: 69 and above 62 and above Not supported 69 and above Not Supported 13.1 and above - Chrome 69 and above - Edge 69 and above - Firefox 62 and above - Safari 13.1 and above We do not provide any support for Opera, which doesn't mean Opera cannot access NOJ without error, it just means issues about compatibilities of Opera will not be fixed. For installation options and troubleshooting tips, see NOJ Documentation https://njuptaaa.github.io/docs/ . ",
-    "summary": "NOJ (NJUPT Online Judge) 是南京邮电大学的在线算法评测平台，提供在线评测及虚拟评测功能，支持多种编程语言。",
-    "attachments": [],
-    "student_score": 0.6635,
-    "freshness_score": 0.42,
-    "importance_score": 0.625,
-    "source_weight": 0.5,
-    "tags": [
-      "学院",
-      "NOJ",
-      "在线评测",
-      "开源项目",
-      "GitHub资料"
-    ],
-    "hash": "1d95645a99c9776e0857",
-    "cache_key": "333b9407ea77ea37f53a",
-    "llm_schema_version": "hytask-taskframe-v1",
-    "llm": {
-      "used": true,
-      "provider": "gemini",
-      "model": "gemini-3.1-flash-lite",
-      "prompt_version": "hytask-taskframe-v1",
-      "confidence": 0.95,
-      "review_required": false
-    },
-    "canonical": {
-      "doc_id": "github-ZsgsDesign-NOJ-1d95645a99c9776e0857",
-      "source_id": "github:ZsgsDesign/NOJ",
-      "channel_id": "github:ZsgsDesign/NOJ:resource",
-      "title": "⚡ The most advanced open-sourc... · NOJ - Automatic Algorithm Test Platform",
-      "canonical_url": "https://github.com/ZsgsDesign/NOJ/blob/master/README.md",
-      "published_at": "2024-03-26T00:00:00",
-      "clean_text": "NOJ - Automatic Algorithm Test Platform ! NOJ /noj banner.png NOJ's another online judge platform, stands for NJUPT Online Judge. It's written in PHP, GO, Python and other function-supporting languages and supports both online judges and virtual judges, we called it mixed judge . ! Build Status https://img.shields.io/scrutinizer/build/g/ZsgsDesign/NOJ.svg?style=flat-square https://scrutinizer-ci.com/g/ZsgsDesign/NOJ/build-status/master ! License https://img.shields.io/github/license/ZsgsDesign/NOJ.svg?style=flat-square ! Scrutinizer Code Quality https://img.shields.io/scrutinizer/g/ZsgsDesign/NOJ.svg?style=flat-square https://scrutinizer-ci.com/g/ZsgsDesign/NOJ/?branch=master ! FOSSA Status https://img.shields.io/badge/license%20scan-passing-green.svg?style=flat-square https://app.fossa.io/projects/git%2Bgithub.com%2FZsgsDesign%2FCodeMaster?ref=badge shield ! GitHub repo size https://img.shields.io/github/repo-size/ZsgsDesign/NOJ.svg?style=flat-square ! GitHub release https://img.shields.io/github/release/zsgsdesign/noj.svg?style=flat-square ! Stars https://img.shields.io/github/stars/zsgsdesign/noj.svg?style=flat-square ! Forks https://img.shields.io/github/forks/zsgsdesign/noj.svg?style=flat-square Built using Jet Brains Open Source License <img style=\"width: 10rem;\" src=\"https://resources.jetbrains.com/storage/products/company/brand/logos/jb beam.png\" alt=\"JetBrains Logo Main logo.\" v0.17.0 Characinae For more information, please visit v0.17.0 Characinae Release Log https://github.com/ZsgsDesign/NOJ/releases/tag/0.17.0 page. Installation :exclamation: If you are having trouble installing NOJ or requires additional help setting up, you can contact us via noj@njupt.edu.cn or start an issue. :-----------: :---------------------------------------------------------------------------------------------------------------------------- CentOS 8 will be recommended for hosting NOJ, but all major operating systems are theoretically supported. We recommend running NOJ on the following platforms: - Ubuntu 20.04 and above - CentOS Linux release 8.0 and above - Windows 10 Professional requires additional setup Your web browser should be one of the following: <img src=\"https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome 48x48.png\" alt=\"Chrome\" width=\"24px\" height=\"24px\" / http://godban.github.io/browsers-support-badges/ </br Chrome <img src=\"https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox 48x48.png\" alt=\"Firefox\" width=\"24px\" height=\"24px\" / http://godban.github.io/browsers-support-badges/ </br Firefox <img src=\"https://raw.githubusercontent.com/alrra/browser-logos/main/src/archive/internet-explorer-tile 10-11/internet-explorer-tile 10-11 48x48.png\" alt=\"IE\" width=\"24px\" height=\"24px\" / http://godban.github.io/browsers-support-badges/ </br Internet Explorer <img src=\"https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge 48x48.png\" alt=\"Edge\" width=\"24px\" height=\"24px\" / http://godban.github.io/browsers-support-badges/ </br Edge <img src=\"https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera 48x48.png\" alt=\"Opera\" width=\"24px\" height=\"24px\" / http://godban.github.io/browsers-support-badges/ </br Opera <img src=\"https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari 48x48.png\" alt=\"Safari\" width=\"24px\" height=\"24px\" / http://godban.github.io/browsers-support-badges/ </br Safari :---------: :-----------: :-------------: :-----------------: :----------------: :----------------: 69 and above 62 and above Not supported 69 and above Not Supported 13.1 and above - Chrome 69 and above - Edge 69 and above - Firefox 62 and above - Safari 13.1 and above We do not provide any support for Opera, which doesn't mean Opera cannot access NOJ without error, it just means issues about compatibilities of Opera will not be fixed. For installation options and troubleshooting tips, see NOJ Documentation https://njuptaaa.github.io/docs/ .",
-      "attachments": [],
-      "content_hash": "db9062f1a1c77f54f7b2",
-      "dedupe_key": "9d100f1ba5a0278d30e7",
-      "language": "zh",
-      "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
-      "http_status": 200
-    },
-    "rule_guard": {
-      "restricted": false,
-      "sensitive": false,
-      "sensitive_types": [],
-      "low_evidence": false,
-      "duplicate": false,
-      "expired": false,
-      "evergreen": true,
-      "administrative_noise": false,
-      "risk_flags": [
-        "evergreen",
-        "github_resource"
-      ],
-      "allow_llm": true,
-      "allow_full_text_display": true,
-      "review_required": false,
-      "evaluated_at": "2026-05-24T09:12:26.025412Z"
     },
     "task_frames": []
   },
@@ -21864,7 +21366,7 @@
       "dedupe_key": "73924076d1e30e5d0353",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -21882,7 +21384,7 @@
       "allow_llm": false,
       "allow_full_text_display": true,
       "review_required": true,
-      "evaluated_at": "2026-05-24T09:11:04.726905Z"
+      "evaluated_at": "2026-05-24T11:51:22.156873Z"
     },
     "task_frames": []
   },
@@ -22163,7 +21665,7 @@
       "dedupe_key": "caa017fee84ce5e73e63",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -22182,7 +21684,7 @@
       "allow_llm": false,
       "allow_full_text_display": true,
       "review_required": true,
-      "evaluated_at": "2026-05-24T09:11:13.746318Z"
+      "evaluated_at": "2026-05-24T11:51:29.470183Z"
     },
     "task_frames": [
       {
@@ -22438,6 +21940,99 @@
       "allow_full_text_display": true,
       "review_required": false,
       "evaluated_at": "2026-05-24T09:02:08.952862Z"
+    },
+    "task_frames": []
+  },
+  {
+    "id": "exchange-fa45a88a0c576d38ab5a",
+    "kind": "notice",
+    "source_id": "exchange",
+    "channel_id": "exchange_notice",
+    "channel": "国际交流通知",
+    "title": "南京邮电大学学生国境外交流项目一览表",
+    "url": "http://exchange.njupt.edu.cn/2025/0527/c7449a284432/page.htm",
+    "source": "国际合作交流处",
+    "source_domain": "exchange.njupt.edu.cn",
+    "source_type": "central_admin",
+    "category": "项目",
+    "domain": "international",
+    "intent": "read",
+    "lifecycle": "unknown",
+    "evidence": [
+      "南京邮电大学学生国境外交流项目一览表"
+    ],
+    "confidence": 0.5,
+    "sub_category": null,
+    "deadline": null,
+    "action_required": false,
+    "action_type": null,
+    "action_summary": null,
+    "required_materials": [],
+    "sensitive": false,
+    "sensitive_types": [],
+    "review_required": true,
+    "risk_flags": [
+      "low_evidence"
+    ],
+    "audience": [
+      "本科生",
+      "研究生",
+      "国际学生"
+    ],
+    "published_at": null,
+    "content": "南京邮电大学学生国境外交流项目一览表",
+    "summary": "南京邮电大学学生国境外交流项目一览表，正文内容缺失。",
+    "attachments": [],
+    "student_score": 0.6331,
+    "freshness_score": 0.45,
+    "importance_score": 0.616,
+    "source_weight": 0.8,
+    "tags": [
+      "项目",
+      "交流项目",
+      "一览表"
+    ],
+    "hash": "fa45a88a0c576d38ab5a",
+    "cache_key": "a79389fe1b7d111c82a8",
+    "llm_schema_version": "hytask-taskframe-v1",
+    "llm": {
+      "used": true,
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-lite",
+      "prompt_version": "hytask-taskframe-v1",
+      "confidence": 0.5,
+      "review_required": true
+    },
+    "canonical": {
+      "doc_id": "exchange-fa45a88a0c576d38ab5a",
+      "source_id": "exchange",
+      "channel_id": "exchange_notice",
+      "title": "南京邮电大学学生国境外交流项目一览表",
+      "canonical_url": "http://exchange.njupt.edu.cn/2025/0527/c7449a284432/page.htm",
+      "published_at": null,
+      "clean_text": "南京邮电大学学生国境外交流项目一览表",
+      "attachments": [],
+      "content_hash": "a4ea4e8439e8801d7a6a",
+      "dedupe_key": "bd72b53e1f59944446b9",
+      "language": "zh",
+      "status": "ok",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "http_status": 200
+    },
+    "rule_guard": {
+      "restricted": false,
+      "sensitive": false,
+      "sensitive_types": [],
+      "low_evidence": false,
+      "duplicate": false,
+      "expired": false,
+      "evergreen": false,
+      "administrative_noise": false,
+      "risk_flags": [],
+      "allow_llm": true,
+      "allow_full_text_display": true,
+      "review_required": false,
+      "evaluated_at": "2026-05-24T11:48:53.502396Z"
     },
     "task_frames": []
   },
@@ -22845,7 +22440,7 @@
       "dedupe_key": "bedf5be7ecfe7461263d",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -22863,7 +22458,7 @@
       "allow_llm": false,
       "allow_full_text_display": true,
       "review_required": true,
-      "evaluated_at": "2026-05-24T08:55:48.632057Z"
+      "evaluated_at": "2026-05-24T11:44:50.121615Z"
     },
     "task_frames": []
   },
@@ -22993,7 +22588,7 @@
       "dedupe_key": "0f5de39bd7c774a2fb99",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -23012,7 +22607,7 @@
       "allow_llm": false,
       "allow_full_text_display": true,
       "review_required": true,
-      "evaluated_at": "2026-05-24T09:11:08.613436Z"
+      "evaluated_at": "2026-05-24T11:51:25.324066Z"
     },
     "task_frames": []
   },
@@ -23659,7 +23254,7 @@
       "dedupe_key": "b62ef744ff6019eb9209",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -23677,7 +23272,7 @@
       "allow_llm": false,
       "allow_full_text_display": true,
       "review_required": true,
-      "evaluated_at": "2026-05-24T09:02:16.579791Z"
+      "evaluated_at": "2026-05-24T11:47:16.286309Z"
     },
     "task_frames": [
       {
@@ -23817,7 +23412,7 @@
       "dedupe_key": "5531f228aff3bbcbab60",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -23837,7 +23432,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T09:03:55.734835Z"
+      "evaluated_at": "2026-05-24T11:48:01.751038Z"
     },
     "task_frames": []
   },
@@ -24269,7 +23864,7 @@
       "dedupe_key": "39ce435d8d517b7260dd",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -24290,7 +23885,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T09:09:00.823002Z"
+      "evaluated_at": "2026-05-24T11:50:36.459863Z"
     },
     "task_frames": []
   },
@@ -24370,7 +23965,7 @@
       "dedupe_key": "5180bfa1d01ba4f733af",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -24392,7 +23987,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T09:14:20.147003Z"
+      "evaluated_at": "2026-05-24T11:52:41.342041Z"
     },
     "task_frames": []
   },
@@ -24473,7 +24068,7 @@
       "dedupe_key": "1b56a54f02a0661c7420",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -24495,282 +24090,28 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T09:13:40.388651Z"
+      "evaluated_at": "2026-05-24T11:52:28.538528Z"
     },
     "task_frames": []
   },
   {
-    "id": "github-GreenPomelo-Undergraduate-3e1f1c39d70e6997c55f",
-    "kind": "resource",
-    "source_id": "github:GreenPomelo/Undergraduate",
-    "channel_id": "github:GreenPomelo/Undergraduate:resource",
-    "channel": "GitHub 资源",
-    "title": "🔧mini program of NJUPT | 南京邮电大... · MiniProgram of Nanjing University of Posts and Telecommunications",
-    "url": "https://github.com/GreenPomelo/Undergraduate/blob/master/README.md",
-    "source": "🔧mini program of NJUPT | 南京邮电大...",
-    "source_domain": "github.com",
-    "source_type": "github_resource",
-    "category": "项目",
-    "domain": "project",
-    "intent": "read",
-    "lifecycle": "evergreen",
-    "evidence": [
-      "🔧mini program of NJUPT | 南京邮电大... · MiniProgram of Nanjing University of Posts and Telecommunications MiniProgram of Nanjing University of Posts and Telecommuni"
-    ],
-    "confidence": null,
-    "sub_category": null,
-    "deadline": null,
-    "action_required": false,
-    "action_type": null,
-    "action_summary": null,
-    "required_materials": [],
-    "sensitive": false,
-    "sensitive_types": [],
-    "review_required": false,
-    "risk_flags": [
-      "evergreen",
-      "github_resource"
-    ],
-    "audience": [
-      "本科生",
-      "研究生"
-    ],
-    "published_at": "2020-01-11",
-    "content": "MiniProgram of Nanjing University of Posts and Telecommunications English 简体中文 ./README-zh CN.md Introduction The MiniProgram of Nanjing University of Posts and Telecommunications hereinafter called NJUPT MiniProgram , developed by QingYou Studio of NJUPT, which is a convenient and swift application that can launch in WeChat client immediately dispense with download and install. Different from the common applications that need to download and install and WeChat Official Account, it is convenient and efficient. <p align=\"center\" <img src=\"https://static.airbob.org/under-graduate/undergraduate-qrcode.jpg\" alt=\"菊花码\" width=\"200\" height=\"200\" </p Learn this Project Advocating componentization and engineering of front-end, this project is developed by Wepy https://github.com/tencent/wepy , to finish front-end project efficiently. Files Structure Install Update Wepy-Cli node = 8.9 Install Dependencies & Serve with Hot Reload ------ QingYou Studio Homepage of QingYou Studio https://qingyou.njupt.edu.cn Built up by Information Office of NJUPT, QingYou Studio is an Internet working team with student developement as its core. We advocate to use new and excellent technologies to achieve the Smart Campus and to serve students. This project will be maintained at least until the end of the 3.x version of NJUPT-Undergraduate. ------ License This project uses the license License AGPLv3 ,and the code is open source for learning. Please read and abide by the following open source agreements: AGPLv3 GNU Affero General Public License v3.0 https://github.com/GreenPomelo/Undergraduate/blob/master/LICENSE QingYou Studio Open Source We hope that we can return the technical achievements to the community, and we encourage the community to contribute to this project. You can help us resolve the existing deficiencises through Pull Request , or tell us through Issue . ------ QingYou Studio Recruitment Mainly in the sophomore and junior students, QingYou Studio is recruiting new members from the full-time undergraduates in NJUPT, and the freshman who has excellent ability can be also recruited. Our posts contain technology, outreach, operations, office and ...... We hope anyone interested in can submit your resume to qingyou@njupt.edu.cn , together with us to do more projects for teachers and students in NJUPT. ------ Update Log CHANGELOG ./CHANGELOG.md ----- Core Team Contributors <table <tr <td align=\"center\" <a href=\"https://github.com/solojiang\" <img src=\"https://github.com/solojiang.png?s=64\" width=\"100px;\"/ <br / <sub <b 狒狒神</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/Bosspwn\" <img src=\"https://github.com/Bosspwn.png?s=64\" width=\"100px;\"/ <br / <sub <b Boss Pwn</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/flytam\" <img src=\"https://github.com/flytam.png?s=64\" width=\"100px;\"/ <br / <sub <b Flytam</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/GooeyNyan\" <img src=\"https://github.com/GooeyNyan.png?s=64\" width=\"100px;\"/ <br / <sub <b GooeyNyan</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/UZIhuhuhu\" <img src=\"https://github.com/UZIhuhuhu.png?s=64\" width=\"100px;\"/ <br / <sub <b WynnXin</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/niffler-bkkkk\" <img src=\"https://github.com/niffler-bkkkkk.png?s=64\" width=\"100px;\"/ <br / <sub <b niffler-bkkkk</b </sub </a <br / </td </tr <tr <td align=\"center\" <a href=\"https://github.com/kishivn\" <img src=\"https://github.com/kishivn.png?s=64\" width=\"100px;\"/ <br / <sub <b kishivn</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/ChenKS12138\" <img src=\"https://github.com/ChenKS12138.png?s=64\" width=\"100px;\"/ <br / <sub <b ChenKS12138</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/cucu6\" <img src=\"https://github.com/cucu6.png?s=64\" width=\"100px;\"/ <br / <sub <b cucu6</b </sub </a <br / </td </tr </table",
-    "summary": "MiniProgram of Nanjing University of Posts and Telecommunications English 简体中文 ./README-zh CN.md Introduction The MiniProgram of Nanjing University of Posts and Telecommunications ",
-    "attachments": [],
-    "student_score": 0.55,
-    "freshness_score": 0.42,
-    "importance_score": 0.61,
-    "source_weight": 0.5,
-    "tags": [
-      "项目",
-      "GitHub资料"
-    ],
-    "hash": "3e1f1c39d70e6997c55f",
-    "cache_key": "a3e2bf542f7ac594af71",
-    "llm_schema_version": "hytask-taskframe-v1",
-    "llm": {
-      "used": false,
-      "provider": null,
-      "model": null,
-      "prompt_version": "hytask-taskframe-v1",
-      "confidence": null,
-      "review_required": false
-    },
-    "canonical": {
-      "doc_id": "github-GreenPomelo-Undergraduate-3e1f1c39d70e6997c55f",
-      "source_id": "github:GreenPomelo/Undergraduate",
-      "channel_id": "github:GreenPomelo/Undergraduate:resource",
-      "title": "🔧mini program of NJUPT | 南京邮电大... · MiniProgram of Nanjing University of Posts and Telecommunications",
-      "canonical_url": "https://github.com/GreenPomelo/Undergraduate/blob/master/README.md",
-      "published_at": "2020-01-11T00:00:00",
-      "clean_text": "MiniProgram of Nanjing University of Posts and Telecommunications English 简体中文 ./README-zh CN.md Introduction The MiniProgram of Nanjing University of Posts and Telecommunications hereinafter called NJUPT MiniProgram , developed by QingYou Studio of NJUPT, which is a convenient and swift application that can launch in WeChat client immediately dispense with download and install. Different from the common applications that need to download and install and WeChat Official Account, it is convenient and efficient. <p align=\"center\" <img src=\"https://static.airbob.org/under-graduate/undergraduate-qrcode.jpg\" alt=\"菊花码\" width=\"200\" height=\"200\" </p Learn this Project Advocating componentization and engineering of front-end, this project is developed by Wepy https://github.com/tencent/wepy , to finish front-end project efficiently. Files Structure Install Update Wepy-Cli node = 8.9 Install Dependencies & Serve with Hot Reload ------ QingYou Studio Homepage of QingYou Studio https://qingyou.njupt.edu.cn Built up by Information Office of NJUPT, QingYou Studio is an Internet working team with student developement as its core. We advocate to use new and excellent technologies to achieve the Smart Campus and to serve students. This project will be maintained at least until the end of the 3.x version of NJUPT-Undergraduate. ------ License This project uses the license License AGPLv3 ,and the code is open source for learning. Please read and abide by the following open source agreements: AGPLv3 GNU Affero General Public License v3.0 https://github.com/GreenPomelo/Undergraduate/blob/master/LICENSE QingYou Studio Open Source We hope that we can return the technical achievements to the community, and we encourage the community to contribute to this project. You can help us resolve the existing deficiencises through Pull Request , or tell us through Issue . ------ QingYou Studio Recruitment Mainly in the sophomore and junior students, QingYou Studio is recruiting new members from the full-time undergraduates in NJUPT, and the freshman who has excellent ability can be also recruited. Our posts contain technology, outreach, operations, office and ...... We hope anyone interested in can submit your resume to qingyou@njupt.edu.cn , together with us to do more projects for teachers and students in NJUPT. ------ Update Log CHANGELOG ./CHANGELOG.md ----- Core Team Contributors <table <tr <td align=\"center\" <a href=\"https://github.com/solojiang\" <img src=\"https://github.com/solojiang.png?s=64\" width=\"100px;\"/ <br / <sub <b 狒狒神</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/Bosspwn\" <img src=\"https://github.com/Bosspwn.png?s=64\" width=\"100px;\"/ <br / <sub <b Boss Pwn</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/flytam\" <img src=\"https://github.com/flytam.png?s=64\" width=\"100px;\"/ <br / <sub <b Flytam</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/GooeyNyan\" <img src=\"https://github.com/GooeyNyan.png?s=64\" width=\"100px;\"/ <br / <sub <b GooeyNyan</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/UZIhuhuhu\" <img src=\"https://github.com/UZIhuhuhu.png?s=64\" width=\"100px;\"/ <br / <sub <b WynnXin</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/niffler-bkkkk\" <img src=\"https://github.com/niffler-bkkkkk.png?s=64\" width=\"100px;\"/ <br / <sub <b niffler-bkkkk</b </sub </a <br / </td </tr <tr <td align=\"center\" <a href=\"https://github.com/kishivn\" <img src=\"https://github.com/kishivn.png?s=64\" width=\"100px;\"/ <br / <sub <b kishivn</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/ChenKS12138\" <img src=\"https://github.com/ChenKS12138.png?s=64\" width=\"100px;\"/ <br / <sub <b ChenKS12138</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/cucu6\" <img src=\"https://github.com/cucu6.png?s=64\" width=\"100px;\"/ <br / <sub <b cucu6</b </sub </a <br / </td </tr </table",
-      "attachments": [],
-      "content_hash": "6084fffd7042860a34d1",
-      "dedupe_key": "b775200c4c6dc4ffad8c",
-      "language": "zh",
-      "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
-      "http_status": 200
-    },
-    "rule_guard": {
-      "restricted": false,
-      "sensitive": false,
-      "sensitive_types": [],
-      "low_evidence": false,
-      "duplicate": false,
-      "expired": false,
-      "evergreen": true,
-      "administrative_noise": false,
-      "risk_flags": [
-        "evergreen",
-        "github_resource"
-      ],
-      "allow_llm": true,
-      "allow_full_text_display": true,
-      "review_required": false,
-      "evaluated_at": "2026-05-24T09:12:59.618647Z"
-    },
-    "task_frames": []
-  },
-  {
-    "id": "github-GreenPomelo-Undergraduate-1328d4737a1ed6714c87",
-    "kind": "resource",
-    "source_id": "github:GreenPomelo/Undergraduate",
-    "channel_id": "github:GreenPomelo/Undergraduate:resource",
-    "channel": "GitHub 资源",
-    "title": "🔧mini program of NJUPT | 南京邮电大... · 南京邮电大学小程序",
-    "url": "https://github.com/GreenPomelo/Undergraduate/blob/master/README-zh_CN.md",
-    "source": "🔧mini program of NJUPT | 南京邮电大...",
-    "source_domain": "github.com",
-    "source_type": "github_resource",
-    "category": "就业",
-    "domain": "employment",
-    "intent": "download",
-    "lifecycle": "evergreen",
-    "evidence": [
-      "🔧mini program of NJUPT | 南京邮电大... · 南京邮电大学小程序 南京邮电大学小程序 English ./README.md 简体中文 介绍 南京邮电大学小程序是由南京邮电大学青柚工作室开发，一款方便快捷，无需下载安装即可在微信客户端即开即用的 APP，有别于一般需要下载安装的 APP，也不同",
-      "<p align=\"center\" <img src=\"https://static.airbob.org/under-graduate/undergraduate-qrcode.jpg\" alt=\"菊花码\" width=\"200\" height=\"200\" </p 学习本项目 整套前端使用 Wepy https://",
-      "项目文件结构 安装（更新） wepy 命令行工具 node = 8.9 安装依赖 & 开发实时编译 ------ 青柚工作室 青柚工作室的主页 https://qingyou.njupt.edu.cn 青柚工作室是由南京邮电大学信息办指导建设，以学生开发为核心的互联网工作团队。"
-    ],
-    "confidence": null,
-    "sub_category": null,
-    "deadline": null,
-    "action_required": false,
-    "action_type": null,
-    "action_summary": null,
-    "required_materials": [],
-    "sensitive": false,
-    "sensitive_types": [],
-    "review_required": false,
-    "risk_flags": [
-      "evergreen",
-      "github_resource"
-    ],
-    "audience": [
-      "本科生",
-      "研究生"
-    ],
-    "published_at": "2020-01-11",
-    "content": "南京邮电大学小程序 English ./README.md 简体中文 介绍 南京邮电大学小程序是由南京邮电大学青柚工作室开发，一款方便快捷，无需下载安装即可在微信客户端即开即用的 APP，有别于一般需要下载安装的 APP，也不同于微信公众号，具有方便快捷的特点。 <p align=\"center\" <img src=\"https://static.airbob.org/under-graduate/undergraduate-qrcode.jpg\" alt=\"菊花码\" width=\"200\" height=\"200\" </p 学习本项目 整套前端使用 Wepy https://github.com/tencent/wepy 开发，提倡前端组件化工程化，高效的完成前端项目。 项目文件结构 安装（更新） wepy 命令行工具 node = 8.9 安装依赖 & 开发实时编译 ------ 青柚工作室 青柚工作室的主页 https://qingyou.njupt.edu.cn 青柚工作室是由南京邮电大学信息办指导建设，以学生开发为核心的互联网工作团队。 倡导使用新技术、优秀的技术去实现智慧校园，服务同学。 本项目至少会持续维护到南京邮电大学本科生 3.x 版本结束。 ------ 开源许可 本项目使用开源许可证 License AGPLv3 ，代码开源仅供学习。 请认真阅读并遵守以下开源协议 AGPLv3 GNU Affero General Public License v3.0 https://github.com/GreenPomelo/Undergraduate/blob/master/LICENSE 青柚工作室开源计划： 希望能够将实战中的技术成果回报社区，并且鼓励社区为这个项目做出贡献，大家可以通过 Pull Requests 的方式帮我们解决目前存在的不足，或者通过 Issues 告知我们。 ------ 青柚工作室招新计划： 青柚工作室持续招新，对象为南京邮电大学全日制本科生，主要以大二大三在校学生为主，大一能力强者亦可。招新岗位为技术、外联、运营、办公、程序员鼓励师......希望有兴趣的同学能投递简历至 qingyou@njupt.edu.cn ，一起来用爱发电，为南邮做出更多方便师生的项目。 ------ 更新日志 CHANGELOG ./CHANGELOG.md <table <tr <td align=\"center\" <a href=\"https://github.com/solojiang\" <img src=\"https://github.com/solojiang.png?s=64\" width=\"100px;\"/ <br / <sub <b 狒狒神</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/Bosspwn\" <img src=\"https://github.com/Bosspwn.png?s=64\" width=\"100px;\"/ <br / <sub <b Boss Pwn</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/flytam\" <img src=\"https://github.com/flytam.png?s=64\" width=\"100px;\"/ <br / <sub <b Flytam</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/GooeyNyan\" <img src=\"https://github.com/GooeyNyan.png?s=64\" width=\"100px;\"/ <br / <sub <b GooeyNyan</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/UZIhuhuhu\" <img src=\"https://github.com/UZIhuhuhu.png?s=64\" width=\"100px;\"/ <br / <sub <b WynnXin</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/niffler-bkkkk\" <img src=\"https://github.com/niffler-bkkkkk.png?s=64\" width=\"100px;\"/ <br / <sub <b niffler-bkkkk</b </sub </a <br / </td </tr <tr <td align=\"center\" <a href=\"https://github.com/kishivn\" <img src=\"https://github.com/kishivn.png?s=64\" width=\"100px;\"/ <br / <sub <b kishivn</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/ChenKS12138\" <img src=\"https://github.com/ChenKS12138.png?s=64\" width=\"100px;\"/ <br / <sub <b ChenKS12138</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/cucu6\" <img src=\"https://github.com/cucu6.png?s=64\" width=\"100px;\"/ <br / <sub <b cucu6</b </sub </a <br / </td </tr </table",
-    "summary": "南京邮电大学小程序 English ./README.md 简体中文 介绍 南京邮电大学小程序是由南京邮电大学青柚工作室开发，一款方便快捷，无需下载安装即可在微信客户端即开即用的 APP，有别于一般需要下载安装的 APP，也不同于微信公众号，具有方便快捷的特点。 <p align=\"center\" <img src=\"https://static.airbo",
-    "attachments": [],
-    "student_score": 0.55,
-    "freshness_score": 0.42,
-    "importance_score": 0.61,
-    "source_weight": 0.5,
-    "tags": [
-      "就业",
-      "项目",
-      "GitHub资料"
-    ],
-    "hash": "1328d4737a1ed6714c87",
-    "cache_key": "46251346e5c74f3b7614",
-    "llm_schema_version": "hytask-taskframe-v1",
-    "llm": {
-      "used": false,
-      "provider": null,
-      "model": null,
-      "prompt_version": "hytask-taskframe-v1",
-      "confidence": null,
-      "review_required": false
-    },
-    "canonical": {
-      "doc_id": "github-GreenPomelo-Undergraduate-1328d4737a1ed6714c87",
-      "source_id": "github:GreenPomelo/Undergraduate",
-      "channel_id": "github:GreenPomelo/Undergraduate:resource",
-      "title": "🔧mini program of NJUPT | 南京邮电大... · 南京邮电大学小程序",
-      "canonical_url": "https://github.com/GreenPomelo/Undergraduate/blob/master/README-zh_CN.md",
-      "published_at": "2020-01-11T00:00:00",
-      "clean_text": "南京邮电大学小程序 English ./README.md 简体中文 介绍 南京邮电大学小程序是由南京邮电大学青柚工作室开发，一款方便快捷，无需下载安装即可在微信客户端即开即用的 APP，有别于一般需要下载安装的 APP，也不同于微信公众号，具有方便快捷的特点。 <p align=\"center\" <img src=\"https://static.airbob.org/under-graduate/undergraduate-qrcode.jpg\" alt=\"菊花码\" width=\"200\" height=\"200\" </p 学习本项目 整套前端使用 Wepy https://github.com/tencent/wepy 开发，提倡前端组件化工程化，高效的完成前端项目。 项目文件结构 安装（更新） wepy 命令行工具 node = 8.9 安装依赖 & 开发实时编译 ------ 青柚工作室 青柚工作室的主页 https://qingyou.njupt.edu.cn 青柚工作室是由南京邮电大学信息办指导建设，以学生开发为核心的互联网工作团队。 倡导使用新技术、优秀的技术去实现智慧校园，服务同学。 本项目至少会持续维护到南京邮电大学本科生 3.x 版本结束。 ------ 开源许可 本项目使用开源许可证 License AGPLv3 ，代码开源仅供学习。 请认真阅读并遵守以下开源协议 AGPLv3 GNU Affero General Public License v3.0 https://github.com/GreenPomelo/Undergraduate/blob/master/LICENSE 青柚工作室开源计划： 希望能够将实战中的技术成果回报社区，并且鼓励社区为这个项目做出贡献，大家可以通过 Pull Requests 的方式帮我们解决目前存在的不足，或者通过 Issues 告知我们。 ------ 青柚工作室招新计划： 青柚工作室持续招新，对象为南京邮电大学全日制本科生，主要以大二大三在校学生为主，大一能力强者亦可。招新岗位为技术、外联、运营、办公、程序员鼓励师......希望有兴趣的同学能投递简历至 qingyou@njupt.edu.cn ，一起来用爱发电，为南邮做出更多方便师生的项目。 ------ 更新日志 CHANGELOG ./CHANGELOG.md <table <tr <td align=\"center\" <a href=\"https://github.com/solojiang\" <img src=\"https://github.com/solojiang.png?s=64\" width=\"100px;\"/ <br / <sub <b 狒狒神</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/Bosspwn\" <img src=\"https://github.com/Bosspwn.png?s=64\" width=\"100px;\"/ <br / <sub <b Boss Pwn</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/flytam\" <img src=\"https://github.com/flytam.png?s=64\" width=\"100px;\"/ <br / <sub <b Flytam</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/GooeyNyan\" <img src=\"https://github.com/GooeyNyan.png?s=64\" width=\"100px;\"/ <br / <sub <b GooeyNyan</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/UZIhuhuhu\" <img src=\"https://github.com/UZIhuhuhu.png?s=64\" width=\"100px;\"/ <br / <sub <b WynnXin</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/niffler-bkkkk\" <img src=\"https://github.com/niffler-bkkkkk.png?s=64\" width=\"100px;\"/ <br / <sub <b niffler-bkkkk</b </sub </a <br / </td </tr <tr <td align=\"center\" <a href=\"https://github.com/kishivn\" <img src=\"https://github.com/kishivn.png?s=64\" width=\"100px;\"/ <br / <sub <b kishivn</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/ChenKS12138\" <img src=\"https://github.com/ChenKS12138.png?s=64\" width=\"100px;\"/ <br / <sub <b ChenKS12138</b </sub </a <br / </td <td align=\"center\" <a href=\"https://github.com/cucu6\" <img src=\"https://github.com/cucu6.png?s=64\" width=\"100px;\"/ <br / <sub <b cucu6</b </sub </a <br / </td </tr </table",
-      "attachments": [],
-      "content_hash": "759b296a63755d5d38e0",
-      "dedupe_key": "8c8fbacfc90c1e099a6a",
-      "language": "zh",
-      "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
-      "http_status": 200
-    },
-    "rule_guard": {
-      "restricted": false,
-      "sensitive": false,
-      "sensitive_types": [],
-      "low_evidence": false,
-      "duplicate": false,
-      "expired": false,
-      "evergreen": true,
-      "administrative_noise": false,
-      "risk_flags": [
-        "evergreen",
-        "github_resource"
-      ],
-      "allow_llm": true,
-      "allow_full_text_display": true,
-      "review_required": false,
-      "evaluated_at": "2026-05-24T09:12:59.911931Z"
-    },
-    "task_frames": [
-      {
-        "task_id": "task_77d9d20fef063d59",
-        "doc_id": "github-GreenPomelo-Undergraduate-1328d4737a1ed6714c87",
-        "task_type": "download",
-        "who": {
-          "audience": [
-            "本科生",
-            "研究生"
-          ],
-          "college": [],
-          "grade": [],
-          "major": [],
-          "class_name": []
-        },
-        "what": "🔧mini program of NJUPT | 南京邮电大... · 南京邮电大学小程序",
-        "action": {
-          "required": false,
-          "verb": null,
-          "object": null,
-          "summary": null
-        },
-        "time": {
-          "published_at": "2020-01-11",
-          "deadline": null,
-          "lifecycle": "evergreen",
-          "urgency_days": null
-        },
-        "materials": [],
-        "location": {
-          "place": null,
-          "online": null,
-          "contact": null
-        },
-        "source": {
-          "source_id": "github:GreenPomelo/Undergraduate",
-          "channel_id": "github:GreenPomelo/Undergraduate:resource",
-          "authority": 0.5,
-          "official": true
-        },
-        "evidence": [
-          {
-            "field": "general",
-            "text": "🔧mini program of NJUPT | 南京邮电大... · 南京邮电大学小程序 南京邮电大学小程序 English ./README.md 简体中文 介绍 南京邮电大学小程序是由南京邮电大学青柚工作室开发，一款方便快捷，无需下载安装即可在微信客户端即开即用的 APP，有别于一般需要下载安装的 APP，也不同"
-          },
-          {
-            "field": "general",
-            "text": "<p align=\"center\" <img src=\"https://static.airbob.org/under-graduate/undergraduate-qrcode.jpg\" alt=\"菊花码\" width=\"200\" height=\"200\" </p 学习本项目 整套前端使用 Wepy https://"
-          },
-          {
-            "field": "general",
-            "text": "项目文件结构 安装（更新） wepy 命令行工具 node = 8.9 安装依赖 & 开发实时编译 ------ 青柚工作室 青柚工作室的主页 https://qingyou.njupt.edu.cn 青柚工作室是由南京邮电大学信息办指导建设，以学生开发为核心的互联网工作团队。"
-          }
-        ],
-        "risk": {
-          "sensitive": false,
-          "restricted": false,
-          "low_evidence": false,
-          "review_required": false
-        },
-        "confidence": 0.58
-      }
-    ]
-  },
-  {
-    "id": "github-ZsgsDesign-NOJ-539646bc56d3f5e3e90b",
+    "id": "github-ZsgsDesign-NOJ-1d95645a99c9776e0857",
     "kind": "resource",
     "source_id": "github:ZsgsDesign/NOJ",
     "channel_id": "github:ZsgsDesign/NOJ:resource",
     "channel": "GitHub 资源",
-    "title": "⚡ The most advanced open-sourc... · Notice",
-    "url": "https://github.com/ZsgsDesign/NOJ/blob/master/CONTRIBUTING.md",
+    "title": "⚡ The most advanced open-sourc... · NOJ - Automatic Algorithm Test Platform",
+    "url": "https://github.com/ZsgsDesign/NOJ/blob/master/README.md",
     "source": "⚡ The most advanced open-sourc...",
     "source_domain": "github.com",
     "source_type": "github_resource",
-    "category": "学院",
-    "domain": "academic",
+    "category": "资料",
+    "domain": "resource",
     "intent": "read",
     "lifecycle": "evergreen",
     "evidence": [
-      "NOJ welcomes all kinds of contribution, but do remember to follow the MIT license."
+      "NOJ - Automatic Algorithm Test Platform",
+      "stands for NJUPT Online Judge"
     ],
     "confidence": 0.95,
     "sub_category": null,
@@ -24791,43 +24132,45 @@
       "研究生"
     ],
     "published_at": "2024-03-26",
-    "content": "Notice NOJ welcomes all kinds of contribution, but do remember to follow the MIT license. before you start contributing, check the following things: 1. Your repo has been updated with NOJ; 2. You have checked the dependences; 3. Your database is the same with NOJ; Then, enjoy coding~ NOJ has provided some simple issues marked Help Wanted or Good First Issue , you can start from them.",
-    "summary": "NOJ 项目的贡献说明，欢迎开发者参与贡献并遵循 MIT 协议。",
+    "content": "NOJ - Automatic Algorithm Test Platform ! NOJ /noj banner.png NOJ's another online judge platform, stands for NJUPT Online Judge. It's written in PHP, GO, Python and other function-supporting languages and supports both online judges and virtual judges, we called it mixed judge . ! Build Status https://img.shields.io/scrutinizer/build/g/ZsgsDesign/NOJ.svg?style=flat-square https://scrutinizer-ci.com/g/ZsgsDesign/NOJ/build-status/master ! License https://img.shields.io/github/license/ZsgsDesign/NOJ.svg?style=flat-square ! Scrutinizer Code Quality https://img.shields.io/scrutinizer/g/ZsgsDesign/NOJ.svg?style=flat-square https://scrutinizer-ci.com/g/ZsgsDesign/NOJ/?branch=master ! FOSSA Status https://img.shields.io/badge/license%20scan-passing-green.svg?style=flat-square https://app.fossa.io/projects/git%2Bgithub.com%2FZsgsDesign%2FCodeMaster?ref=badge shield ! GitHub repo size https://img.shields.io/github/repo-size/ZsgsDesign/NOJ.svg?style=flat-square ! GitHub release https://img.shields.io/github/release/zsgsdesign/noj.svg?style=flat-square ! Stars https://img.shields.io/github/stars/zsgsdesign/noj.svg?style=flat-square ! Forks https://img.shields.io/github/forks/zsgsdesign/noj.svg?style=flat-square Built using Jet Brains Open Source License <img style=\"width: 10rem;\" src=\"https://resources.jetbrains.com/storage/products/company/brand/logos/jb beam.png\" alt=\"JetBrains Logo Main logo.\" v0.17.0 Characinae For more information, please visit v0.17.0 Characinae Release Log https://github.com/ZsgsDesign/NOJ/releases/tag/0.17.0 page. Installation :exclamation: If you are having trouble installing NOJ or requires additional help setting up, you can contact us via noj@njupt.edu.cn or start an issue. :-----------: :---------------------------------------------------------------------------------------------------------------------------- CentOS 8 will be recommended for hosting NOJ, but all major operating systems are theoretically supported. We recommend running NOJ on the following platforms: - Ubuntu 20.04 and above - CentOS Linux release 8.0 and above - Windows 10 Professional requires additional setup Your web browser should be one of the following: <img src=\"https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome 48x48.png\" alt=\"Chrome\" width=\"24px\" height=\"24px\" / http://godban.github.io/browsers-support-badges/ </br Chrome <img src=\"https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox 48x48.png\" alt=\"Firefox\" width=\"24px\" height=\"24px\" / http://godban.github.io/browsers-support-badges/ </br Firefox <img src=\"https://raw.githubusercontent.com/alrra/browser-logos/main/src/archive/internet-explorer-tile 10-11/internet-explorer-tile 10-11 48x48.png\" alt=\"IE\" width=\"24px\" height=\"24px\" / http://godban.github.io/browsers-support-badges/ </br Internet Explorer <img src=\"https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge 48x48.png\" alt=\"Edge\" width=\"24px\" height=\"24px\" / http://godban.github.io/browsers-support-badges/ </br Edge <img src=\"https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera 48x48.png\" alt=\"Opera\" width=\"24px\" height=\"24px\" / http://godban.github.io/browsers-support-badges/ </br Opera <img src=\"https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari 48x48.png\" alt=\"Safari\" width=\"24px\" height=\"24px\" / http://godban.github.io/browsers-support-badges/ </br Safari :---------: :-----------: :-------------: :-----------------: :----------------: :----------------: 69 and above 62 and above Not supported 69 and above Not Supported 13.1 and above - Chrome 69 and above - Edge 69 and above - Firefox 62 and above - Safari 13.1 and above We do not provide any support for Opera, which doesn't mean Opera cannot access NOJ without error, it just means issues about compatibilities of Opera will not be fixed. For installation options and troubleshooting tips, see NOJ Documentation https://njuptaaa.github.io/docs/ . ",
+    "summary": "NOJ是南京邮电大学开源在线判题系统，提供安装文档和技术支持。",
     "attachments": [],
     "student_score": 0.55,
     "freshness_score": 0.42,
-    "importance_score": 0.55,
+    "importance_score": 0.25,
     "source_weight": 0.5,
     "tags": [
-      "学院",
-      "贡献指南",
+      "资料",
+      "github",
+      "NOJ",
+      "online judge",
       "GitHub资料"
     ],
-    "hash": "539646bc56d3f5e3e90b",
-    "cache_key": "b9dc073e39bf9e447db6",
+    "hash": "1d95645a99c9776e0857",
+    "cache_key": "333b9407ea77ea37f53a",
     "llm_schema_version": "hytask-taskframe-v1",
     "llm": {
       "used": true,
-      "provider": "gemini",
-      "model": "gemini-3.1-flash-lite",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
       "prompt_version": "hytask-taskframe-v1",
       "confidence": 0.95,
       "review_required": false
     },
     "canonical": {
-      "doc_id": "github-ZsgsDesign-NOJ-539646bc56d3f5e3e90b",
+      "doc_id": "github-ZsgsDesign-NOJ-1d95645a99c9776e0857",
       "source_id": "github:ZsgsDesign/NOJ",
       "channel_id": "github:ZsgsDesign/NOJ:resource",
-      "title": "⚡ The most advanced open-sourc... · Notice",
-      "canonical_url": "https://github.com/ZsgsDesign/NOJ/blob/master/CONTRIBUTING.md",
+      "title": "⚡ The most advanced open-sourc... · NOJ - Automatic Algorithm Test Platform",
+      "canonical_url": "https://github.com/ZsgsDesign/NOJ/blob/master/README.md",
       "published_at": "2024-03-26T00:00:00",
-      "clean_text": "Notice NOJ welcomes all kinds of contribution, but do remember to follow the MIT license. before you start contributing, check the following things: 1. Your repo has been updated with NOJ; 2. You have checked the dependences; 3. Your database is the same with NOJ; Then, enjoy coding~ NOJ has provided some simple issues marked Help Wanted or Good First Issue , you can start from them.",
+      "clean_text": "NOJ - Automatic Algorithm Test Platform ! NOJ /noj banner.png NOJ's another online judge platform, stands for NJUPT Online Judge. It's written in PHP, GO, Python and other function-supporting languages and supports both online judges and virtual judges, we called it mixed judge . ! Build Status https://img.shields.io/scrutinizer/build/g/ZsgsDesign/NOJ.svg?style=flat-square https://scrutinizer-ci.com/g/ZsgsDesign/NOJ/build-status/master ! License https://img.shields.io/github/license/ZsgsDesign/NOJ.svg?style=flat-square ! Scrutinizer Code Quality https://img.shields.io/scrutinizer/g/ZsgsDesign/NOJ.svg?style=flat-square https://scrutinizer-ci.com/g/ZsgsDesign/NOJ/?branch=master ! FOSSA Status https://img.shields.io/badge/license%20scan-passing-green.svg?style=flat-square https://app.fossa.io/projects/git%2Bgithub.com%2FZsgsDesign%2FCodeMaster?ref=badge shield ! GitHub repo size https://img.shields.io/github/repo-size/ZsgsDesign/NOJ.svg?style=flat-square ! GitHub release https://img.shields.io/github/release/zsgsdesign/noj.svg?style=flat-square ! Stars https://img.shields.io/github/stars/zsgsdesign/noj.svg?style=flat-square ! Forks https://img.shields.io/github/forks/zsgsdesign/noj.svg?style=flat-square Built using Jet Brains Open Source License <img style=\"width: 10rem;\" src=\"https://resources.jetbrains.com/storage/products/company/brand/logos/jb beam.png\" alt=\"JetBrains Logo Main logo.\" v0.17.0 Characinae For more information, please visit v0.17.0 Characinae Release Log https://github.com/ZsgsDesign/NOJ/releases/tag/0.17.0 page. Installation :exclamation: If you are having trouble installing NOJ or requires additional help setting up, you can contact us via noj@njupt.edu.cn or start an issue. :-----------: :---------------------------------------------------------------------------------------------------------------------------- CentOS 8 will be recommended for hosting NOJ, but all major operating systems are theoretically supported. We recommend running NOJ on the following platforms: - Ubuntu 20.04 and above - CentOS Linux release 8.0 and above - Windows 10 Professional requires additional setup Your web browser should be one of the following: <img src=\"https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome 48x48.png\" alt=\"Chrome\" width=\"24px\" height=\"24px\" / http://godban.github.io/browsers-support-badges/ </br Chrome <img src=\"https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox 48x48.png\" alt=\"Firefox\" width=\"24px\" height=\"24px\" / http://godban.github.io/browsers-support-badges/ </br Firefox <img src=\"https://raw.githubusercontent.com/alrra/browser-logos/main/src/archive/internet-explorer-tile 10-11/internet-explorer-tile 10-11 48x48.png\" alt=\"IE\" width=\"24px\" height=\"24px\" / http://godban.github.io/browsers-support-badges/ </br Internet Explorer <img src=\"https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge 48x48.png\" alt=\"Edge\" width=\"24px\" height=\"24px\" / http://godban.github.io/browsers-support-badges/ </br Edge <img src=\"https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera 48x48.png\" alt=\"Opera\" width=\"24px\" height=\"24px\" / http://godban.github.io/browsers-support-badges/ </br Opera <img src=\"https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari 48x48.png\" alt=\"Safari\" width=\"24px\" height=\"24px\" / http://godban.github.io/browsers-support-badges/ </br Safari :---------: :-----------: :-------------: :-----------------: :----------------: :----------------: 69 and above 62 and above Not supported 69 and above Not Supported 13.1 and above - Chrome 69 and above - Edge 69 and above - Firefox 62 and above - Safari 13.1 and above We do not provide any support for Opera, which doesn't mean Opera cannot access NOJ without error, it just means issues about compatibilities of Opera will not be fixed. For installation options and troubleshooting tips, see NOJ Documentation https://njuptaaa.github.io/docs/ .",
       "attachments": [],
-      "content_hash": "acafe7fa2926ed811173",
-      "dedupe_key": "82ffb4fa7ddcee8e0d95",
+      "content_hash": "db9062f1a1c77f54f7b2",
+      "dedupe_key": "9d100f1ba5a0278d30e7",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -24846,103 +24189,7 @@
       "allow_llm": true,
       "allow_full_text_display": true,
       "review_required": false,
-      "evaluated_at": "2026-05-24T09:12:26.531053Z"
-    },
-    "task_frames": []
-  },
-  {
-    "id": "github-ZsgsDesign-NOJ-3761f8a0ba5e1818af4c",
-    "kind": "resource",
-    "source_id": "github:ZsgsDesign/NOJ",
-    "channel_id": "github:ZsgsDesign/NOJ:resource",
-    "channel": "GitHub 资源",
-    "title": "⚡ The most advanced open-sourc... · Security Policy",
-    "url": "https://github.com/ZsgsDesign/NOJ/blob/master/SECURITY.md",
-    "source": "⚡ The most advanced open-sourc...",
-    "source_domain": "github.com",
-    "source_type": "github_resource",
-    "category": "生活",
-    "domain": "security",
-    "intent": "read",
-    "lifecycle": "evergreen",
-    "evidence": [
-      "Security Policy Supported Versions Currently only NOJ 0.17.x are being supported with security updates."
-    ],
-    "confidence": 0.95,
-    "sub_category": null,
-    "deadline": null,
-    "action_required": false,
-    "action_type": null,
-    "action_summary": null,
-    "required_materials": [],
-    "sensitive": false,
-    "sensitive_types": [],
-    "review_required": false,
-    "risk_flags": [
-      "evergreen",
-      "github_resource"
-    ],
-    "audience": [
-      "本科生",
-      "研究生"
-    ],
-    "published_at": "2024-03-26",
-    "content": "Security Policy Supported Versions Currently only NOJ 0.17.x are being supported with security updates. Version Supported ---------- ------------------ 0.17.x :white check mark: < 0.17.0 :x: Reporting a Vulnerability You can file vulnerability reports by directly contact my email address as shown in Github profile.",
-    "summary": "NOJ 项目的安全策略，说明了当前支持的版本及漏洞报告方式。",
-    "attachments": [],
-    "student_score": 0.55,
-    "freshness_score": 0.42,
-    "importance_score": 0.55,
-    "source_weight": 0.5,
-    "tags": [
-      "生活",
-      "安全策略",
-      "GitHub资料"
-    ],
-    "hash": "3761f8a0ba5e1818af4c",
-    "cache_key": "dc33aa67bb2ec8a9a28a",
-    "llm_schema_version": "hytask-taskframe-v1",
-    "llm": {
-      "used": true,
-      "provider": "gemini",
-      "model": "gemini-3.1-flash-lite",
-      "prompt_version": "hytask-taskframe-v1",
-      "confidence": 0.95,
-      "review_required": false
-    },
-    "canonical": {
-      "doc_id": "github-ZsgsDesign-NOJ-3761f8a0ba5e1818af4c",
-      "source_id": "github:ZsgsDesign/NOJ",
-      "channel_id": "github:ZsgsDesign/NOJ:resource",
-      "title": "⚡ The most advanced open-sourc... · Security Policy",
-      "canonical_url": "https://github.com/ZsgsDesign/NOJ/blob/master/SECURITY.md",
-      "published_at": "2024-03-26T00:00:00",
-      "clean_text": "Security Policy Supported Versions Currently only NOJ 0.17.x are being supported with security updates. Version Supported ---------- ------------------ 0.17.x :white check mark: < 0.17.0 :x: Reporting a Vulnerability You can file vulnerability reports by directly contact my email address as shown in Github profile.",
-      "attachments": [],
-      "content_hash": "0862e36e6f981a9ea8c4",
-      "dedupe_key": "0877fe76575d21ed382f",
-      "language": "zh",
-      "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
-      "http_status": 200
-    },
-    "rule_guard": {
-      "restricted": false,
-      "sensitive": false,
-      "sensitive_types": [],
-      "low_evidence": false,
-      "duplicate": false,
-      "expired": false,
-      "evergreen": true,
-      "administrative_noise": false,
-      "risk_flags": [
-        "evergreen",
-        "github_resource"
-      ],
-      "allow_llm": true,
-      "allow_full_text_display": true,
-      "review_required": false,
-      "evaluated_at": "2026-05-24T09:12:26.669687Z"
+      "evaluated_at": "2026-05-24T11:51:56.489013Z"
     },
     "task_frames": []
   },
@@ -24957,12 +24204,13 @@
     "source": "⚡ The most advanced open-sourc...",
     "source_domain": "github.com",
     "source_type": "github_resource",
-    "category": "学院",
-    "domain": "academic",
+    "category": "资料",
+    "domain": "resource",
     "intent": "read",
     "lifecycle": "evergreen",
     "evidence": [
-      "Changelog All notable changes to this project will be documented in this file."
+      "Changelog",
+      "NOJ 0.17.4 Characinae Build Pack 4"
     ],
     "confidence": 0.95,
     "sub_category": null,
@@ -24984,16 +24232,17 @@
     ],
     "published_at": "2024-03-26",
     "content": "Changelog All notable changes to this project will be documented in this file. NOJ 0.17.4 Characinae Build Pack 4 - 2021-11-03 This is a build version update for 0.17.0 Characinae . Important: Rerun npm ci and composer install then npm run production . Update Logs New: NOJ now supports contest.exsits middleware. New: NOJ now uses Github markdown style to render messages. Fixed: A PHP7.4 compatibility bug causing contest details to return 500 when users don't have clearance. Improved: Remastered contest routers. Security: encore/laravel-admin is now at 1.8.16 . Security: laravel/framework is now at 8.69.0 . Security: laravel/passport is now at 10.2.0 . Security: laravel/ui is now at 3.3.1 . Security: phpseclib/phpseclib is now at 3.0.11 . Security: symfony/console is now at 5.3.10 . Security: symfony/http-foundation is now at 5.3.10 . Security: symfony/http-kernel is now at 5.3.10 . Security: symfony/string is now at 5.3.10 . Security: symfony/translation is now at 5.3.10 . Security: symfony/var-dumper is now at 5.3.10 . NOJ 0.17.3 Characinae Build Pack 3 - 2021-10-30 This is a build version update for 0.17.0 Characinae . Important: All previous messages stored in the message table are not compatible with this update, please remove them manually. Update Logs Compatibility: This update no longer supports old message format, please remove all old messages manually. New: NOJ now supports BABEL Extension CodeForces Gym . New: Add locale for official messages. New: Add environment variable APP OFFICIAL SENDER , maintainers can now set this variable to a certain user id and make that user the sender of all official messages. New: Messages now have levels like info , success , warning , error , and question . New: NOJ now notifies users when a submitted solution got accepted. New: NOJ now notifies users of new homework. New: NOJ now notifies users when the global rank in or out top 100. Deprecated: NOJ no longer uses old WKHTMLTOPDF configs. Deprecated: NOJ no longer uses using Solution model, using ProblemSolution model instead. Fixed: A PHP7.4 compatibility bug causing problem detail page returns 500 when problem not found. Fixed: A bug causing Admin Portal contest practice field unchangeable. Fixed: A bug causing blink does not generate pdf URLs. Fixed: A missing exception type bug causing exception catch invalid for NOJ BABEL. Fixed: A NOJ BABEL Extension CodeForces bug causing crawled problem missing some irregular fields. Fixed: A NOJ BABEL Extension CodeForces bug causing crawled problem with div tags display wrongly. Fixed: Typo special thanks to @gtn1024 . Improved: Remastered message box view. Security: doctrine/inflector is now at 2.0.4 . Security: facade/ignition is now at 2.16.0 . Security: laravel/framework is now at 8.68.1 . Security: nanoid is now at 3.1.30 . Security: perfect-scrollbar is now at 1.5.3 . Security: postcss is now at 8.3.11 . Security: sass is now at 1.43.4 . NOJ 0.17.2 Characinae Build Pack 2 - 2021-10-21 This is a build version update for 0.17.0 Characinae . Important: Rerun npm ci and composer install then npm run production . Update Logs Compatibility: This update no longer uses wkhtmltopdf. New: NOJ now greatly improves PDF generation speed and quality by using 2 new approaches: CPDF or Blink with Skia. New: NOJ now uses nesk/puphpeteer . New: NOJ now uses barryvdh/laravel-dompdf . Deprecated: NOJ no longer uses old LatexModel and LatexController . Deprecated: Helper function latex2image is no longer supported. Fixed: A bug causing PDF-generated Chinese character replaced by blank square. Fixed: A bug causing PDF generation exit without error. Fixed: Typo only 1 this time . Improved: PDF generation now does not wait 20 seconds then proceed, it quits when complete. Security: fonts-asset/dejavu is now at 1.0.4 . Security: fonts-asset/simsun is now at 1.0.2 . Security: graham-campbell/result-type is now at 1.0.3 . Security: laravel/framework is now at 8.65.0 . Security: laravel/passport is now at 10.1.",
-    "summary": "NOJ 平台的版本更新日志，记录了各版本的修复、新增功能及安全更新。",
+    "summary": "NOJ项目的版本更新日志，记录功能改进和安全更新。",
     "attachments": [],
     "student_score": 0.55,
     "freshness_score": 0.42,
-    "importance_score": 0.475,
+    "importance_score": 0.25,
     "source_weight": 0.5,
     "tags": [
-      "学院",
-      "更新日志",
+      "资料",
+      "github",
       "NOJ",
+      "changelog",
       "GitHub资料"
     ],
     "hash": "2c13aea4826112a74b35",
@@ -25001,8 +24250,8 @@
     "llm_schema_version": "hytask-taskframe-v1",
     "llm": {
       "used": true,
-      "provider": "gemini",
-      "model": "gemini-3.1-flash-lite",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
       "prompt_version": "hytask-taskframe-v1",
       "confidence": 0.95,
       "review_required": false
@@ -25020,7 +24269,7 @@
       "dedupe_key": "04663fa8e39f5e4bc1ac",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -25039,7 +24288,7 @@
       "allow_llm": true,
       "allow_full_text_display": true,
       "review_required": false,
-      "evaluated_at": "2026-05-24T09:12:26.220140Z"
+      "evaluated_at": "2026-05-24T11:51:56.816220Z"
     },
     "task_frames": []
   },
@@ -25055,11 +24304,11 @@
     "source_domain": "github.com",
     "source_type": "github_resource",
     "category": "公告",
-    "domain": "news",
+    "domain": "policy",
     "intent": "read",
     "lifecycle": "evergreen",
     "evidence": [
-      "Contributor Covenant Code of Conduct Our Pledge In the interest of fostering an open and welcoming environment"
+      "Contributor Covenant Code of Conduct"
     ],
     "confidence": 0.95,
     "sub_category": null,
@@ -25081,15 +24330,16 @@
     ],
     "published_at": "2024-03-26",
     "content": "Contributor Covenant Code of Conduct Our Pledge In the interest of fostering an open and welcoming environment, we as contributors and maintainers pledge to making participation in our project and our community a harassment-free experience for everyone, regardless of age, body size, disability, ethnicity, sex characteristics, gender identity and expression, level of experience, education, socio-economic status, nationality, personal appearance, race, religion, or sexual identity and orientation. Our Standards Examples of behavior that contributes to creating a positive environment include: Using welcoming and inclusive language Being respectful of differing viewpoints and experiences Gracefully accepting constructive criticism Focusing on what is best for the community Showing empathy towards other community members Examples of unacceptable behavior by participants include: The use of sexualized language or imagery and unwelcome sexual attention or advances Trolling, insulting/derogatory comments, and personal or political attacks Public or private harassment Publishing others' private information, such as a physical or electronic address, without explicit permission Other conduct which could reasonably be considered inappropriate in a professional setting Our Responsibilities Project maintainers are responsible for clarifying the standards of acceptable behavior and are expected to take appropriate and fair corrective action in response to any instances of unacceptable behavior. Project maintainers have the right and responsibility to remove, edit, or reject comments, commits, code, wiki edits, issues, and other contributions that are not aligned to this Code of Conduct, or to ban temporarily or permanently any contributor for other behaviors that they deem inappropriate, threatening, offensive, or harmful. Scope This Code of Conduct applies both within project spaces and in public spaces when an individual is representing the project or its community. Examples of representing a project or community include using an official project e-mail address, posting via an official social media account, or acting as an appointed representative at an online or offline event. Representation of a project may be further defined and clarified by project maintainers. Enforcement Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by contacting the project team at johnzhang@1cf.co. All complaints will be reviewed and investigated and will result in a response that is deemed necessary and appropriate to the circumstances. The project team is obligated to maintain confidentiality with regard to the reporter of an incident. Further details of specific enforcement policies may be posted separately. Project maintainers who do not follow or enforce the Code of Conduct in good faith may face temporary or permanent repercussions as determined by other members of the project's leadership. Attribution This Code of Conduct is adapted from the Contributor Covenant homepage , version 1.4, available at https://www.contributor-covenant.org/version/1/4/code-of-conduct.html homepage : https://www.contributor-covenant.org For answers to common questions about this code of conduct, see https://www.contributor-covenant.org/faq",
-    "summary": "NOJ 开源项目的贡献者行为准则，旨在营造包容、无骚扰的社区环境。",
+    "summary": "NOJ项目的贡献者行为准则，要求尊重和包容。",
     "attachments": [],
     "student_score": 0.55,
     "freshness_score": 0.42,
-    "importance_score": 0.4,
+    "importance_score": 0.25,
     "source_weight": 0.5,
     "tags": [
       "公告",
-      "行为准则",
+      "github",
+      "code of conduct",
       "GitHub资料"
     ],
     "hash": "5f8e81f797dee6252ca7",
@@ -25097,8 +24347,8 @@
     "llm_schema_version": "hytask-taskframe-v1",
     "llm": {
       "used": true,
-      "provider": "gemini",
-      "model": "gemini-3.1-flash-lite",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
       "prompt_version": "hytask-taskframe-v1",
       "confidence": 0.95,
       "review_required": false
@@ -25116,7 +24366,7 @@
       "dedupe_key": "e64557ab0e474ec6a6d3",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -25135,7 +24385,203 @@
       "allow_llm": true,
       "allow_full_text_display": true,
       "review_required": false,
-      "evaluated_at": "2026-05-24T09:12:26.362276Z"
+      "evaluated_at": "2026-05-24T11:51:57.030157Z"
+    },
+    "task_frames": []
+  },
+  {
+    "id": "github-ZsgsDesign-NOJ-539646bc56d3f5e3e90b",
+    "kind": "resource",
+    "source_id": "github:ZsgsDesign/NOJ",
+    "channel_id": "github:ZsgsDesign/NOJ:resource",
+    "channel": "GitHub 资源",
+    "title": "⚡ The most advanced open-sourc... · Notice",
+    "url": "https://github.com/ZsgsDesign/NOJ/blob/master/CONTRIBUTING.md",
+    "source": "⚡ The most advanced open-sourc...",
+    "source_domain": "github.com",
+    "source_type": "github_resource",
+    "category": "公告",
+    "domain": "policy",
+    "intent": "read",
+    "lifecycle": "evergreen",
+    "evidence": [
+      "NOJ welcomes all kinds of contribution",
+      "follow the MIT license"
+    ],
+    "confidence": 0.95,
+    "sub_category": null,
+    "deadline": null,
+    "action_required": false,
+    "action_type": null,
+    "action_summary": null,
+    "required_materials": [],
+    "sensitive": false,
+    "sensitive_types": [],
+    "review_required": false,
+    "risk_flags": [
+      "evergreen",
+      "github_resource"
+    ],
+    "audience": [
+      "本科生",
+      "研究生"
+    ],
+    "published_at": "2024-03-26",
+    "content": "Notice NOJ welcomes all kinds of contribution, but do remember to follow the MIT license. before you start contributing, check the following things: 1. Your repo has been updated with NOJ; 2. You have checked the dependences; 3. Your database is the same with NOJ; Then, enjoy coding~ NOJ has provided some simple issues marked Help Wanted or Good First Issue , you can start from them.",
+    "summary": "NOJ项目欢迎贡献，需遵循MIT许可，并检查依赖和数据库。",
+    "attachments": [],
+    "student_score": 0.55,
+    "freshness_score": 0.42,
+    "importance_score": 0.25,
+    "source_weight": 0.5,
+    "tags": [
+      "公告",
+      "github",
+      "contribution",
+      "GitHub资料"
+    ],
+    "hash": "539646bc56d3f5e3e90b",
+    "cache_key": "b9dc073e39bf9e447db6",
+    "llm_schema_version": "hytask-taskframe-v1",
+    "llm": {
+      "used": true,
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "prompt_version": "hytask-taskframe-v1",
+      "confidence": 0.95,
+      "review_required": false
+    },
+    "canonical": {
+      "doc_id": "github-ZsgsDesign-NOJ-539646bc56d3f5e3e90b",
+      "source_id": "github:ZsgsDesign/NOJ",
+      "channel_id": "github:ZsgsDesign/NOJ:resource",
+      "title": "⚡ The most advanced open-sourc... · Notice",
+      "canonical_url": "https://github.com/ZsgsDesign/NOJ/blob/master/CONTRIBUTING.md",
+      "published_at": "2024-03-26T00:00:00",
+      "clean_text": "Notice NOJ welcomes all kinds of contribution, but do remember to follow the MIT license. before you start contributing, check the following things: 1. Your repo has been updated with NOJ; 2. You have checked the dependences; 3. Your database is the same with NOJ; Then, enjoy coding~ NOJ has provided some simple issues marked Help Wanted or Good First Issue , you can start from them.",
+      "attachments": [],
+      "content_hash": "acafe7fa2926ed811173",
+      "dedupe_key": "82ffb4fa7ddcee8e0d95",
+      "language": "zh",
+      "status": "ok",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "http_status": 200
+    },
+    "rule_guard": {
+      "restricted": false,
+      "sensitive": false,
+      "sensitive_types": [],
+      "low_evidence": false,
+      "duplicate": false,
+      "expired": false,
+      "evergreen": true,
+      "administrative_noise": false,
+      "risk_flags": [
+        "evergreen",
+        "github_resource"
+      ],
+      "allow_llm": true,
+      "allow_full_text_display": true,
+      "review_required": false,
+      "evaluated_at": "2026-05-24T11:51:57.249386Z"
+    },
+    "task_frames": []
+  },
+  {
+    "id": "github-ZsgsDesign-NOJ-3761f8a0ba5e1818af4c",
+    "kind": "resource",
+    "source_id": "github:ZsgsDesign/NOJ",
+    "channel_id": "github:ZsgsDesign/NOJ:resource",
+    "channel": "GitHub 资源",
+    "title": "⚡ The most advanced open-sourc... · Security Policy",
+    "url": "https://github.com/ZsgsDesign/NOJ/blob/master/SECURITY.md",
+    "source": "⚡ The most advanced open-sourc...",
+    "source_domain": "github.com",
+    "source_type": "github_resource",
+    "category": "公告",
+    "domain": "policy",
+    "intent": "read",
+    "lifecycle": "evergreen",
+    "evidence": [
+      "Security Policy",
+      "only NOJ 0.17.x are being supported with security updates"
+    ],
+    "confidence": 0.95,
+    "sub_category": null,
+    "deadline": null,
+    "action_required": false,
+    "action_type": null,
+    "action_summary": null,
+    "required_materials": [],
+    "sensitive": false,
+    "sensitive_types": [],
+    "review_required": false,
+    "risk_flags": [
+      "evergreen",
+      "github_resource"
+    ],
+    "audience": [
+      "本科生",
+      "研究生"
+    ],
+    "published_at": "2024-03-26",
+    "content": "Security Policy Supported Versions Currently only NOJ 0.17.x are being supported with security updates. Version Supported ---------- ------------------ 0.17.x :white check mark: < 0.17.0 :x: Reporting a Vulnerability You can file vulnerability reports by directly contact my email address as shown in Github profile.",
+    "summary": "NOJ项目的安全策略，仅支持0.17.x版本的安全更新。",
+    "attachments": [],
+    "student_score": 0.55,
+    "freshness_score": 0.42,
+    "importance_score": 0.25,
+    "source_weight": 0.5,
+    "tags": [
+      "公告",
+      "github",
+      "security",
+      "GitHub资料"
+    ],
+    "hash": "3761f8a0ba5e1818af4c",
+    "cache_key": "dc33aa67bb2ec8a9a28a",
+    "llm_schema_version": "hytask-taskframe-v1",
+    "llm": {
+      "used": true,
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "prompt_version": "hytask-taskframe-v1",
+      "confidence": 0.95,
+      "review_required": false
+    },
+    "canonical": {
+      "doc_id": "github-ZsgsDesign-NOJ-3761f8a0ba5e1818af4c",
+      "source_id": "github:ZsgsDesign/NOJ",
+      "channel_id": "github:ZsgsDesign/NOJ:resource",
+      "title": "⚡ The most advanced open-sourc... · Security Policy",
+      "canonical_url": "https://github.com/ZsgsDesign/NOJ/blob/master/SECURITY.md",
+      "published_at": "2024-03-26T00:00:00",
+      "clean_text": "Security Policy Supported Versions Currently only NOJ 0.17.x are being supported with security updates. Version Supported ---------- ------------------ 0.17.x :white check mark: < 0.17.0 :x: Reporting a Vulnerability You can file vulnerability reports by directly contact my email address as shown in Github profile.",
+      "attachments": [],
+      "content_hash": "0862e36e6f981a9ea8c4",
+      "dedupe_key": "0877fe76575d21ed382f",
+      "language": "zh",
+      "status": "ok",
+      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "http_status": 200
+    },
+    "rule_guard": {
+      "restricted": false,
+      "sensitive": false,
+      "sensitive_types": [],
+      "low_evidence": false,
+      "duplicate": false,
+      "expired": false,
+      "evergreen": true,
+      "administrative_noise": false,
+      "risk_flags": [
+        "evergreen",
+        "github_resource"
+      ],
+      "allow_llm": true,
+      "allow_full_text_display": true,
+      "review_required": false,
+      "evaluated_at": "2026-05-24T11:51:57.479367Z"
     },
     "task_frames": []
   },
