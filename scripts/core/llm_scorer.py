@@ -2,6 +2,7 @@ import json
 import os
 import re
 import time
+from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
 import requests
@@ -87,13 +88,27 @@ class LLMResult(BaseModel):
             return [str(item).strip() for item in value if str(item).strip()]
         return []
 
-    @field_validator("sub_category", "deadline", "action_type", "action_summary", mode="before")
+    @field_validator("sub_category", "action_type", "action_summary", mode="before")
     @classmethod
     def _blank_to_none(cls, value: Any) -> str | None:
         if value is None:
             return None
         text = str(value).strip()
         return text or None
+
+    @field_validator("deadline", mode="before")
+    @classmethod
+    def _validate_deadline(cls, value: Any) -> str | None:
+        if not value:
+            return None
+        text = str(value).strip()
+        if not text:
+            return None
+        try:
+            datetime.fromisoformat(text)
+            return text
+        except ValueError:
+            return None
 
     @field_validator("attachment_roles", mode="before")
     @classmethod
