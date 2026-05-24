@@ -162,7 +162,6 @@ function App() {
                         </a>
                     </div>
                     <div className="flex flex-wrap items-center gap-3 text-xs sm:text-sm">
-                        <span>本项目为非官方工具，请以官网原文为准。</span>
                         <UptimeDisplay />
                     </div>
                 </div>
