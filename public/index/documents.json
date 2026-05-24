@@ -5975,6 +5975,62 @@
     }
   },
   {
+    "id": "ygb-79a6b3cc500b74b5b5a2",
+    "kind": "notice",
+    "title": "郭宇锋书记为研究生新生讲授“思政第一课”",
+    "url": "https://ygb.njupt.edu.cn/2024/0326/c3808a258396/page.htm",
+    "source": "研究生工作部",
+    "source_domain": "ygb.njupt.edu.cn",
+    "source_type": "central_admin",
+    "category": "公告",
+    "domain": "news",
+    "intent": "read",
+    "lifecycle": "unknown",
+    "evidence": [
+      "郭宇锋书记为研究生新生讲授“思政第一课”",
+      "为2023级全体研究生新生讲授"
+    ],
+    "confidence": 0.95,
+    "sub_category": null,
+    "deadline": null,
+    "action_required": false,
+    "action_type": null,
+    "action_summary": null,
+    "required_materials": [],
+    "sensitive": false,
+    "sensitive_types": [],
+    "review_required": false,
+    "risk_flags": [],
+    "audience": [
+      "研究生"
+    ],
+    "published_at": "2025-09-13",
+    "content": "9月13日上午，校党委书记郭宇锋教授在仙林校区教4-211教室为2023级全体研究生新生讲授“思政第一课”，带领3000余名研究生新生学习我校红色校史。授课通过线上线下相结合的方式进行。 上课前，郭宇锋书记和到场的研究生新生代表亲切交流，关心研究生的学习背景、学科专业等。 郭书记课前与研究生互动交流 郭书记围绕南邮红色校史，以《战火生根热血铸魂》为题，讲述了“学史铸魂：学习南邮校史的重要意义”“南邮发源：抗日战争时期的战邮干训班”“数易校名：在解放战争中辗转壮大”“定址南京：结束8年的战争岁月办学历史”“赓续精神：继承和发扬南邮的红色基因”等五个部分的内容，上了一堂生动的思政第一课。 郭宇锋书记为研究生新生讲授“思政第一课” “学习校史，是每一个南邮人的必修课，是南邮学子了解过去、理解今天、面向未来的最生动的思政课。”郭书记号召全体研究生赓续红色基因，传承南邮精神，做到坚持和传承热爱祖国、矢志报国的家国情怀，坚持和传承艰苦奋斗、刻苦学习的优良学风，坚持和传承密切联系群众、服务群众的优良作风。郭书记勉励研究生同学们坚定理想信念，厚植爱党、爱国、爱校情怀，勇担使命、主动创新，在中国式现代化进程中成就青春梦想、贡献南邮力量。 课堂现场 “这是一堂有深度、有温度、触及灵魂的思政课。”研究生新生们表示，南邮红色校史不仅蕴藏着“为党育人、为国育才”的使命之“根”，还蕴藏着“信达天下，自强不息”的初心之“魂”，将激励自己努力成为堪当民族重任的时代新人。 “今天是我第一次系统了解南邮的红色校史，觉得很震撼”，研究生新生孙乐说，“郭书记的讲课，让我更加深刻地认识到，作为新时代的研究生，应该牢记历史使命，传承红色基因，为实现中华民族伟大复兴的中国梦贡献自己的力量。”研究生新生张雨琦认为，郭书记在课前交流中亲切地询问新生们的开学报到、课程学习和导师见面等情况，分享了自己求学和工作的经历，引导新生尽快适应研究生生活，南邮就是这样一个有温度的高校。研究生新生邹嗣雯表示，一直以来，南邮人想国家之所想、急国家之所急、应国家之所需，“作为研究生新生的我，更应该做到研究真问题，真研究问题，切实秉承南邮传统、牢记使命担当、心怀‘国之大者’、坚持‘四个面向’，做一名接续奋斗的‘柚子’”。 （来源：校园网）",
+    "summary": "郭宇锋书记为2023级研究生新生讲授“思政第一课”，讲述南邮红色校史。",
+    "attachments": [],
+    "student_score": 0.8627,
+    "freshness_score": 0.42,
+    "importance_score": 0.7964,
+    "source_weight": 0.92,
+    "tags": [
+      "公告",
+      "思政第一课",
+      "校史",
+      "研究生新生"
+    ],
+    "hash": "79a6b3cc500b74b5b5a2",
+    "cache_key": "64a1c1be871bb2423056",
+    "llm_schema_version": "llm-v5",
+    "llm": {
+      "used": true,
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "prompt_version": "llm-v5",
+      "confidence": 0.95,
+      "review_required": false
+    }
+  },
+  {
     "id": "ai-c6b4b87ac8fdfec3a798",
     "kind": "notice",
     "title": "2026年人工智能学院转专业面试安排",
@@ -9678,60 +9734,6 @@
       "prompt_version": "llm-v5",
       "confidence": 0.9,
       "review_required": false
-    }
-  },
-  {
-    "id": "ygb-86bd441b162a78cc58d1",
-    "kind": "notice",
-    "title": "郭宇锋书记为研究生新生讲授“思政第一课”",
-    "url": "https://ygb.njupt.edu.cn/2024/0326/c3808a258396/page.htm",
-    "source": "研究生工作部",
-    "source_domain": "ygb.njupt.edu.cn",
-    "source_type": "central_admin",
-    "category": "讲座",
-    "domain": "lecture",
-    "intent": "attend",
-    "lifecycle": "unknown",
-    "evidence": [
-      "郭宇锋书记为研究生新生讲授“思政第一课”"
-    ],
-    "confidence": 0.6,
-    "sub_category": null,
-    "deadline": null,
-    "action_required": false,
-    "action_type": null,
-    "action_summary": null,
-    "required_materials": [],
-    "sensitive": false,
-    "sensitive_types": [],
-    "review_required": true,
-    "risk_flags": [],
-    "audience": [
-      "研究生"
-    ],
-    "published_at": null,
-    "content": "郭宇锋书记为研究生新生讲授“思政第一课”",
-    "summary": "郭宇锋书记为研究生新生讲授思政第一课，建议研究生新生参加。",
-    "attachments": [],
-    "student_score": 0.7707,
-    "freshness_score": 0.45,
-    "importance_score": 0.7114,
-    "source_weight": 0.92,
-    "tags": [
-      "讲座",
-      "思政教育",
-      "新生教育"
-    ],
-    "hash": "86bd441b162a78cc58d1",
-    "cache_key": "763edec575637465544f",
-    "llm_schema_version": "llm-v5",
-    "llm": {
-      "used": true,
-      "provider": "deepseek",
-      "model": "deepseek-v4-flash",
-      "prompt_version": "llm-v5",
-      "confidence": 0.6,
-      "review_required": true
     }
   },
   {
