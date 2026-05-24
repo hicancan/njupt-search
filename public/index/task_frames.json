@@ -1,8 +1,8 @@
 [
   {
-    "task_id": "task_9ec25a918fa34377",
+    "task_id": "task-dae26177-1",
     "doc_id": "jwc-7302a28b49d7e92c069f",
-    "task_type": "result_check",
+    "task_type": "application",
     "who": {
       "audience": [
         "本科生"
@@ -12,15 +12,15 @@
       "major": [],
       "class_name": []
     },
-    "what": "【教务管理办公室】2025-2026学年第二学期在线开放课程（慕课）线下考试报名通知",
+    "what": "在线开放课程线下考试报名",
     "action": {
       "required": true,
-      "verb": "报名",
-      "object": null,
-      "summary": "【教务管理办公室】2025-2026学年第二学期在线开放课程（慕课）线下考试报名通知 一、线下考试（学分认定）报名时间及网址 时间： 2026年3月30日9：00至2026年4月3日16：00 ， 逾期关闭系统"
+      "verb": "登录",
+      "object": "教务管理系统报名",
+      "summary": "在2026年3月30日9:00至4月3日16:00期间登录jwxt.njupt.edu.cn报名"
     },
     "time": {
-      "published_at": "2026-03-27",
+      "published_at": "2026-03-27T00:00:00+08:00",
       "deadline": "2026-04-03T16:00:00+08:00",
       "lifecycle": "expired",
       "urgency_days": -52
@@ -53,7 +53,7 @@
     ],
     "location": {
       "place": null,
-      "online": null,
+      "online": "http://jwxt.njupt.edu.cn/",
       "contact": null
     },
     "source": {
@@ -64,32 +64,24 @@
     },
     "evidence": [
       {
-        "field": "general",
-        "text": "【教务管理办公室】2025-2026学年第二学期在线开放课程（慕课）线下考试报名通知 一、线下考试（学分认定）报名时间及网址 时间： 2026年3月30日9：00至2026年4月3日16：00 ， 逾期关闭系统 。"
-      },
-      {
-        "field": "general",
-        "text": "网址： http://jwxt.njupt.edu.cn/，亦可通过学校主页（www.njupt.edu.cn）— 本科生院 主页 —综合信息服务—教务管理系统，登录选课系统。"
-      },
-      {
-        "field": "general",
-        "text": "注： 报名在线开放课程线下考试的学生，应在课程开课初期已加入中国大学 MOOC平台相应课程和对应的慕课堂 ， 并 按要求参加课程线上学习、线上考核和线下考核等（具体考核方式由任课教师通知）。"
+        "field": "deadline",
+        "text": "2026年3月30日9：00至2026年4月3日16：00"
       },
       {
         "field": "audience",
-        "text": "【教务管理办公室】2025-2026学年第二学期在线开放课程（慕课）线下考试报名通知 一、线下考试（学分认定）报名时间及网址 时间： 2026年3月30日9：00至2026年4月3日16：00 ， 逾期关闭系统 。"
+        "text": "2026年3月30日9：00至2026年4月3日16：00"
       },
       {
         "field": "action",
-        "text": "【教务管理办公室】2025-2026学年第二学期在线开放课程（慕课）线下考试报名通知 一、线下考试（学分认定）报名时间及网址 时间： 2026年3月30日9：00至2026年4月3日16：00 ， 逾期关闭系统 。"
-      },
-      {
-        "field": "deadline",
-        "text": "【教务管理办公室】2025-2026学年第二学期在线开放课程（慕课）线下考试报名通知 一、线下考试（学分认定）报名时间及网址 时间： 2026年3月30日9：00至2026年4月3日16：00 ， 逾期关闭系统 。"
+        "text": "2026年3月30日9：00至2026年4月3日16：00"
       },
       {
         "field": "materials",
         "text": "附件/材料：附件1：我校开设的在线开放课程和校内课程对照表.xlsx、附件2：2025-2026-2校际联盟在线开放课程（任选课）.docx、附件3：2025-2026-2校际联盟在线开放课程课程简介.docx、附件4：校际联盟-超星（学习通）学习方式.pdf"
+      },
+      {
+        "field": "location",
+        "text": "http://jwxt.njupt.edu.cn/"
       }
     ],
     "risk": {
@@ -98,89 +90,10 @@
       "low_evidence": false,
       "review_required": false
     },
-    "confidence": 0.58
+    "confidence": 0.95
   },
   {
-    "task_id": "task_10034de25b6ce753",
-    "doc_id": "jwc-0a6ad54c429cb12be8a9",
-    "task_type": "application",
-    "who": {
-      "audience": [
-        "本科生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "南京邮电大学在线课程中心",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": null,
-      "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
-    },
-    "materials": [
-      {
-        "name": "MOOC与SPOC选课与学习流程",
-        "role": "材料",
-        "required": false,
-        "sensitive": false
-      },
-      {
-        "name": "中国大学慕课平台更换手机号码操作流程.pdf",
-        "role": "材料",
-        "required": false,
-        "sensitive": true
-      },
-      {
-        "name": "11、 教师爱课程（中国大学MOOC平台）账号注册及实名认证操作说明",
-        "role": "材料",
-        "required": false,
-        "sensitive": false
-      }
-    ],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "jwc",
-      "channel_id": "jwc_exam",
-      "authority": 1.0,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "南京邮电大学在线课程中心 点击进入选课 >> 常见问题解答（教师&学生） 1、 南京邮电大学在线开放课程（MOOC）导学 2、 MOOC与SPOC选课与学习流程 3、 我校在线开放课程平台访问的网址是？"
-      },
-      {
-        "field": "audience",
-        "text": "南京邮电大学在线课程中心 点击进入选课 >> 常见问题解答（教师&学生） 1、 南京邮电大学在线开放课程（MOOC）导学 2、 MOOC与SPOC选课与学习流程 3、 我校在线开放课程平台访问的网址是？"
-      },
-      {
-        "field": "materials",
-        "text": "附件/材料：MOOC与SPOC选课与学习流程、中国大学慕课平台更换手机号码操作流程.pdf、11、 教师爱课程（中国大学MOOC平台）账号注册及实名认证操作说明"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.58
-  },
-  {
-    "task_id": "task_36e1901493f3f5c5",
+    "task_id": "task-8da2ec14-1",
     "doc_id": "jwc-acae1866bba9bae13b2c",
     "task_type": "application",
     "who": {
@@ -192,53 +105,29 @@
       "major": [],
       "class_name": []
     },
-    "what": "【创新创业教育学院】海外访学交流项目汇总（2025-2026学年第二学期发布）（陆续更新中）",
+    "what": "海外访学项目申请",
     "action": {
       "required": true,
-      "verb": "报名",
-      "object": null,
-      "summary": "【创新创业教育学院】海外访学交流项目汇总（2025-2026学年第二学期发布）（陆续更新中） 各位同学： 下表为与我校合作的海外交流访学项目： 序号 项目名称 报名通知 简介 报名截止时间 项目类型 1 美国加州大学欧文分校 关于2026年美国加州大学欧文分校AI实习课程项目"
+      "verb": "提交",
+      "object": "南京邮电大学本科生海外访学申请表",
+      "summary": "在项目报名截止日期前将申请表交至所在学院"
     },
     "time": {
-      "published_at": "2026-05-07",
+      "published_at": "2026-05-07T00:00:00+08:00",
       "deadline": null,
       "lifecycle": "active",
       "urgency_days": null
     },
     "materials": [
       {
-        "name": "关于2026年美国加州大学欧文分校AI实习课程项目.docx",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "附件1.1线上AI实习项目简介.doc",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "附件1.2AI实习项目完整说明书.docx",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "附件1.3 AI实习项目Bryan Muñoz介绍.pdf",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "威斯康辛大学麦迪逊分校2026夏秋季报名通知.docx",
-        "role": "材料",
+        "name": "南京邮电大学本科生海外访学申请表",
+        "role": "申请表",
         "required": true,
         "sensitive": false
       }
     ],
     "location": {
-      "place": null,
+      "place": "所在学院",
       "online": null,
       "contact": null
     },
@@ -250,24 +139,20 @@
     },
     "evidence": [
       {
-        "field": "general",
-        "text": "【创新创业教育学院】海外访学交流项目汇总（2025-2026学年第二学期发布）（陆续更新中） 各位同学： 下表为与我校合作的海外交流访学项目： 序号 项目名称 报名通知 简介 报名截止时间 项目类型 1 美国加州大学欧文分校 关于2026年美国加州大学欧文分校AI实习课程项目.docx 附件1.1线上AI实习项目简介."
-      },
-      {
-        "field": "general",
-        "text": "各学院 填写 《南京邮电大学本科生海外访学申请汇总表》 ，在项目报名截止日期前 将候选人申请材料及汇总表 （汇总表同时提交电子版） 交至本科生院 。"
+        "field": "action",
+        "text": "请务必填写《南京邮电大学本科生海外访学申请表》，并在项目报名截止日期前交至所在学院"
       },
       {
         "field": "audience",
-        "text": "【创新创业教育学院】海外访学交流项目汇总（2025-2026学年第二学期发布）（陆续更新中） 各位同学： 下表为与我校合作的海外交流访学项目： 序号 项目名称 报名通知 简介 报名截止时间 项目类型 1 美国加州大学欧文分校 关于2026年美国加州大学欧文分校AI实习课程项目.docx 附件1.1线上AI实习项目简介."
-      },
-      {
-        "field": "action",
-        "text": "【创新创业教育学院】海外访学交流项目汇总（2025-2026学年第二学期发布）（陆续更新中） 各位同学： 下表为与我校合作的海外交流访学项目： 序号 项目名称 报名通知 简介 报名截止时间 项目类型 1 美国加州大学欧文分校 关于2026年美国加州大学欧文分校AI实习课程项目.docx 附件1.1线上AI实习项目简介."
+        "text": "请务必填写《南京邮电大学本科生海外访学申请表》，并在项目报名截止日期前交至所在学院"
       },
       {
         "field": "materials",
-        "text": "附件/材料：关于2026年美国加州大学欧文分校AI实习课程项目.docx、附件1.1线上AI实习项目简介.doc、附件1.2AI实习项目完整说明书.docx、附件1.3 AI实习项目Bryan Muñoz介绍.pdf、威斯康辛大学麦迪逊分校2026夏秋季报名通知.docx"
+        "text": "附件/材料：南京邮电大学本科生海外访学申请表"
+      },
+      {
+        "field": "location",
+        "text": "所在学院"
       }
     ],
     "risk": {
@@ -276,149 +161,10 @@
       "low_evidence": false,
       "review_required": false
     },
-    "confidence": 0.58
+    "confidence": 0.95
   },
   {
-    "task_id": "task_266d054fa628a1d3",
-    "doc_id": "jwc-59a29f409eb78f77b1e1",
-    "task_type": "application",
-    "who": {
-      "audience": [
-        "本科生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "【教务管理办公室】关于学习慕课的学生加入“慕课堂”的通知（陆续更新中）",
-    "action": {
-      "required": true,
-      "verb": "确认",
-      "object": null,
-      "summary": "点击 APP 下方状态栏“学习”→顶部栏“课堂”，会显示所有成功的加入的慕课堂，请学生注意确认"
-    },
-    "time": {
-      "published_at": "2026-03-17",
-      "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
-    },
-    "materials": [
-      {
-        "name": "附件-2025-2026学年第二学期中国大学MOOC平台慕课安排表（慕课堂）(20260317更新).xlsx",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
-      }
-    ],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "jwc",
-      "channel_id": "jwc_recommendation",
-      "authority": 1.0,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "【教务管理办公室】关于学习慕课的学生加入“慕课堂”的通知（陆续更新中） 各教学单位： 中国大学慕课平台 对学习者昵称信息 进行 了 脱敏处理， 开设慕课（不包括 SPOC ）的教师无法 看到 学习者 昵称信息， 不能导出学习者的 线上成绩，将会影响考试成绩 统计、 录入等 工作 。"
-      },
-      {
-        "field": "general",
-        "text": "2. 点击 APP 下方状态栏“学习”→顶部栏“课堂”，会显示所有成功的加入的慕课堂，请学生注意确认。"
-      },
-      {
-        "field": "audience",
-        "text": "【教务管理办公室】关于学习慕课的学生加入“慕课堂”的通知（陆续更新中） 各教学单位： 中国大学慕课平台 对学习者昵称信息 进行 了 脱敏处理， 开设慕课（不包括 SPOC ）的教师无法 看到 学习者 昵称信息， 不能导出学习者的 线上成绩，将会影响考试成绩 统计、 录入等 工作 。"
-      },
-      {
-        "field": "action",
-        "text": "2. 点击 APP 下方状态栏“学习”→顶部栏“课堂”，会显示所有成功的加入的慕课堂，请学生注意确认。"
-      },
-      {
-        "field": "materials",
-        "text": "附件/材料：附件-2025-2026学年第二学期中国大学MOOC平台慕课安排表（慕课堂）(20260317更新).xlsx"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.58
-  },
-  {
-    "task_id": "task_22ce84f871e68b87",
-    "doc_id": "jwc-44c172f4e8d430c99502",
-    "task_type": "application",
-    "who": {
-      "audience": [
-        "本科生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "南京邮电大学本科生转专业管理办法（2025年9月18日修订）",
-    "action": {
-      "required": true,
-      "verb": "报名",
-      "object": null,
-      "summary": "转专业工作小组负责制定本学院转专业工作细则及组织实施，包括审查报名资格、组织考核选拔、录取与公示、处理学生异议以及转入学生的课程学分认定与转换等"
-    },
-    "time": {
-      "published_at": "2025-09-18",
-      "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "jwc",
-      "channel_id": "jwc_course",
-      "authority": 1.0,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "南京邮电大学本科生转专业管理办法（2025年9月18日修订） 南京邮电大学本科生转专业管理办法（修订） （ 2025年9月18日修订 ） 第一章 总则 第一条 为 落实立德树人根本任务，全面深化教育教学改革，提升人才自主培养能力， 充分体现 “ 以生为本 ” 的 教育 教学理念，持续强化 “ 招生－培养－就业 ” 联动"
-      },
-      {
-        "field": "general",
-        "text": "转专业工作小组负责制定本学院转专业工作细则及组织实施，包括审查报名资格、组织考核选拔、录取与公示、处理学生异议以及转入学生的课程学分认定与转换等。"
-      },
-      {
-        "field": "audience",
-        "text": "南京邮电大学本科生转专业管理办法（2025年9月18日修订） 南京邮电大学本科生转专业管理办法（修订） （ 2025年9月18日修订 ） 第一章 总则 第一条 为 落实立德树人根本任务，全面深化教育教学改革，提升人才自主培养能力， 充分体现 “ 以生为本 ” 的 教育 教学理念，持续强化 “ 招生－培养－就业 ” 联动"
-      },
-      {
-        "field": "action",
-        "text": "转专业工作小组负责制定本学院转专业工作细则及组织实施，包括审查报名资格、组织考核选拔、录取与公示、处理学生异议以及转入学生的课程学分认定与转换等。"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.58
-  },
-  {
-    "task_id": "task_ac00809eefa39e8d",
+    "task_id": "task-cf00a5a0-1",
     "doc_id": "jwc-5b4427b16b11f6941a73",
     "task_type": "schedule",
     "who": {
@@ -430,15 +176,15 @@
       "major": [],
       "class_name": []
     },
-    "what": "【教务管理办公室】2025-2026学年第二学期考试安排表",
+    "what": "查看考试安排",
     "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
+      "required": true,
+      "verb": "查看",
+      "object": "考试安排表",
+      "summary": "查看附件中的考试安排表，按时参加考试"
     },
     "time": {
-      "published_at": "2026-05-22",
+      "published_at": "2026-05-22T00:00:00+08:00",
       "deadline": null,
       "lifecycle": "active",
       "urgency_days": null
@@ -476,16 +222,12 @@
     },
     "evidence": [
       {
-        "field": "general",
-        "text": "【教务管理办公室】2025-2026学年第二学期考试安排表 各学院： 现 公布2025-2026学年第二学期考试安排表，考试分为学校组织和学院组织，请及时通知相关学生参加考试。"
-      },
-      {
-        "field": "general",
-        "text": "2025-2026学年第二学期集中考试周1安排表（学校组织）-学生用表.xlsx 2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx 2025-2026学年第二学期考试安排表（学院组织）-学生用表.xlsx"
+        "field": "action",
+        "text": "请及时通知相关学生参加考试"
       },
       {
         "field": "audience",
-        "text": "【教务管理办公室】2025-2026学年第二学期考试安排表 各学院： 现 公布2025-2026学年第二学期考试安排表，考试分为学校组织和学院组织，请及时通知相关学生参加考试。"
+        "text": "现公布2025-2026学年第二学期考试安排表"
       },
       {
         "field": "materials",
@@ -498,68 +240,12 @@
       "low_evidence": false,
       "review_required": false
     },
-    "confidence": 0.58
+    "confidence": 0.9
   },
   {
-    "task_id": "task_1e4a4ee367d011b2",
-    "doc_id": "jwc-3169f05504d4bfad9732",
-    "task_type": "schedule",
-    "who": {
-      "audience": [
-        "本科生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "【教务管理办公室】关于做好2025-2026学年第二学期期末考试工作安排的通知",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": "2026-05-18",
-      "deadline": null,
-      "lifecycle": "active",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "jwc",
-      "channel_id": "jwc_recommendation",
-      "authority": 1.0,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "【教务管理办公室】关于做好2025-2026学年第二学期期末考试工作安排的通知 【教务管理办公室】关于做好2025-2026学年第二学期期末考试工作安排的通知 发布者：综合办公室 发布时间：2026-05-18 浏览次数： 10"
-      },
-      {
-        "field": "audience",
-        "text": "【教务管理办公室】关于做好2025-2026学年第二学期期末考试工作安排的通知 【教务管理办公室】关于做好2025-2026学年第二学期期末考试工作安排的通知 发布者：综合办公室 发布时间：2026-05-18 浏览次数： 10"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.58
-  },
-  {
-    "task_id": "task_896861a8e049f967",
+    "task_id": "task_f6ec0027ed457297",
     "doc_id": "pg-d225c1da2add6e42ebcc",
-    "task_type": "application",
+    "task_type": "result_check",
     "who": {
       "audience": [
         "研究生"
@@ -597,15 +283,15 @@
     "evidence": [
       {
         "field": "general",
-        "text": "智汇交通，安畅未来—— 我校第一届智能交通创新与创业大赛圆满落幕 5 月 6 日， 2026 年南京邮电大学（ 第 一 届 ） 智能交通创新与创业大赛 暨 第十届全国高校智能交通创新与创业大赛 选拔赛 圆满落幕。"
+        "text": "2026 年南京邮电大学（第一届）智能交通创新与创业大赛暨第十届全国高校智能交通创新与创业大赛选拔赛圆满落幕。"
       },
       {
         "field": "general",
-        "text": "赛事严格遵循大赛章程，通过搭建高水平的竞赛平台，有效增强了在校大学生的创新创业精神、科创实践能力、职业素质及自主创业意识。"
+        "text": "学校将根据比赛结果择优推荐参加第十届全国高校智能交通创新与创业大赛。"
       },
       {
         "field": "audience",
-        "text": "智汇交通，安畅未来—— 我校第一届智能交通创新与创业大赛圆满落幕 5 月 6 日， 2026 年南京邮电大学（ 第 一 届 ） 智能交通创新与创业大赛 暨 第十届全国高校智能交通创新与创业大赛 选拔赛 圆满落幕。"
+        "text": "2026 年南京邮电大学（第一届）智能交通创新与创业大赛暨第十届全国高校智能交通创新与创业大赛选拔赛圆满落幕。"
       }
     ],
     "risk": {
@@ -614,7 +300,7 @@
       "low_evidence": false,
       "review_required": false
     },
-    "confidence": 0.58
+    "confidence": 0.9
   },
   {
     "task_id": "task_910ff48fa7f30e1d",
@@ -1024,194 +710,6 @@
     "confidence": 0.58
   },
   {
-    "task_id": "task_d47c92f6c4220ccc",
-    "doc_id": "pg-13092a896651146e98ff",
-    "task_type": "download",
-    "who": {
-      "audience": [
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "研究生个人培养计划制定说明及系统操作手册",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": null,
-      "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "pg",
-      "channel_id": "pg_training",
-      "authority": 0.96,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "研究生个人培养计划制定说明及系统操作手册 研究生个人培养计划制定说明及系统操作手册"
-      },
-      {
-        "field": "audience",
-        "text": "研究生个人培养计划制定说明及系统操作手册 研究生个人培养计划制定说明及系统操作手册"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.58
-  },
-  {
-    "task_id": "task_1be5d9cd00b50a15",
-    "doc_id": "xsc-1624f141fe26342ee80b",
-    "task_type": "opportunity",
-    "who": {
-      "audience": [
-        "本科生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "南邮师生赴小米南京科技园开展“思源之旅”主题教育活动",
-    "action": {
-      "required": true,
-      "verb": "加入",
-      "object": null,
-      "summary": "化与南邮的战略合作，依托集团在 AI、芯片、智能终端等领域的技术资源与产业平台，在科研协同攻关、实习就业对接、实验室共建等方面拓展合作维度，期待更多南邮优秀学子加入小米，共同推动中国智能科技事业的发展"
-    },
-    "time": {
-      "published_at": "2026-05-12",
-      "deadline": null,
-      "lifecycle": "active",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "xsc",
-      "channel_id": "xsc_dormitory",
-      "authority": 0.96,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "南邮师生赴小米南京科技园开展“思源之旅”主题教育活动 5月9日，南京邮电大学副校长谢平率领获2024-2025学年小米奖助学金的学生代表赴小米南京科技园开展“思源之旅”主题教育活动。"
-      },
-      {
-        "field": "general",
-        "text": "小米将持续深化与南邮的战略合作，依托集团在 AI、芯片、智能终端等领域的技术资源与产业平台，在科研协同攻关、实习就业对接、实验室共建等方面拓展合作维度，期待更多南邮优秀学子加入小米，共同推动中国智能科技事业的发展。"
-      },
-      {
-        "field": "audience",
-        "text": "南邮师生赴小米南京科技园开展“思源之旅”主题教育活动 5月9日，南京邮电大学副校长谢平率领获2024-2025学年小米奖助学金的学生代表赴小米南京科技园开展“思源之旅”主题教育活动。"
-      },
-      {
-        "field": "action",
-        "text": "小米将持续深化与南邮的战略合作，依托集团在 AI、芯片、智能终端等领域的技术资源与产业平台，在科研协同攻关、实习就业对接、实验室共建等方面拓展合作维度，期待更多南邮优秀学子加入小米，共同推动中国智能科技事业的发展。"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.58
-  },
-  {
-    "task_id": "task_7b39e41d9b3eb0ba",
-    "doc_id": "ygb-cc83b3e083a981d7092d",
-    "task_type": "result_check",
-    "who": {
-      "audience": [
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "南京邮电大学经济困难研究生认定及资助管理办法",
-    "action": {
-      "required": true,
-      "verb": "申请",
-      "object": null,
-      "summary": "第四章资助形式和申请程序 第十一条针对不同经济困难类型的研究生，实行不同的资助形式"
-    },
-    "time": {
-      "published_at": null,
-      "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "ygb",
-      "channel_id": "ygb_scholarship",
-      "authority": 0.94,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "南京邮电大学经济困难研究生认定及资助管理办法 南京邮电大学经济困难研究生认定及资助管理办法 校研发【 2016 】 11 号 第一章 总则 第一条 为认真做好家庭经济困难研究生的认定和资助工作，公平、公正、合理地分配资助资源，切实保证国家和学校制定的各项资助政策和措施落实到每个家庭经济困难的研究生。"
-      },
-      {
-        "field": "general",
-        "text": "第四章资助形式和申请程序 第十一条针对不同经济困难类型的研究生，实行不同的资助形式。"
-      },
-      {
-        "field": "general",
-        "text": "（一）规范申请内容。"
-      },
-      {
-        "field": "audience",
-        "text": "南京邮电大学经济困难研究生认定及资助管理办法 南京邮电大学经济困难研究生认定及资助管理办法 校研发【 2016 】 11 号 第一章 总则 第一条 为认真做好家庭经济困难研究生的认定和资助工作，公平、公正、合理地分配资助资源，切实保证国家和学校制定的各项资助政策和措施落实到每个家庭经济困难的研究生。"
-      },
-      {
-        "field": "action",
-        "text": "第四章资助形式和申请程序 第十一条针对不同经济困难类型的研究生，实行不同的资助形式。"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.58
-  },
-  {
     "task_id": "task_27cf8ab7a4415ff2",
     "doc_id": "ygb-b1d502cbd2d863e51be6",
     "task_type": "download",
@@ -1279,7 +777,244 @@
     "confidence": 0.58
   },
   {
-    "task_id": "task_5d3e20712ccb1828",
+    "task_id": "task-3f592e1a-1",
+    "doc_id": "cxcy-c4132762db65faac8b56",
+    "task_type": "application",
+    "who": {
+      "audience": [
+        "本科生"
+      ],
+      "college": [],
+      "grade": [
+        "2022"
+      ],
+      "major": [],
+      "class_name": []
+    },
+    "what": "2024年度大创项目申报网上填报",
+    "action": {
+      "required": true,
+      "verb": "填报",
+      "object": "项目申请表",
+      "summary": "学院组织学生网上填报项目申请表，指导教师网上审阅"
+    },
+    "time": {
+      "published_at": null,
+      "deadline": null,
+      "lifecycle": "upcoming",
+      "urgency_days": null
+    },
+    "materials": [
+      {
+        "name": "南京邮电大学大学生创新训练计划项目立项申请表",
+        "role": "申请表",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "南京邮电大学大学生创业训练计划项目立项申请表",
+        "role": "申请表",
+        "required": true,
+        "sensitive": false
+      }
+    ],
+    "location": {
+      "place": null,
+      "online": "https://cxcyjy.njupt.edu.cn/njupt_cx/CXCY/NJUPT",
+      "contact": null
+    },
+    "source": {
+      "source_id": "cxcy",
+      "channel_id": "cxcy_project",
+      "authority": 0.98,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "action",
+        "text": "学院组织学生网上填报项目申请表，指导教师网上审阅"
+      },
+      {
+        "field": "audience",
+        "text": "学院组织学生网上填报项目申请表，指导教师网上审阅"
+      },
+      {
+        "field": "materials",
+        "text": "附件/材料：南京邮电大学大学生创新训练计划项目立项申请表、南京邮电大学大学生创业训练计划项目立项申请表"
+      },
+      {
+        "field": "location",
+        "text": "https://cxcyjy.njupt.edu.cn/njupt_cx/CXCY/NJUPT"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
+  },
+  {
+    "task_id": "task-a2782055-1",
+    "doc_id": "cxcy-ac6a840bf5e5acb2ae47",
+    "task_type": "application",
+    "who": {
+      "audience": [
+        "本科生"
+      ],
+      "college": [],
+      "grade": [
+        "2023"
+      ],
+      "major": [],
+      "class_name": []
+    },
+    "what": "2025年度大创项目申报网上填报",
+    "action": {
+      "required": true,
+      "verb": "填报",
+      "object": "项目申请表",
+      "summary": "学院组织学生网上填报项目申请表，指导教师网上审阅"
+    },
+    "time": {
+      "published_at": "2025-08-09T00:00:00+08:00",
+      "deadline": null,
+      "lifecycle": "upcoming",
+      "urgency_days": null
+    },
+    "materials": [
+      {
+        "name": "南京邮电大学大学生创新训练计划项目立项申请表",
+        "role": "申请表",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "南京邮电大学大学生创业训练计划项目立项申请表",
+        "role": "申请表",
+        "required": true,
+        "sensitive": false
+      }
+    ],
+    "location": {
+      "place": null,
+      "online": "https://cxcyjy.njupt.edu.cn/pt",
+      "contact": null
+    },
+    "source": {
+      "source_id": "cxcy",
+      "channel_id": "cxcy_project",
+      "authority": 0.98,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "action",
+        "text": "学院组织学生网上填报项目申请表，指导教师网上审阅"
+      },
+      {
+        "field": "audience",
+        "text": "学院组织学生网上填报项目申请表，指导教师网上审阅"
+      },
+      {
+        "field": "materials",
+        "text": "附件/材料：南京邮电大学大学生创新训练计划项目立项申请表、南京邮电大学大学生创业训练计划项目立项申请表"
+      },
+      {
+        "field": "location",
+        "text": "https://cxcyjy.njupt.edu.cn/pt"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
+  },
+  {
+    "task_id": "task-02d70519-1",
+    "doc_id": "cxcy-18b0923654eab80cce87",
+    "task_type": "application",
+    "who": {
+      "audience": [
+        "本科生"
+      ],
+      "college": [],
+      "grade": [
+        "2021"
+      ],
+      "major": [],
+      "class_name": []
+    },
+    "what": "2023年度大创项目申报网上填报",
+    "action": {
+      "required": true,
+      "verb": "填报",
+      "object": "项目申请表",
+      "summary": "学院组织学生网上填报项目申请表，指导教师网上审阅"
+    },
+    "time": {
+      "published_at": "2025-07-08T00:00:00+08:00",
+      "deadline": null,
+      "lifecycle": "upcoming",
+      "urgency_days": null
+    },
+    "materials": [
+      {
+        "name": "南京邮电大学大学生创新训练计划项目立项申请表",
+        "role": "申请表",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "南京邮电大学大学生创业训练计划项目立项申请表",
+        "role": "申请表",
+        "required": true,
+        "sensitive": false
+      }
+    ],
+    "location": {
+      "place": null,
+      "online": "https://cxcyjy.njupt.edu.cn/njupt_cx/CXCY/NJUPT",
+      "contact": null
+    },
+    "source": {
+      "source_id": "cxcy",
+      "channel_id": "cxcy_project",
+      "authority": 0.98,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "action",
+        "text": "学院组织学生网上填报项目申请表，指导教师网上审阅"
+      },
+      {
+        "field": "audience",
+        "text": "学院组织学生网上填报项目申请表，指导教师网上审阅"
+      },
+      {
+        "field": "materials",
+        "text": "附件/材料：南京邮电大学大学生创新训练计划项目立项申请表、南京邮电大学大学生创业训练计划项目立项申请表"
+      },
+      {
+        "field": "location",
+        "text": "https://cxcyjy.njupt.edu.cn/njupt_cx/CXCY/NJUPT"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
+  },
+  {
+    "task_id": "task-f28f4ae6-1",
     "doc_id": "cxcy-3dfeb8f05ac3e0d231fb",
     "task_type": "application",
     "who": {
@@ -1292,23 +1027,72 @@
       "major": [],
       "class_name": []
     },
-    "what": "关于做好2023年度大学生创新创业训练计划项目结题验收工作的通知",
+    "what": "2023年度大创项目结题验收网上填报",
     "action": {
       "required": true,
-      "verb": "报名",
-      "object": null,
-      "summary": "PPT 第一页展示项目成员报名 中国国际大学生创新大赛截图（全国大学生创业服务网 https://cy"
+      "verb": "填报",
+      "object": "项目结题情况并上传附件",
+      "summary": "项目负责人网上填写项目结题情况并上传附件"
     },
     "time": {
-      "published_at": "2026-05-10",
+      "published_at": "2026-05-10T00:00:00+08:00",
       "deadline": null,
-      "lifecycle": "active",
+      "lifecycle": "upcoming",
       "urgency_days": null
     },
-    "materials": [],
+    "materials": [
+      {
+        "name": "南京邮电大学大学生创新创业训练计划项目结题表",
+        "role": "申请表",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "项目成果简介Word版",
+        "role": "支撑材料",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "项目研究报告",
+        "role": "支撑材料",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "学术论文Word版及录用通知扫描件",
+        "role": "支撑材料",
+        "required": false,
+        "sensitive": false
+      },
+      {
+        "name": "发明专利或软件著作权的申请书和受理书",
+        "role": "支撑材料",
+        "required": false,
+        "sensitive": false
+      },
+      {
+        "name": "竞赛获奖证书扫描件",
+        "role": "支撑材料",
+        "required": false,
+        "sensitive": false
+      },
+      {
+        "name": "结题答辩PPT",
+        "role": "支撑材料",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "其他与结题相关支撑材料",
+        "role": "支撑材料",
+        "required": false,
+        "sensitive": false
+      }
+    ],
     "location": {
       "place": null,
-      "online": null,
+      "online": "https://cxcyjy.njupt.edu.cn/njupt_cx/CXCY/NJUPT",
       "contact": null
     },
     "source": {
@@ -1319,24 +1103,20 @@
     },
     "evidence": [
       {
-        "field": "general",
-        "text": "关于做好2023年度大学生创新创业训练计划项目结题验收工作的通知 各学院： 根据大学生创新创业训练计划项目工作进程安排，经我校大学生创新创业训练计划项目领导小组研究决定，近期将对 202 3 年度大学生创新创业训练计划项目进行结题验收。"
-      },
-      {
-        "field": "general",
-        "text": "项目负责人（学生）网上填写项目结题情况并上传附件（附件为含 “ 《南京邮电大学大学生创新创业训练计划项目结题表》、项目成果简介 Word 版、项目研究报告、学术论文 Word 版及录用通知扫描件、发明专利或软件著作权的申请书和受理书、竞赛获奖证书扫描件、结题答辩 PPT 、 其它与结题相关支撑材料 ” 的汇总压缩文件包"
-      },
-      {
-        "field": "general",
-        "text": "PPT 第一页展示项目成员报名 中国国际大学生创新大赛截图（全国大学生创业服务网 https://cy.ncss.cn/ 报名成功截图 ）。"
+        "field": "action",
+        "text": "项目负责人（学生）完成网上项目成果申报、网上项目结题情况填报"
       },
       {
         "field": "audience",
-        "text": "关于做好2023年度大学生创新创业训练计划项目结题验收工作的通知 各学院： 根据大学生创新创业训练计划项目工作进程安排，经我校大学生创新创业训练计划项目领导小组研究决定，近期将对 202 3 年度大学生创新创业训练计划项目进行结题验收。"
+        "text": "项目负责人（学生）完成网上项目成果申报、网上项目结题情况填报"
       },
       {
-        "field": "action",
-        "text": "项目负责人（学生）网上填写项目结题情况并上传附件（附件为含 “ 《南京邮电大学大学生创新创业训练计划项目结题表》、项目成果简介 Word 版、项目研究报告、学术论文 Word 版及录用通知扫描件、发明专利或软件著作权的申请书和受理书、竞赛获奖证书扫描件、结题答辩 PPT 、 其它与结题相关支撑材料 ” 的汇总压缩文件包"
+        "field": "materials",
+        "text": "附件/材料：南京邮电大学大学生创新创业训练计划项目结题表、项目成果简介Word版、项目研究报告、学术论文Word版及录用通知扫描件、发明专利或软件著作权的申请书和受理书、竞赛获奖证书扫描件、结题答辩PPT、其他与结题相关支撑材料"
+      },
+      {
+        "field": "location",
+        "text": "https://cxcyjy.njupt.edu.cn/njupt_cx/CXCY/NJUPT"
       }
     ],
     "risk": {
@@ -1345,10 +1125,10 @@
       "low_evidence": false,
       "review_required": false
     },
-    "confidence": 0.58
+    "confidence": 0.9
   },
   {
-    "task_id": "task_e3ab368a9849afe7",
+    "task_id": "task-822d7c48-1",
     "doc_id": "cxcy-437f8378c368271fb380",
     "task_type": "application",
     "who": {
@@ -1361,23 +1141,72 @@
       "major": [],
       "class_name": []
     },
-    "what": "关于做好2022年度大学生创新创业训练计划项目结题验收工作的通知",
+    "what": "2022年度大创项目结题验收网上填报",
     "action": {
       "required": true,
-      "verb": "报名",
-      "object": null,
-      "summary": "PPT第一页展示项目成员报名 中国国际 “互联网 + ”大学生创新创业大赛截图（全国大学生创业服务网 https://cy"
+      "verb": "填报",
+      "object": "项目结题情况并上传附件",
+      "summary": "项目负责人网上填写项目结题情况并上传附件"
     },
     "time": {
-      "published_at": "2025-10-11",
+      "published_at": "2025-10-11T00:00:00+08:00",
       "deadline": null,
-      "lifecycle": "unknown",
+      "lifecycle": "upcoming",
       "urgency_days": null
     },
-    "materials": [],
+    "materials": [
+      {
+        "name": "南京邮电大学大学生创新创业训练计划项目结题表",
+        "role": "申请表",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "项目成果简介Word版",
+        "role": "支撑材料",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "项目研究报告",
+        "role": "支撑材料",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "学术论文Word版及录用通知扫描件",
+        "role": "支撑材料",
+        "required": false,
+        "sensitive": false
+      },
+      {
+        "name": "发明专利或软件著作权的申请书和受理书",
+        "role": "支撑材料",
+        "required": false,
+        "sensitive": false
+      },
+      {
+        "name": "竞赛获奖证书扫描件",
+        "role": "支撑材料",
+        "required": false,
+        "sensitive": false
+      },
+      {
+        "name": "结题答辩PPT",
+        "role": "支撑材料",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "其他与结题相关支撑材料",
+        "role": "支撑材料",
+        "required": false,
+        "sensitive": false
+      }
+    ],
     "location": {
       "place": null,
-      "online": null,
+      "online": "https://cxcyjy.njupt.edu.cn/njupt_cx/CXCY/NJUPT",
       "contact": null
     },
     "source": {
@@ -1388,24 +1217,20 @@
     },
     "evidence": [
       {
-        "field": "general",
-        "text": "关于做好2022年度大学生创新创业训练计划项目结题验收工作的通知 各学院： 根据大学生创新创业训练计划项目工作进程安排，经我校大学生创新创业训练计划项目领导小组研究决定，近期将对 2022年度大学生创新创业训练计划项目进行结题验收。"
-      },
-      {
-        "field": "general",
-        "text": "项目负责人（学生）网上填写项目结题情况并上传附件（附件为含 “《南京邮电大学大学生创新创业训练计划项目结题表》、项目成果简介Word版、项目研究报告、学术论文Word版及录用通知扫描件、发明专利或软件著作权的申请书和受理书、竞赛获奖证书扫描件、结题答辩PPT 、 其它与结题相关支撑材料 ”的汇总压缩文件包）。"
-      },
-      {
-        "field": "general",
-        "text": "PPT第一页展示项目成员报名 中国国际 “互联网 + ”大学生创新创业大赛截图（全国大学生创业服务网 https://cy.ncss.cn/ 报名成功截图 ）。"
+        "field": "action",
+        "text": "项目负责人（学生）完成网上项目成果申报、网上项目结题情况填报"
       },
       {
         "field": "audience",
-        "text": "关于做好2022年度大学生创新创业训练计划项目结题验收工作的通知 各学院： 根据大学生创新创业训练计划项目工作进程安排，经我校大学生创新创业训练计划项目领导小组研究决定，近期将对 2022年度大学生创新创业训练计划项目进行结题验收。"
+        "text": "项目负责人（学生）完成网上项目成果申报、网上项目结题情况填报"
       },
       {
-        "field": "action",
-        "text": "PPT第一页展示项目成员报名 中国国际 “互联网 + ”大学生创新创业大赛截图（全国大学生创业服务网 https://cy.ncss.cn/ 报名成功截图 ）。"
+        "field": "materials",
+        "text": "附件/材料：南京邮电大学大学生创新创业训练计划项目结题表、项目成果简介Word版、项目研究报告、学术论文Word版及录用通知扫描件、发明专利或软件著作权的申请书和受理书、竞赛获奖证书扫描件、结题答辩PPT、其他与结题相关支撑材料"
+      },
+      {
+        "field": "location",
+        "text": "https://cxcyjy.njupt.edu.cn/njupt_cx/CXCY/NJUPT"
       }
     ],
     "risk": {
@@ -1414,217 +1239,10 @@
       "low_evidence": false,
       "review_required": false
     },
-    "confidence": 0.58
+    "confidence": 0.9
   },
   {
-    "task_id": "task_f398b4f9aca501bd",
-    "doc_id": "cxcy-c4132762db65faac8b56",
-    "task_type": "application",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "关于组织开展2024年度大学生创新创业训练计划项目申报工作的通知",
-    "action": {
-      "required": true,
-      "verb": "申请",
-      "object": null,
-      "summary": "四、申报对象 创新训练计划项目申请人为 202 2 级本科生， 每个项目 人数一般为 3 ~5 人"
-    },
-    "time": {
-      "published_at": null,
-      "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "cxcy",
-      "channel_id": "cxcy_project",
-      "authority": 0.98,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "关于组织开展2024年度大学生创新创业训练计划项目申报工作的通知 各学院： 根据大学生创新创业训练计划项目工作安排，学校启动 202 4 年度大学生创新创业训练计划项目的立项工作。"
-      },
-      {
-        "field": "general",
-        "text": "现将具体事宜通知如下： 一、立项原则 1. 注重 兴趣驱动 参加项目的学生需对科学研究或创造发明有浓厚兴趣，发挥主动学习、主动探索、主动实践的积极性，在自身兴趣的驱动和导师的全面指导下完成项目。"
-      },
-      {
-        "field": "general",
-        "text": "2. 注重 自主实践 参加项目的学生需 在导师的指导下，自主选题、自主设计实验项目、研制实验实训设备、实施实验实训、进行数据分析处理和撰写总结报告等工作，不断提高学生的自我学习能力、团结协作能力和组织实施能力。"
-      },
-      {
-        "field": "audience",
-        "text": "关于组织开展2024年度大学生创新创业训练计划项目申报工作的通知 各学院： 根据大学生创新创业训练计划项目工作安排，学校启动 202 4 年度大学生创新创业训练计划项目的立项工作。"
-      },
-      {
-        "field": "action",
-        "text": "关于组织开展2024年度大学生创新创业训练计划项目申报工作的通知 各学院： 根据大学生创新创业训练计划项目工作安排，学校启动 202 4 年度大学生创新创业训练计划项目的立项工作。"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.58
-  },
-  {
-    "task_id": "task_24aa990a9f5fe91b",
-    "doc_id": "cxcy-ac6a840bf5e5acb2ae47",
-    "task_type": "application",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "关于组织开展2025年度大学生创新创业训练计划项目申报工作的通知",
-    "action": {
-      "required": true,
-      "verb": "申请",
-      "object": null,
-      "summary": "四、申报对象 创新训练计划项目申请人为 2023 级本科生，每个项目 人数一般为 3 ~5 人"
-    },
-    "time": {
-      "published_at": "2025-08-09",
-      "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "cxcy",
-      "channel_id": "cxcy_project",
-      "authority": 0.98,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "关于组织开展2025年度大学生创新创业训练计划项目申报工作的通知 各学院： 根据大学生创新创业训练计划项目工作安排，学校启动 2025 年度大学生创新创业训练计划项目的立项工作。"
-      },
-      {
-        "field": "general",
-        "text": "现将具体事宜通知如下： 一、立项原则 1. 注重 兴趣驱动 参加项目的学生需对科学研究或创造发明有浓厚兴趣，发挥主动学习、主动探索、主动实践的积极性，在自身兴趣的驱动和导师的全面指导下完成项目。"
-      },
-      {
-        "field": "general",
-        "text": "2. 注重 自主实践 参加项目的学生需 在导师的指导下，自主选题、自主设计实验项目、研制实验实训设备、实施实验实训、进行数据分析处理和撰写总结报告等工作，不断提高学生的自我学习能力、团结协作能力和组织实施能力。"
-      },
-      {
-        "field": "audience",
-        "text": "关于组织开展2025年度大学生创新创业训练计划项目申报工作的通知 各学院： 根据大学生创新创业训练计划项目工作安排，学校启动 2025 年度大学生创新创业训练计划项目的立项工作。"
-      },
-      {
-        "field": "action",
-        "text": "关于组织开展2025年度大学生创新创业训练计划项目申报工作的通知 各学院： 根据大学生创新创业训练计划项目工作安排，学校启动 2025 年度大学生创新创业训练计划项目的立项工作。"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.58
-  },
-  {
-    "task_id": "task_675162ffef990700",
-    "doc_id": "cxcy-18b0923654eab80cce87",
-    "task_type": "application",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "关于组织开展2023年度大学生创新创业训练计划项目申报工作的通知",
-    "action": {
-      "required": true,
-      "verb": "申请",
-      "object": null,
-      "summary": "四、申报对象 创新训练计划项目申请人为 2021 级本科生，每个项目小组一般为 3 人"
-    },
-    "time": {
-      "published_at": "2025-07-08",
-      "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "cxcy",
-      "channel_id": "cxcy_project",
-      "authority": 0.98,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "关于组织开展2023年度大学生创新创业训练计划项目申报工作的通知 各学院： 根据大学生创新创业训练计划项目工作安排，学校启动 2023 年度大学生创新创业训练计划项目的立项工作。"
-      },
-      {
-        "field": "general",
-        "text": "现将具体事宜通知如下： 一、立项原则 1.注重 兴趣驱动 参加项目的学生需对科学研究或创造发明有浓厚兴趣，发挥主动学习、主动探索、主动实践的积极性，在自身兴趣的驱动和导师的全面指导下完成项目。"
-      },
-      {
-        "field": "general",
-        "text": "2.注重 自主实践 参加项目的学生需 在导师的指导下，自主选题、自主设计实验项目、研制实验实训设备、实施实验实训、进行数据分析处理和撰写总结报告等工作，不断提高学生的自我学习能力、团结协作能力和组织实施能力。"
-      },
-      {
-        "field": "audience",
-        "text": "关于组织开展2023年度大学生创新创业训练计划项目申报工作的通知 各学院： 根据大学生创新创业训练计划项目工作安排，学校启动 2023 年度大学生创新创业训练计划项目的立项工作。"
-      },
-      {
-        "field": "action",
-        "text": "关于组织开展2023年度大学生创新创业训练计划项目申报工作的通知 各学院： 根据大学生创新创业训练计划项目工作安排，学校启动 2023 年度大学生创新创业训练计划项目的立项工作。"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.58
-  },
-  {
-    "task_id": "task_4b89624b94d501f7",
+    "task_id": "task-b7acb0f7-1",
     "doc_id": "cxcy-42c19e3bc86cd210fe17",
     "task_type": "application",
     "who": {
@@ -1637,23 +1255,30 @@
       "major": [],
       "class_name": []
     },
-    "what": "关于2023年度大学生创新创业训练计划项目中期检查及2022年度延期项目结题的通知",
+    "what": "2023年度大创项目中期检查网上填报",
     "action": {
       "required": true,
-      "verb": "提交",
-      "object": null,
-      "summary": "目结题验收意见汇总表》（附件四）并签字，经组织单位审核、签字盖章后报教务处实践教学科备案，同时验收专家组秘书在组长领导下在先极系统中录入本组项目结题验收的意见并提交结题成绩，结题成绩提交请务必确认无误，提交后无法更改"
+      "verb": "填写",
+      "object": "中期检查表",
+      "summary": "2023年度项目负责人网上填写中期检查表，指导教师网上审阅"
     },
     "time": {
       "published_at": null,
-      "deadline": "2026-12-20T23:59:00+08:00",
-      "lifecycle": "active",
-      "urgency_days": 210
+      "deadline": null,
+      "lifecycle": "upcoming",
+      "urgency_days": null
     },
-    "materials": [],
+    "materials": [
+      {
+        "name": "大学生创新创业训练计划项目中期检查表",
+        "role": "申请表",
+        "required": true,
+        "sensitive": false
+      }
+    ],
     "location": {
       "place": null,
-      "online": null,
+      "online": "https://cxcyjy.njupt.edu.cn/njupt_cx/CXCY/NJUPT",
       "contact": null
     },
     "source": {
@@ -1664,28 +1289,20 @@
     },
     "evidence": [
       {
-        "field": "general",
-        "text": "关于2023年度大学生创新创业训练计划项目中期检查及2022年度延期项目结题的通知 各学院： 根据大学生创新创业训练计划项目工作的进程安排，学校将于本学期第 12 周 -15 周组织 2023 年度大学生创新创业训练计划项目中期检查，同时开展 2022 年度部分延期项目结题验收工作，具体安排如下： 一、 2023 年度"
-      },
-      {
-        "field": "general",
-        "text": "（二）延期项目结题验收意见与成绩 2022 年度延期项目结题验收结束后由专家填写《大学生创新训练计划项目结题验收意见汇总表》（附件四）并签字，经组织单位审核、签字盖章后报教务处实践教学科备案，同时验收专家组秘书在组长领导下在先极系统中录入本组项目结题验收的意见并提交结题成绩，结题成绩提交请务必确认无误，提交后无法更改。"
-      },
-      {
-        "field": "general",
-        "text": "第 15 周 （ 12 月 11 日 - 12 月 15 日） 1 、 2023 年度项目中期检查 专家组意见网上提交，反馈；"
+        "field": "action",
+        "text": "2023年度项目负责人（学生）网上填写中期检查表，指导教师网上审阅"
       },
       {
         "field": "audience",
-        "text": "关于2023年度大学生创新创业训练计划项目中期检查及2022年度延期项目结题的通知 各学院： 根据大学生创新创业训练计划项目工作的进程安排，学校将于本学期第 12 周 -15 周组织 2023 年度大学生创新创业训练计划项目中期检查，同时开展 2022 年度部分延期项目结题验收工作，具体安排如下： 一、 2023 年度"
+        "text": "2023年度项目负责人（学生）网上填写中期检查表，指导教师网上审阅"
       },
       {
-        "field": "action",
-        "text": "（二）延期项目结题验收意见与成绩 2022 年度延期项目结题验收结束后由专家填写《大学生创新训练计划项目结题验收意见汇总表》（附件四）并签字，经组织单位审核、签字盖章后报教务处实践教学科备案，同时验收专家组秘书在组长领导下在先极系统中录入本组项目结题验收的意见并提交结题成绩，结题成绩提交请务必确认无误，提交后无法更改。"
+        "field": "materials",
+        "text": "附件/材料：大学生创新创业训练计划项目中期检查表"
       },
       {
-        "field": "deadline",
-        "text": "（二）延期项目结题验收意见与成绩 2022 年度延期项目结题验收结束后由专家填写《大学生创新训练计划项目结题验收意见汇总表》（附件四）并签字，经组织单位审核、签字盖章后报教务处实践教学科备案，同时验收专家组秘书在组长领导下在先极系统中录入本组项目结题验收的意见并提交结题成绩，结题成绩提交请务必确认无误，提交后无法更改。"
+        "field": "location",
+        "text": "https://cxcyjy.njupt.edu.cn/njupt_cx/CXCY/NJUPT"
       }
     ],
     "risk": {
@@ -1694,10 +1311,82 @@
       "low_evidence": false,
       "review_required": false
     },
-    "confidence": 0.58
+    "confidence": 0.9
   },
   {
-    "task_id": "task_e520b68dc372226c",
+    "task_id": "task-b7acb0f7-2",
+    "doc_id": "cxcy-42c19e3bc86cd210fe17",
+    "task_type": "application",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "2022年度延期大创项目结题验收网上填报",
+    "action": {
+      "required": true,
+      "verb": "填写",
+      "object": "结题验收表",
+      "summary": "2022年度延期项目负责人网上填写结题验收表，指导教师网上审阅"
+    },
+    "time": {
+      "published_at": null,
+      "deadline": null,
+      "lifecycle": "upcoming",
+      "urgency_days": null
+    },
+    "materials": [
+      {
+        "name": "大学生创新创业训练计划项目结题验收表",
+        "role": "申请表",
+        "required": true,
+        "sensitive": false
+      }
+    ],
+    "location": {
+      "place": null,
+      "online": "https://cxcyjy.njupt.edu.cn/njupt_cx/CXCY/NJUPT",
+      "contact": null
+    },
+    "source": {
+      "source_id": "cxcy",
+      "channel_id": "cxcy_project",
+      "authority": 0.98,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "action",
+        "text": "2022年度延期项目负责人（学生）网上填写结题验收表，指导教师网上审阅"
+      },
+      {
+        "field": "audience",
+        "text": "2023年度项目负责人（学生）网上填写中期检查表，指导教师网上审阅"
+      },
+      {
+        "field": "materials",
+        "text": "附件/材料：大学生创新创业训练计划项目结题验收表"
+      },
+      {
+        "field": "location",
+        "text": "https://cxcyjy.njupt.edu.cn/njupt_cx/CXCY/NJUPT"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
+  },
+  {
+    "task_id": "task-e491103c-1",
     "doc_id": "cxcy-e74fc8fd1735efcc59dd",
     "task_type": "application",
     "who": {
@@ -1710,23 +1399,30 @@
       "major": [],
       "class_name": []
     },
-    "what": "关于2024年度大学生创新创业训练计划项目中期检查及2023年度延期项目结题的通知",
+    "what": "2024年度大创项目中期检查网上填报",
     "action": {
       "required": true,
-      "verb": "提交",
-      "object": null,
-      "summary": "目结题验收意见汇总表》（附件四）并签字，经组织单位审核、签字盖章后报创新创业教育学院备案，同时验收专家组秘书在组长领导下在先极系统中录入本组项目结题验收的意见并提交结题成绩，结题成绩提交请务必确认无误，提交后无法更改"
+      "verb": "填写",
+      "object": "中期检查表",
+      "summary": "2024年度项目负责人网上填写中期检查表，指导教师网上审阅"
     },
     "time": {
       "published_at": null,
       "deadline": null,
-      "lifecycle": "unknown",
+      "lifecycle": "upcoming",
       "urgency_days": null
     },
-    "materials": [],
+    "materials": [
+      {
+        "name": "大学生创新创业训练计划项目中期检查表",
+        "role": "申请表",
+        "required": true,
+        "sensitive": false
+      }
+    ],
     "location": {
       "place": null,
-      "online": null,
+      "online": "https://cxcyjy.njupt.edu.cn/njupt_cx/CXCY/NJUPT",
       "contact": null
     },
     "source": {
@@ -1737,24 +1433,20 @@
     },
     "evidence": [
       {
-        "field": "general",
-        "text": "关于2024年度大学生创新创业训练计划项目中期检查及2023年度延期项目结题的通知 各学院： 根据大学生创新创业训练计划项目工作的进程安排，学校将于本学期第 14 周 -1 7 周组织 202 4 年度大学生创新创业训练计划项目中期检查，同时开展 202 3 年度部分延期项目结题验收工作，具体安排如下： 一、 202"
-      },
-      {
-        "field": "general",
-        "text": "（二）延期项目结题验收意见与成绩 202 3 年度延期项目结题验收结束后由专家填写《大学生创新创业训练计划项目结题验收意见汇总表》（附件四）并签字，经组织单位审核、签字盖章后报创新创业教育学院备案，同时验收专家组秘书在组长领导下在先极系统中录入本组项目结题验收的意见并提交结题成绩，结题成绩提交请务必确认无误，提交后无法"
-      },
-      {
-        "field": "general",
-        "text": "第 1 7 周 （ 12 月 23 日 - 12 月 27 日） 1 . 202 4 年度项目中期检查专家组意见网上提交，反馈；"
+        "field": "action",
+        "text": "2024年度项目负责人（学生）网上填写中期检查表，指导教师网上审阅"
       },
       {
         "field": "audience",
-        "text": "关于2024年度大学生创新创业训练计划项目中期检查及2023年度延期项目结题的通知 各学院： 根据大学生创新创业训练计划项目工作的进程安排，学校将于本学期第 14 周 -1 7 周组织 202 4 年度大学生创新创业训练计划项目中期检查，同时开展 202 3 年度部分延期项目结题验收工作，具体安排如下： 一、 202"
+        "text": "2024年度项目负责人（学生）网上填写中期检查表，指导教师网上审阅"
       },
       {
-        "field": "action",
-        "text": "（二）延期项目结题验收意见与成绩 202 3 年度延期项目结题验收结束后由专家填写《大学生创新创业训练计划项目结题验收意见汇总表》（附件四）并签字，经组织单位审核、签字盖章后报创新创业教育学院备案，同时验收专家组秘书在组长领导下在先极系统中录入本组项目结题验收的意见并提交结题成绩，结题成绩提交请务必确认无误，提交后无法"
+        "field": "materials",
+        "text": "附件/材料：大学生创新创业训练计划项目中期检查表"
+      },
+      {
+        "field": "location",
+        "text": "https://cxcyjy.njupt.edu.cn/njupt_cx/CXCY/NJUPT"
       }
     ],
     "risk": {
@@ -1763,10 +1455,82 @@
       "low_evidence": false,
       "review_required": false
     },
-    "confidence": 0.58
+    "confidence": 0.9
   },
   {
-    "task_id": "task_529603fbf1a4b36c",
+    "task_id": "task-e491103c-2",
+    "doc_id": "cxcy-e74fc8fd1735efcc59dd",
+    "task_type": "application",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "2023年度延期大创项目结题验收网上填报",
+    "action": {
+      "required": true,
+      "verb": "填写",
+      "object": "结题验收表",
+      "summary": "2023年度延期项目负责人网上填写结题验收表，指导教师网上审阅"
+    },
+    "time": {
+      "published_at": null,
+      "deadline": null,
+      "lifecycle": "upcoming",
+      "urgency_days": null
+    },
+    "materials": [
+      {
+        "name": "大学生创新创业训练计划项目结题验收表",
+        "role": "申请表",
+        "required": true,
+        "sensitive": false
+      }
+    ],
+    "location": {
+      "place": null,
+      "online": "https://cxcyjy.njupt.edu.cn/njupt_cx/CXCY/NJUPT",
+      "contact": null
+    },
+    "source": {
+      "source_id": "cxcy",
+      "channel_id": "cxcy_project",
+      "authority": 0.98,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "action",
+        "text": "2023年度延期项目负责人（学生）网上填写结题验收表，指导教师网上审阅"
+      },
+      {
+        "field": "audience",
+        "text": "2024年度项目负责人（学生）网上填写中期检查表，指导教师网上审阅"
+      },
+      {
+        "field": "materials",
+        "text": "附件/材料：大学生创新创业训练计划项目结题验收表"
+      },
+      {
+        "field": "location",
+        "text": "https://cxcyjy.njupt.edu.cn/njupt_cx/CXCY/NJUPT"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
+  },
+  {
+    "task_id": "task-538dd47f-1",
     "doc_id": "cxcy-b5a6a7b49e47f0693de1",
     "task_type": "application",
     "who": {
@@ -1779,313 +1543,449 @@
       "major": [],
       "class_name": []
     },
-    "what": "关于2025年度大学生创新创业训练计划项目中期检查及2024年度延期项目结题的通知",
+    "what": "2025年度大创项目中期检查网上填报",
+    "action": {
+      "required": true,
+      "verb": "填写",
+      "object": "中期检查表",
+      "summary": "项目负责人网上填写中期检查表，指导教师网上审阅"
+    },
+    "time": {
+      "published_at": null,
+      "deadline": null,
+      "lifecycle": "upcoming",
+      "urgency_days": null
+    },
+    "materials": [
+      {
+        "name": "大学生创新创业训练计划项目中期检查表",
+        "role": "申请表",
+        "required": true,
+        "sensitive": false
+      }
+    ],
+    "location": {
+      "place": null,
+      "online": "https://cxcyjy.njupt.edu.cn/njupt_cx/CXCY/NJUPT",
+      "contact": null
+    },
+    "source": {
+      "source_id": "cxcy",
+      "channel_id": "cxcy_project",
+      "authority": 0.98,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "action",
+        "text": "2025年度项目负责人（学生）网上填写中期检查表，指导教师网上审阅"
+      },
+      {
+        "field": "audience",
+        "text": "2025年度项目负责人（学生）网上填写中期检查表，指导教师网上审阅"
+      },
+      {
+        "field": "materials",
+        "text": "附件/材料：大学生创新创业训练计划项目中期检查表"
+      },
+      {
+        "field": "location",
+        "text": "https://cxcyjy.njupt.edu.cn/njupt_cx/CXCY/NJUPT"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
+  },
+  {
+    "task_id": "task-538dd47f-2",
+    "doc_id": "cxcy-b5a6a7b49e47f0693de1",
+    "task_type": "application",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "2024年度延期大创项目结题验收网上填报",
+    "action": {
+      "required": true,
+      "verb": "填写",
+      "object": "结题验收表",
+      "summary": "延期项目负责人网上填写结题验收表，指导教师网上审阅"
+    },
+    "time": {
+      "published_at": null,
+      "deadline": null,
+      "lifecycle": "upcoming",
+      "urgency_days": null
+    },
+    "materials": [
+      {
+        "name": "大学生创新创业训练计划项目结题验收表",
+        "role": "申请表",
+        "required": true,
+        "sensitive": false
+      }
+    ],
+    "location": {
+      "place": null,
+      "online": "https://cxcyjy.njupt.edu.cn/njupt_cx/CXCY/NJUPT",
+      "contact": null
+    },
+    "source": {
+      "source_id": "cxcy",
+      "channel_id": "cxcy_project",
+      "authority": 0.98,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "action",
+        "text": "2024年度延期项目负责人（学生）网上填写结题验收表，指导教师网上审阅"
+      },
+      {
+        "field": "audience",
+        "text": "2025年度项目负责人（学生）网上填写中期检查表，指导教师网上审阅"
+      },
+      {
+        "field": "materials",
+        "text": "附件/材料：大学生创新创业训练计划项目结题验收表"
+      },
+      {
+        "field": "location",
+        "text": "https://cxcyjy.njupt.edu.cn/njupt_cx/CXCY/NJUPT"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
+  },
+  {
+    "task_id": "task_b7ad89fe73f251e9",
+    "doc_id": "cxcy-969ff202985b9d4b5bac",
+    "task_type": "result_check",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "2022年度大学生创新创业训练计划项目结题验收成绩公示",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": null,
+      "deadline": null,
+      "lifecycle": "unknown",
+      "urgency_days": null
+    },
+    "materials": [
+      {
+        "name": "2022年度南京邮电大学大学生创新创业训练计划项目结题验收成绩公示.xls",
+        "role": "材料",
+        "required": false,
+        "sensitive": true
+      }
+    ],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "cxcy",
+      "channel_id": "cxcy_project",
+      "authority": 0.98,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "2022年度南京邮电大学大学生创新创业训练计划项目结题验收成绩请见附件"
+      },
+      {
+        "field": "general",
+        "text": "公示时间：2023年7月3日-7月9日"
+      },
+      {
+        "field": "audience",
+        "text": "2022年度南京邮电大学大学生创新创业训练计划项目结题验收成绩请见附件"
+      },
+      {
+        "field": "materials",
+        "text": "附件/材料：2022年度南京邮电大学大学生创新创业训练计划项目结题验收成绩公示.xls"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
+  },
+  {
+    "task_id": "task_6fc612c9f5c439c7",
+    "doc_id": "cxcy-e3d77bcf0c6bcf712170",
+    "task_type": "result_check",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "2023年度大学生创新创业训练计划项目结题验收成绩公示",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": null,
+      "deadline": null,
+      "lifecycle": "unknown",
+      "urgency_days": null
+    },
+    "materials": [
+      {
+        "name": "2023年度南京邮电大学大学生创新创业训练计划项目结题验收成绩公示.xls",
+        "role": "材料",
+        "required": false,
+        "sensitive": true
+      }
+    ],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "cxcy",
+      "channel_id": "cxcy_project",
+      "authority": 0.98,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "2023年度南京邮电大学大学生创新创业训练计划项目结题验收成绩请见附件"
+      },
+      {
+        "field": "general",
+        "text": "公示时间：2024年9月27日-10月4日"
+      },
+      {
+        "field": "audience",
+        "text": "2023年度南京邮电大学大学生创新创业训练计划项目结题验收成绩请见附件"
+      },
+      {
+        "field": "materials",
+        "text": "附件/材料：2023年度南京邮电大学大学生创新创业训练计划项目结题验收成绩公示.xls"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
+  },
+  {
+    "task_id": "task_d50bdae335e2cad6",
+    "doc_id": "cxcy-b0a1f1b2fd02b9bcd5f3",
+    "task_type": "result_check",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "2024年度大学生创新创业训练计划项目结题验收成绩公示",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": null,
+      "deadline": null,
+      "lifecycle": "unknown",
+      "urgency_days": null
+    },
+    "materials": [
+      {
+        "name": "2024年度南京邮电大学大学生创新创业训练计划项目结题验收成绩公示.xls",
+        "role": "材料",
+        "required": false,
+        "sensitive": true
+      }
+    ],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "cxcy",
+      "channel_id": "cxcy_project",
+      "authority": 0.98,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "2024年度南京邮电大学大学生创新创业训练计划项目结题验收成绩请见附件"
+      },
+      {
+        "field": "general",
+        "text": "公示时间：2025年9月17日-9月24日"
+      },
+      {
+        "field": "audience",
+        "text": "2024年度南京邮电大学大学生创新创业训练计划项目结题验收成绩请见附件"
+      },
+      {
+        "field": "materials",
+        "text": "附件/材料：2024年度南京邮电大学大学生创新创业训练计划项目结题验收成绩公示.xls"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
+  },
+  {
+    "task_id": "task-37b94919b598d98ca1ed-1",
+    "doc_id": "njupt_notice-6554d92219634f721faf",
+    "task_type": "application",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生",
+        "校友"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "申报第十四批南邮-紫金科创学生创业基金资助项目",
     "action": {
       "required": true,
       "verb": "提交",
-      "object": null,
-      "summary": "目结题验收意见汇总表》（附件四）并签字，经组织单位审核、签字盖章后报创新创业教育学院备案，同时验收专家组秘书在组长领导下在先极系统中录入本组项目结题验收的意见并提交结题成绩，结题成绩提交请务必确认无误，提交后无法更改"
+      "object": "申报材料",
+      "summary": "申报人于通知截止日之前将纸质申报材料一份装订成册后报送南京邮电大学国家大学科技园7楼703办公室审核，同时将电子版发送至kejiyuan@njupt.edu.cn"
     },
     "time": {
-      "published_at": null,
-      "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "cxcy",
-      "channel_id": "cxcy_project",
-      "authority": 0.98,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "关于2025年度大学生创新创业训练计划项目中期检查及2024年度延期项目结题的通知 各学院： 根据大学生创新创业训练计划项目工作的进程安排，学校将于本学期第 13 周 -1 6 周组织 202 5 年度大学生创新创业训练计划项目中期检查，同时开展 202 4 年度部分延期项目结题验收工作，具体安排如下： 一、 202"
-      },
-      {
-        "field": "general",
-        "text": "（二）延期项目结题验收意见与成绩 202 4 年度延期项目结题验收结束后由专家填写《大学生创新创业训练计划项目结题验收意见汇总表》（附件四）并签字，经组织单位审核、签字盖章后报创新创业教育学院备案，同时验收专家组秘书在组长领导下在先极系统中录入本组项目结题验收的意见并提交结题成绩，结题成绩提交请务必确认无误，提交后无法"
-      },
-      {
-        "field": "general",
-        "text": "第 1 6 周 （ 12 月 22 日 - 12 月 26 日） 1.202 5 年度项目中期检查专家组意见网上提交，反馈；"
-      },
-      {
-        "field": "audience",
-        "text": "关于2025年度大学生创新创业训练计划项目中期检查及2024年度延期项目结题的通知 各学院： 根据大学生创新创业训练计划项目工作的进程安排，学校将于本学期第 13 周 -1 6 周组织 202 5 年度大学生创新创业训练计划项目中期检查，同时开展 202 4 年度部分延期项目结题验收工作，具体安排如下： 一、 202"
-      },
-      {
-        "field": "action",
-        "text": "（二）延期项目结题验收意见与成绩 202 4 年度延期项目结题验收结束后由专家填写《大学生创新创业训练计划项目结题验收意见汇总表》（附件四）并签字，经组织单位审核、签字盖章后报创新创业教育学院备案，同时验收专家组秘书在组长领导下在先极系统中录入本组项目结题验收的意见并提交结题成绩，结题成绩提交请务必确认无误，提交后无法"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.58
-  },
-  {
-    "task_id": "task_5244e5268649efbc",
-    "doc_id": "cxcy-c3d176da32767a48bf69",
-    "task_type": "application",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "关于公布2024年度大学生创新创业训练计划批准立项项目的通知",
-    "action": {
-      "required": true,
-      "verb": "申报",
-      "object": null,
-      "summary": "关于公布2024年度大学生创新创业训练计划批准立项项目的通知 各学院： 2024 年度我校大学生创新创业训练计划项目通过个人申报、学院推荐、专家评审和网上公示，共计立项创新创业训练计划项目 838 项，其中推荐省级重点即国家级 100 项、省级一般 150 项，校级重点 168 项，校级一般 420 项（具体项目详见附件）"
-    },
-    "time": {
-      "published_at": null,
-      "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
-    },
-    "materials": [
-      {
-        "name": "附件：2024年度南京邮电大学大学生创新创业训练计划项目立项汇总表.xls",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
-      }
-    ],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "cxcy",
-      "channel_id": "cxcy_project",
-      "authority": 0.98,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "关于公布2024年度大学生创新创业训练计划批准立项项目的通知 各学院： 2024 年度我校大学生创新创业训练计划项目通过个人申报、学院推荐、专家评审和网上公示，共计立项创新创业训练计划项目 838 项，其中推荐省级重点即国家级 100 项、省级一般 150 项，校级重点 168 项，校级一般 420 项（具体项目详见附"
-      },
-      {
-        "field": "audience",
-        "text": "关于公布2024年度大学生创新创业训练计划批准立项项目的通知 各学院： 2024 年度我校大学生创新创业训练计划项目通过个人申报、学院推荐、专家评审和网上公示，共计立项创新创业训练计划项目 838 项，其中推荐省级重点即国家级 100 项、省级一般 150 项，校级重点 168 项，校级一般 420 项（具体项目详见附"
-      },
-      {
-        "field": "action",
-        "text": "关于公布2024年度大学生创新创业训练计划批准立项项目的通知 各学院： 2024 年度我校大学生创新创业训练计划项目通过个人申报、学院推荐、专家评审和网上公示，共计立项创新创业训练计划项目 838 项，其中推荐省级重点即国家级 100 项、省级一般 150 项，校级重点 168 项，校级一般 420 项（具体项目详见附"
-      },
-      {
-        "field": "materials",
-        "text": "附件/材料：附件：2024年度南京邮电大学大学生创新创业训练计划项目立项汇总表.xls"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.58
-  },
-  {
-    "task_id": "task_da0b8c9561a6a16b",
-    "doc_id": "cxcy-d797d44fb54e9921bb4d",
-    "task_type": "application",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "关于公布2023年度大学生创新创业训练计划批准立项项目的通知",
-    "action": {
-      "required": true,
-      "verb": "申报",
-      "object": null,
-      "summary": "关于公布2023年度大学生创新创业训练计划批准立项项目的通知 各学院： 202 3 年度我校大学生创新创业训练计划项目通过个人申报、学院推荐、专家评审和网上公示，共计立项创新创业训练计划项目 8 70 项，其中推荐省级重点即国家级 8 5 项、省级一般 9 3 项，校级重点 15 4 项，校级一般 53 8 项（具体项目详见附件）"
-    },
-    "time": {
-      "published_at": null,
-      "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
-    },
-    "materials": [
-      {
-        "name": "附件：2023年度南京邮电大学大学生创新创业训练计划项目立项汇总表.xls",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
-      }
-    ],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "cxcy",
-      "channel_id": "cxcy_project",
-      "authority": 0.98,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "关于公布2023年度大学生创新创业训练计划批准立项项目的通知 各学院： 202 3 年度我校大学生创新创业训练计划项目通过个人申报、学院推荐、专家评审和网上公示，共计立项创新创业训练计划项目 8 70 项，其中推荐省级重点即国家级 8 5 项、省级一般 9 3 项，校级重点 15 4 项，校级一般 53 8 项（具体项"
-      },
-      {
-        "field": "audience",
-        "text": "关于公布2023年度大学生创新创业训练计划批准立项项目的通知 各学院： 202 3 年度我校大学生创新创业训练计划项目通过个人申报、学院推荐、专家评审和网上公示，共计立项创新创业训练计划项目 8 70 项，其中推荐省级重点即国家级 8 5 项、省级一般 9 3 项，校级重点 15 4 项，校级一般 53 8 项（具体项"
-      },
-      {
-        "field": "action",
-        "text": "关于公布2023年度大学生创新创业训练计划批准立项项目的通知 各学院： 202 3 年度我校大学生创新创业训练计划项目通过个人申报、学院推荐、专家评审和网上公示，共计立项创新创业训练计划项目 8 70 项，其中推荐省级重点即国家级 8 5 项、省级一般 9 3 项，校级重点 15 4 项，校级一般 53 8 项（具体项"
-      },
-      {
-        "field": "materials",
-        "text": "附件/材料：附件：2023年度南京邮电大学大学生创新创业训练计划项目立项汇总表.xls"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.58
-  },
-  {
-    "task_id": "task_6ef613000326cca2",
-    "doc_id": "cxcy-43193ec245f57c08f6b1",
-    "task_type": "application",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "关于公布2025年度大学生创新创业训练计划批准立项项目的通知",
-    "action": {
-      "required": true,
-      "verb": "申报",
-      "object": null,
-      "summary": "关于公布2025年度大学生创新创业训练计划批准立项项目的通知 各学院： 2025 年度我校大学生创新创业训练计划项目通过个人申报、学院推荐、专家评审和网上公示，共计立项创新创业训练计划项目 818 项，其中推荐国家级 100 项、省级 150 项，校级重点 213 项，校级一般 355 项（具体项目详见附件）"
-    },
-    "time": {
-      "published_at": null,
-      "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "cxcy",
-      "channel_id": "cxcy_project",
-      "authority": 0.98,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "关于公布2025年度大学生创新创业训练计划批准立项项目的通知 各学院： 2025 年度我校大学生创新创业训练计划项目通过个人申报、学院推荐、专家评审和网上公示，共计立项创新创业训练计划项目 818 项，其中推荐国家级 100 项、省级 150 项，校级重点 213 项，校级一般 355 项（具体项目详见附件）。"
-      },
-      {
-        "field": "audience",
-        "text": "关于公布2025年度大学生创新创业训练计划批准立项项目的通知 各学院： 2025 年度我校大学生创新创业训练计划项目通过个人申报、学院推荐、专家评审和网上公示，共计立项创新创业训练计划项目 818 项，其中推荐国家级 100 项、省级 150 项，校级重点 213 项，校级一般 355 项（具体项目详见附件）。"
-      },
-      {
-        "field": "action",
-        "text": "关于公布2025年度大学生创新创业训练计划批准立项项目的通知 各学院： 2025 年度我校大学生创新创业训练计划项目通过个人申报、学院推荐、专家评审和网上公示，共计立项创新创业训练计划项目 818 项，其中推荐国家级 100 项、省级 150 项，校级重点 213 项，校级一般 355 项（具体项目详见附件）。"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.58
-  },
-  {
-    "task_id": "task_bb9f3a67aa520635",
-    "doc_id": "youth-c713b5ed3a70e16f04e2",
-    "task_type": "schedule",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "关于2025-2026学年学生社团评优表彰的决定",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": "2026-05-07",
-      "deadline": null,
+      "published_at": "2026-05-21T00:00:00+08:00",
+      "deadline": "2026-06-22T23:59:00+08:00",
       "lifecycle": "active",
-      "urgency_days": null
+      "urgency_days": 29
     },
-    "materials": [],
+    "materials": [
+      {
+        "name": "《南邮大学生优秀创业项目申报表》",
+        "role": "申请表",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "创办企业基本情况表",
+        "role": "申请表",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "创业项目商业计划书",
+        "role": "申请表",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "创业项目核心成员身份证、毕业证书（在校生提供学生证）等材料扫描件",
+        "role": "证明材料",
+        "required": true,
+        "sensitive": true
+      },
+      {
+        "name": "企业法人营业执照",
+        "role": "证明材料",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "其他相关参考材料",
+        "role": "证明材料",
+        "required": false,
+        "sensitive": false
+      }
+    ],
     "location": {
-      "place": null,
+      "place": "南京邮电大学国家大学科技园7楼703办公室",
       "online": null,
-      "contact": null
+      "contact": "李老师 025-83535812"
     },
     "source": {
-      "source_id": "youth",
-      "channel_id": "youth_competition",
-      "authority": 0.92,
+      "source_id": "njupt_notice",
+      "channel_id": "njupt_notice_main",
+      "authority": 0.86,
       "official": true
     },
     "evidence": [
       {
-        "field": "general",
-        "text": "关于2025-2026学年学生社团评优表彰的决定 关于2025-2026学年学生社团评优表彰的决定 添加时间：2026-05-07 文章来源：青年在线 手机浏览 10"
+        "field": "deadline",
+        "text": "申报时间 2026年5月22日至6月22日"
+      },
+      {
+        "field": "action",
+        "text": "请申报人于通知截止日之前将纸质申报材料一份装订成册后报送南京邮电大学国家大学科技园7楼703办公室审核，同时将上述材料电子版（申报人+项目名称）发送至指定邮箱：kejiyuan@njupt.edu.cn"
       },
       {
         "field": "audience",
-        "text": "关于2025-2026学年学生社团评优表彰的决定 关于2025-2026学年学生社团评优表彰的决定 添加时间：2026-05-07 文章来源：青年在线 手机浏览 10"
+        "text": "申报时间 2026年5月22日至6月22日"
+      },
+      {
+        "field": "materials",
+        "text": "附件/材料：《南邮大学生优秀创业项目申报表》、创办企业基本情况表、创业项目商业计划书、创业项目核心成员身份证、毕业证书（在校生提供学生证）等材料扫描件、企业法人营业执照、其他相关参考材料"
+      },
+      {
+        "field": "location",
+        "text": "南京邮电大学国家大学科技园7楼703办公室 李老师 025-83535812"
       }
     ],
     "risk": {
@@ -2094,64 +1994,7 @@
       "low_evidence": false,
       "review_required": false
     },
-    "confidence": 0.58
-  },
-  {
-    "task_id": "task_70045e1254e6ce15",
-    "doc_id": "youth-5c6cea2552f09c8e7b2c",
-    "task_type": "schedule",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "关于表彰南京邮电大学2025年志愿服务先进个人和集体的决定",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": "2025-12-15",
-      "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "youth",
-      "channel_id": "youth_competition",
-      "authority": 0.92,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "关于表彰南京邮电大学2025年志愿服务先进个人和集体的决定 关于表彰南京邮电大学2025年志愿服务先进个人和集体的决定 添加时间：2025-12-15 文章来源：青年在线 手机浏览 10"
-      },
-      {
-        "field": "audience",
-        "text": "关于表彰南京邮电大学2025年志愿服务先进个人和集体的决定 关于表彰南京邮电大学2025年志愿服务先进个人和集体的决定 添加时间：2025-12-15 文章来源：青年在线 手机浏览 10"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.58
+    "confidence": 0.95
   },
   {
     "task_id": "task_fbb0cc63cdcb1f61",
@@ -2196,19 +2039,15 @@
     "evidence": [
       {
         "field": "general",
-        "text": "2025 12.17 关于第15周周末封闭仙林校区部分教学楼的通知 各单位： 2026年全国硕士研究生招生考试将于2025年12月20日至21日举行。"
+        "text": "封闭区域：教2、教3教学楼"
       },
       {
         "field": "general",
-        "text": "我校作为考点，为确保考试以及相关考务工作顺利进行，届时将对部分场所实行全封闭管理。"
-      },
-      {
-        "field": "general",
-        "text": "相关安排通知如下： 一、封闭区域：教2、教3教学楼 二、封闭时间：2025年12月19日（周五）18:00至12月21日（周日）18:00，其中2025年12月19日（周五）晚上已有教学和考试安排的教室，待下课或考试结束后立即封闭。"
+        "text": "封闭时间：2025年12月19日（周五）18:00至12月21日（周日）18:00"
       },
       {
         "field": "audience",
-        "text": "2025 12.17 关于第15周周末封闭仙林校区部分教学楼的通知 各单位： 2026年全国硕士研究生招生考试将于2025年12月20日至21日举行。"
+        "text": "封闭区域：教2、教3教学楼"
       }
     ],
     "risk": {
@@ -2217,97 +2056,14 @@
       "low_evidence": false,
       "review_required": false
     },
-    "confidence": 0.58
+    "confidence": 0.95
   },
   {
-    "task_id": "task_4155938041e77732",
-    "doc_id": "njupt_notice-6554d92219634f721faf",
-    "task_type": "application",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生",
-        "全体学生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "2026 05.21 关于遴选第十四批“南邮-紫金科创学生创业基金” 资助项目的通知",
-    "action": {
-      "required": true,
-      "verb": "申请",
-      "object": null,
-      "summary": "四、评审流程 1、资格及材料审查：对申请人的申报资格及申报材料进行审查"
-    },
-    "time": {
-      "published_at": "2026-05-21",
-      "deadline": "2026-06-22T23:59:00+08:00",
-      "lifecycle": "active",
-      "urgency_days": 29
-    },
-    "materials": [
-      {
-        "name": "附件：南邮大学生优秀创业项目申报表",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
-      }
-    ],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "njupt_notice",
-      "channel_id": "njupt_notice_main",
-      "authority": 0.86,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "2026 05.21 关于遴选第十四批“南邮-紫金科创学生创业基金” 资助项目的通知 为营造良好创新创业环境，促进学校科技成果转移转化，培育创新创业人才，根据《南邮-紫金科创学生创业基金暂行管理办法》（以下简称《办法》）相关规定，现面向南京邮电大学学生公开遴选第十四批南邮——紫金科创学生创业基金资助项目，相关事宜通知如"
-      },
-      {
-        "field": "general",
-        "text": "四、评审流程 1、资格及材料审查：对申请人的申报资格及申报材料进行审查。"
-      },
-      {
-        "field": "audience",
-        "text": "2026 05.21 关于遴选第十四批“南邮-紫金科创学生创业基金” 资助项目的通知 为营造良好创新创业环境，促进学校科技成果转移转化，培育创新创业人才，根据《南邮-紫金科创学生创业基金暂行管理办法》（以下简称《办法》）相关规定，现面向南京邮电大学学生公开遴选第十四批南邮——紫金科创学生创业基金资助项目，相关事宜通知如"
-      },
-      {
-        "field": "action",
-        "text": "四、评审流程 1、资格及材料审查：对申请人的申报资格及申报材料进行审查。"
-      },
-      {
-        "field": "deadline",
-        "text": "2026 05.21 关于遴选第十四批“南邮-紫金科创学生创业基金” 资助项目的通知 为营造良好创新创业环境，促进学校科技成果转移转化，培育创新创业人才，根据《南邮-紫金科创学生创业基金暂行管理办法》（以下简称《办法》）相关规定，现面向南京邮电大学学生公开遴选第十四批南邮——紫金科创学生创业基金资助项目，相关事宜通知如"
-      },
-      {
-        "field": "materials",
-        "text": "附件/材料：附件：南邮大学生优秀创业项目申报表"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.58
-  },
-  {
-    "task_id": "task_c4eb2aa744b0d434",
-    "doc_id": "njupt_notice-0d750d311ccda0e2154a",
+    "task_id": "task_a0c026dbf1a0008c",
+    "doc_id": "job-cb39d4504f396ce1a5a3",
     "task_type": "opportunity",
     "who": {
       "audience": [
-        "本科生",
-        "研究生",
         "全体学生"
       ],
       "college": [],
@@ -2315,84 +2071,47 @@
       "major": [],
       "class_name": []
     },
-    "what": "2026 05.22 关于申报2026年学校党建与思想政治教育研究项目的通知",
+    "what": "参加海康威视2027超新星实习生招聘空中宣讲会",
     "action": {
-      "required": true,
-      "verb": "申报",
-      "object": null,
-      "summary": "22 关于申报2026年学校党建与思想政治教育研究项目的通知 各基层党委、党总支、直属党支部，各单位、各部门： 为深入学习习近平新时代中国特色社会主义思想，全面贯彻习近平总书记关于教育的重要论述和对江苏工作的重要讲话精神，深入推进马克思主义理论研究和建设"
+      "required": false,
+      "verb": "参加",
+      "object": "空中宣讲会",
+      "summary": "2026年4月16日18:30-20:00空中宣讲会"
     },
     "time": {
-      "published_at": "2026-05-22",
-      "deadline": "2026-06-24T23:59:00+08:00",
-      "lifecycle": "active",
-      "urgency_days": 31
+      "published_at": "2026-04-16T00:00:00+08:00",
+      "deadline": null,
+      "lifecycle": "expired",
+      "urgency_days": null
     },
-    "materials": [
-      {
-        "name": "附件1：《南京邮电大学党建与思想政治教育研究项目管理办法》（党委宣发〔2026〕4号）",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "附件2：2026年学校党建与思想政治教育研究项目课题指南",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "附件3、4、5.zip",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "附件6、7、8.zip",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
-      }
-    ],
+    "materials": [],
     "location": {
       "place": null,
-      "online": null,
-      "contact": null
+      "online": "空中宣讲会",
+      "contact": "单** 057*****0531"
     },
     "source": {
-      "source_id": "njupt_notice",
-      "channel_id": "njupt_notice_main",
-      "authority": 0.86,
+      "source_id": "job",
+      "channel_id": "job_talk",
+      "authority": 0.88,
       "official": true
     },
     "evidence": [
       {
-        "field": "general",
-        "text": "2026 05.22 关于申报2026年学校党建与思想政治教育研究项目的通知 各基层党委、党总支、直属党支部，各单位、各部门： 为深入学习习近平新时代中国特色社会主义思想，全面贯彻习近平总书记关于教育的重要论述和对江苏工作的重要讲话精神，深入推进马克思主义理论研究和建设工程，聚焦新时代高校党的建设与思想政治教育研究前沿"
-      },
-      {
-        "field": "general",
-        "text": "2026年学校党建与思想政治教育研究项目包括5类项目：习近平新时代中国特色社会主义思想专项研究项目、重点项目、一般项目、青年项目、红色校史挖掘专项研究项目。"
-      },
-      {
-        "field": "general",
-        "text": "具体申报要求和注意事项，请查阅《南京邮电大学党建与思想政治教育研究项目管理办法》（附件1）。"
+        "field": "time",
+        "text": "宣讲时间：2026-04-16 18:30-20:00"
       },
       {
         "field": "audience",
-        "text": "2026 05.22 关于申报2026年学校党建与思想政治教育研究项目的通知 各基层党委、党总支、直属党支部，各单位、各部门： 为深入学习习近平新时代中国特色社会主义思想，全面贯彻习近平总书记关于教育的重要论述和对江苏工作的重要讲话精神，深入推进马克思主义理论研究和建设工程，聚焦新时代高校党的建设与思想政治教育研究前沿"
+        "text": "宣讲时间：2026-04-16 18:30-20:00"
       },
       {
         "field": "action",
-        "text": "2026 05.22 关于申报2026年学校党建与思想政治教育研究项目的通知 各基层党委、党总支、直属党支部，各单位、各部门： 为深入学习习近平新时代中国特色社会主义思想，全面贯彻习近平总书记关于教育的重要论述和对江苏工作的重要讲话精神，深入推进马克思主义理论研究和建设工程，聚焦新时代高校党的建设与思想政治教育研究前沿"
+        "text": "宣讲时间：2026-04-16 18:30-20:00"
       },
       {
-        "field": "deadline",
-        "text": "2026 05.22 关于申报2026年学校党建与思想政治教育研究项目的通知 各基层党委、党总支、直属党支部，各单位、各部门： 为深入学习习近平新时代中国特色社会主义思想，全面贯彻习近平总书记关于教育的重要论述和对江苏工作的重要讲话精神，深入推进马克思主义理论研究和建设工程，聚焦新时代高校党的建设与思想政治教育研究前沿"
-      },
-      {
-        "field": "materials",
-        "text": "附件/材料：附件1：《南京邮电大学党建与思想政治教育研究项目管理办法》（党委宣发〔2026〕4号）、附件2：2026年学校党建与思想政治教育研究项目课题指南、附件3、4、5.zip、附件6、7、8.zip"
+        "field": "location",
+        "text": "空中宣讲会 单** 057*****0531"
       }
     ],
     "risk": {
@@ -2401,180 +2120,62 @@
       "low_evidence": false,
       "review_required": false
     },
-    "confidence": 0.58
+    "confidence": 0.85
   },
   {
-    "task_id": "task_1aeaef91d829f357",
-    "doc_id": "njupt_notice-96581051246b8561d852",
-    "task_type": "schedule",
+    "task_id": "task_69bfabf726a44a67",
+    "doc_id": "job-ce4500e0b0dad687f8d2",
+    "task_type": "opportunity",
     "who": {
       "audience": [
-        "本科生",
-        "研究生",
-        "全体学生"
+        "2026届毕业生"
       ],
       "college": [],
       "grade": [],
       "major": [],
       "class_name": []
     },
-    "what": "2025 12.18 关于12月20日、21日仙林校区实施临时交通管制的通知",
+    "what": "参加第五场春季促就业专场招聘会",
     "action": {
       "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
+      "verb": "参加",
+      "object": "招聘会",
+      "summary": "2026年5月20日14:00-16:00在仙林校区体育馆举办招聘会"
     },
     "time": {
-      "published_at": "2025-12-18",
+      "published_at": "2026-05-20T00:00:00+08:00",
       "deadline": null,
-      "lifecycle": "unknown",
+      "lifecycle": "upcoming",
       "urgency_days": null
     },
     "materials": [],
     "location": {
-      "place": null,
+      "place": "仙林校区体育馆",
       "online": null,
-      "contact": null
+      "contact": "王老师、张老师 025-85866867"
     },
     "source": {
-      "source_id": "njupt_notice",
-      "channel_id": "njupt_notice_main",
-      "authority": 0.86,
+      "source_id": "job",
+      "channel_id": "job_talk",
+      "authority": 0.88,
       "official": true
     },
     "evidence": [
       {
-        "field": "general",
-        "text": "2025 12.18 关于12月20日、21日仙林校区实施临时交通管制的通知 通知通告 首页 通知通告 关于12月20日、21日仙林校区实施临时交通管制的通知 发布时间：2025-12-18 浏览次数： 1242 文章来源：保卫处 分享至： 上一篇： 下一篇： 最新文章 最热文章"
+        "field": "time",
+        "text": "时间：2026-05-20 14:00:00 至 2026-05-20 16:00:00"
       },
       {
         "field": "audience",
-        "text": "2025 12.18 关于12月20日、21日仙林校区实施临时交通管制的通知 通知通告 首页 通知通告 关于12月20日、21日仙林校区实施临时交通管制的通知 发布时间：2025-12-18 浏览次数： 1242 文章来源：保卫处 分享至： 上一篇： 下一篇： 最新文章 最热文章"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.58
-  },
-  {
-    "task_id": "task_dc01098f7d583ba8",
-    "doc_id": "njupt_notice-8bb1815a4f5c2b5f5bb2",
-    "task_type": "schedule",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生",
-        "全体学生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "2026 04.13 关于南京邮电大学84周年校庆健身跑期间校内交通管制的通知",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": "2026-04-13",
-      "deadline": null,
-      "lifecycle": "active",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "njupt_notice",
-      "channel_id": "njupt_notice_main",
-      "authority": 0.86,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "2026 04.13 关于南京邮电大学84周年校庆健身跑期间校内交通管制的通知 通知通告 首页 通知通告 关于南京邮电大学84周年校庆健身跑期间校内交通管制的通知 发布时间：2026-04-13 浏览次数： 10 文章来源：保卫处 分享至： 上一篇： 下一篇： 最新文章 最热文章"
-      },
-      {
-        "field": "audience",
-        "text": "2026 04.13 关于南京邮电大学84周年校庆健身跑期间校内交通管制的通知 通知通告 首页 通知通告 关于南京邮电大学84周年校庆健身跑期间校内交通管制的通知 发布时间：2026-04-13 浏览次数： 10 文章来源：保卫处 分享至： 上一篇： 下一篇： 最新文章 最热文章"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.58
-  },
-  {
-    "task_id": "task_392bc88ec6023842",
-    "doc_id": "xxb-041dc94e61b52ad09e93",
-    "task_type": "read",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生",
-        "教职工"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "常见问题FAQ",
-    "action": {
-      "required": true,
-      "verb": "缴费",
-      "object": null,
-      "summary": "Q3: 校园卡如何充值 A 3: 关注 “ 南京邮电大学财务处 ”公众号，点击菜单“缴费圈存”——“校园卡圈存”——“卡片充值” Q4: 学生校园网网费充值 A 4: 关注 “南京邮电大学财务处”公共号，点击菜单“缴费圈存”——“校园卡圈存”——“缴网费”"
-    },
-    "time": {
-      "published_at": null,
-      "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "xxb",
-      "channel_id": "xxb_network",
-      "authority": 0.82,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "常见问题FAQ Q 1: 智慧校园网址，账号和密码 A 1: 网址： h ttps://i.njupt.edu.cn 用户名是工号 /学号，初始密码是身份证后六位。"
-      },
-      {
-        "field": "general",
-        "text": "Q3: 校园卡如何充值 A 3: 关注 “ 南京邮电大学财务处 ”公众号，点击菜单“缴费圈存”——“校园卡圈存”——“卡片充值” Q4: 学生校园网网费充值 A 4: 关注 “南京邮电大学财务处”公共号，点击菜单“缴费圈存”——“校园卡圈存”——“缴网费”。"
-      },
-      {
-        "field": "audience",
-        "text": "常见问题FAQ Q 1: 智慧校园网址，账号和密码 A 1: 网址： h ttps://i.njupt.edu.cn 用户名是工号 /学号，初始密码是身份证后六位。"
+        "text": "时间：2026-05-20 14:00:00 至 2026-05-20 16:00:00"
       },
       {
         "field": "action",
-        "text": "Q3: 校园卡如何充值 A 3: 关注 “ 南京邮电大学财务处 ”公众号，点击菜单“缴费圈存”——“校园卡圈存”——“卡片充值” Q4: 学生校园网网费充值 A 4: 关注 “南京邮电大学财务处”公共号，点击菜单“缴费圈存”——“校园卡圈存”——“缴网费”。"
+        "text": "时间：2026-05-20 14:00:00 至 2026-05-20 16:00:00"
+      },
+      {
+        "field": "location",
+        "text": "仙林校区体育馆 王老师、张老师 025-85866867"
       }
     ],
     "risk": {
@@ -2583,56 +2184,62 @@
       "low_evidence": false,
       "review_required": false
     },
-    "confidence": 0.58
+    "confidence": 0.95
   },
   {
-    "task_id": "task_27f0c1b30e4a4c68",
-    "doc_id": "cs-9d73694618a2f82174d3",
-    "task_type": "result_check",
+    "task_id": "task_4598648cd50db79d",
+    "doc_id": "job-67dc85ca08fe979eb024",
+    "task_type": "opportunity",
     "who": {
       "audience": [
-        "本科生",
-        "研究生",
-        "计算机学院"
+        "2026届毕业生"
       ],
       "college": [],
       "grade": [],
       "major": [],
       "class_name": []
     },
-    "what": "我院“计算机科学与技术专业教研室”入选首批省级优秀基层教学组织",
+    "what": "参加第四场春季促就业专场招聘会",
     "action": {
       "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
+      "verb": "参加",
+      "object": "招聘会",
+      "summary": "2026年5月13日14:00-16:00在仙林校区体育馆举办招聘会"
     },
     "time": {
-      "published_at": null,
+      "published_at": "2026-05-13T00:00:00+08:00",
       "deadline": null,
-      "lifecycle": "unknown",
+      "lifecycle": "expired",
       "urgency_days": null
     },
     "materials": [],
     "location": {
-      "place": null,
+      "place": "仙林校区体育馆",
       "online": null,
-      "contact": null
+      "contact": "王老师、张老师 025-85866867"
     },
     "source": {
-      "source_id": "cs",
-      "channel_id": "cs_academic",
-      "authority": 0.78,
+      "source_id": "job",
+      "channel_id": "job_talk",
+      "authority": 0.88,
       "official": true
     },
     "evidence": [
       {
-        "field": "general",
-        "text": "我院“计算机科学与技术专业教研室”入选首批省级优秀基层教学组织 近日，省教育厅公布 2022 年江苏高校省级优秀基层教学组织评选结果，我院“计算机科学与技术专业教研室”是我校成功入选的两个基层教学组织之一，这是我院计算机科学与技术专业入选教育厅“十四五”期间教育对外开放质量提升工程项目后，又获一项建设成果，也是我院响应"
+        "field": "time",
+        "text": "时间：2026-05-13 14:00:00 至 2026-05-13 16:00:00"
       },
       {
         "field": "audience",
-        "text": "我院“计算机科学与技术专业教研室”入选首批省级优秀基层教学组织 近日，省教育厅公布 2022 年江苏高校省级优秀基层教学组织评选结果，我院“计算机科学与技术专业教研室”是我校成功入选的两个基层教学组织之一，这是我院计算机科学与技术专业入选教育厅“十四五”期间教育对外开放质量提升工程项目后，又获一项建设成果，也是我院响应"
+        "text": "时间：2026-05-13 14:00:00 至 2026-05-13 16:00:00"
+      },
+      {
+        "field": "action",
+        "text": "时间：2026-05-13 14:00:00 至 2026-05-13 16:00:00"
+      },
+      {
+        "field": "location",
+        "text": "仙林校区体育馆 王老师、张老师 025-85866867"
       }
     ],
     "risk": {
@@ -2641,41 +2248,1024 @@
       "low_evidence": false,
       "review_required": false
     },
-    "confidence": 0.58
+    "confidence": 0.95
   },
   {
-    "task_id": "task_dcffda52727e8b7f",
+    "task_id": "task_af135b685861ae94",
+    "doc_id": "job-b0e2b8b567544887e8c7",
+    "task_type": "opportunity",
+    "who": {
+      "audience": [
+        "2026届毕业生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "参加第三场春季促就业专场招聘会",
+    "action": {
+      "required": false,
+      "verb": "参加",
+      "object": "招聘会",
+      "summary": "2026年4月29日14:00-16:00在仙林校区体育馆举办招聘会"
+    },
+    "time": {
+      "published_at": "2026-04-29T00:00:00+08:00",
+      "deadline": null,
+      "lifecycle": "expired",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": "仙林校区体育馆",
+      "online": null,
+      "contact": "王老师、张老师 025-85866867"
+    },
+    "source": {
+      "source_id": "job",
+      "channel_id": "job_talk",
+      "authority": 0.88,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "time",
+        "text": "时间：2026-04-29 14:00:00 至 2026-04-29 16:00:00"
+      },
+      {
+        "field": "audience",
+        "text": "时间：2026-04-29 14:00:00 至 2026-04-29 16:00:00"
+      },
+      {
+        "field": "action",
+        "text": "时间：2026-04-29 14:00:00 至 2026-04-29 16:00:00"
+      },
+      {
+        "field": "location",
+        "text": "仙林校区体育馆 王老师、张老师 025-85866867"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.95
+  },
+  {
+    "task_id": "task_034da3c13ce66398",
+    "doc_id": "job-af73d8b77101ce20b005",
+    "task_type": "opportunity",
+    "who": {
+      "audience": [
+        "2026届毕业生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "参加第二场春季促就业专场招聘会",
+    "action": {
+      "required": false,
+      "verb": "参加",
+      "object": "招聘会",
+      "summary": "2026年4月22日14:00-16:00在仙林校区体育馆举办招聘会"
+    },
+    "time": {
+      "published_at": "2026-04-22T00:00:00+08:00",
+      "deadline": null,
+      "lifecycle": "expired",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": "仙林校区体育馆",
+      "online": null,
+      "contact": "王老师、张老师 025-85866867"
+    },
+    "source": {
+      "source_id": "job",
+      "channel_id": "job_talk",
+      "authority": 0.88,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "time",
+        "text": "时间：2026-04-22 14:00:00 至 2026-04-22 16:00:00"
+      },
+      {
+        "field": "audience",
+        "text": "时间：2026-04-22 14:00:00 至 2026-04-22 16:00:00"
+      },
+      {
+        "field": "action",
+        "text": "时间：2026-04-22 14:00:00 至 2026-04-22 16:00:00"
+      },
+      {
+        "field": "location",
+        "text": "仙林校区体育馆 王老师、张老师 025-85866867"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.95
+  },
+  {
+    "task_id": "task_72dddeab2927319d",
+    "doc_id": "job-85fe09dc12906fa9d158",
+    "task_type": "opportunity",
+    "who": {
+      "audience": [
+        "2026届毕业生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "参加第一场春季促就业专场招聘会",
+    "action": {
+      "required": false,
+      "verb": "参加",
+      "object": "招聘会",
+      "summary": "2026年4月15日14:00-16:00在仙林校区体育馆举办招聘会"
+    },
+    "time": {
+      "published_at": "2026-04-15T00:00:00+08:00",
+      "deadline": null,
+      "lifecycle": "expired",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": "仙林校区体育馆",
+      "online": null,
+      "contact": "王老师、张老师 025-85866867"
+    },
+    "source": {
+      "source_id": "job",
+      "channel_id": "job_talk",
+      "authority": 0.88,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "time",
+        "text": "时间：2026-04-15 14:00:00 至 2026-04-15 16:00:00"
+      },
+      {
+        "field": "audience",
+        "text": "时间：2026-04-15 14:00:00 至 2026-04-15 16:00:00"
+      },
+      {
+        "field": "action",
+        "text": "时间：2026-04-15 14:00:00 至 2026-04-15 16:00:00"
+      },
+      {
+        "field": "location",
+        "text": "仙林校区体育馆 王老师、张老师 025-85866867"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.95
+  },
+  {
+    "task_id": "task_934ede324a4c72cd",
+    "doc_id": "job-286aa0035d13ca9a1f18",
+    "task_type": "opportunity",
+    "who": {
+      "audience": [
+        "信息文科类专业学生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "参加信息文科类专业联合春季招聘会",
+    "action": {
+      "required": false,
+      "verb": "参加",
+      "object": "招聘会",
+      "summary": "2026年4月24日14:00-16:00在仙林校区体育馆举办"
+    },
+    "time": {
+      "published_at": "2026-04-24T00:00:00+08:00",
+      "deadline": null,
+      "lifecycle": "expired",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": "仙林校区体育馆",
+      "online": null,
+      "contact": "王老师 025-85866867"
+    },
+    "source": {
+      "source_id": "job",
+      "channel_id": "job_talk",
+      "authority": 0.88,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "time",
+        "text": "时间：2026-04-24 14:00:00 至 2026-04-24 16:00:00"
+      },
+      {
+        "field": "audience",
+        "text": "时间：2026-04-24 14:00:00 至 2026-04-24 16:00:00"
+      },
+      {
+        "field": "action",
+        "text": "时间：2026-04-24 14:00:00 至 2026-04-24 16:00:00"
+      },
+      {
+        "field": "location",
+        "text": "仙林校区体育馆 王老师 025-85866867"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
+  },
+  {
+    "task_id": "task_b454b4ffb655c1ec",
+    "doc_id": "job-742eb8e3037e85faf282",
+    "task_type": "opportunity",
+    "who": {
+      "audience": [
+        "全体学生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "参加鼓楼区春季大学生专场招聘会",
+    "action": {
+      "required": false,
+      "verb": "参加",
+      "object": "招聘会",
+      "summary": "2026年4月15日14:00-16:00在仙林校区体育馆举办"
+    },
+    "time": {
+      "published_at": "2026-04-15T00:00:00+08:00",
+      "deadline": null,
+      "lifecycle": "expired",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": "仙林校区体育馆",
+      "online": null,
+      "contact": "王老师 025-85866867"
+    },
+    "source": {
+      "source_id": "job",
+      "channel_id": "job_talk",
+      "authority": 0.88,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "time",
+        "text": "时间：2026-04-15 14:00:00 至 2026-04-15 16:00:00"
+      },
+      {
+        "field": "audience",
+        "text": "时间：2026-04-15 14:00:00 至 2026-04-15 16:00:00"
+      },
+      {
+        "field": "action",
+        "text": "时间：2026-04-15 14:00:00 至 2026-04-15 16:00:00"
+      },
+      {
+        "field": "location",
+        "text": "仙林校区体育馆 王老师 025-85866867"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
+  },
+  {
+    "task_id": "task_fc8bad8b44fe53cd",
+    "doc_id": "job-42bf10c92bb46a936b90",
+    "task_type": "opportunity",
+    "who": {
+      "audience": [
+        "全体学生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "参加江阴市春季校园招聘活动",
+    "action": {
+      "required": false,
+      "verb": "参加",
+      "object": "招聘活动",
+      "summary": "2026年4月17日10:00-12:00在仙林校区体育馆举办"
+    },
+    "time": {
+      "published_at": "2026-04-17T00:00:00+08:00",
+      "deadline": null,
+      "lifecycle": "expired",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": "仙林校区体育馆",
+      "online": null,
+      "contact": "王老师 025-85866867"
+    },
+    "source": {
+      "source_id": "job",
+      "channel_id": "job_talk",
+      "authority": 0.88,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "time",
+        "text": "时间：2026-04-17 10:00:00 至 2026-04-17 12:00:00"
+      },
+      {
+        "field": "audience",
+        "text": "时间：2026-04-17 10:00:00 至 2026-04-17 12:00:00"
+      },
+      {
+        "field": "action",
+        "text": "时间：2026-04-17 10:00:00 至 2026-04-17 12:00:00"
+      },
+      {
+        "field": "location",
+        "text": "仙林校区体育馆 王老师 025-85866867"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
+  },
+  {
+    "task_id": "task_dc0030c0702d7166",
+    "doc_id": "job-4f29dbeba905aef277a5",
+    "task_type": "opportunity",
+    "who": {
+      "audience": [
+        "2026届毕业生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "参加德晟达2026届校园招聘宣讲会",
+    "action": {
+      "required": false,
+      "verb": "参加",
+      "object": "宣讲会",
+      "summary": "2026年4月16日14:00-15:30在教2-105举办宣讲+笔试，面试在教2-106"
+    },
+    "time": {
+      "published_at": "2026-04-16T00:00:00+08:00",
+      "deadline": null,
+      "lifecycle": "expired",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": "教2－105（宣讲+笔试）教2－106（面试）",
+      "online": null,
+      "contact": "徐** 150****7259"
+    },
+    "source": {
+      "source_id": "job",
+      "channel_id": "job_talk",
+      "authority": 0.88,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "time",
+        "text": "宣讲时间：2026-04-16 14:00-15:30"
+      },
+      {
+        "field": "audience",
+        "text": "宣讲时间：2026-04-16 14:00-15:30"
+      },
+      {
+        "field": "action",
+        "text": "宣讲时间：2026-04-16 14:00-15:30"
+      },
+      {
+        "field": "location",
+        "text": "教2－105（宣讲+笔试）教2－106（面试） 徐** 150****7259"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.85
+  },
+  {
+    "task_id": "task_5eae3836e048f9a8",
+    "doc_id": "job-891ec3ddc35537182931",
+    "task_type": "opportunity",
+    "who": {
+      "audience": [
+        "2026届毕业生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "参加亚信科技2026年校园招聘宣讲会",
+    "action": {
+      "required": false,
+      "verb": "参加",
+      "object": "宣讲会",
+      "summary": "2026年4月14日18:30-20:00在教3-205举办"
+    },
+    "time": {
+      "published_at": "2026-04-14T00:00:00+08:00",
+      "deadline": null,
+      "lifecycle": "expired",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": "教3－205",
+      "online": null,
+      "contact": "王** 176****3336"
+    },
+    "source": {
+      "source_id": "job",
+      "channel_id": "job_talk",
+      "authority": 0.88,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "time",
+        "text": "宣讲时间：2026-04-14 18:30-20:00"
+      },
+      {
+        "field": "audience",
+        "text": "宣讲时间：2026-04-14 18:30-20:00"
+      },
+      {
+        "field": "action",
+        "text": "宣讲时间：2026-04-14 18:30-20:00"
+      },
+      {
+        "field": "location",
+        "text": "教3－205 王** 176****3336"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.85
+  },
+  {
+    "task_id": "task_e5dc59218247d68d",
+    "doc_id": "job-62a10178c957016f7940",
+    "task_type": "opportunity",
+    "who": {
+      "audience": [
+        "全体学生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "参加建邺区春季校园系列活动",
+    "action": {
+      "required": false,
+      "verb": "参加",
+      "object": "招聘活动",
+      "summary": "2026年4月22日14:00-16:00在仙林校区体育馆举办"
+    },
+    "time": {
+      "published_at": "2026-04-22T00:00:00+08:00",
+      "deadline": null,
+      "lifecycle": "expired",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": "仙林校区体育馆",
+      "online": null,
+      "contact": "王老师 025-85866867"
+    },
+    "source": {
+      "source_id": "job",
+      "channel_id": "job_talk",
+      "authority": 0.88,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "time",
+        "text": "时间：2026-04-22 14:00:00 至 2026-04-22 16:00:00"
+      },
+      {
+        "field": "audience",
+        "text": "时间：2026-04-22 14:00:00 至 2026-04-22 16:00:00"
+      },
+      {
+        "field": "action",
+        "text": "时间：2026-04-22 14:00:00 至 2026-04-22 16:00:00"
+      },
+      {
+        "field": "location",
+        "text": "仙林校区体育馆 王老师 025-85866867"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
+  },
+  {
+    "task_id": "task_3eaeedd752cdbd0e",
+    "doc_id": "job-6b5a43035e1c693fbb4b",
+    "task_type": "opportunity",
+    "who": {
+      "audience": [
+        "2026届毕业生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "参加积成电子2026届春招宣讲会",
+    "action": {
+      "required": false,
+      "verb": "参加",
+      "object": "宣讲会",
+      "summary": "2026年4月24日16:00-17:30在教2-117举办"
+    },
+    "time": {
+      "published_at": "2026-04-24T00:00:00+08:00",
+      "deadline": null,
+      "lifecycle": "expired",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": "教2－117",
+      "online": null,
+      "contact": "郝** 183****8092"
+    },
+    "source": {
+      "source_id": "job",
+      "channel_id": "job_talk",
+      "authority": 0.88,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "time",
+        "text": "宣讲时间：2026-04-24 16:00-17:30"
+      },
+      {
+        "field": "audience",
+        "text": "宣讲时间：2026-04-24 16:00-17:30"
+      },
+      {
+        "field": "action",
+        "text": "宣讲时间：2026-04-24 16:00-17:30"
+      },
+      {
+        "field": "location",
+        "text": "教2－117 郝** 183****8092"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.85
+  },
+  {
+    "task_id": "task_dd40b20f51f5fe4e",
+    "doc_id": "job-5a3142ec6444de8fd876",
+    "task_type": "opportunity",
+    "who": {
+      "audience": [
+        "全体学生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "参加浙江新东方素养智学教师春招补录空宣",
+    "action": {
+      "required": false,
+      "verb": "参加",
+      "object": "空中宣讲会",
+      "summary": "2026年4月14日14:30-16:30空中宣讲会"
+    },
+    "time": {
+      "published_at": "2026-04-14T00:00:00+08:00",
+      "deadline": null,
+      "lifecycle": "expired",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": "空中宣讲会",
+      "contact": "李** 150****8395"
+    },
+    "source": {
+      "source_id": "job",
+      "channel_id": "job_talk",
+      "authority": 0.88,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "time",
+        "text": "宣讲时间：2026-04-14 14:30-16:30"
+      },
+      {
+        "field": "audience",
+        "text": "宣讲时间：2026-04-14 14:30-16:30"
+      },
+      {
+        "field": "action",
+        "text": "宣讲时间：2026-04-14 14:30-16:30"
+      },
+      {
+        "field": "location",
+        "text": "空中宣讲会 李** 150****8395"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.85
+  },
+  {
+    "task_id": "task_ee155d51f9e887a3",
+    "doc_id": "job-d7f60712cb9c969a9b36",
+    "task_type": "opportunity",
+    "who": {
+      "audience": [
+        "光电硕博"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "参加群发光芯春季校招宣讲会（光电硕博专场）",
+    "action": {
+      "required": false,
+      "verb": "参加",
+      "object": "宣讲会",
+      "summary": "2026年4月15日14:00-15:30在教2-103举办"
+    },
+    "time": {
+      "published_at": "2026-04-15T00:00:00+08:00",
+      "deadline": null,
+      "lifecycle": "expired",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": "教2－103",
+      "online": null,
+      "contact": "王** 173****6120"
+    },
+    "source": {
+      "source_id": "job",
+      "channel_id": "job_talk",
+      "authority": 0.88,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "time",
+        "text": "宣讲时间：2026-04-15 14:00-15:30"
+      },
+      {
+        "field": "audience",
+        "text": "宣讲时间：2026-04-15 14:00-15:30"
+      },
+      {
+        "field": "action",
+        "text": "宣讲时间：2026-04-15 14:00-15:30"
+      },
+      {
+        "field": "location",
+        "text": "教2－103 王** 173****6120"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.85
+  },
+  {
+    "task_id": "task_9759a079d798d496",
+    "doc_id": "job-e003cf1cda08ab24539e",
+    "task_type": "opportunity",
+    "who": {
+      "audience": [
+        "全体学生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "参加“徐州日”走进南京邮电大学招聘活动",
+    "action": {
+      "required": false,
+      "verb": "参加",
+      "object": "招聘活动",
+      "summary": "2026年4月24日14:30-16:30在仙林校区体育馆举办"
+    },
+    "time": {
+      "published_at": "2026-04-24T00:00:00+08:00",
+      "deadline": null,
+      "lifecycle": "expired",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": "仙林校区体育馆",
+      "online": null,
+      "contact": "王老师 025-85866867"
+    },
+    "source": {
+      "source_id": "job",
+      "channel_id": "job_talk",
+      "authority": 0.88,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "time",
+        "text": "时间：2026-04-24 14:30:00 至 2026-04-24 16:30:00"
+      },
+      {
+        "field": "audience",
+        "text": "时间：2026-04-24 14:30:00 至 2026-04-24 16:30:00"
+      },
+      {
+        "field": "action",
+        "text": "时间：2026-04-24 14:30:00 至 2026-04-24 16:30:00"
+      },
+      {
+        "field": "location",
+        "text": "仙林校区体育馆 王老师 025-85866867"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
+  },
+  {
+    "task_id": "task_36794afa1aee5adb",
+    "doc_id": "job-0e4b5b0f266a9a2866e6",
+    "task_type": "opportunity",
+    "who": {
+      "audience": [
+        "艺术生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "参加艺术生就业全景图宣讲会",
+    "action": {
+      "required": false,
+      "verb": "参加",
+      "object": "宣讲会",
+      "summary": "2026年5月7日18:30-20:00在教2-106举办"
+    },
+    "time": {
+      "published_at": "2026-05-07T00:00:00+08:00",
+      "deadline": null,
+      "lifecycle": "expired",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": "教2－106",
+      "online": null,
+      "contact": "程* 025****2260"
+    },
+    "source": {
+      "source_id": "job",
+      "channel_id": "job_talk",
+      "authority": 0.88,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "time",
+        "text": "宣讲时间：2026-05-07 18:30-20:00"
+      },
+      {
+        "field": "audience",
+        "text": "宣讲时间：2026-05-07 18:30-20:00"
+      },
+      {
+        "field": "action",
+        "text": "宣讲时间：2026-05-07 18:30-20:00"
+      },
+      {
+        "field": "location",
+        "text": "教2－106 程* 025****2260"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.85
+  },
+  {
+    "task_id": "task_ea28d9f4de9f4320",
+    "doc_id": "job-1b00dd81ac34a9a6de73",
+    "task_type": "opportunity",
+    "who": {
+      "audience": [
+        "全体学生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "参加金昌市甘肃有色冶金职业技术学院人才引进招聘会",
+    "action": {
+      "required": false,
+      "verb": "参加",
+      "object": "招聘会",
+      "summary": "2026年4月12日14:00-15:30在教2-103举办"
+    },
+    "time": {
+      "published_at": "2026-04-12T00:00:00+08:00",
+      "deadline": null,
+      "lifecycle": "expired",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": "教2－103",
+      "online": null,
+      "contact": "刁* 156****3119"
+    },
+    "source": {
+      "source_id": "job",
+      "channel_id": "job_talk",
+      "authority": 0.88,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "time",
+        "text": "宣讲时间：2026-04-12 14:00-15:30"
+      },
+      {
+        "field": "audience",
+        "text": "宣讲时间：2026-04-12 14:00-15:30"
+      },
+      {
+        "field": "action",
+        "text": "宣讲时间：2026-04-12 14:00-15:30"
+      },
+      {
+        "field": "location",
+        "text": "教2－103 刁* 156****3119"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.7
+  },
+  {
+    "task_id": "task_fa67a6b4b0f3aef3",
     "doc_id": "exchange-176cb6ec00a0d59cab1e",
     "task_type": "application",
     "who": {
       "audience": [
-        "本科生",
-        "研究生",
-        "国际学生"
+        "本科生"
       ],
       "college": [],
       "grade": [],
       "major": [],
       "class_name": []
     },
-    "what": "香港理工大学暑假“科技创新”访学项目",
+    "what": "申请香港理工大学暑假“科技创新”访学项目",
     "action": {
       "required": true,
-      "verb": "报名",
-      "object": null,
-      "summary": "报名及派出时间：每年 5 月报名， 7 月－ 8 月派出 8"
+      "verb": "提交",
+      "object": "申请材料至学院",
+      "summary": "申请人将申请材料交至各学院"
     },
     "time": {
       "published_at": null,
       "deadline": null,
-      "lifecycle": "unknown",
+      "lifecycle": "upcoming",
       "urgency_days": null
     },
-    "materials": [],
+    "materials": [
+      {
+        "name": "《南京邮电大学本科生海外访学申请表》",
+        "role": "申请表",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "英语水平证明及复印件",
+        "role": "语言证明",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "学术科研能力证明材料及复印件",
+        "role": "能力证明",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "获奖证书及复印件",
+        "role": "获奖证明",
+        "required": true,
+        "sensitive": false
+      }
+    ],
     "location": {
       "place": null,
       "online": null,
-      "contact": null
+      "contact": "国际合作交流处 朱老师 85866716"
     },
     "source": {
       "source_id": "exchange",
@@ -2685,24 +3275,20 @@
     },
     "evidence": [
       {
-        "field": "general",
-        "text": "香港理工大学暑假“科技创新”访学项目 1. 学校排名： USNEWS 234 ；"
-      },
-      {
-        "field": "general",
-        "text": "QS 95 2. 合作模式：短期 8 天 3. 合作层次：不限 4. 合作专业：不限 5. 费用 （1） 大学课程费 + 企业实训费： 5200 元 （2） 住宿 2100 元，其他 600 元 （3） 共 7900 元，南邮学生减免 1300 元，合计 6600 元 6. 语言要求：具备良好的英语听说读写能力 7."
-      },
-      {
-        "field": "general",
-        "text": "C. 学术科研能力证明材料及复印件（包括论文发表、参与竞赛、项目等）；"
+        "field": "action",
+        "text": "申请人将申请材料交至各学院"
       },
       {
         "field": "audience",
-        "text": "香港理工大学暑假“科技创新”访学项目 1. 学校排名： USNEWS 234 ；"
+        "text": "每年5月报名，7月－8月派出"
       },
       {
-        "field": "action",
-        "text": "香港理工大学暑假“科技创新”访学项目 1. 学校排名： USNEWS 234 ；"
+        "field": "materials",
+        "text": "附件/材料：《南京邮电大学本科生海外访学申请表》、英语水平证明及复印件、学术科研能力证明材料及复印件、获奖证书及复印件"
+      },
+      {
+        "field": "location",
+        "text": "国际合作交流处 朱老师 85866716"
       }
     ],
     "risk": {
@@ -2711,204 +3297,57 @@
       "low_evidence": false,
       "review_required": false
     },
-    "confidence": 0.58
+    "confidence": 0.9
   },
   {
-    "task_id": "task_30cf2a083234d74a",
+    "task_id": "task_f09a916fe171af7e",
     "doc_id": "exchange-8c940f9a9a38972abe4d",
     "task_type": "application",
     "who": {
       "audience": [
         "本科生",
-        "研究生",
-        "国际学生"
+        "研究生"
       ],
       "college": [],
       "grade": [],
       "major": [],
       "class_name": []
     },
-    "what": "南洋理工大学寒暑假交流项目",
+    "what": "申请南洋理工大学寒暑假交流项目",
     "action": {
       "required": true,
-      "verb": "报名",
-      "object": null,
-      "summary": "报名及派出时间：每年 11 月报名，次年 1 月开课"
+      "verb": "提交",
+      "object": "申请材料至学院",
+      "summary": "申请人将申请材料交至各学院"
     },
     "time": {
       "published_at": null,
       "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "exchange",
-      "channel_id": "exchange_notice",
-      "authority": 0.78,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "南洋理工大学寒暑假交流项目 1. 学校排名： QS No.13 2. 合作模式： 6 周 3. 合作层次：本科生和研究生 4. 合作专业：专业不限 5. 费用 项目费总计： 5580 （课程项目） /6980 （科研项目）含大学学费、管理费等。"
-      },
-      {
-        "field": "general",
-        "text": "6. 语言要求：英语听说读写有一定基础，能接受全英文授课 7. 报名及派出时间：每年 11 月报名，次年 1 月开课；"
-      },
-      {
-        "field": "general",
-        "text": "每年 4 月报名， 7 月开课 8. 报名程序： 采取“个人申请、学院推荐、专家评审、择优录取”的方式进行选拔。"
-      },
-      {
-        "field": "audience",
-        "text": "南洋理工大学寒暑假交流项目 1. 学校排名： QS No.13 2. 合作模式： 6 周 3. 合作层次：本科生和研究生 4. 合作专业：专业不限 5. 费用 项目费总计： 5580 （课程项目） /6980 （科研项目）含大学学费、管理费等。"
-      },
-      {
-        "field": "action",
-        "text": "6. 语言要求：英语听说读写有一定基础，能接受全英文授课 7. 报名及派出时间：每年 11 月报名，次年 1 月开课；"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.58
-  },
-  {
-    "task_id": "task_320257d6dd408797",
-    "doc_id": "exchange-5b8b5d43475cad50110e",
-    "task_type": "application",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生",
-        "国际学生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "香港大学 “创新创业”赴港交流项目",
-    "action": {
-      "required": true,
-      "verb": "报名",
-      "object": null,
-      "summary": "报名及派出时间：每年 5 月报名， 7 月－ 8 月派出 8"
-    },
-    "time": {
-      "published_at": null,
-      "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "exchange",
-      "channel_id": "exchange_notice",
-      "authority": 0.78,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "香港大学 “创新创业”赴港交流项目 1. 学校排名： USNEWS 103 ；"
-      },
-      {
-        "field": "general",
-        "text": "QS 26 2. 合作模式：短期 8 天 3. 合作层次：不限 4. 合作专业：不限 5. 费用： 30 人以下，每人 6600 港币， 30 人以上，超出人数每人增加 2200 港币 6. 语言要求：具备良好的英语听说读写能力 7. 报名及派出时间：每年 5 月报名， 7 月－ 8 月派出 8. 报名程序： （ 1"
-      },
-      {
-        "field": "general",
-        "text": "C. 学术科研能力证明材料及复印件（包括论文发表、参与竞赛、项目等）；"
-      },
-      {
-        "field": "audience",
-        "text": "香港大学 “创新创业”赴港交流项目 1. 学校排名： USNEWS 103 ；"
-      },
-      {
-        "field": "action",
-        "text": "QS 26 2. 合作模式：短期 8 天 3. 合作层次：不限 4. 合作专业：不限 5. 费用： 30 人以下，每人 6600 港币， 30 人以上，超出人数每人增加 2200 港币 6. 语言要求：具备良好的英语听说读写能力 7. 报名及派出时间：每年 5 月报名， 7 月－ 8 月派出 8. 报名程序： （ 1"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.58
-  },
-  {
-    "task_id": "task_a1bd3469bb6fca44",
-    "doc_id": "exchange-06d7a85422b76ecad291",
-    "task_type": "download",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生",
-        "国际学生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "关于申报2026年度国际青年人才来华交流项目的通知",
-    "action": {
-      "required": true,
-      "verb": "申报",
-      "object": null,
-      "summary": "关于申报2026年度国际青年人才来华交流项目的通知 关于转发中国国际人才交流基金会申报 202 6 年度国际青年人才来华交流项目的通知 各学院、各相关单位： 国际青年人才来华交流项目以开放包容促发展、双向赋能共成长、择优遴选重实效为原则，资助优秀外国 青年人才 来华 开展 访问交流、国际实习 和 短期工作，促进 外国 青年人"
-    },
-    "time": {
-      "published_at": null,
-      "deadline": null,
-      "lifecycle": "unknown",
+      "lifecycle": "upcoming",
       "urgency_days": null
     },
     "materials": [
       {
-        "name": "1.国际青年人才来华交流项目申报表（短期工作类）模板.pdf",
-        "role": "材料",
+        "name": "《南京邮电大学本科生海外访学申请表》",
+        "role": "申请表",
         "required": true,
         "sensitive": false
       },
       {
-        "name": "2.国际青年人才来华交流项目申报表（访问交流类）模板.pdf",
-        "role": "材料",
+        "name": "英语水平证明复印件",
+        "role": "语言证明",
         "required": true,
         "sensitive": false
       },
       {
-        "name": "3.国际青年人才来华交流项目申报表（国际实习类）模板.pdf",
-        "role": "材料",
+        "name": "学术科研能力证明材料复印件",
+        "role": "能力证明",
         "required": true,
         "sensitive": false
       },
       {
-        "name": "4.申报指南（挂网版）.doc",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "5.关于开展2026年度国际青年人才来华交项目申报工作的提示.docx",
-        "role": "材料",
+        "name": "获奖证书复印件",
+        "role": "获奖证明",
         "required": true,
         "sensitive": false
       }
@@ -2916,7 +3355,7 @@
     "location": {
       "place": null,
       "online": null,
-      "contact": null
+      "contact": "国际合作交流处 朱老师 85866716"
     },
     "source": {
       "source_id": "exchange",
@@ -2926,28 +3365,20 @@
     },
     "evidence": [
       {
-        "field": "general",
-        "text": "关于申报2026年度国际青年人才来华交流项目的通知 关于转发中国国际人才交流基金会申报 202 6 年度国际青年人才来华交流项目的通知 各学院、各相关单位： 国际青年人才来华交流项目以开放包容促发展、双向赋能共成长、择优遴选重实效为原则，资助优秀外国 青年人才 来华 开展 访问交流、国际实习 和 短期工作，促进 外国"
-      },
-      {
-        "field": "general",
-        "text": "申报国际青年人才来华交流项目的具体要求请见附件。"
-      },
-      {
-        "field": "general",
-        "text": "我校每类项目限项填报 2 项，超过 2 项时，将进行线下遴选，再为拟申报项目分配子账号，进入申报流程。"
+        "field": "action",
+        "text": "申请人将申请材料交至各学院"
       },
       {
         "field": "audience",
-        "text": "关于申报2026年度国际青年人才来华交流项目的通知 关于转发中国国际人才交流基金会申报 202 6 年度国际青年人才来华交流项目的通知 各学院、各相关单位： 国际青年人才来华交流项目以开放包容促发展、双向赋能共成长、择优遴选重实效为原则，资助优秀外国 青年人才 来华 开展 访问交流、国际实习 和 短期工作，促进 外国"
-      },
-      {
-        "field": "action",
-        "text": "关于申报2026年度国际青年人才来华交流项目的通知 关于转发中国国际人才交流基金会申报 202 6 年度国际青年人才来华交流项目的通知 各学院、各相关单位： 国际青年人才来华交流项目以开放包容促发展、双向赋能共成长、择优遴选重实效为原则，资助优秀外国 青年人才 来华 开展 访问交流、国际实习 和 短期工作，促进 外国"
+        "text": "每年11月报名，次年1月开课；每年4月报名，7月开课"
       },
       {
         "field": "materials",
-        "text": "附件/材料：1.国际青年人才来华交流项目申报表（短期工作类）模板.pdf、2.国际青年人才来华交流项目申报表（访问交流类）模板.pdf、3.国际青年人才来华交流项目申报表（国际实习类）模板.pdf、4.申报指南（挂网版）.doc、5.关于开展2026年度国际青年人才来华交项目申报工作的提示.docx"
+        "text": "附件/材料：《南京邮电大学本科生海外访学申请表》、英语水平证明复印件、学术科研能力证明材料复印件、获奖证书复印件"
+      },
+      {
+        "field": "location",
+        "text": "国际合作交流处 朱老师 85866716"
       }
     ],
     "risk": {
@@ -2956,7 +3387,96 @@
       "low_evidence": false,
       "review_required": false
     },
-    "confidence": 0.58
+    "confidence": 0.9
+  },
+  {
+    "task_id": "task_91419a342cd1a321",
+    "doc_id": "exchange-5b8b5d43475cad50110e",
+    "task_type": "application",
+    "who": {
+      "audience": [
+        "本科生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "申请香港大学“创新创业”赴港交流项目",
+    "action": {
+      "required": true,
+      "verb": "提交",
+      "object": "申请材料至学院",
+      "summary": "申请人将申请材料交至各学院"
+    },
+    "time": {
+      "published_at": null,
+      "deadline": null,
+      "lifecycle": "upcoming",
+      "urgency_days": null
+    },
+    "materials": [
+      {
+        "name": "《南京邮电大学本科生海外访学申请表》",
+        "role": "申请表",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "英语水平证明及复印件",
+        "role": "语言证明",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "学术科研能力证明材料及复印件",
+        "role": "能力证明",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "获奖证书及复印件",
+        "role": "获奖证明",
+        "required": true,
+        "sensitive": false
+      }
+    ],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": "国际合作交流处 朱老师 85866716"
+    },
+    "source": {
+      "source_id": "exchange",
+      "channel_id": "exchange_notice",
+      "authority": 0.78,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "action",
+        "text": "申请人将申请材料交至各学院"
+      },
+      {
+        "field": "audience",
+        "text": "每年5月报名，7月－8月派出"
+      },
+      {
+        "field": "materials",
+        "text": "附件/材料：《南京邮电大学本科生海外访学申请表》、英语水平证明及复印件、学术科研能力证明材料及复印件、获奖证书及复印件"
+      },
+      {
+        "field": "location",
+        "text": "国际合作交流处 朱老师 85866716"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
   },
   {
     "task_id": "task_6b1d83d3e2c61e50",
@@ -3001,11 +3521,11 @@
     "evidence": [
       {
         "field": "general",
-        "text": "2026年寒假图书馆开放通知 根据学校《关于 202 6 年学生寒假期间学校工作安排的通知》精神，教师、干部放假时间自 202 6 年 1 月 26 日起至 2 月 27 日止。"
+        "text": "寒假期间到期的图书一律可以延期到下学期开学后10日内归还。"
       },
       {
         "field": "audience",
-        "text": "2026年寒假图书馆开放通知 根据学校《关于 202 6 年学生寒假期间学校工作安排的通知》精神，教师、干部放假时间自 202 6 年 1 月 26 日起至 2 月 27 日止。"
+        "text": "寒假期间到期的图书一律可以延期到下学期开学后10日内归还。"
       }
     ],
     "risk": {
@@ -3014,7 +3534,7 @@
       "low_evidence": false,
       "review_required": false
     },
-    "confidence": 0.58
+    "confidence": 0.95
   },
   {
     "task_id": "task_1d76be05bcbe9fe0",
@@ -3059,11 +3579,11 @@
     "evidence": [
       {
         "field": "general",
-        "text": "图书馆关于2026年“五一”劳动节开放安排的通知 根据学校《关于 202 6 年部分节假日放假安排的通知》精神 ， 结合实际情况 ，现将 202 6 年 “ 五一 ” 劳动节图书馆开放安排通知如下： 1 、 5 月 1 日 、 5月2日 为法定节假日，图书馆闭馆。"
+        "text": "5月1日、5月2日为法定节假日，图书馆闭馆。"
       },
       {
         "field": "audience",
-        "text": "图书馆关于2026年“五一”劳动节开放安排的通知 根据学校《关于 202 6 年部分节假日放假安排的通知》精神 ， 结合实际情况 ，现将 202 6 年 “ 五一 ” 劳动节图书馆开放安排通知如下： 1 、 5 月 1 日 、 5月2日 为法定节假日，图书馆闭馆。"
+        "text": "5月1日、5月2日为法定节假日，图书馆闭馆。"
       }
     ],
     "risk": {
@@ -3072,7 +3592,7 @@
       "low_evidence": false,
       "review_required": false
     },
-    "confidence": 0.58
+    "confidence": 0.95
   },
   {
     "task_id": "task_a1ce52d1bf2d1997",
@@ -3117,11 +3637,11 @@
     "evidence": [
       {
         "field": "general",
-        "text": "图书馆关于2026年元旦期间开放安排的通知 根据上级部门《关于 2026 年部分节假日放假安排的通知》精神，并结合实际情况，现将图书馆 2026 年元旦假期工作安排通知如下： 202 6 年 1 月 1 日（元旦）为法定节假日，图书馆闭馆 1 天；"
+        "text": "2026年1月1日（元旦）为法定节假日，图书馆闭馆1天"
       },
       {
         "field": "audience",
-        "text": "图书馆关于2026年元旦期间开放安排的通知 根据上级部门《关于 2026 年部分节假日放假安排的通知》精神，并结合实际情况，现将图书馆 2026 年元旦假期工作安排通知如下： 202 6 年 1 月 1 日（元旦）为法定节假日，图书馆闭馆 1 天；"
+        "text": "2026年1月1日（元旦）为法定节假日，图书馆闭馆1天"
       }
     ],
     "risk": {
@@ -3130,7 +3650,7 @@
       "low_evidence": false,
       "review_required": false
     },
-    "confidence": 0.58
+    "confidence": 0.95
   },
   {
     "task_id": "task_b1c2d0c6d022c815",
@@ -3175,11 +3695,11 @@
     "evidence": [
       {
         "field": "general",
-        "text": "图书馆关于2026年清明节开放安排的通知 根据学校《关于 202 6 年部分节假日放假安排的通知》精神 ， 结合实际情况 ，现将 202 6 年清明节图书馆开放安排通知如下： 1、4月 5 日（清明节）为法定节假日，图书馆闭馆。"
+        "text": "4月5日（清明节）为法定节假日，图书馆闭馆。"
       },
       {
         "field": "audience",
-        "text": "图书馆关于2026年清明节开放安排的通知 根据学校《关于 202 6 年部分节假日放假安排的通知》精神 ， 结合实际情况 ，现将 202 6 年清明节图书馆开放安排通知如下： 1、4月 5 日（清明节）为法定节假日，图书馆闭馆。"
+        "text": "4月5日（清明节）为法定节假日，图书馆闭馆。"
       }
     ],
     "risk": {
@@ -3188,100 +3708,36 @@
       "low_evidence": false,
       "review_required": false
     },
-    "confidence": 0.58
+    "confidence": 0.95
   },
   {
-    "task_id": "task_bb812591a647fa98",
-    "doc_id": "exchange-a288ffbf9073e6e1862c",
-    "task_type": "opportunity",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生",
-        "国际学生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "我校召开2026年国际化工作推进会",
-    "action": {
-      "required": true,
-      "verb": "申报",
-      "object": null,
-      "summary": "在 2026 年重点工作 提要 环节， 她 聚焦高水平国际合作 提质 、 海外 引智创新 赋能 、 高端外专项目申报、 国际联合实验室建设 、 国际组织合作、 海外师生来校交流、港澳台侨生招培、 涉外风险防控 等领域展开详细介绍"
-    },
-    "time": {
-      "published_at": null,
-      "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "exchange",
-      "channel_id": "exchange_notice",
-      "authority": 0.78,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "我校召开2026年国际化工作推进会 凝心聚力谋开放 提质增效促发展—— 我校 召开 2026 年国际化工作推进会 立足高等教育对外开放新形势，紧扣党建与业务融合要求，持续夯实国际化办学根基、赋能学校高质量发展 ， 4 月 22 日 -23 日 ， 国际合作交流处（以下简称国际处） 在仙林校区行政楼第二会议室召开 三场"
-      },
-      {
-        "field": "general",
-        "text": "在 2026 年重点工作 提要 环节， 她 聚焦高水平国际合作 提质 、 海外 引智创新 赋能 、 高端外专项目申报、 国际联合实验室建设 、 国际组织合作、 海外师生来校交流、港澳台侨生招培、 涉外风险防控 等领域展开详细介绍。"
-      },
-      {
-        "field": "audience",
-        "text": "我校召开2026年国际化工作推进会 凝心聚力谋开放 提质增效促发展—— 我校 召开 2026 年国际化工作推进会 立足高等教育对外开放新形势，紧扣党建与业务融合要求，持续夯实国际化办学根基、赋能学校高质量发展 ， 4 月 22 日 -23 日 ， 国际合作交流处（以下简称国际处） 在仙林校区行政楼第二会议室召开 三场"
-      },
-      {
-        "field": "action",
-        "text": "我校召开2026年国际化工作推进会 凝心聚力谋开放 提质增效促发展—— 我校 召开 2026 年国际化工作推进会 立足高等教育对外开放新形势，紧扣党建与业务融合要求，持续夯实国际化办学根基、赋能学校高质量发展 ， 4 月 22 日 -23 日 ， 国际合作交流处（以下简称国际处） 在仙林校区行政楼第二会议室召开 三场"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.58
-  },
-  {
-    "task_id": "task_90cda2cebe2b3af3",
+    "task_id": "task-a44cddd89c0b643fa1a1-1",
     "doc_id": "cs-aa700cc880aa734ce178",
     "task_type": "application",
     "who": {
       "audience": [
-        "本科生",
-        "研究生",
+        "研究生"
+      ],
+      "college": [
         "计算机学院"
       ],
-      "college": [],
       "grade": [],
-      "major": [],
+      "major": [
+        "电子信息（计算机技术方向）"
+      ],
       "class_name": []
     },
-    "what": "电子信息专业学位（计算机技术方向） 2026年申请考核制博士研究生招生实施细则",
+    "what": "申请电子信息专业学位（计算机技术方向）2026年申请考核制博士研究生",
     "action": {
       "required": true,
       "verb": "申请",
-      "object": null,
-      "summary": "电子信息专业学位（计算机技术方向） 2026年申请考核制博士研究生招生实施细则 电子信息专业学位（计算机技术方向） 2026年申请考核制博士研究生招生实施细则 发布时间：2025-12-17 浏览次数： 1133 文章来源：计算机学院"
+      "object": "博士研究生",
+      "summary": "根据实施细则申请考核制博士研究生"
     },
     "time": {
-      "published_at": "2025-12-17",
+      "published_at": "2025-12-17T00:00:00+08:00",
       "deadline": null,
-      "lifecycle": "unknown",
+      "lifecycle": "upcoming",
       "urgency_days": null
     },
     "materials": [],
@@ -3298,16 +3754,16 @@
     },
     "evidence": [
       {
-        "field": "general",
-        "text": "电子信息专业学位（计算机技术方向） 2026年申请考核制博士研究生招生实施细则 电子信息专业学位（计算机技术方向） 2026年申请考核制博士研究生招生实施细则 发布时间：2025-12-17 浏览次数： 1133 文章来源：计算机学院"
+        "field": "title",
+        "text": "电子信息专业学位（计算机技术方向） 2026年申请考核制博士研究生招生实施细则"
       },
       {
         "field": "audience",
-        "text": "电子信息专业学位（计算机技术方向） 2026年申请考核制博士研究生招生实施细则 电子信息专业学位（计算机技术方向） 2026年申请考核制博士研究生招生实施细则 发布时间：2025-12-17 浏览次数： 1133 文章来源：计算机学院"
+        "text": "电子信息专业学位（计算机技术方向） 2026年申请考核制博士研究生招生实施细则"
       },
       {
         "field": "action",
-        "text": "电子信息专业学位（计算机技术方向） 2026年申请考核制博士研究生招生实施细则 电子信息专业学位（计算机技术方向） 2026年申请考核制博士研究生招生实施细则 发布时间：2025-12-17 浏览次数： 1133 文章来源：计算机学院"
+        "text": "电子信息专业学位（计算机技术方向） 2026年申请考核制博士研究生招生实施细则"
       }
     ],
     "risk": {
@@ -3316,7 +3772,135 @@
       "low_evidence": false,
       "review_required": false
     },
-    "confidence": 0.58
+    "confidence": 0.85
+  },
+  {
+    "task_id": "task-e655c9de94d15c68b53b-1",
+    "doc_id": "cs-2310a7e236b7a19f9487",
+    "task_type": "application",
+    "who": {
+      "audience": [
+        "研究生"
+      ],
+      "college": [
+        "计算机学院"
+      ],
+      "grade": [],
+      "major": [
+        "计算机科学与技术"
+      ],
+      "class_name": []
+    },
+    "what": "申请计算机科学与技术一级学科2026年申请考核制博士研究生",
+    "action": {
+      "required": true,
+      "verb": "申请",
+      "object": "博士研究生",
+      "summary": "根据实施细则申请考核制博士研究生"
+    },
+    "time": {
+      "published_at": "2025-12-17T00:00:00+08:00",
+      "deadline": null,
+      "lifecycle": "upcoming",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "cs",
+      "channel_id": "cs_academic",
+      "authority": 0.78,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "title",
+        "text": "计算机科学与技术一级学科2026年申请考核制博士研究生招生实施细则"
+      },
+      {
+        "field": "audience",
+        "text": "计算机科学与技术一级学科2026年申请考核制博士研究生招生实施细则"
+      },
+      {
+        "field": "action",
+        "text": "计算机科学与技术一级学科2026年申请考核制博士研究生招生实施细则"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.85
+  },
+  {
+    "task_id": "task-9ca348836fae5b521f39-1",
+    "doc_id": "cs-2606eff01f2ec2dd944f",
+    "task_type": "application",
+    "who": {
+      "audience": [
+        "研究生"
+      ],
+      "college": [
+        "计算机学院"
+      ],
+      "grade": [],
+      "major": [
+        "网络空间安全"
+      ],
+      "class_name": []
+    },
+    "what": "申请网络空间安全一级学科2026年申请考核制博士研究生",
+    "action": {
+      "required": true,
+      "verb": "申请",
+      "object": "博士研究生",
+      "summary": "根据实施细则申请考核制博士研究生"
+    },
+    "time": {
+      "published_at": "2025-12-17T00:00:00+08:00",
+      "deadline": null,
+      "lifecycle": "upcoming",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "cs",
+      "channel_id": "cs_academic",
+      "authority": 0.78,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "title",
+        "text": "网络空间安全一级学科2026年申请考核制博士研究生招生实施细则"
+      },
+      {
+        "field": "audience",
+        "text": "网络空间安全一级学科2026年申请考核制博士研究生招生实施细则"
+      },
+      {
+        "field": "action",
+        "text": "网络空间安全一级学科2026年申请考核制博士研究生招生实施细则"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.85
   },
   {
     "task_id": "task_20f6270dae0fed1d",
@@ -3361,11 +3945,11 @@
     "evidence": [
       {
         "field": "general",
-        "text": "关于临时延长图书馆开放时间的通知 各位读者： 为进一步满足考研读者复习备考需要，图书馆决定自 20 25 年 10月 9 日至12月21日考研备考期间，两校区图书馆的阅览室晚上开放时间统一延长至 23:00。"
+        "text": "图书馆决定自2025年10月9日至12月21日考研备考期间，两校区图书馆的阅览室晚上开放时间统一延长至23:00。"
       },
       {
         "field": "audience",
-        "text": "关于临时延长图书馆开放时间的通知 各位读者： 为进一步满足考研读者复习备考需要，图书馆决定自 20 25 年 10月 9 日至12月21日考研备考期间，两校区图书馆的阅览室晚上开放时间统一延长至 23:00。"
+        "text": "图书馆决定自2025年10月9日至12月21日考研备考期间，两校区图书馆的阅览室晚上开放时间统一延长至23:00。"
       }
     ],
     "risk": {
@@ -3374,7 +3958,7 @@
       "low_evidence": false,
       "review_required": false
     },
-    "confidence": 0.58
+    "confidence": 0.95
   },
   {
     "task_id": "task_67318ee87330357a",
@@ -3446,136 +4030,12 @@
     "confidence": 0.58
   },
   {
-    "task_id": "task_7e38ffa8a1e92922",
-    "doc_id": "cs-2310a7e236b7a19f9487",
-    "task_type": "application",
+    "task_id": "task_eea71d61034ae15a",
+    "doc_id": "bwc-8954c655e732d9c8873a",
+    "task_type": "opportunity",
     "who": {
       "audience": [
         "本科生",
-        "研究生",
-        "计算机学院"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "计算机科学与技术一级学科2026年申请考核制博士研究生招生实施细则",
-    "action": {
-      "required": true,
-      "verb": "申请",
-      "object": null,
-      "summary": "计算机科学与技术一级学科2026年申请考核制博士研究生招生实施细则 计算机科学与技术一级学科2026年申请考核制博士研究生招生实施细则 发布时间：2025-12-17 浏览次数： 1321 文章来源：计算机学院"
-    },
-    "time": {
-      "published_at": "2025-12-17",
-      "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "cs",
-      "channel_id": "cs_academic",
-      "authority": 0.78,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "计算机科学与技术一级学科2026年申请考核制博士研究生招生实施细则 计算机科学与技术一级学科2026年申请考核制博士研究生招生实施细则 发布时间：2025-12-17 浏览次数： 1321 文章来源：计算机学院"
-      },
-      {
-        "field": "audience",
-        "text": "计算机科学与技术一级学科2026年申请考核制博士研究生招生实施细则 计算机科学与技术一级学科2026年申请考核制博士研究生招生实施细则 发布时间：2025-12-17 浏览次数： 1321 文章来源：计算机学院"
-      },
-      {
-        "field": "action",
-        "text": "计算机科学与技术一级学科2026年申请考核制博士研究生招生实施细则 计算机科学与技术一级学科2026年申请考核制博士研究生招生实施细则 发布时间：2025-12-17 浏览次数： 1321 文章来源：计算机学院"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.58
-  },
-  {
-    "task_id": "task_300a682a2548a362",
-    "doc_id": "cs-2606eff01f2ec2dd944f",
-    "task_type": "application",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生",
-        "计算机学院"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "网络空间安全一级学科2026年申请考核制博士研究生招生实施细则",
-    "action": {
-      "required": true,
-      "verb": "申请",
-      "object": null,
-      "summary": "网络空间安全一级学科2026年申请考核制博士研究生招生实施细则 网络空间安全一级学科2026年申请考核制博士研究生招生实施细则 发布时间：2025-12-17 浏览次数： 784 文章来源：计算机学院"
-    },
-    "time": {
-      "published_at": "2025-12-17",
-      "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "cs",
-      "channel_id": "cs_academic",
-      "authority": 0.78,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "网络空间安全一级学科2026年申请考核制博士研究生招生实施细则 网络空间安全一级学科2026年申请考核制博士研究生招生实施细则 发布时间：2025-12-17 浏览次数： 784 文章来源：计算机学院"
-      },
-      {
-        "field": "audience",
-        "text": "网络空间安全一级学科2026年申请考核制博士研究生招生实施细则 网络空间安全一级学科2026年申请考核制博士研究生招生实施细则 发布时间：2025-12-17 浏览次数： 784 文章来源：计算机学院"
-      },
-      {
-        "field": "action",
-        "text": "网络空间安全一级学科2026年申请考核制博士研究生招生实施细则 网络空间安全一级学科2026年申请考核制博士研究生招生实施细则 发布时间：2025-12-17 浏览次数： 784 文章来源：计算机学院"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.58
-  },
-  {
-    "task_id": "task_8062e8bbcc6361b1",
-    "doc_id": "yzb-46fad1a32e8fe5b2292f",
-    "task_type": "schedule",
-    "who": {
-      "audience": [
-        "考生",
         "研究生"
       ],
       "college": [],
@@ -3583,39 +4043,43 @@
       "major": [],
       "class_name": []
     },
-    "what": "南京邮电大学2026年接收推免生攻读硕士学位招生专业一览表",
+    "what": "安全协管实践项目参与",
     "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
+      "required": true,
+      "verb": "联系",
+      "object": "指导老师",
+      "summary": "联系保卫处安全协管实践项目指导老师薛宇飞（电话17751772076）协调安排参与实践"
     },
     "time": {
-      "published_at": "2025-09-17",
+      "published_at": "2026-04-14T00:00:00+08:00",
       "deadline": null,
-      "lifecycle": "unknown",
+      "lifecycle": "evergreen",
       "urgency_days": null
     },
     "materials": [],
     "location": {
       "place": null,
       "online": null,
-      "contact": null
+      "contact": "薛宇飞 17751772076"
     },
     "source": {
-      "source_id": "yzb",
-      "channel_id": "yzb_master",
-      "authority": 0.76,
+      "source_id": "bwc",
+      "channel_id": "bwc_security",
+      "authority": 0.84,
       "official": true
     },
     "evidence": [
       {
-        "field": "general",
-        "text": "南京邮电大学2026年接收推免生攻读硕士学位招生专业一览表 南京邮电大学2026年接收推免生攻读硕士学位招生专业一览表 发布时间：2025-09-17 浏览次数： 10709"
+        "field": "action",
+        "text": "保卫处安全协管实践项目指导老师：薛宇飞（联系电话 1 77 51 772076 ）"
       },
       {
         "field": "audience",
-        "text": "南京邮电大学2026年接收推免生攻读硕士学位招生专业一览表 南京邮电大学2026年接收推免生攻读硕士学位招生专业一览表 发布时间：2025-09-17 浏览次数： 10709"
+        "text": "在《南京邮电大学劳动教育课程大纲》中设置了安全协管实践项目"
+      },
+      {
+        "field": "location",
+        "text": "薛宇飞 17751772076"
       }
     ],
     "risk": {
@@ -3624,55 +4088,69 @@
       "low_evidence": false,
       "review_required": false
     },
-    "confidence": 0.58
+    "confidence": 0.9
   },
   {
-    "task_id": "task_1e8159f235b98be0",
-    "doc_id": "yzb-61563c5fa86a362c725a",
-    "task_type": "schedule",
+    "task_id": "task_ff5f59e15f3e97dc",
+    "doc_id": "bwc-5adad42232259a6dbef0",
+    "task_type": "application",
     "who": {
       "audience": [
-        "考生",
-        "研究生"
+        "全体师生员工"
       ],
       "college": [],
       "grade": [],
       "major": [],
       "class_name": []
     },
-    "what": "南京邮电大学2024年硕士推免生各专业录取人数统计",
+    "what": "自行车车贴申领",
     "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
+      "required": true,
+      "verb": "申办",
+      "object": "自行车车贴",
+      "summary": "通过企业微信“平安南邮”应用线上申办自行车车贴，并在指定时间地点领取张贴"
     },
     "time": {
-      "published_at": null,
+      "published_at": "2026-03-26T00:00:00+08:00",
       "deadline": null,
-      "lifecycle": "unknown",
+      "lifecycle": "evergreen",
       "urgency_days": null
     },
-    "materials": [],
+    "materials": [
+      {
+        "name": "本人自行车清晰照片",
+        "role": "申请材料",
+        "required": true,
+        "sensitive": false
+      }
+    ],
     "location": {
-      "place": null,
-      "online": null,
-      "contact": null
+      "place": "仙林校区图书馆东广场（学生事务大厅外）、三牌楼校区羽毛球馆北侧治安岗亭、锁金村校区西门门卫室",
+      "online": "企业微信",
+      "contact": "仙林：025-85866110；三牌楼：025-83492110；锁金村：025-85483110"
     },
     "source": {
-      "source_id": "yzb",
-      "channel_id": "yzb_master",
-      "authority": 0.76,
+      "source_id": "bwc",
+      "channel_id": "bwc_security",
+      "authority": 0.84,
       "official": true
     },
     "evidence": [
       {
-        "field": "general",
-        "text": "南京邮电大学2024年硕士推免生各专业录取人数统计 学院代码 学院名称 专业代码 专业名称 已接收推免生人数 001 通信与信息工程学院 081000 信息与通信系统 41 085400 电子信息 3 002 电子与光学工程学院 / 柔性电子（未来技术）学院 080300 光学工程 1 080901 物理电子学 2 0"
+        "field": "action",
+        "text": "打开企业微信 → 点击工作台 → 进入应用中心“平安南邮” → 点击“交通管理” → “车辆线上办理” → 点击“添加新车辆”"
       },
       {
         "field": "audience",
-        "text": "南京邮电大学2024年硕士推免生各专业录取人数统计 学院代码 学院名称 专业代码 专业名称 已接收推免生人数 001 通信与信息工程学院 081000 信息与通信系统 41 085400 电子信息 3 002 电子与光学工程学院 / 柔性电子（未来技术）学院 080300 光学工程 1 080901 物理电子学 2 0"
+        "text": "集中开展自行车专用车贴的发放、登记与张贴工作"
+      },
+      {
+        "field": "materials",
+        "text": "附件/材料：本人自行车清晰照片"
+      },
+      {
+        "field": "location",
+        "text": "仙林校区图书馆东广场（学生事务大厅外）、三牌楼校区羽毛球馆北侧治安岗亭、锁金村校区西门门卫室 企业微信 仙林：025-85866110；三牌楼：025-83492110；锁金村：025-85483110"
       }
     ],
     "risk": {
@@ -3681,35 +4159,93 @@
       "low_evidence": false,
       "review_required": false
     },
-    "confidence": 0.58
+    "confidence": 0.95
   },
   {
-    "task_id": "task_4458ccb2ca72396a",
+    "task_id": "task_b84c29ae925c6711",
     "doc_id": "hqc-6cc6532cca3bd115388a",
-    "task_type": "schedule",
+    "task_type": "read",
     "who": {
       "audience": [
-        "本科生",
-        "研究生",
-        "教职工"
+        "仙林校区师生"
       ],
       "college": [],
       "grade": [],
       "major": [],
       "class_name": []
     },
-    "what": "仙林校区停电通知",
+    "what": "了解停电安排并做好准备",
     "action": {
       "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
+      "verb": "了解",
+      "object": "停电安排",
+      "summary": "请各单位高度重视并提前做好应急准备，实验室、机房等场所需提前关闭高功率仪器设备，避免断电造成损坏。"
     },
     "time": {
-      "published_at": "2026-01-05",
-      "deadline": "2026-10-11T12:59:00+08:00",
-      "lifecycle": "active",
-      "urgency_days": 139
+      "published_at": "2026-01-05T00:00:00+08:00",
+      "deadline": null,
+      "lifecycle": "expired",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": "85866115"
+    },
+    "source": {
+      "source_id": "hqc",
+      "channel_id": "hqc_logistics",
+      "authority": 0.88,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "action",
+        "text": "请各单位高度重视并提前做好应急准备，实验室、机房等场所需提前关闭高功率仪器设备，避免断电造成损坏。"
+      },
+      {
+        "field": "audience",
+        "text": "10月25日0点-1点、14点-15点教学1-5、学生宿舍（梅、兰、竹、菊）第一食堂、第二食堂停电；10月25日7点至12点青教一期、青教二期停电。"
+      },
+      {
+        "field": "location",
+        "text": "85866115"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
+  },
+  {
+    "task_id": "task_798d5881db4e8e51",
+    "doc_id": "hqc-ec3775e276c31fc7153f",
+    "task_type": "read",
+    "who": {
+      "audience": [
+        "竹苑学生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "了解洗浴卡机绑定操作",
+    "action": {
+      "required": false,
+      "verb": "查看",
+      "object": "附件视频",
+      "summary": "升级后的洗浴卡机可通过绑定手机进行操作使用（详见附件视频）。"
+    },
+    "time": {
+      "published_at": "2026-02-25T00:00:00+08:00",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
     },
     "materials": [],
     "location": {
@@ -3725,16 +4261,12 @@
     },
     "evidence": [
       {
-        "field": "general",
-        "text": "仙林校区停电通知 各单位、部门： 接南京市供电公司的通知，因 10 月 25 日上午对 技工线进行停电检修，为保障 我校 当天教学生活用电，配合供电部门 做好相关工作 ， 现对 停电 事宜 做以下安排： 停电时间 停电范围 10 月 25 日 0 点 -1 点 14 点 -15 点 教学 1-5 、学生宿舍 （ 梅、兰"
+        "field": "action",
+        "text": "升级后的洗浴卡机可通过绑定手机进行操作使用（详见附件视频）。"
       },
       {
         "field": "audience",
-        "text": "仙林校区停电通知 各单位、部门： 接南京市供电公司的通知，因 10 月 25 日上午对 技工线进行停电检修，为保障 我校 当天教学生活用电，配合供电部门 做好相关工作 ， 现对 停电 事宜 做以下安排： 停电时间 停电范围 10 月 25 日 0 点 -1 点 14 点 -15 点 教学 1-5 、学生宿舍 （ 梅、兰"
-      },
-      {
-        "field": "deadline",
-        "text": "仙林校区停电通知 各单位、部门： 接南京市供电公司的通知，因 10 月 25 日上午对 技工线进行停电检修，为保障 我校 当天教学生活用电，配合供电部门 做好相关工作 ， 现对 停电 事宜 做以下安排： 停电时间 停电范围 10 月 25 日 0 点 -1 点 14 点 -15 点 教学 1-5 、学生宿舍 （ 梅、兰"
+        "text": "为进一步提升洗浴服务质量，优化用户体验，寒假期间对竹苑的洗浴卡机系统进行升级改造。"
       }
     ],
     "risk": {
@@ -3743,7 +4275,63 @@
       "low_evidence": false,
       "review_required": false
     },
-    "confidence": 0.58
+    "confidence": 0.9
+  },
+  {
+    "task_id": "task_aa1d674cf255ef98",
+    "doc_id": "hqc-0d2ca4f4fe0d9bac05c1",
+    "task_type": "read",
+    "who": {
+      "audience": [
+        "仙林、三牌楼校区师生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "了解停电安排并做好准备",
+    "action": {
+      "required": false,
+      "verb": "了解",
+      "object": "停电安排",
+      "summary": "请各单位高度重视并提前做好应急准备，实验室、机房等场所需提前关闭高功率仪器设备，避免断电造成损坏。"
+    },
+    "time": {
+      "published_at": "2026-04-05T00:00:00+08:00",
+      "deadline": null,
+      "lifecycle": "expired",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "hqc",
+      "channel_id": "hqc_logistics",
+      "authority": 0.88,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "action",
+        "text": "请各单位高度重视并提前做好应急准备，实验室、机房等场所需提前关闭高功率仪器设备，避免断电造成损坏。"
+      },
+      {
+        "field": "audience",
+        "text": "仙林、三牌楼校区高低压电气设备及变压器预防性试验拟于2026年2月7日—2月8日进行停电检修"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
   },
   {
     "task_id": "task_fdd9e72dbcf9e1a0",
@@ -3810,185 +4398,29 @@
     "confidence": 0.58
   },
   {
-    "task_id": "task_f7284ed90d514105",
-    "doc_id": "hqc-bfd10aa90d5011cdbfa7",
-    "task_type": "schedule",
+    "task_id": "task_69c945b32283a6b4",
+    "doc_id": "hqc-7256c33e2b10e787d6a0",
+    "task_type": "read",
     "who": {
       "audience": [
-        "本科生",
-        "研究生",
-        "教职工"
+        "梅苑、李苑、北荷学生"
       ],
       "college": [],
       "grade": [],
       "major": [],
       "class_name": []
     },
-    "what": "关于“第四届全国节约用水知识大赛”的通知",
+    "what": "了解洗浴卡机绑定操作",
     "action": {
       "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
+      "verb": "查看",
+      "object": "附件说明书",
+      "summary": "升级后的洗浴卡机可通过绑定手机进行操作使用（详见附件，获取相应组团的使用说明）。"
     },
     "time": {
       "published_at": null,
       "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
-    },
-    "materials": [
-      {
-        "name": "关于举办“第四届全国节约用水知识大赛”的函.pdf",
-        "role": "材料",
-        "required": false,
-        "sensitive": false
-      }
-    ],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "hqc",
-      "channel_id": "hqc_logistics",
-      "authority": 0.88,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "关于“第四届全国节约用水知识大赛”的通知 全校师生： 为深入贯彻党的二十大和二十届三中全会精神，宣传习近平总书记治水思路及重要论述，落实《国家节水行动方案》与《节约用水条例》，普及节水知识，提升全校师生节约用水意识与能力，营造科学用水、自觉节水的良好校园氛围，水利部宣传教育中心决定举办第四届全国节约用水知识大赛。"
-      },
-      {
-        "field": "general",
-        "text": "三、比赛方式及时间安排 比赛采用线上答题与线下竞赛相结合的形式： 知识普及： 3 月 23 日 -4 月 22 日，通过 “节水护水在行动”“水利新语” 和 “全国节约用水知识大赛” 微信公众号普及节水知识。"
-      },
-      {
-        "field": "general",
-        "text": "线下竞赛： 6 月下旬，依据线上答题人数和正确率选取排名靠前单位组成代表队参加线下比赛（具体通知另行发布）。"
-      },
-      {
-        "field": "audience",
-        "text": "关于“第四届全国节约用水知识大赛”的通知 全校师生： 为深入贯彻党的二十大和二十届三中全会精神，宣传习近平总书记治水思路及重要论述，落实《国家节水行动方案》与《节约用水条例》，普及节水知识，提升全校师生节约用水意识与能力，营造科学用水、自觉节水的良好校园氛围，水利部宣传教育中心决定举办第四届全国节约用水知识大赛。"
-      },
-      {
-        "field": "materials",
-        "text": "附件/材料：关于举办“第四届全国节约用水知识大赛”的函.pdf"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.58
-  },
-  {
-    "task_id": "task_aada88daa973f56a",
-    "doc_id": "hqc-edfe9e6977f742324c51",
-    "task_type": "application",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生",
-        "教职工"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "关于参保学生外地门（急）诊医疗费用零星报销的通知",
-    "action": {
-      "required": true,
-      "verb": "提交",
-      "object": null,
-      "summary": "如果发票附有清单，需一并提交"
-    },
-    "time": {
-      "published_at": null,
-      "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
-    },
-    "materials": [
-      {
-        "name": "大学生医保零星报销相关附件.docx",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
-      }
-    ],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "hqc",
-      "channel_id": "hqc_logistics",
-      "authority": 0.88,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "关于参保学生外地门（急）诊医疗费用零星报销的通知 各参保同学： 根据南京市医保局的规定，自 2023 年 1 月 1 日起参保学生就诊均应持医保卡或医保电子凭证直接结算，不能先自费后报销。"
-      },
-      {
-        "field": "general",
-        "text": "如果发票附有清单，需一并提交。"
-      },
-      {
-        "field": "audience",
-        "text": "关于参保学生外地门（急）诊医疗费用零星报销的通知 各参保同学： 根据南京市医保局的规定，自 2023 年 1 月 1 日起参保学生就诊均应持医保卡或医保电子凭证直接结算，不能先自费后报销。"
-      },
-      {
-        "field": "action",
-        "text": "如果发票附有清单，需一并提交。"
-      },
-      {
-        "field": "materials",
-        "text": "附件/材料：大学生医保零星报销相关附件.docx"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.58
-  },
-  {
-    "task_id": "task_73739c37c0749e8b",
-    "doc_id": "hqc-44cadcfc99f71a45ed7c",
-    "task_type": "schedule",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生",
-        "教职工"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "三牌楼校区停电通知",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": null,
-      "deadline": null,
-      "lifecycle": "unknown",
+      "lifecycle": "expired",
       "urgency_days": null
     },
     "materials": [],
@@ -4005,12 +4437,12 @@
     },
     "evidence": [
       {
-        "field": "general",
-        "text": "三牌楼校区停电通知 各单位、部门： 接南京市供电公司通知， 2025 年 12 月 27 日（本周六）上午电力公司将对广东路线进行停电检修，我中心计划于 2025 年 12 月 27 日（本周六）凌晨 00 ： 00-01 ： 00 以及 12 月 28 日（本周日）凌晨 00 ： 00-01 ： 00 对三牌楼校区进"
+        "field": "action",
+        "text": "升级后的洗浴卡机可通过绑定手机进行操作使用（详见附件，获取相应组团的使用说明）。"
       },
       {
         "field": "audience",
-        "text": "三牌楼校区停电通知 各单位、部门： 接南京市供电公司通知， 2025 年 12 月 27 日（本周六）上午电力公司将对广东路线进行停电检修，我中心计划于 2025 年 12 月 27 日（本周六）凌晨 00 ： 00-01 ： 00 以及 12 月 28 日（本周日）凌晨 00 ： 00-01 ： 00 对三牌楼校区进"
+        "text": "为进一步提升洗浴服务质量，优化用户体验，暑期分别对梅苑、李苑和北荷的洗浴卡机系统进行升级改造。"
       }
     ],
     "risk": {
@@ -4019,7 +4451,181 @@
       "low_evidence": false,
       "review_required": false
     },
-    "confidence": 0.58
+    "confidence": 0.9
+  },
+  {
+    "task_id": "task_c5227fe556ec47c9",
+    "doc_id": "xxb-2652f8ad86b44f71b459",
+    "task_type": "download",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生",
+        "教职工"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "校园网费用缴费单",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2025-11-26",
+      "deadline": null,
+      "lifecycle": "unknown",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "xxb",
+      "channel_id": "xxb_download",
+      "authority": 0.72,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "校园网费用缴费单 发布者：信息化建设与管理办公室 发布时间：2025-11-26"
+      },
+      {
+        "field": "audience",
+        "text": "校园网费用缴费单 发布者：信息化建设与管理办公室 发布时间：2025-11-26"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.6
+  },
+  {
+    "task_id": "task_59c7394bda4b3095",
+    "doc_id": "hqc-b279952a9f7b366cb41e",
+    "task_type": "read",
+    "who": {
+      "audience": [
+        "全校师生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "了解教室空调关闭通知",
+    "action": {
+      "required": false,
+      "verb": "了解",
+      "object": "空调关闭安排",
+      "summary": "兹定于2025年10月17日（星期五）起，关停各校区内教室空调。"
+    },
+    "time": {
+      "published_at": null,
+      "deadline": null,
+      "lifecycle": "expired",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": "025-85866130"
+    },
+    "source": {
+      "source_id": "hqc",
+      "channel_id": "hqc_logistics",
+      "authority": 0.88,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "action",
+        "text": "兹定于2025年10月17日（星期五）起，关停各校区内教室空调。"
+      },
+      {
+        "field": "audience",
+        "text": "兹定于2025年10月17日（星期五）起，关停各校区内教室空调。"
+      },
+      {
+        "field": "location",
+        "text": "025-85866130"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
+  },
+  {
+    "task_id": "task_0f5fed054dd0651b",
+    "doc_id": "hqc-44cadcfc99f71a45ed7c",
+    "task_type": "read",
+    "who": {
+      "audience": [
+        "三牌楼校区师生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "了解停电安排并做好准备",
+    "action": {
+      "required": false,
+      "verb": "了解",
+      "object": "停电安排",
+      "summary": "请各单位做好停电准备，提前关闭非必要用电设备。"
+    },
+    "time": {
+      "published_at": null,
+      "deadline": null,
+      "lifecycle": "expired",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "hqc",
+      "channel_id": "hqc_logistics",
+      "authority": 0.88,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "action",
+        "text": "请各单位做好停电准备，提前关闭非必要用电设备。"
+      },
+      {
+        "field": "audience",
+        "text": "2025年12月27日（本周六）凌晨00：00-01：00以及12月28日（本周日）凌晨00：00-01：00对三牌楼校区进行停电并切换线路。"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
   },
   {
     "task_id": "task_f045a156d630ddfc",
@@ -4160,96 +4766,47 @@
     "confidence": 0.58
   },
   {
-    "task_id": "task_3e68d7b1628a23d7",
-    "doc_id": "hqc-ec3775e276c31fc7153f",
-    "task_type": "download",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生",
-        "教职工"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "关于更换仙林竹苑洗浴卡机的通知",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": "2026-02-25",
-      "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "hqc",
-      "channel_id": "hqc_logistics",
-      "authority": 0.88,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "关于更换仙林竹苑洗浴卡机的通知 竹苑的同学们： 为进一步提升洗浴服务质量，优化用户体验，寒假期间对竹苑的洗浴卡机系统进行升级改造。"
-      },
-      {
-        "field": "audience",
-        "text": "关于更换仙林竹苑洗浴卡机的通知 竹苑的同学们： 为进一步提升洗浴服务质量，优化用户体验，寒假期间对竹苑的洗浴卡机系统进行升级改造。"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.58
-  },
-  {
-    "task_id": "task_a518a4a8fdd8cb71",
+    "task_id": "task-47e6fc0fa49bd1c131c1-1",
     "doc_id": "simp-3567f2f1c5697d1c40a5",
-    "task_type": "read",
+    "task_type": "application",
     "who": {
       "audience": [
-        "本科生",
-        "研究生",
-        "现代邮政学院"
+        "本科生"
       ],
       "college": [],
-      "grade": [],
+      "grade": [
+        "大一",
+        "大二",
+        "大三"
+      ],
       "major": [],
       "class_name": []
     },
-    "what": "南京邮电大学智能时空信息与大数据微专业招生简章",
+    "what": "报名智能时空信息与大数据微专业",
     "action": {
       "required": true,
-      "verb": "报名",
-      "object": null,
-      "summary": "二、招生对象 我校大一至大三年级及以上的全日制在校本科生均可报名，不限专业"
+      "verb": "提交",
+      "object": "报名申请",
+      "summary": "需在3月24日至3月31日期间完成小程序报名并提交《南京邮电大学本科生微专业学习申请表》。"
     },
     "time": {
       "published_at": null,
-      "deadline": "2026-04-01T23:59:00+08:00",
-      "lifecycle": "expired",
-      "urgency_days": -53
+      "deadline": "2026-03-31T23:59:00+08:00",
+      "lifecycle": "upcoming",
+      "urgency_days": -54
     },
-    "materials": [],
+    "materials": [
+      {
+        "name": "南京邮电大学本科生微专业学习申请表",
+        "role": "申请表",
+        "required": true,
+        "sensitive": false
+      }
+    ],
     "location": {
-      "place": null,
-      "online": null,
-      "contact": null
+      "place": "三牌楼校区行政北楼204或仙林校区南2食堂320",
+      "online": "发送至bdai@njupt.edu.cn",
+      "contact": "经老师025-83492207"
     },
     "source": {
       "source_id": "simp",
@@ -4259,86 +4816,24 @@
     },
     "evidence": [
       {
-        "field": "general",
-        "text": "南京邮电大学智能时空信息与大数据微专业招生简章 南京邮电大学智能时空信息与大数据微专业 招生简章 为落实立德树人根本任务，主动适应新技术、新产业、新业态、新模式发展需求，满足复合型创新人才培养以及学生个性化发展和多样化需求，提升人才培养与社会需求的匹配度，全面提升人才自主培养质量，现代邮政学院、智慧交通学院依托空间定位"
-      },
-      {
-        "field": "general",
-        "text": "二、招生对象 我校大一至大三年级及以上的全日制在校本科生均可报名，不限专业。"
-      },
-      {
-        "field": "general",
-        "text": "本次报名成功后，将于 2025—2026 学年第二学期正式开课。"
-      },
-      {
-        "field": "audience",
-        "text": "南京邮电大学智能时空信息与大数据微专业招生简章 南京邮电大学智能时空信息与大数据微专业 招生简章 为落实立德树人根本任务，主动适应新技术、新产业、新业态、新模式发展需求，满足复合型创新人才培养以及学生个性化发展和多样化需求，提升人才培养与社会需求的匹配度，全面提升人才自主培养质量，现代邮政学院、智慧交通学院依托空间定位"
+        "field": "deadline",
+        "text": "报名时间：3月24日—3月31日"
       },
       {
         "field": "action",
-        "text": "二、招生对象 我校大一至大三年级及以上的全日制在校本科生均可报名，不限专业。"
-      },
-      {
-        "field": "deadline",
-        "text": "二、招生对象 我校大一至大三年级及以上的全日制在校本科生均可报名，不限专业。"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.58
-  },
-  {
-    "task_id": "task_3977441ed10fb485",
-    "doc_id": "simp-0b735b8b44f5e54325aa",
-    "task_type": "download",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生",
-        "现代邮政学院"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "云 智算 技术与应用认证 （中国移动共建课程）",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": "2026-01-08",
-      "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "simp",
-      "channel_id": "simp_academic",
-      "authority": 0.68,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "云 智算 技术与应用认证 （中国移动共建课程） 云 智算 技术与应用认证 （中国移动共建课程） Intelligent Computing Cloud Technology and Application Certification （ Co-developed with China Mobile ） 课程背景 在全球"
+        "text": "第一步：小程序报名；第二步：提交《南京邮电大学本科生微专业学习申请表》"
       },
       {
         "field": "audience",
-        "text": "云 智算 技术与应用认证 （中国移动共建课程） 云 智算 技术与应用认证 （中国移动共建课程） Intelligent Computing Cloud Technology and Application Certification （ Co-developed with China Mobile ） 课程背景 在全球"
+        "text": "报名时间：3月24日—3月31日"
+      },
+      {
+        "field": "materials",
+        "text": "附件/材料：南京邮电大学本科生微专业学习申请表"
+      },
+      {
+        "field": "location",
+        "text": "三牌楼校区行政北楼204或仙林校区南2食堂320 发送至bdai@njupt.edu.cn 经老师025-83492207"
       }
     ],
     "risk": {
@@ -4347,39 +4842,72 @@
       "low_evidence": false,
       "review_required": false
     },
-    "confidence": 0.58
+    "confidence": 0.95
   },
   {
-    "task_id": "task_f134f27504f046f1",
-    "doc_id": "simp-e92811855eba057cf791",
+    "task_id": "task-4be3d09e3251b13f6e84-1",
+    "doc_id": "simp-916527c5424f64b391da",
     "task_type": "schedule",
     "who": {
       "audience": [
-        "本科生",
-        "研究生",
-        "现代邮政学院"
+        "研究生"
       ],
       "college": [],
       "grade": [],
-      "major": [],
+      "major": [
+        "电子信息",
+        "交通运输",
+        "物流工程与管理"
+      ],
       "class_name": []
     },
-    "what": "现代邮政学院补充高水平师资计划",
+    "what": "参加现代邮政学院2025年硕士研究生复试",
     "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
+      "required": true,
+      "verb": "参加",
+      "object": "复试",
+      "summary": "需在3月28日上午9:00-11:00报到并资格审查，下午笔试，3月29日面试。"
     },
     "time": {
       "published_at": null,
-      "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
+      "deadline": "2025-03-28T09:00:00+08:00",
+      "lifecycle": "expired",
+      "urgency_days": -423
     },
-    "materials": [],
+    "materials": [
+      {
+        "name": "准考证",
+        "role": "身份证明",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "身份证",
+        "role": "身份证明",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "学历学籍证明",
+        "role": "资格审查",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "个人陈述表",
+        "role": "资格审查",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "诚信复试承诺书",
+        "role": "资格审查",
+        "required": true,
+        "sensitive": false
+      }
+    ],
     "location": {
-      "place": null,
+      "place": "三牌楼校区行政北楼207",
       "online": null,
       "contact": null
     },
@@ -4391,21 +4919,33 @@
     },
     "evidence": [
       {
-        "field": "general",
-        "text": "现代邮政学院补充高水平师资计划 岗位需求： 教学科研岗 需求专业： 计算机科学与技术、信息与通信工程、控制科学与工程、交通运输工程、电子科学与技术、仪器科学与技术、软件工程、网络空间安全、信息网络 学位学历： 博士研究生 联系方式： 方老师 025-83535982 简历投递： fangw@njupt.edu.cn"
+        "field": "deadline",
+        "text": "时间：3月28日上午9:00――11：00"
+      },
+      {
+        "field": "action",
+        "text": "考生持准考证、身份证原件在复试期间从南瑞路东门进入校园"
       },
       {
         "field": "audience",
-        "text": "现代邮政学院补充高水平师资计划 岗位需求： 教学科研岗 需求专业： 计算机科学与技术、信息与通信工程、控制科学与工程、交通运输工程、电子科学与技术、仪器科学与技术、软件工程、网络空间安全、信息网络 学位学历： 博士研究生 联系方式： 方老师 025-83535982 简历投递： fangw@njupt.edu.cn"
+        "text": "时间：3月28日上午9:00――11：00"
+      },
+      {
+        "field": "materials",
+        "text": "附件/材料：准考证、身份证、学历学籍证明、个人陈述表、诚信复试承诺书"
+      },
+      {
+        "field": "location",
+        "text": "三牌楼校区行政北楼207"
       }
     ],
     "risk": {
-      "sensitive": false,
+      "sensitive": true,
       "restricted": false,
       "low_evidence": false,
       "review_required": false
     },
-    "confidence": 0.58
+    "confidence": 0.95
   },
   {
     "task_id": "task_2462a3420ebf671a",
@@ -4473,258 +5013,6 @@
       "restricted": false,
       "low_evidence": true,
       "review_required": true
-    },
-    "confidence": 0.58
-  },
-  {
-    "task_id": "task_3eb3b5213fa7e65b",
-    "doc_id": "bc-cbf09330ad2af7787b21",
-    "task_type": "application",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生",
-        "管理学院"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "学院组织完成2024-2025学年第二学期留学生教学档案检查工作",
-    "action": {
-      "required": true,
-      "verb": "填写",
-      "object": null,
-      "summary": "检查过程中，督导以高度负责的态度，依据学院教学档案管理规范，对档案材料的齐备程度、内容填写、批阅标准及归档质量进行了全面、细致的审核，并就发现的问题进行了现场记录与集中反馈"
-    },
-    "time": {
-      "published_at": "2025-09-18",
-      "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "bc",
-      "channel_id": "bc_academic",
-      "authority": 0.66,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "学院组织完成2024-2025学年第二学期留学生教学档案检查工作 为加强教学过程管理与质量监控，确保教学档案的规范性与完整性，我院于2025年9月18日在306会议室组织开展了2024-2025学年第二学期教学档案检查工作。"
-      },
-      {
-        "field": "general",
-        "text": "检查过程中，督导以高度负责的态度，依据学院教学档案管理规范，对档案材料的齐备程度、内容填写、批阅标准及归档质量进行了全面、细致的审核，并就发现的问题进行了现场记录与集中反馈。"
-      },
-      {
-        "field": "audience",
-        "text": "学院组织完成2024-2025学年第二学期留学生教学档案检查工作 为加强教学过程管理与质量监控，确保教学档案的规范性与完整性，我院于2025年9月18日在306会议室组织开展了2024-2025学年第二学期教学档案检查工作。"
-      },
-      {
-        "field": "action",
-        "text": "检查过程中，督导以高度负责的态度，依据学院教学档案管理规范，对档案材料的齐备程度、内容填写、批阅标准及归档质量进行了全面、细致的审核，并就发现的问题进行了现场记录与集中反馈。"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.58
-  },
-  {
-    "task_id": "task_bee2beb7299b6a8e",
-    "doc_id": "bc-c7527839fb07f5988066",
-    "task_type": "application",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生",
-        "管理学院"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "我院教师指导留学生团队获得第二届江苏省高校“丝路电商”创新挑战赛三等奖",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": "2025-11-08",
-      "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "bc",
-      "channel_id": "bc_academic",
-      "authority": 0.66,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "我院教师指导留学生团队获得第二届江苏省高校“丝路电商”创新挑战赛三等奖 11月8日，第二届江苏省高校“丝路电商”创新挑战赛总决赛在南京江北新区芯科跨境电商产业园圆满落幕。"
-      },
-      {
-        "field": "general",
-        "text": "未来，学院将继续支持教师指导学生参与“丝路电商”等国际化学科竞赛，持续深化校企协同育人，不断激发学生的创新潜能与实践热情，为培养具备全球视野的高素质复合型人才、服务地区与全球数字贸易发展贡献力量 。"
-      },
-      {
-        "field": "audience",
-        "text": "我院教师指导留学生团队获得第二届江苏省高校“丝路电商”创新挑战赛三等奖 11月8日，第二届江苏省高校“丝路电商”创新挑战赛总决赛在南京江北新区芯科跨境电商产业园圆满落幕。"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.58
-  },
-  {
-    "task_id": "task_cbbf50a6357a3eda",
-    "doc_id": "bc-42154cd431804c1e5031",
-    "task_type": "application",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生",
-        "管理学院"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "我院教师在2025年江苏高校外国留学生教学观摩比赛获得佳绩！",
-    "action": {
-      "required": true,
-      "verb": "申报",
-      "object": null,
-      "summary": "今年共有64所高校申报190门课程，经资格审查，181名教师晋级现场比赛"
-    },
-    "time": {
-      "published_at": "2025-11-28",
-      "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "bc",
-      "channel_id": "bc_academic",
-      "authority": 0.66,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "我院教师在2025年江苏高校外国留学生教学观摩比赛获得佳绩！"
-      },
-      {
-        "field": "general",
-        "text": "今年共有64所高校申报190门课程，经资格审查，181名教师晋级现场比赛。"
-      },
-      {
-        "field": "audience",
-        "text": "我院教师在2025年江苏高校外国留学生教学观摩比赛获得佳绩！"
-      },
-      {
-        "field": "action",
-        "text": "今年共有64所高校申报190门课程，经资格审查，181名教师晋级现场比赛。"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.58
-  },
-  {
-    "task_id": "task_ae67871aa9492f8e",
-    "doc_id": "bc-dbd74e7dfe2bcd554785",
-    "task_type": "schedule",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生",
-        "管理学院"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "我院召开留学本科生中期教学师生座谈会",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": "2026-06-10",
-      "deadline": null,
-      "lifecycle": "upcoming",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "bc",
-      "channel_id": "bc_academic",
-      "authority": 0.66,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "我院召开留学本科生中期教学师生座谈会 为深入了解留学本科生学习适应情况，针对性解决教学过程中存在的问题， 6月10日下午4点，管理学院在306会议室召开留学本科生中期教学师生座谈会。"
-      },
-      {
-        "field": "audience",
-        "text": "我院召开留学本科生中期教学师生座谈会 为深入了解留学本科生学习适应情况，针对性解决教学过程中存在的问题， 6月10日下午4点，管理学院在306会议室召开留学本科生中期教学师生座谈会。"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
     },
     "confidence": 0.58
   },
@@ -4935,331 +5223,6 @@
       "restricted": false,
       "low_evidence": true,
       "review_required": true
-    },
-    "confidence": 0.58
-  },
-  {
-    "task_id": "task_5725ad9d87614978",
-    "doc_id": "pe-849aaf402b898b29756e",
-    "task_type": "schedule",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "2020-2021学年下学期体育课课表",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": null,
-      "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "pe",
-      "channel_id": "pe_course",
-      "authority": 0.64,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "2020-2021学年下学期体育课课表 2020-2021学年下学期体育课仙林校区总课表 上课时间 上午 3 、 4 节 10:00-11:30 下午第 6 、 7 节 13:45-15:15 下午第 8 、 9 节 15:40-17:10 周一 课程名称 任课教师 上课地点 课程名称 任课教师 上课地点 课程名称 任"
-      },
-      {
-        "field": "audience",
-        "text": "2020-2021学年下学期体育课课表 2020-2021学年下学期体育课仙林校区总课表 上课时间 上午 3 、 4 节 10:00-11:30 下午第 6 、 7 节 13:45-15:15 下午第 8 、 9 节 15:40-17:10 周一 课程名称 任课教师 上课地点 课程名称 任课教师 上课地点 课程名称 任"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.58
-  },
-  {
-    "task_id": "task_c440f6cb6c705131",
-    "doc_id": "news-771826cf907fd8229247",
-    "task_type": "application",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生",
-        "全体学生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "学业指导中心“一对一”学业帮扶工作展现互助力量",
-    "action": {
-      "required": true,
-      "verb": "填写",
-      "object": null,
-      "summary": "三、过程精细管理，确保帮扶落地 中心推行规范的记录与监督机制，要求志愿者详细填写《帮扶记录表》，载明每次辅导内容、进展与后续计划"
-    },
-    "time": {
-      "published_at": null,
-      "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "news",
-      "channel_id": "news_campus",
-      "authority": 0.62,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "学业指导中心“一对一”学业帮扶工作展现互助力量 为深入构建学业支持体系，营造笃学互助的校园风尚，本学期学业指导中心持续推动“一对一”学业困难学生朋辈帮扶工作。"
-      },
-      {
-        "field": "general",
-        "text": "三、过程精细管理，确保帮扶落地 中心推行规范的记录与监督机制，要求志愿者详细填写《帮扶记录表》，载明每次辅导内容、进展与后续计划。"
-      },
-      {
-        "field": "audience",
-        "text": "学业指导中心“一对一”学业帮扶工作展现互助力量 为深入构建学业支持体系，营造笃学互助的校园风尚，本学期学业指导中心持续推动“一对一”学业困难学生朋辈帮扶工作。"
-      },
-      {
-        "field": "action",
-        "text": "三、过程精细管理，确保帮扶落地 中心推行规范的记录与监督机制，要求志愿者详细填写《帮扶记录表》，载明每次辅导内容、进展与后续计划。"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.58
-  },
-  {
-    "task_id": "task_5a1a7043d7bf0c28",
-    "doc_id": "news-cbd56e0e02b3e55bc381",
-    "task_type": "read",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生",
-        "全体学生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "教务处学业指导中心举行2025届优秀毕业生学习经验分享交流会",
-    "action": {
-      "required": true,
-      "verb": "申请",
-      "object": null,
-      "summary": "她结合自身背景分析留学与国内考研差异并给出申请建议"
-    },
-    "time": {
-      "published_at": "2026-05-21",
-      "deadline": null,
-      "lifecycle": "active",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "news",
-      "channel_id": "news_campus",
-      "authority": 0.62,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "教务处学业指导中心举行2025届优秀毕业生学习经验分享交流会 5月21日下午，由教务处学业指导中心举办的2025届优秀毕业生学习经验分享交流会第五次活动在仙林校区教4-101举行。"
-      },
-      {
-        "field": "general",
-        "text": "她结合自身背景分析留学与国内考研差异并给出申请建议。"
-      },
-      {
-        "field": "audience",
-        "text": "教务处学业指导中心举行2025届优秀毕业生学习经验分享交流会 5月21日下午，由教务处学业指导中心举办的2025届优秀毕业生学习经验分享交流会第五次活动在仙林校区教4-101举行。"
-      },
-      {
-        "field": "action",
-        "text": "她结合自身背景分析留学与国内考研差异并给出申请建议。"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.58
-  },
-  {
-    "task_id": "task_1a1abfac5c95dc0a",
-    "doc_id": "news-d3ea2fe86561660ce712",
-    "task_type": "result_check",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生",
-        "全体学生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "南邮学生获“正大杯”第十六届全国大学生市场调查与分析大赛总决赛一等奖",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": "2026-05-16",
-      "deadline": null,
-      "lifecycle": "active",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "news",
-      "channel_id": "news_campus",
-      "authority": 0.62,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "南邮学生获“正大杯”第十六届全国大学生市场调查与分析大赛总决赛一等奖 5月16日至17日，“正大杯”第十六届全国大学生市场调查与分析大赛研究生组暨在华留学生组全国总决赛在郑州举行。"
-      },
-      {
-        "field": "general",
-        "text": "获奖情况 参赛师生 大赛由中国商业统计学会主办，已发展成为国内具有广泛影响力的国家级学科竞赛平台。"
-      },
-      {
-        "field": "general",
-        "text": "自2019年起，大赛连续多年入选《全国普通高校学科竞赛榜单》，在推动来华留学生全面了解中国市场发展环境、产业体系与创新格局，促进高素质复合型人才培养等方面发挥了重要作用。"
-      },
-      {
-        "field": "audience",
-        "text": "南邮学生获“正大杯”第十六届全国大学生市场调查与分析大赛总决赛一等奖 5月16日至17日，“正大杯”第十六届全国大学生市场调查与分析大赛研究生组暨在华留学生组全国总决赛在郑州举行。"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.58
-  },
-  {
-    "task_id": "task_68336e61014c072f",
-    "doc_id": "archives-b38698c994ad71856b52",
-    "task_type": "schedule",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生",
-        "校友"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "档案馆2025年暑假工作安排",
-    "action": {
-      "required": true,
-      "verb": "申请",
-      "object": null,
-      "summary": "至少提前 2 天提出预约参观申请，经档案馆审批后安排接待事宜"
-    },
-    "time": {
-      "published_at": null,
-      "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "archives",
-      "channel_id": "archives_notice",
-      "authority": 0.62,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "档案馆2025年暑假工作安排 根据学校 2025 年暑假安排，现将档案馆各项工作安排通知如下： 一、档案查询 1. 查档时间：暑假期间隔周周四办理查档业务 具体日期为： 7 月 10 日 、 7 月 24 日 、 8 月 7 日 、 8 月 21 日 、 9 月 4 日 上午 9:00 — 11:30 ，下午 13:3"
-      },
-      {
-        "field": "general",
-        "text": "2. 至少提前 2 天提出预约参观申请，经档案馆审批后安排接待事宜。"
-      },
-      {
-        "field": "general",
-        "text": "3. 填写《南京邮电大学校史馆、通信展览馆、邮政文化馆团体参观申请单》（档案馆主页 dag.njupt.edu.cn/ 快速通道 / 预约参观栏下载），将申请单电子版发送到指定邮箱（ dag6699@njupt.edu.cn ）。"
-      },
-      {
-        "field": "audience",
-        "text": "档案馆2025年暑假工作安排 根据学校 2025 年暑假安排，现将档案馆各项工作安排通知如下： 一、档案查询 1. 查档时间：暑假期间隔周周四办理查档业务 具体日期为： 7 月 10 日 、 7 月 24 日 、 8 月 7 日 、 8 月 21 日 、 9 月 4 日 上午 9:00 — 11:30 ，下午 13:3"
-      },
-      {
-        "field": "action",
-        "text": "2. 至少提前 2 天提出预约参观申请，经档案馆审批后安排接待事宜。"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
     },
     "confidence": 0.58
   },
