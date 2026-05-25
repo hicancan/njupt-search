@@ -10,8 +10,7 @@
     "forbidden_domains": ["innovation_project"],
     "data_gap_allowed": true,
     "data_gap_group": "cet_notice",
-    "coverage_channels": ["jwc_exam"],
-    "allow_degraded_fallback": true
+    "coverage_channels": ["jwc_exam"]
   },
   {
     "query": "CET",
@@ -24,8 +23,7 @@
     "forbidden_domains": ["innovation_project"],
     "data_gap_allowed": true,
     "data_gap_group": "cet_notice",
-    "coverage_channels": ["jwc_exam"],
-    "allow_degraded_fallback": true
+    "coverage_channels": ["jwc_exam"]
   },
   {
     "query": "四级",
@@ -38,8 +36,7 @@
     "forbidden_domains": ["innovation_project"],
     "data_gap_allowed": true,
     "data_gap_group": "cet_notice",
-    "coverage_channels": ["jwc_exam"],
-    "allow_degraded_fallback": true
+    "coverage_channels": ["jwc_exam"]
   },
   {
     "query": "六级",
@@ -52,8 +49,7 @@
     "forbidden_domains": ["innovation_project"],
     "data_gap_allowed": true,
     "data_gap_group": "cet_notice",
-    "coverage_channels": ["jwc_exam"],
-    "allow_degraded_fallback": true
+    "coverage_channels": ["jwc_exam"]
   },
   {
     "query": "论文答辩",
@@ -67,8 +63,7 @@
     "forbidden_domains": ["innovation_project"],
     "data_gap_allowed": true,
     "data_gap_group": "degree_defense",
-    "coverage_channels": ["pg_degree", "pg_graduation"],
-    "allow_degraded_fallback": false
+    "coverage_channels": ["pg_degree", "pg_graduation"]
   },
   {
     "query": "毕业答辩",
@@ -82,8 +77,7 @@
     "forbidden_domains": ["innovation_project"],
     "data_gap_allowed": true,
     "data_gap_group": "degree_defense",
-    "coverage_channels": ["pg_degree", "pg_graduation"],
-    "allow_degraded_fallback": false
+    "coverage_channels": ["pg_degree", "pg_graduation"]
   },
   {
     "query": "大创答辩",
@@ -103,8 +97,7 @@
     "top3_min_relevant_count": 2,
     "forbidden_terms": ["校园网", "洗浴", "空调", "桂花糕", "停电"],
     "forbidden_sources": ["cxcy"],
-    "forbidden_domains": ["innovation_project"],
-    "allow_degraded_fallback": false
+    "forbidden_domains": ["innovation_project"]
   },
   {
     "query": "参保",
@@ -139,17 +132,15 @@
     "query": "B250403",
     "route": "class_exam_lookup",
     "critical": true,
-    "allow_empty": false,
-    "top1_must_source": "exam_vertical",
-    "top1_must_include_any_terms": ["B250403"]
+    "allow_empty": true,
+    "surface": "class_exam_lookup"
   },
   {
     "query": "B250403 高数",
     "route": "class_exam_lookup",
     "critical": true,
-    "allow_empty": false,
-    "top1_must_source": "exam_vertical",
-    "top1_must_include_any_terms": ["B250403", "高数", "高等数学"]
+    "allow_empty": true,
+    "surface": "class_exam_lookup"
   },
   {
     "query": "高数",
@@ -159,7 +150,8 @@
   {
     "query": "高数考试",
     "route": "exam_notice_search",
-    "allow_empty": false
+    "allow_empty": true,
+    "surface": "notice_search"
   },
   {
     "query": "离散数学",

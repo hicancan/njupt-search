@@ -11,7 +11,7 @@ BASE_DIR = os.path.dirname(SCRIPTS_DIR)
 if SCRIPTS_DIR not in sys.path:
     sys.path.insert(0, SCRIPTS_DIR)
 
-from core.hybrid_ranker import rank_documents
+from search.vertical_ranker import recall_documents
 
 
 def read_json(path: str) -> Any:
@@ -75,11 +75,8 @@ def main() -> None:
     args = parser.parse_args()
 
     documents = read_json(os.path.join(BASE_DIR, "public", "index", "documents.json"))
-    documents.extend(build_exam_documents(read_json(os.path.join(BASE_DIR, "public", "data", "all_exams.json"))))
     task_frames = read_json(os.path.join(BASE_DIR, "public", "index", "task_frames.json"))
-    hybrid_index = read_json(os.path.join(BASE_DIR, "public", "index", "hybrid_index.json"))
     query_aliases = read_json(os.path.join(BASE_DIR, "public", "index", "query_aliases.json"))
-    ranking_weights = read_json(os.path.join(BASE_DIR, "config", "ranking_weights.json"))
     queries = read_json(os.path.join(BASE_DIR, "eval", "queries.json"))
     qrels = read_json(os.path.join(BASE_DIR, "eval", "qrels.json"))
 
@@ -87,7 +84,7 @@ def main() -> None:
     for query in queries:
         qid = str(query["id"])
         qrel = qrels.get(qid, {})
-        ranked = rank_documents(str(query["query"]), documents, hybrid_index, query_aliases, ranking_weights, limit=20)
+        ranked = recall_documents(str(query["query"]), documents, query_aliases=query_aliases, limit=20)
         rows.append({
             "id": qid,
             "query": query["query"],
@@ -145,74 +142,6 @@ def llm_cache_hit_rate(documents: list[dict[str, Any]]) -> float:
         return 0.0
     hits = sum(1 for document in llm_docs if document.get("llm", {}).get("used"))
     return round(hits / len(llm_docs), 4)
-
-
-def build_exam_documents(exams: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    documents: list[dict[str, Any]] = []
-    for exam in exams:
-        exam_id = str(exam.get("id") or "")
-        class_name = str(exam.get("class_name") or "")
-        course_name = str(exam.get("course_name") or "")
-        if not exam_id or not class_name or not course_name:
-            continue
-        content = " ".join(str(exam.get(key) or "") for key in (
-            "class_name", "course_name", "course_code", "teacher", "location", "raw_time",
-            "campus", "school", "student_school", "major", "grade", "notes"
-        ))
-        documents.append({
-            "id": f"exam-{exam_id}",
-            "kind": "exam",
-            "source_id": "exam_vertical",
-            "channel_id": "exam_schedule",
-            "channel": "考试安排",
-            "title": f"{class_name} {course_name} 考试安排",
-            "url": f"?class={class_name}",
-            "source": "考试垂直频道",
-            "source_domain": "jwc.njupt.edu.cn",
-            "source_type": "exam_vertical",
-            "category": "考试",
-            "domain": "exam",
-            "intent": "schedule",
-            "lifecycle": "active",
-            "evidence": [str(exam.get("raw_time") or exam.get("location") or "")],
-            "deadline": exam.get("start_timestamp"),
-            "action_required": False,
-            "sensitive": False,
-            "review_required": False,
-            "risk_flags": [],
-            "audience": ["本科生"],
-            "published_at": exam.get("date") or exam.get("start_timestamp"),
-            "content": content,
-            "summary": f"{exam.get('raw_time') or '时间待确认'} · {exam.get('location') or '地点待确认'}",
-            "attachments": [],
-            "student_score": 1,
-            "freshness_score": 1,
-            "importance_score": 0.94,
-            "source_weight": 1,
-            "tags": ["考试", "期末", class_name, course_name, str(exam.get("major") or "")],
-            "hash": exam_id,
-            "canonical": {"doc_id": f"exam-{exam_id}", "canonical_url": f"?class={class_name}", "content_hash": exam_id, "dedupe_key": f"exam-{exam_id}"},
-            "semantic_mode": "structured_exam",
-            "rule_guard": {"restricted": False, "sensitive": False, "low_evidence": False, "duplicate": False, "expired": False, "evergreen": False, "risk_flags": [], "allow_llm": False, "allow_full_text_display": True, "review_required": False},
-            "task_frames": [{
-                "task_id": f"exam-task-{exam_id}",
-                "doc_id": f"exam-{exam_id}",
-                "source_mode": "exam_structured_data",
-                "field_sources": {"task_frames": "structured_exam_data"},
-                "task_type": "schedule",
-                "who": {"audience": ["本科生"], "college": [], "grade": [str(exam.get("grade") or "")], "major": [str(exam.get("major") or "")], "class_name": [class_name]},
-                "what": f"{class_name} {course_name} 考试",
-                "action": {"required": True, "verb": "参加考试", "object": course_name, "summary": "按时参加期末考试"},
-                "time": {"published_at": exam.get("date") or exam.get("start_timestamp"), "deadline": exam.get("start_timestamp"), "lifecycle": "active", "urgency_days": None},
-                "materials": [],
-                "location": {"place": str(exam.get("location") or ""), "online": None, "contact": None},
-                "source": {"source_id": "exam_vertical", "channel_id": "exam_schedule", "authority": 1.0, "official": True},
-                "evidence": [{"field": "general", "text": content[:180]}],
-                "risk": {"sensitive": False, "restricted": False, "low_evidence": False, "review_required": False},
-                "confidence": 1.0
-            }],
-        })
-    return documents
 
 
 if __name__ == "__main__":

@@ -259,7 +259,6 @@
       "xxb"
     ],
     "allow_resource_top5": false,
-    "allow_blocked_fallback": false,
     "bad_result_terms": [
       "校园网",
       "网费",
@@ -367,7 +366,6 @@
     "blocked_sources_for_top5": [
       "cxcy"
     ],
-    "allow_blocked_fallback": false,
     "explanation": "官方学籍/学业通知，优先教务处或学生处。",
     "must_include_terms_for_top_results": [
       "转专业",

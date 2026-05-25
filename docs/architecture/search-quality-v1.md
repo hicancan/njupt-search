@@ -1,37 +1,32 @@
 # Search Quality v1 Architecture
 
 ## Overview
-Search Quality v1.0 introduces a deterministic hybrid search architecture with semantic scoring and explicit intent routing. The system is designed to provide highly relevant, student-facing information by combining lexical, semantic, and rule-based evaluation.
 
-Search Quality v1.3 closes the product validation loop with **Frontend-as-Truth** gates. The TypeScript frontend ranking output is now generated before product and parity checks, and CI fails if the parity gate is run without that artifact.
+Search Quality v1.3 validates a static recall architecture. Offline indexing preserves public-source text and extracts evidence-backed notice cards, typed search terms, synonyms, TaskFrames, materials, locations, attachments, and risk fields. Runtime search only recalls route-valid candidates and displays matches by `published_at` descending.
 
 ## Key Components
 
-1. **Query Router v2.1 (Intent Routing)**
-   - Operates on a weighted scoring model (`priority`, `soft_terms`, `negative_terms`).
-   - Ensures queries like "学校" or "教务处" do not falsely trigger hyper-specific channels unless specific `must_have_any` constraints are met.
-   - Fallbacks to `general_search` seamlessly to prevent frontend application crashes (`TS18048`).
+1. **Query Router v2.1**
+   - Uses explicit route evidence to infer broad query type, target domains/intents, blockers, and required terms.
+   - Routes decide candidate eligibility. They do not assign display rank.
 
 2. **Source Coverage Gates**
-   - Enforces a zero-tolerance policy on missing critical source data (e.g. `jwc_exam`, `xsc_scholarship`).
-   - Prevents stale or broken pipelines from polluting the production hybrid index.
-   - Statuses like `warning_filtered_all` natively explain why a channel might have zero documents while maintaining compliance with quality checks.
+   - Checks critical source/channel coverage such as `jwc_exam` and `xsc_scholarship`.
+   - Statuses like `warning_filtered_all` explain why a channel might have zero documents while preserving data-gap accounting.
 
-3. **Data Quality & Fallbacks**
-   - Implements `source_mode` and `semantic_mode` provenance tracking to guarantee search determinism.
-   - Validates exam-specific vertical data using `exam_structured_data`.
+3. **Offline Evidence Extraction**
+   - `documents.json` carries original text, evidence, `notice_card`, `typed_search_terms`, `synonyms`, and TaskFrame data.
+   - Semantic verifier removes ungrounded deadline/action/material/location fields before data reaches the frontend.
 
 4. **Frontend-as-Truth Gate**
-   - `eval_frontend_search.ts` runs the same TypeScript ranking path used by the browser.
+   - `eval_frontend_search.ts` runs the same TypeScript recall path used by the browser.
    - `eval_product_search.py --mode both` reports Python and frontend pass/fail fields, but blocks on frontend results.
-   - `eval_search_parity.py --ts-results ...` quantifies Python/TS drift with hard thresholds for critical, non-data-gap cases.
-   - Python `vertical_rank_documents` uses a frontend-compatible scoring path for regression analysis, so critical non-data-gap top1 parity is exact in v1.3.
+   - `eval_search_parity.py --ts-results ...` quantifies Python/TS recall drift.
 
 5. **Data Gap Classification**
    - Search cases can declare `coverage_channels`.
-   - If those channels are empty, filtered out, or contain no relevant document for the query terms, the case is `data_gap` instead of a false strict pass.
-   - Current v1.3 data gap groups are CET notices, degree/defense notices, and specific competition notices.
+   - If those channels are empty, filtered out, or contain no relevant public document for the query terms, the case is `data_gap` instead of a false strict pass.
 
 ## Current Claim Boundary
 
-v1.3 does not claim dense retrieval, cross-encoder reranking, learning-to-rank, click feedback, or online personalization. It claims that the current deterministic hybrid search is protected by frontend-real product gates and explicit data-gap accounting.
+v1.3 does not claim dense retrieval, BM25, cross-encoder reranking, learning-to-rank, click feedback, online personalization, or semantic ranking. It claims frontend-real candidate recall, strict chronological display, and explicit data-gap accounting.

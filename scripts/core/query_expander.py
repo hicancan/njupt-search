@@ -2,7 +2,7 @@ import json
 import re
 from typing import Any
 
-from core.bm25_indexer import tokenize_text
+from core.tokenizer import tokenize_text
 
 
 def load_query_aliases(path: str) -> dict[str, Any]:
@@ -36,7 +36,7 @@ def understand_query(raw_query: str, aliases: dict[str, Any]) -> dict[str, Any]:
         "target_audience": [],
         "time_constraint": infer_time_constraint(normalized_query),
         "exact_terms": unique(exact_terms),
-        "search_mode": "hybrid",
+        "search_mode": "recall",
         "semantic_queries": unique(build_semantic_queries(normalized_query, expanded_aliases)),
         "query_type": infer_query_type(normalized_query, target_domains, target_intents),
     }

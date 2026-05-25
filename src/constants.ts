@@ -11,7 +11,6 @@ export const APP_CONFIG = {
         SUMMARY: 'data/data_summary.json',
         SEARCH_INDEX: 'index/documents.json',
         SEARCH_MANIFEST: 'index/manifest.json',
-        HYBRID_INDEX: 'index/hybrid_index.json',
         QUERY_ALIASES: 'index/query_aliases.json',
         ONTOLOGY: 'index/ontology.json'
     },

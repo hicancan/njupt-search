@@ -8,8 +8,8 @@ BASE_DIR = os.path.dirname(SCRIPTS_DIR)
 if SCRIPTS_DIR not in sys.path:
     sys.path.insert(0, SCRIPTS_DIR)
 
-from core.hybrid_ranker import rank_documents
-from eval_search import build_exam_documents, read_json
+from search.vertical_ranker import recall_documents
+from eval_search import read_json
 from eval_product_search import _coverage_gap_channels, _load_manifest_channels
 
 
@@ -36,7 +36,6 @@ REQUIRED_QUERIES = {
     "校园网",
     "医保",
     "档案",
-    "B250403",
     "高数",
     "离散数学",
 }
@@ -44,10 +43,7 @@ REQUIRED_QUERIES = {
 
 def main() -> None:
     documents = read_json(os.path.join(BASE_DIR, "public", "index", "documents.json"))
-    documents.extend(build_exam_documents(read_json(os.path.join(BASE_DIR, "public", "data", "all_exams.json"))))
-    hybrid_index = read_json(os.path.join(BASE_DIR, "public", "index", "hybrid_index.json"))
     query_aliases = read_json(os.path.join(BASE_DIR, "public", "index", "query_aliases.json"))
-    ranking_weights = read_json(os.path.join(BASE_DIR, "config", "ranking_weights.json"))
     queries = read_json(os.path.join(BASE_DIR, "eval", "queries.json"))
     query_texts = [str(item.get("query") or "") for item in queries]
     search_cases = {
@@ -67,7 +63,7 @@ def main() -> None:
         case = search_cases.get(query, {})
         data_gap_channels = _coverage_gap_channels(case, notice_documents, manifest_channels) if case.get("data_gap_allowed") else []
         is_data_gap = bool(case.get("data_gap_allowed")) and bool(case.get("coverage_channels")) and set(data_gap_channels) == set(str(item) for item in case.get("coverage_channels", []))
-        ranked = rank_documents(query, documents, hybrid_index, query_aliases, ranking_weights, limit=5)
+        ranked = recall_documents(query, documents, query_aliases=query_aliases, limit=5)
         top = ranked[:5]
         if not top:
             if is_data_gap:
@@ -91,19 +87,8 @@ def main() -> None:
             failures.append({"type": "missing_score_reason", "query": query})
         if len({item.get("id") for item in top}) != len(top):
             failures.append({"type": "duplicate_top5", "query": query})
-        if query == "B250403" and not any(str(item.get("source_id")) == "exam_vertical" for item in top):
-            failures.append({"type": "exam_not_top5", "query": query, "top_ids": [item.get("id") for item in top]})
-
-        github_first = str(top[0].get("source_type")) == "github_resource"
-        official_in_top = any(str(item.get("source_type")) in {"central_admin", "central_notice", "service_unit", "job_platform", "policy", "exam_vertical"} for item in top)
-        if github_first and official_in_top and query not in {"高数", "离散数学", "毕业设计"}:
-            failures.append({"type": "resource_over_official", "query": query, "top_ids": [item.get("id") for item in top]})
-
         if any((item.get("rule_guard") or {}).get("restricted") and not item.get("review_required") for item in top):
             failures.append({"type": "restricted_without_review", "query": query})
-        if all(float(item.get("score", 0) or 0) <= 0 for item in top):
-            failures.append({"type": "non_positive_scores", "query": query})
-
         rows.append({
             "query": query,
             "top_ids": [item.get("id") for item in top],

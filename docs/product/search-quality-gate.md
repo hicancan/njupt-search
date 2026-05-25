@@ -2,7 +2,7 @@
 
 ## Objective
 
-Search Quality v1.3 makes the browser-facing TypeScript ranking path the product truth. The gate protects the results that users actually see, while still reporting Python ranking drift for diagnosis.
+Search Quality v1.3 makes the browser-facing TypeScript recall path the product truth. The gate protects the results that users actually see, while still reporting Python recall drift for diagnosis.
 
 ## Modes
 
@@ -16,9 +16,8 @@ CI uses `--mode both`. In `both`, Python and frontend are both evaluated and rep
 
 ## Statuses
 
-- `strict_pass`: blocking frontend checks pass without degraded fallback.
+- `strict_pass`: blocking frontend checks pass.
 - `data_gap`: the case fails, but all configured `coverage_channels` are empty, filtered out, or contain no relevant document for the case terms.
-- `degraded_pass`: blocking checks pass but the frontend had to use degraded fallback results.
 - `fail`: blocking frontend checks fail and the failure is not explainable as a configured data gap.
 
 ## Case Schema

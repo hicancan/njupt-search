@@ -47,7 +47,6 @@ config/source_channels.json
 ```text
 config/query_aliases.json
 config/ontology.json
-config/ranking_weights.json
 config/search_contract.json
 config/github_search_sources.json
 ```
@@ -57,7 +56,6 @@ config/github_search_sources.json
 ```text
 public/index/documents.json
 public/index/task_frames.json
-public/index/hybrid_index.json
 public/index/query_aliases.json
 public/index/ontology.json
 public/index/manifest.json
@@ -77,13 +75,12 @@ public/data/data_summary.json
 - Rule Guard：在 LLM 前检测 restricted、sensitive、low_evidence、duplicate、expired、evergreen、附件风险和行政噪声。
 - Semantic Verifier：在写入 SearchDocument 前移除未由原文或附件元数据支撑的 deadline、action、materials、location/contact 和 TaskFrame 字段。
 - TaskFrame：把通知建模为学生任务，包含对象、任务、动作、截止、材料、地点、证据、风险和置信度。
+- Notice Card / Typed Terms：离线把公开原文和证据抽取为通知卡片、typed_search_terms、synonyms、objects、actions、deadlines、materials、locations、attachments 和 risk。
 - Search Contract：`config/search_contract.json` 约束 kind、category、domain、intent、source_type、lifecycle、semantic_mode 和 TaskFrame 枚举，生产验证严格失败。
-- Hybrid Index：存储 BM25 词项、字段文本、任务文本、材料、证据、source/channel 信号。
 - Query Aliases：把“保研/推免”“大创”“校园网”等学生自然语言映射到领域、意图和语义扩展。
 - Query Intent Router: 识别查询模式并将其路由到特定垂类意图（如考试查询、资源搜索、事务通知等）。
-- Candidate Gating & Vertical Ranking: 依据路由意图，进行目标域候选文档评级（Tier A/B/C）与特化权重评分。
-- Hybrid Retrieval：组合 BM25、字段、标签、实体、语义扩展、学生效用和风险惩罚。
-- Self Evaluation：`scripts/eval/eval_frontend_search.ts` 先生成浏览器真实 TypeScript top-5，`scripts/eval/eval_product_search.py --mode both` 以 frontend 结果作为产品真相，同时报告 Python 结果；`scripts/eval/eval_search_parity.py --ts-results ...` 量化 Python/TS drift。
+- Recall Search：搜索阶段只用查询、同义词、路由阻断和离线结构化字段做候选召回；命中候选严格按 `published_at` 倒序展示，不做语义排序或权重重排。
+- Self Evaluation：`scripts/eval/eval_frontend_search.ts` 先生成浏览器真实 TypeScript top-5，`scripts/eval/eval_product_search.py --mode both` 以 frontend 结果作为产品真相，同时报告 Python 召回结果；`scripts/eval/eval_search_parity.py --ts-results ...` 量化 Python/TS drift。
 
 ## 安全边界
 
@@ -154,7 +151,7 @@ uv run python scripts\eval\eval_product_search.py --mode both --ts-results eval\
 uv run python scripts\eval\eval_search_parity.py --ts-results eval\reports\ts_search_results.json
 ```
 
-Search Quality v1.3 使用 `strict_pass / data_gap / degraded_pass / fail` 四类状态。`data_gap` 只表示 Source-Channel 覆盖证明当前索引不能回答该 query，不计入 strict pass。当前 durable gold map 在 `eval/queries/search_gold.json`，可执行 gate 在 `eval/search_cases.json`。
+Search Quality v1.3 使用 `strict_pass / data_gap / fail` 三类状态。`data_gap` 只表示 Source-Channel 覆盖证明当前索引不能回答该 query，不计入 strict pass。当前 durable gold map 在 `eval/queries/search_gold.json`，可执行 gate 在 `eval/search_cases.json`。
 
 ## 自动更新
 
@@ -174,16 +171,16 @@ $env:NJUPT_SEARCH_GITHUB_TOKEN="..."
 ## 项目结构
 
 ```text
-config/                 # source-channel graph, ontology, aliases, ranking, contract
-docs/architecture/      # HyTask-RAG, contract, ranking, eval, source adapters
+config/                 # source-channel graph, ontology, aliases, contract
+docs/architecture/      # HyTask-RAG, contract, recall, eval, source adapters
 docs/operations/        # update/deploy runbook
 docs/source-audit/      # Chrome DevTools MCP 公开源审计
 docs/product/           # 产品冻结报告
 eval/                   # 自动 query 集与报告
 public/data/            # 考试垂直频道数据
 public/index/           # 静态 HyTask-RAG 索引
-scripts/core/           # Rule Guard, BM25, query expansion, hybrid ranking
-scripts/models/         # CanonicalDocument, SourceGraph, TaskFrame, HybridIndex
+scripts/core/           # Rule Guard, tokenizer, query expansion, task extraction
+scripts/models/         # CanonicalDocument, SourceGraph, TaskFrame, search contract
 scripts/eval/           # eval_search and query smoke tests
 src/                    # React/Vite/PWA 前端
 ```

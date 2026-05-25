@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-05-25T17:52:59.328814+08:00",
+  "generated_at": "2026-05-25T21:22:14.630132+08:00",
   "total_documents": 153,
-  "strategy": "hytask-rag-source-channel-taskframe-hybrid-index-v1",
+  "strategy": "source-fidelity-offline-llm-card-recall-chronological-v1",
   "semantic_pipeline_version": "semantic-router-v2",
-  "llm_schema_version": "hytask-taskframe-v2.1",
+  "llm_schema_version": "hytask-taskframe-v2.2",
   "llm_enabled": true,
   "llm_provider": "deepseek",
   "llm_model": "deepseek-v4-flash",
@@ -87,14 +87,6 @@
       "heuristic": 3,
       "rule_guard": 2
     },
-    "student_score": {
-      "hybrid_rank_feature": 148,
-      "rule_guard": 5
-    },
-    "importance_score": {
-      "hybrid_rank_feature": 148,
-      "rule_guard": 5
-    },
     "task_frames": {
       "llm_raw_task_frame": 23,
       "empty_not_applicable": 125,
@@ -118,11 +110,8 @@
     "evidence": 0,
     "sensitive": 0,
     "review_required": 0,
-    "student_score": 0,
-    "importance_score": 0,
     "task_frames": 0
   },
-  "hybrid_score_field_count": 148,
   "training_eligible_count": 135,
   "heuristic_degraded_count": 0,
   "llm_purity_rate": 1.0,
@@ -146,11 +135,6 @@
   "low_evidence_count": 0,
   "restricted_count": 2,
   "sensitive_count": 5,
-  "hybrid_index": {
-    "doc_count": 153,
-    "task_frame_count": 49,
-    "avg_doc_len": 665.0327
-  },
   "sources": [
     {
       "id": "jwc",
@@ -2068,5 +2052,8 @@
       "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 1
     }
-  ]
+  ],
+  "notice_card_count": 153,
+  "typed_search_terms_count": 3117,
+  "documents_with_synonyms": 71
 }

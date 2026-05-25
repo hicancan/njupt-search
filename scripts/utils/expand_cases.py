@@ -6,26 +6,22 @@ cases = [
         "query": "四六级",
         "route": "cet_notice_search",
         "top5_must_include_any_terms": ["四级", "六级", "CET", "四六级"],
-        "top5_must_not_include_any_terms": ["慕课", "封闭教学楼", "普通期末"],
-        "allow_degraded_fallback": False
+        "top5_must_not_include_any_terms": ["慕课", "封闭教学楼", "普通期末"]
     },
     {
         "query": "CET",
         "route": "cet_notice_search",
-        "top5_must_include_any_terms": ["四级", "六级", "CET", "四六级"],
-        "allow_degraded_fallback": False
+        "top5_must_include_any_terms": ["四级", "六级", "CET", "四六级"]
     },
     {
         "query": "四级",
         "route": "cet_notice_search",
-        "top5_must_include_any_terms": ["四级", "六级", "CET", "四六级"],
-        "allow_degraded_fallback": False
+        "top5_must_include_any_terms": ["四级", "六级", "CET", "四六级"]
     },
     {
         "query": "六级",
         "route": "cet_notice_search",
-        "top5_must_include_any_terms": ["四级", "六级", "CET", "四六级"],
-        "allow_degraded_fallback": False
+        "top5_must_include_any_terms": ["四级", "六级", "CET", "四六级"]
     },
     {
         "query": "论文答辩",
@@ -33,14 +29,12 @@ cases = [
         "top5_must_include_any_terms": ["论文", "答辩", "学位", "毕业"],
         "top5_must_not_include_any_terms": ["申请考核制", "招生实施细则", "培养方案"],
         "top5_must_not_source_any": ["cxcy"],
-        "top5_must_not_domain_any": ["innovation_project"],
-        "allow_degraded_fallback": False
+        "top5_must_not_domain_any": ["innovation_project"]
     },
     {
         "query": "毕业答辩",
         "route": "degree_defense_search",
-        "top5_must_include_any_terms": ["论文", "答辩", "学位", "毕业"],
-        "allow_degraded_fallback": False
+        "top5_must_include_any_terms": ["论文", "答辩", "学位", "毕业"]
     },
     {
         "query": "大创答辩",
@@ -75,11 +69,14 @@ cases = [
     {
         "query": "B250403",
         "route": "class_exam_lookup",
-        "top1_must_source": "exam_vertical"
+        "allow_empty": True,
+        "surface": "class_exam_lookup"
     },
     {
         "query": "B250403 高数",
-        "route": "class_exam_lookup"
+        "route": "class_exam_lookup",
+        "allow_empty": True,
+        "surface": "class_exam_lookup"
     },
     {
         "query": "高数",

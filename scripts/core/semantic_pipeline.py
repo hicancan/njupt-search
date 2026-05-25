@@ -18,26 +18,15 @@ from models.semantic_model import (
 
 SEMANTIC_PIPELINE_VERSION = "semantic-router-v2"
 
-def clamp01(v: float) -> float:
-    return max(0.0, min(1.0, v))
-
 def _get_base_fields(entry: dict[str, Any], guard: dict[str, Any]) -> dict[str, Any]:
     return {
         "title": entry.get("title", ""),
-        "content": entry.get("canonical", {}).get("clean_text", ""),
-        "source_weight": entry.get("source_weight", 1.0),
+        "content": entry.get("canonical", {}).get("clean_text", "") or entry.get("content", ""),
         "source_type": entry.get("source_type", "central_admin"),
         "attachments": entry.get("attachments", []),
         "published_at": entry.get("published_at"),
         "default_category": entry.get("category", "公告"),
     }
-
-def _calculate_rule_scores(scoring_text: str, rule_category: str, attachment_count: int, source_weight: float) -> tuple[float, float]:
-    # Placeholder for existing scoring logic
-    from update_search_index import calculate_student_score, calculate_importance_score
-    rule_student_score = calculate_student_score(scoring_text, source_weight)
-    rule_importance_score = calculate_importance_score(scoring_text, rule_category, attachment_count, source_weight)
-    return rule_student_score, rule_importance_score
 
 def apply_safety_overrides(semantic: SemanticResult, guard: dict[str, Any]) -> SemanticResult:
     title = semantic.content.split(" ")[0] if semantic.content else ""
@@ -116,33 +105,13 @@ def derive_semantic_fields_llm(entry: dict[str, Any], llm_result: dict[str, Any]
     base = _get_base_fields(entry, guard)
     title = base["title"]
     content = base["content"]
-    scoring_text = f"{title} {content}"
-    
-    from update_search_index import infer_category
-    rule_category = base["default_category"] if base["default_category"] in CATEGORY_KEYWORDS else infer_category(scoring_text)
-    
-    rule_student_score, rule_importance_score = _calculate_rule_scores(
-        scoring_text, rule_category, len(base["attachments"]), base["source_weight"]
-    )
-    
+
     val = llm_result.get("validated", llm_result)
     raw_presence = llm_result.get("raw_field_presence", {})
     
     domain = val.get("domain")
     intent = val.get("intent")
     category = val.get("category")
-    
-    llm_relevance_raw = val.get("student_relevance")
-    llm_relevance = float(llm_relevance_raw if llm_relevance_raw is not None else 0.5)
-    is_student_facing = val.get("is_student_facing")
-    if is_student_facing if is_student_facing is not None else True:
-        student_score = clamp01(0.65 * llm_relevance + 0.35 * rule_student_score)
-    else:
-        student_score = clamp01(min(0.34, 0.65 * llm_relevance + 0.35 * rule_student_score))
-        
-    imp_raw = val.get("importance_score")
-    llm_importance = float(imp_raw if imp_raw is not None else 0.5)
-    importance_score = clamp01(0.75 * llm_importance + 0.25 * rule_importance_score)
     
     tags = [clean_text(str(tag)) for tag in (val.get("tags") or []) if clean_text(str(tag))]
     summary = clean_text(str(val.get("student_summary") or content[:180]))
@@ -171,8 +140,6 @@ def derive_semantic_fields_llm(entry: dict[str, Any], llm_result: dict[str, Any]
         "evidence": "llm" if raw_presence.get("evidence") else "llm_missing",
         "sensitive": "llm" if raw_presence.get("sensitive") else "llm_missing",
         "review_required": "llm" if raw_presence.get("review_required") else "llm_missing",
-        "student_score": "hybrid_rank_feature",
-        "importance_score": "hybrid_rank_feature",
         "task_frames": "llm_raw_task_frame" if val.get("task_frames") else "empty_not_applicable"
     }
     
@@ -199,14 +166,6 @@ def derive_semantic_fields_llm(entry: dict[str, Any], llm_result: dict[str, Any]
         content=content,
         summary=summary,
         attachments=attachments,
-        llm_student_relevance=llm_relevance,
-        llm_importance_score=llm_importance,
-        rule_student_score=rule_student_score,
-        rule_importance_score=rule_importance_score,
-        student_score=student_score,
-        importance_score=importance_score,
-        student_score_source="hybrid_rank_feature",
-        importance_score_source="hybrid_rank_feature",
         tags=tags,
         llm=val_out,
         raw_field_presence=raw_presence
@@ -221,9 +180,6 @@ def derive_semantic_fields_heuristic(entry: dict[str, Any], guard: dict[str, Any
     
     from update_search_index import infer_category
     rule_category = base["default_category"] if base["default_category"] in CATEGORY_KEYWORDS else infer_category(scoring_text)
-    rule_student_score, rule_importance_score = _calculate_rule_scores(
-        scoring_text, rule_category, len(base["attachments"]), base["source_weight"]
-    )
     
     fallback_action_required, fallback_action_type, fallback_action_summary = infer_action(scoring_text)
     fallback_deadline = infer_deadline(scoring_text, base["published_at"], now)
@@ -239,8 +195,6 @@ def derive_semantic_fields_heuristic(entry: dict[str, Any], guard: dict[str, Any
     
     field_sources = {k: "heuristic" for k in ["category", "domain", "intent", "deadline", "action_required", "action_summary", "summary", "evidence", "sensitive"]}
     field_sources["review_required"] = "system_default" if mode == "heuristic" else "heuristic_degraded"
-    field_sources["student_score"] = "rule_guard"
-    field_sources["importance_score"] = "rule_guard"
     field_sources["task_frames"] = "heuristic_rule_frame"
     
     return SemanticResult(
@@ -264,14 +218,6 @@ def derive_semantic_fields_heuristic(entry: dict[str, Any], guard: dict[str, Any
         content=content,
         summary=content[:180],
         attachments=attachments,
-        llm_student_relevance=None,
-        llm_importance_score=None,
-        rule_student_score=rule_student_score,
-        rule_importance_score=rule_importance_score,
-        student_score=rule_student_score,
-        importance_score=rule_importance_score,
-        student_score_source="rule_guard",
-        importance_score_source="rule_guard",
         tags=infer_tags(scoring_text, category),
         llm={"used": False}
     )
@@ -283,8 +229,6 @@ def derive_semantic_fields_guarded(entry: dict[str, Any], guard: dict[str, Any],
     category = base["default_category"] if base["default_category"] in CATEGORY_KEYWORDS else "公告"
     domain = infer_domain(scoring_text, category, base["source_type"])
     field_sources = {k: "rule_guard" for k in ["category", "domain", "intent", "deadline", "action_required", "action_summary", "summary", "evidence", "sensitive", "review_required"]}
-    field_sources["student_score"] = "rule_guard"
-    field_sources["importance_score"] = "rule_guard"
     field_sources["task_frames"] = "guarded_metadata_empty"
     
     return SemanticResult(
@@ -308,14 +252,6 @@ def derive_semantic_fields_guarded(entry: dict[str, Any], guard: dict[str, Any],
         content=base["content"],
         summary="该页面访问受限或内容不足，请点击原文在允许的网络环境下查看。",
         attachments=base["attachments"],
-        llm_student_relevance=None,
-        llm_importance_score=None,
-        rule_student_score=0.1,
-        rule_importance_score=0.1,
-        student_score=0.1,
-        importance_score=0.1,
-        student_score_source="rule_guard",
-        importance_score_source="rule_guard",
         tags=[base["default_category"]],
         llm={"used": False}
     )

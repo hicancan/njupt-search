@@ -15,8 +15,6 @@
       "evidence": "llm",
       "sensitive": "llm",
       "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
       "task_frames": "llm_raw_task_frame"
     },
     "task_type": "application",
@@ -88,550 +86,6 @@
     "confidence": 0.9
   },
   {
-    "task_id": "task_4aab92ba906db7e6",
-    "doc_id": "jwc-7302a28b49d7e92c069f",
-    "source_mode": "generated_from_llm_fields",
-    "field_sources": {
-      "category": "llm",
-      "domain": "llm",
-      "intent": "llm",
-      "deadline": "llm",
-      "action_required": "llm",
-      "action_summary": "llm",
-      "required_materials": "llm",
-      "summary": "llm",
-      "evidence": "llm",
-      "sensitive": "llm",
-      "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
-      "task_frames": "llm_raw_task_frame"
-    },
-    "task_type": "application",
-    "who": {
-      "audience": [
-        "本科生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "【教务管理办公室】2025-2026学年第二学期在线开放课程（慕课）线下考试报名通知",
-    "action": {
-      "required": true,
-      "verb": "apply",
-      "object": null,
-      "summary": "学生需在2026年3月30日9:00至4月3日16:00期间登录教务系统报名在线开放课程线下考试。"
-    },
-    "time": {
-      "published_at": "2026-03-27",
-      "deadline": "2026-04-03T16:00:00+08:00",
-      "lifecycle": "expired",
-      "urgency_days": -53
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "jwc",
-      "channel_id": "jwc_recommendation",
-      "authority": 1.0,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "2026年3月30日9：00至2026年4月3日16：00"
-      },
-      {
-        "field": "general",
-        "text": "报名在线开放课程线下考试的学生，应在课程开课初期已加入中国大学 MOOC平台相应课程和对应的慕课堂"
-      },
-      {
-        "field": "audience",
-        "text": "2026年3月30日9：00至2026年4月3日16：00"
-      },
-      {
-        "field": "action",
-        "text": "2026年3月30日9：00至2026年4月3日16：00"
-      },
-      {
-        "field": "deadline",
-        "text": "2026年3月30日9：00至2026年4月3日16：00"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.95
-  },
-  {
-    "task_id": "task_d932090dda535a33",
-    "doc_id": "jwc-59a29f409eb78f77b1e1",
-    "source_mode": "generated_from_llm_fields",
-    "field_sources": {
-      "category": "display_mapping",
-      "domain": "llm",
-      "intent": "llm",
-      "deadline": "llm",
-      "action_required": "llm",
-      "action_summary": "llm",
-      "required_materials": "llm",
-      "summary": "llm",
-      "evidence": "llm",
-      "sensitive": "llm",
-      "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
-      "task_frames": "llm_raw_task_frame"
-    },
-    "task_type": "read",
-    "who": {
-      "audience": [
-        "本科生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "【教务管理办公室】关于学习慕课的学生加入“慕课堂”的通知（陆续更新中）",
-    "action": {
-      "required": true,
-      "verb": "register",
-      "object": null,
-      "summary": "学生需加入课程对应的慕课堂，否则线上成绩以零分计算。"
-    },
-    "time": {
-      "published_at": "2026-03-17",
-      "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "jwc",
-      "channel_id": "jwc_recommendation",
-      "authority": 1.0,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "务必按照任课教师要求，加入课程对应的慕课堂，否则线上成绩将以零分计算。"
-      },
-      {
-        "field": "audience",
-        "text": "务必按照任课教师要求，加入课程对应的慕课堂，否则线上成绩将以零分计算。"
-      },
-      {
-        "field": "action",
-        "text": "务必按照任课教师要求，加入课程对应的慕课堂，否则线上成绩将以零分计算。"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.9
-  },
-  {
-    "task_id": "task_1c28412ce77c847b",
-    "doc_id": "jwc-5b4427b16b11f6941a73",
-    "source_mode": "generated_from_llm_fields",
-    "field_sources": {
-      "category": "llm",
-      "domain": "llm",
-      "intent": "llm",
-      "deadline": "llm",
-      "action_required": "llm",
-      "action_summary": "llm",
-      "required_materials": "llm",
-      "summary": "llm",
-      "evidence": "llm",
-      "sensitive": "llm",
-      "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
-      "task_frames": "empty_not_applicable"
-    },
-    "task_type": "result_check",
-    "who": {
-      "audience": [
-        "本科生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "【教务管理办公室】2025-2026学年第二学期考试安排表",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": "2026-05-22",
-      "deadline": null,
-      "lifecycle": "active",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "jwc",
-      "channel_id": "jwc_recommendation",
-      "authority": 1.0,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "现公布2025-2026学年第二学期考试安排表，考试分为学校组织和学院组织，请及时通知相关学生参加考试。"
-      },
-      {
-        "field": "audience",
-        "text": "现公布2025-2026学年第二学期考试安排表，考试分为学校组织和学院组织，请及时通知相关学生参加考试。"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.9
-  },
-  {
-    "task_id": "task_f398b4f9aca501bd",
-    "doc_id": "cxcy-c4132762db65faac8b56",
-    "source_mode": "generated_from_llm_fields",
-    "field_sources": {
-      "category": "llm",
-      "domain": "llm",
-      "intent": "llm",
-      "deadline": "llm",
-      "action_required": "llm",
-      "action_summary": "llm",
-      "required_materials": "llm",
-      "summary": "llm",
-      "evidence": "llm",
-      "sensitive": "llm",
-      "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
-      "task_frames": "llm_raw_task_frame"
-    },
-    "task_type": "application",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "关于组织开展2024年度大学生创新创业训练计划项目申报工作的通知",
-    "action": {
-      "required": true,
-      "verb": "apply",
-      "object": null,
-      "summary": "学生网上填报项目申请表，指导教师网上审阅"
-    },
-    "time": {
-      "published_at": null,
-      "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
-    },
-    "materials": [
-      {
-        "name": "{'name': '南京邮电大学大学生创新训练计划项目立项申请表', 'role': '申请表', 'required': True, 'sensitive': False}",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "{'name': '南京邮电大学大学生创业训练计划项目立项申请表', 'role': '申请表', 'required': True, 'sensitive': False}",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
-      }
-    ],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "cxcy",
-      "channel_id": "cxcy_project",
-      "authority": 0.98,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "学院组织学生网上填报项目申请表，指导教师网上审阅"
-      },
-      {
-        "field": "general",
-        "text": "创新训练计划项目申请人为2022级本科生"
-      },
-      {
-        "field": "general",
-        "text": "创业训练项目或创业实践项目申请人为在校本科生"
-      },
-      {
-        "field": "audience",
-        "text": "学院组织学生网上填报项目申请表，指导教师网上审阅"
-      },
-      {
-        "field": "action",
-        "text": "学院组织学生网上填报项目申请表，指导教师网上审阅"
-      },
-      {
-        "field": "materials",
-        "text": "附件/材料：{'name': '南京邮电大学大学生创新训练计划项目立项申请表', 'role': '申请表', 'required': True, 'sensitive': False}、{'name': '南京邮电大学大学生创业训练计划项目立项申请表', 'role': '申请表', 'required':"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.88
-  },
-  {
-    "task_id": "task_24aa990a9f5fe91b",
-    "doc_id": "cxcy-ac6a840bf5e5acb2ae47",
-    "source_mode": "generated_from_llm_fields",
-    "field_sources": {
-      "category": "llm",
-      "domain": "llm",
-      "intent": "llm",
-      "deadline": "llm",
-      "action_required": "llm",
-      "action_summary": "llm",
-      "required_materials": "llm",
-      "summary": "llm",
-      "evidence": "llm",
-      "sensitive": "llm",
-      "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
-      "task_frames": "llm_raw_task_frame"
-    },
-    "task_type": "application",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "关于组织开展2025年度大学生创新创业训练计划项目申报工作的通知",
-    "action": {
-      "required": true,
-      "verb": "apply",
-      "object": null,
-      "summary": "学生网上填报项目申请表，指导教师网上审阅"
-    },
-    "time": {
-      "published_at": "2025-08-09",
-      "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
-    },
-    "materials": [
-      {
-        "name": "{'name': '南京邮电大学大学生创新训练计划项目立项申请表', 'role': '申请表', 'required': True, 'sensitive': False}",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "{'name': '南京邮电大学大学生创业训练计划项目立项申请表', 'role': '申请表', 'required': True, 'sensitive': False}",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
-      }
-    ],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "cxcy",
-      "channel_id": "cxcy_project",
-      "authority": 0.98,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "学院组织学生网上填报项目申请表，指导教师网上审阅"
-      },
-      {
-        "field": "general",
-        "text": "创新训练计划项目申请人为2023级本科生"
-      },
-      {
-        "field": "general",
-        "text": "创业训练项目或创业实践项目申请人为在校本科生"
-      },
-      {
-        "field": "audience",
-        "text": "学院组织学生网上填报项目申请表，指导教师网上审阅"
-      },
-      {
-        "field": "action",
-        "text": "学院组织学生网上填报项目申请表，指导教师网上审阅"
-      },
-      {
-        "field": "materials",
-        "text": "附件/材料：{'name': '南京邮电大学大学生创新训练计划项目立项申请表', 'role': '申请表', 'required': True, 'sensitive': False}、{'name': '南京邮电大学大学生创业训练计划项目立项申请表', 'role': '申请表', 'required':"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.88
-  },
-  {
-    "task_id": "task_675162ffef990700",
-    "doc_id": "cxcy-18b0923654eab80cce87",
-    "source_mode": "generated_from_llm_fields",
-    "field_sources": {
-      "category": "llm",
-      "domain": "llm",
-      "intent": "llm",
-      "deadline": "llm",
-      "action_required": "llm",
-      "action_summary": "llm",
-      "required_materials": "llm",
-      "summary": "llm",
-      "evidence": "llm",
-      "sensitive": "llm",
-      "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
-      "task_frames": "llm_raw_task_frame"
-    },
-    "task_type": "application",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "关于组织开展2023年度大学生创新创业训练计划项目申报工作的通知",
-    "action": {
-      "required": true,
-      "verb": "apply",
-      "object": null,
-      "summary": "学生网上填报项目申请表，指导教师网上审阅"
-    },
-    "time": {
-      "published_at": "2025-07-08",
-      "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
-    },
-    "materials": [
-      {
-        "name": "{'name': '南京邮电大学大学生创新训练计划项目立项申请表', 'role': '申请表', 'required': True, 'sensitive': False}",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "{'name': '南京邮电大学大学生创业训练计划项目立项申请表', 'role': '申请表', 'required': True, 'sensitive': False}",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
-      }
-    ],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "cxcy",
-      "channel_id": "cxcy_project",
-      "authority": 0.98,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "学院组织学生网上填报项目申请表，指导教师网上审阅"
-      },
-      {
-        "field": "general",
-        "text": "创新训练计划项目申请人为2021级本科生"
-      },
-      {
-        "field": "general",
-        "text": "创业训练项目或创业实践项目申请人为在校本科生"
-      },
-      {
-        "field": "audience",
-        "text": "学院组织学生网上填报项目申请表，指导教师网上审阅"
-      },
-      {
-        "field": "action",
-        "text": "学院组织学生网上填报项目申请表，指导教师网上审阅"
-      },
-      {
-        "field": "materials",
-        "text": "附件/材料：{'name': '南京邮电大学大学生创新训练计划项目立项申请表', 'role': '申请表', 'required': True, 'sensitive': False}、{'name': '南京邮电大学大学生创业训练计划项目立项申请表', 'role': '申请表', 'required':"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.88
-  },
-  {
     "task_id": "task_5d3e20712ccb1828",
     "doc_id": "cxcy-3dfeb8f05ac3e0d231fb",
     "source_mode": "generated_from_llm_fields",
@@ -647,8 +101,6 @@
       "evidence": "llm",
       "sensitive": "llm",
       "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
       "task_frames": "llm_raw_task_frame"
     },
     "task_type": "application",
@@ -759,6 +211,594 @@
     "confidence": 0.86
   },
   {
+    "task_id": "task_4aab92ba906db7e6",
+    "doc_id": "jwc-7302a28b49d7e92c069f",
+    "source_mode": "generated_from_llm_fields",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm",
+      "review_required": "llm",
+      "task_frames": "llm_raw_task_frame"
+    },
+    "task_type": "application",
+    "who": {
+      "audience": [
+        "本科生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "【教务管理办公室】2025-2026学年第二学期在线开放课程（慕课）线下考试报名通知",
+    "action": {
+      "required": true,
+      "verb": "apply",
+      "object": null,
+      "summary": "学生需在2026年3月30日9:00至4月3日16:00期间登录教务系统报名在线开放课程线下考试。"
+    },
+    "time": {
+      "published_at": "2026-03-27",
+      "deadline": "2026-04-03T16:00:00+08:00",
+      "lifecycle": "expired",
+      "urgency_days": -53
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "jwc",
+      "channel_id": "jwc_recommendation",
+      "authority": 1.0,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "2026年3月30日9：00至2026年4月3日16：00"
+      },
+      {
+        "field": "general",
+        "text": "报名在线开放课程线下考试的学生，应在课程开课初期已加入中国大学 MOOC平台相应课程和对应的慕课堂"
+      },
+      {
+        "field": "audience",
+        "text": "2026年3月30日9：00至2026年4月3日16：00"
+      },
+      {
+        "field": "action",
+        "text": "2026年3月30日9：00至2026年4月3日16：00"
+      },
+      {
+        "field": "deadline",
+        "text": "2026年3月30日9：00至2026年4月3日16：00"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.95
+  },
+  {
+    "task_id": "task_f398b4f9aca501bd",
+    "doc_id": "cxcy-c4132762db65faac8b56",
+    "source_mode": "generated_from_llm_fields",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm",
+      "review_required": "llm",
+      "task_frames": "llm_raw_task_frame"
+    },
+    "task_type": "application",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "关于组织开展2024年度大学生创新创业训练计划项目申报工作的通知",
+    "action": {
+      "required": true,
+      "verb": "apply",
+      "object": null,
+      "summary": "学生网上填报项目申请表，指导教师网上审阅"
+    },
+    "time": {
+      "published_at": null,
+      "deadline": null,
+      "lifecycle": "unknown",
+      "urgency_days": null
+    },
+    "materials": [
+      {
+        "name": "{'name': '南京邮电大学大学生创新训练计划项目立项申请表', 'role': '申请表', 'required': True, 'sensitive': False}",
+        "role": "材料",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "{'name': '南京邮电大学大学生创业训练计划项目立项申请表', 'role': '申请表', 'required': True, 'sensitive': False}",
+        "role": "材料",
+        "required": true,
+        "sensitive": false
+      }
+    ],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "cxcy",
+      "channel_id": "cxcy_project",
+      "authority": 0.98,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "学院组织学生网上填报项目申请表，指导教师网上审阅"
+      },
+      {
+        "field": "general",
+        "text": "创新训练计划项目申请人为2022级本科生"
+      },
+      {
+        "field": "general",
+        "text": "创业训练项目或创业实践项目申请人为在校本科生"
+      },
+      {
+        "field": "audience",
+        "text": "学院组织学生网上填报项目申请表，指导教师网上审阅"
+      },
+      {
+        "field": "action",
+        "text": "学院组织学生网上填报项目申请表，指导教师网上审阅"
+      },
+      {
+        "field": "materials",
+        "text": "附件/材料：{'name': '南京邮电大学大学生创新训练计划项目立项申请表', 'role': '申请表', 'required': True, 'sensitive': False}、{'name': '南京邮电大学大学生创业训练计划项目立项申请表', 'role': '申请表', 'required':"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.88
+  },
+  {
+    "task_id": "task_c6249174ee7f6ff5",
+    "doc_id": "simp-3567f2f1c5697d1c40a5",
+    "source_mode": "generated_from_llm_fields",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm",
+      "review_required": "llm",
+      "task_frames": "llm_raw_task_frame"
+    },
+    "task_type": "application",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生",
+        "现代邮政学院"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "南京邮电大学智能时空信息与大数据微专业招生简章",
+    "action": {
+      "required": true,
+      "verb": "apply",
+      "object": null,
+      "summary": "报名智能时空信息与大数据微专业，需完成小程序报名和提交申请表。"
+    },
+    "time": {
+      "published_at": null,
+      "deadline": "2026-03-31T23:59:00+08:00",
+      "lifecycle": "expired",
+      "urgency_days": -55
+    },
+    "materials": [
+      {
+        "name": "{'name': '南京邮电大学本科生微专业学习申请表', 'role': '申请表', 'required': True, 'sensitive': False}",
+        "role": "材料",
+        "required": true,
+        "sensitive": false
+      }
+    ],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "simp",
+      "channel_id": "simp_academic",
+      "authority": 0.68,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "报名时间： 3 月 24 日— 3 月 31 日"
+      },
+      {
+        "field": "general",
+        "text": "第一步： 小程序报名 扫描下方二维码进入小程序，填写报名信息。 第二步： 提交《南京邮电大学本科生微专业学习申请表》"
+      },
+      {
+        "field": "audience",
+        "text": "报名时间： 3 月 24 日— 3 月 31 日"
+      },
+      {
+        "field": "action",
+        "text": "报名时间： 3 月 24 日— 3 月 31 日"
+      },
+      {
+        "field": "deadline",
+        "text": "报名时间： 3 月 24 日— 3 月 31 日"
+      },
+      {
+        "field": "materials",
+        "text": "附件/材料：{'name': '南京邮电大学本科生微专业学习申请表', 'role': '申请表', 'required': True, 'sensitive': False}"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
+  },
+  {
+    "task_id": "task_dcffda52727e8b7f",
+    "doc_id": "exchange-176cb6ec00a0d59cab1e",
+    "source_mode": "generated_from_llm_fields",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm",
+      "review_required": "llm",
+      "task_frames": "llm_raw_task_frame"
+    },
+    "task_type": "application",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生",
+        "国际学生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "香港理工大学暑假“科技创新”访学项目",
+    "action": {
+      "required": true,
+      "verb": "apply",
+      "object": null,
+      "summary": "每年5月报名，向学院提交申请材料。"
+    },
+    "time": {
+      "published_at": null,
+      "deadline": null,
+      "lifecycle": "unknown",
+      "urgency_days": null
+    },
+    "materials": [
+      {
+        "name": "{'name': '南京邮电大学本科生海外访学申请表', 'role': '申请表', 'required': True, 'sensitive': False}",
+        "role": "材料",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "{'name': '英语水平证明及复印件', 'role': '语言证明', 'required': True, 'sensitive': False}",
+        "role": "材料",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "{'name': '学术科研能力证明材料及复印件', 'role': '科研能力证明', 'required': True, 'sensitive': False}",
+        "role": "材料",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "{'name': '获奖证书及复印件（校级以上奖励）', 'role': '获奖证明', 'required': True, 'sensitive': False}",
+        "role": "材料",
+        "required": true,
+        "sensitive": false
+      }
+    ],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "exchange",
+      "channel_id": "exchange_notice",
+      "authority": 0.78,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "申请人应向所在学院提交以下材料： A. 《南京邮电大学本科生海外访学申请表》； B. 英语水平证明及复印件； C. 学术科研能力证明材料及复印件； D. 获奖证书及复印件。"
+      },
+      {
+        "field": "audience",
+        "text": "申请人应向所在学院提交以下材料： A. 《南京邮电大学本科生海外访学申请表》； B. 英语水平证明及复印件； C. 学术科研能力证明材料及复印件； D. 获奖证书及复印件。"
+      },
+      {
+        "field": "action",
+        "text": "申请人应向所在学院提交以下材料： A. 《南京邮电大学本科生海外访学申请表》； B. 英语水平证明及复印件； C. 学术科研能力证明材料及复印件； D. 获奖证书及复印件。"
+      },
+      {
+        "field": "materials",
+        "text": "附件/材料：{'name': '南京邮电大学本科生海外访学申请表', 'role': '申请表', 'required': True, 'sensitive': False}、{'name': '英语水平证明及复印件', 'role': '语言证明', 'required': True, 'sensitive'"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.88
+  },
+  {
+    "task_id": "task_24aa990a9f5fe91b",
+    "doc_id": "cxcy-ac6a840bf5e5acb2ae47",
+    "source_mode": "generated_from_llm_fields",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm",
+      "review_required": "llm",
+      "task_frames": "llm_raw_task_frame"
+    },
+    "task_type": "application",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "关于组织开展2025年度大学生创新创业训练计划项目申报工作的通知",
+    "action": {
+      "required": true,
+      "verb": "apply",
+      "object": null,
+      "summary": "学生网上填报项目申请表，指导教师网上审阅"
+    },
+    "time": {
+      "published_at": "2025-08-09",
+      "deadline": null,
+      "lifecycle": "unknown",
+      "urgency_days": null
+    },
+    "materials": [
+      {
+        "name": "{'name': '南京邮电大学大学生创新训练计划项目立项申请表', 'role': '申请表', 'required': True, 'sensitive': False}",
+        "role": "材料",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "{'name': '南京邮电大学大学生创业训练计划项目立项申请表', 'role': '申请表', 'required': True, 'sensitive': False}",
+        "role": "材料",
+        "required": true,
+        "sensitive": false
+      }
+    ],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "cxcy",
+      "channel_id": "cxcy_project",
+      "authority": 0.98,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "学院组织学生网上填报项目申请表，指导教师网上审阅"
+      },
+      {
+        "field": "general",
+        "text": "创新训练计划项目申请人为2023级本科生"
+      },
+      {
+        "field": "general",
+        "text": "创业训练项目或创业实践项目申请人为在校本科生"
+      },
+      {
+        "field": "audience",
+        "text": "学院组织学生网上填报项目申请表，指导教师网上审阅"
+      },
+      {
+        "field": "action",
+        "text": "学院组织学生网上填报项目申请表，指导教师网上审阅"
+      },
+      {
+        "field": "materials",
+        "text": "附件/材料：{'name': '南京邮电大学大学生创新训练计划项目立项申请表', 'role': '申请表', 'required': True, 'sensitive': False}、{'name': '南京邮电大学大学生创业训练计划项目立项申请表', 'role': '申请表', 'required':"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.88
+  },
+  {
+    "task_id": "task_675162ffef990700",
+    "doc_id": "cxcy-18b0923654eab80cce87",
+    "source_mode": "generated_from_llm_fields",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm",
+      "review_required": "llm",
+      "task_frames": "llm_raw_task_frame"
+    },
+    "task_type": "application",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "关于组织开展2023年度大学生创新创业训练计划项目申报工作的通知",
+    "action": {
+      "required": true,
+      "verb": "apply",
+      "object": null,
+      "summary": "学生网上填报项目申请表，指导教师网上审阅"
+    },
+    "time": {
+      "published_at": "2025-07-08",
+      "deadline": null,
+      "lifecycle": "unknown",
+      "urgency_days": null
+    },
+    "materials": [
+      {
+        "name": "{'name': '南京邮电大学大学生创新训练计划项目立项申请表', 'role': '申请表', 'required': True, 'sensitive': False}",
+        "role": "材料",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "{'name': '南京邮电大学大学生创业训练计划项目立项申请表', 'role': '申请表', 'required': True, 'sensitive': False}",
+        "role": "材料",
+        "required": true,
+        "sensitive": false
+      }
+    ],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "cxcy",
+      "channel_id": "cxcy_project",
+      "authority": 0.98,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "学院组织学生网上填报项目申请表，指导教师网上审阅"
+      },
+      {
+        "field": "general",
+        "text": "创新训练计划项目申请人为2021级本科生"
+      },
+      {
+        "field": "general",
+        "text": "创业训练项目或创业实践项目申请人为在校本科生"
+      },
+      {
+        "field": "audience",
+        "text": "学院组织学生网上填报项目申请表，指导教师网上审阅"
+      },
+      {
+        "field": "action",
+        "text": "学院组织学生网上填报项目申请表，指导教师网上审阅"
+      },
+      {
+        "field": "materials",
+        "text": "附件/材料：{'name': '南京邮电大学大学生创新训练计划项目立项申请表', 'role': '申请表', 'required': True, 'sensitive': False}、{'name': '南京邮电大学大学生创业训练计划项目立项申请表', 'role': '申请表', 'required':"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.88
+  },
+  {
     "task_id": "task_e3ab368a9849afe7",
     "doc_id": "cxcy-437f8378c368271fb380",
     "source_mode": "generated_from_llm_fields",
@@ -774,8 +814,6 @@
       "evidence": "llm",
       "sensitive": "llm",
       "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
       "task_frames": "llm_raw_task_frame"
     },
     "task_type": "application",
@@ -901,8 +939,6 @@
       "evidence": "llm",
       "sensitive": "llm",
       "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
       "task_frames": "llm_raw_task_frame"
     },
     "task_type": "schedule",
@@ -1004,8 +1040,6 @@
       "evidence": "llm",
       "sensitive": "llm",
       "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
       "task_frames": "llm_raw_task_frame"
     },
     "task_type": "schedule",
@@ -1107,8 +1141,6 @@
       "evidence": "llm",
       "sensitive": "llm",
       "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
       "task_frames": "llm_raw_task_frame"
     },
     "task_type": "schedule",
@@ -1195,189 +1227,6 @@
     "confidence": 0.86
   },
   {
-    "task_id": "task_73ee5efbfda144bc",
-    "doc_id": "njupt_notice-0d750d311ccda0e2154a",
-    "source_mode": "generated_from_llm_fields",
-    "field_sources": {
-      "category": "llm",
-      "domain": "llm",
-      "intent": "llm",
-      "deadline": "llm",
-      "action_required": "llm",
-      "action_summary": "llm",
-      "required_materials": "llm",
-      "summary": "llm",
-      "evidence": "llm",
-      "sensitive": "llm",
-      "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
-      "task_frames": "empty_not_applicable"
-    },
-    "task_type": "application",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生",
-        "全体学生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "2026 05.22 关于申报2026年学校党建与思想政治教育研究项目的通知",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": "2026-05-22",
-      "deadline": null,
-      "lifecycle": "active",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "njupt_notice",
-      "channel_id": "njupt_notice_main",
-      "authority": 0.86,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "各基层党委、党总支、直属党支部，各单位、各部门： 为深入学习习近平新时代中国特色社会主义思想，全面贯彻习近平总书记关于教育的重要论述和对江苏工作的重要讲话精神，深入推进马克思主义理论研究和建设工程，聚焦新时代高校党的建设与思想政治教育研究前沿，着力产出一批高质量理论研究成果，有力支撑服务学校高质量发展，经研究，决定开展2026年学校党建与思想政治教育研究项目"
-      },
-      {
-        "field": "audience",
-        "text": "各基层党委、党总支、直属党支部，各单位、各部门： 为深入学习习近平新时代中国特色社会主义思想，全面贯彻习近平总书记关于教育的重要论述和对江苏工作的重要讲话精神，深入推进马克思主义理论研究和建设工程，聚焦新时代高校党的建设与思想政治教育研究前沿，着力产出一批高质量理论研究成果，有力支撑服务学校高质量发展，经研究，决定开展2026年学校党建与思想政治教育研究项目"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.85
-  },
-  {
-    "task_id": "task_dcffda52727e8b7f",
-    "doc_id": "exchange-176cb6ec00a0d59cab1e",
-    "source_mode": "generated_from_llm_fields",
-    "field_sources": {
-      "category": "llm",
-      "domain": "llm",
-      "intent": "llm",
-      "deadline": "llm",
-      "action_required": "llm",
-      "action_summary": "llm",
-      "required_materials": "llm",
-      "summary": "llm",
-      "evidence": "llm",
-      "sensitive": "llm",
-      "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
-      "task_frames": "llm_raw_task_frame"
-    },
-    "task_type": "application",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生",
-        "国际学生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "香港理工大学暑假“科技创新”访学项目",
-    "action": {
-      "required": true,
-      "verb": "apply",
-      "object": null,
-      "summary": "每年5月报名，向学院提交申请材料。"
-    },
-    "time": {
-      "published_at": null,
-      "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
-    },
-    "materials": [
-      {
-        "name": "{'name': '南京邮电大学本科生海外访学申请表', 'role': '申请表', 'required': True, 'sensitive': False}",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "{'name': '英语水平证明及复印件', 'role': '语言证明', 'required': True, 'sensitive': False}",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "{'name': '学术科研能力证明材料及复印件', 'role': '科研能力证明', 'required': True, 'sensitive': False}",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "{'name': '获奖证书及复印件（校级以上奖励）', 'role': '获奖证明', 'required': True, 'sensitive': False}",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
-      }
-    ],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "exchange",
-      "channel_id": "exchange_notice",
-      "authority": 0.78,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "申请人应向所在学院提交以下材料： A. 《南京邮电大学本科生海外访学申请表》； B. 英语水平证明及复印件； C. 学术科研能力证明材料及复印件； D. 获奖证书及复印件。"
-      },
-      {
-        "field": "audience",
-        "text": "申请人应向所在学院提交以下材料： A. 《南京邮电大学本科生海外访学申请表》； B. 英语水平证明及复印件； C. 学术科研能力证明材料及复印件； D. 获奖证书及复印件。"
-      },
-      {
-        "field": "action",
-        "text": "申请人应向所在学院提交以下材料： A. 《南京邮电大学本科生海外访学申请表》； B. 英语水平证明及复印件； C. 学术科研能力证明材料及复印件； D. 获奖证书及复印件。"
-      },
-      {
-        "field": "materials",
-        "text": "附件/材料：{'name': '南京邮电大学本科生海外访学申请表', 'role': '申请表', 'required': True, 'sensitive': False}、{'name': '英语水平证明及复印件', 'role': '语言证明', 'required': True, 'sensitive'"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.88
-  },
-  {
     "task_id": "task_30cf2a083234d74a",
     "doc_id": "exchange-8c940f9a9a38972abe4d",
     "source_mode": "generated_from_llm_fields",
@@ -1393,8 +1242,6 @@
       "evidence": "llm",
       "sensitive": "llm",
       "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
       "task_frames": "llm_raw_task_frame"
     },
     "task_type": "application",
@@ -1501,8 +1348,6 @@
       "evidence": "llm",
       "sensitive": "llm",
       "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
       "task_frames": "llm_raw_task_frame"
     },
     "task_type": "application",
@@ -1594,6 +1439,233 @@
     "confidence": 0.88
   },
   {
+    "task_id": "task_d932090dda535a33",
+    "doc_id": "jwc-59a29f409eb78f77b1e1",
+    "source_mode": "generated_from_llm_fields",
+    "field_sources": {
+      "category": "display_mapping",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm",
+      "review_required": "llm",
+      "task_frames": "llm_raw_task_frame"
+    },
+    "task_type": "read",
+    "who": {
+      "audience": [
+        "本科生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "【教务管理办公室】关于学习慕课的学生加入“慕课堂”的通知（陆续更新中）",
+    "action": {
+      "required": true,
+      "verb": "register",
+      "object": null,
+      "summary": "学生需加入课程对应的慕课堂，否则线上成绩以零分计算。"
+    },
+    "time": {
+      "published_at": "2026-03-17",
+      "deadline": null,
+      "lifecycle": "unknown",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "jwc",
+      "channel_id": "jwc_recommendation",
+      "authority": 1.0,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "务必按照任课教师要求，加入课程对应的慕课堂，否则线上成绩将以零分计算。"
+      },
+      {
+        "field": "audience",
+        "text": "务必按照任课教师要求，加入课程对应的慕课堂，否则线上成绩将以零分计算。"
+      },
+      {
+        "field": "action",
+        "text": "务必按照任课教师要求，加入课程对应的慕课堂，否则线上成绩将以零分计算。"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
+  },
+  {
+    "task_id": "task_ab7e9a4e82712da3",
+    "doc_id": "github-NJUPTFreeExams-NJUPT-CST-Free-Exams-6169d0395e43fe5cb864",
+    "source_mode": "generated_from_llm_fields",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm",
+      "review_required": "llm",
+      "task_frames": "empty_not_applicable"
+    },
+    "task_type": "download",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "【Deprecated】南京邮电大学计算机科学与技术专业历年... · NJUPT-CS-Free-Exams",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2021-08-29",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "github:NJUPTFreeExams/NJUPT-CST-Free-Exams",
+      "channel_id": "github:NJUPTFreeExams/NJUPT-CST-Free-Exams:resource",
+      "authority": 0.5,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "南京邮电大学计算机科学与技术专业历年考试资料"
+      },
+      {
+        "field": "general",
+        "text": "此 repo 从 2021-09 开始不再维护 所有的资料已迁移至 NJUPT-CS-FREE"
+      },
+      {
+        "field": "audience",
+        "text": "南京邮电大学计算机科学与技术专业历年考试资料"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.86
+  },
+  {
+    "task_id": "task_fb55fba947594c56",
+    "doc_id": "github-NJUPTFreeExams-NJUPT-InfoSec-Free-Exams-e6e8024e7e61b78b68d8",
+    "source_mode": "generated_from_llm_fields",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm",
+      "review_required": "llm",
+      "task_frames": "empty_not_applicable"
+    },
+    "task_type": "download",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "【Deprecated】南京邮电大学信息安全专业历年考试资料... · NJUPT_InfoSec_Free_Exams",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2021-08-29",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "github:NJUPTFreeExams/NJUPT-InfoSec-Free-Exams",
+      "channel_id": "github:NJUPTFreeExams/NJUPT-InfoSec-Free-Exams:resource",
+      "authority": 0.5,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "南京邮电大学信息安全专业历年考试资料"
+      },
+      {
+        "field": "general",
+        "text": "本repo下资料仅供个人学习交流使用，严禁用作商业用途，请在下载后24小时内删除。"
+      },
+      {
+        "field": "audience",
+        "text": "南京邮电大学信息安全专业历年考试资料"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.85
+  },
+  {
     "task_id": "task_90cda2cebe2b3af3",
     "doc_id": "cs-aa700cc880aa734ce178",
     "source_mode": "generated_from_llm_fields",
@@ -1609,8 +1681,6 @@
       "evidence": "llm",
       "sensitive": "llm",
       "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
       "task_frames": "llm_raw_task_frame"
     },
     "task_type": "application",
@@ -1673,6 +1743,685 @@
     "confidence": 0.6
   },
   {
+    "task_id": "task_da425268e55f53fb",
+    "doc_id": "bwc-8954c655e732d9c8873a",
+    "source_mode": "generated_from_llm_fields",
+    "field_sources": {
+      "category": "display_mapping",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm",
+      "review_required": "llm",
+      "task_frames": "llm_raw_task_frame"
+    },
+    "task_type": "application",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生",
+        "教职工"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "关于开展劳动教育课程安全协管实践项目的通知",
+    "action": {
+      "required": true,
+      "verb": "参与",
+      "object": null,
+      "summary": "学生可参与安全协管实践项目，包括协助大型活动保卫、义务消防、自行车有序引导摆放等，需联系指导老师薛宇飞（电话17751772076）协调安排。"
+    },
+    "time": {
+      "published_at": "2026-04-14",
+      "deadline": null,
+      "lifecycle": "active",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "bwc",
+      "channel_id": "bwc_security",
+      "authority": 0.84,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "在《南京邮电大学劳动教育课程大纲》中设置了安全协管实践项目"
+      },
+      {
+        "field": "general",
+        "text": "希望各学院能将此实践项目广而告之，发动广大学生积极参与"
+      },
+      {
+        "field": "general",
+        "text": "保卫处安全协管实践项目指导老师：薛宇飞（联系电话 1 77 51 772076 ）"
+      },
+      {
+        "field": "audience",
+        "text": "在《南京邮电大学劳动教育课程大纲》中设置了安全协管实践项目"
+      },
+      {
+        "field": "action",
+        "text": "在《南京邮电大学劳动教育课程大纲》中设置了安全协管实践项目"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.8
+  },
+  {
+    "task_id": "task_1c28412ce77c847b",
+    "doc_id": "jwc-5b4427b16b11f6941a73",
+    "source_mode": "generated_from_llm_fields",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm",
+      "review_required": "llm",
+      "task_frames": "empty_not_applicable"
+    },
+    "task_type": "result_check",
+    "who": {
+      "audience": [
+        "本科生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "【教务管理办公室】2025-2026学年第二学期考试安排表",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2026-05-22",
+      "deadline": null,
+      "lifecycle": "active",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "jwc",
+      "channel_id": "jwc_recommendation",
+      "authority": 1.0,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "现公布2025-2026学年第二学期考试安排表，考试分为学校组织和学院组织，请及时通知相关学生参加考试。"
+      },
+      {
+        "field": "audience",
+        "text": "现公布2025-2026学年第二学期考试安排表，考试分为学校组织和学院组织，请及时通知相关学生参加考试。"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
+  },
+  {
+    "task_id": "task_d999b71905115e76",
+    "doc_id": "github-NJUPTFreeExams-NJUPT-CS-FREE-2c2417a9008388b2e50e",
+    "source_mode": "generated_from_llm_fields",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm",
+      "review_required": "llm",
+      "task_frames": "empty_not_applicable"
+    },
+    "task_type": "download",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "南京邮电大学计算机相关专业历年考试资料 · NJUPT-CS-FREE",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2026-01-20",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "github:NJUPTFreeExams/NJUPT-CS-FREE",
+      "channel_id": "github:NJUPTFreeExams/NJUPT-CS-FREE:resource",
+      "authority": 0.5,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "NJUPTFreeExams 是由南京邮电大学计算机学院学生建立的一个 GitHub 组织，旨在收集校内历年资料造福后人。"
+      },
+      {
+        "field": "general",
+        "text": "考虑到计算机学院、软件学院、网络空间安全学院各专业课程的相似性，我们建立了此仓库"
+      },
+      {
+        "field": "audience",
+        "text": "NJUPTFreeExams 是由南京邮电大学计算机学院学生建立的一个 GitHub 组织，旨在收集校内历年资料造福后人。"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.85
+  },
+  {
+    "task_id": "task_82e14ff56851f522",
+    "doc_id": "github-NJUPTFreeExams-NJUPT-AUTO-Free-Exams-75ccdaeaf3facc3ffdbd",
+    "source_mode": "generated_from_llm_fields",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm",
+      "review_required": "llm",
+      "task_frames": "empty_not_applicable"
+    },
+    "task_type": "download",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "南京邮电大学自动化专业历年考试资料 · NJUPT-AUTO-Free-Exams",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2024-11-27",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "github:NJUPTFreeExams/NJUPT-AUTO-Free-Exams",
+      "channel_id": "github:NJUPTFreeExams/NJUPT-AUTO-Free-Exams:resource",
+      "authority": 0.5,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "NJUPTFreeExams 是由南京邮电大学计算机学院学生建立的一个 GitHub 组织，旨在收集校内历年资料造福后人。"
+      },
+      {
+        "field": "general",
+        "text": "NJUPT-AUTO-Free-Exams ! Stars ... 项目的 自动化专业 资料分仓库。"
+      },
+      {
+        "field": "audience",
+        "text": "NJUPTFreeExams 是由南京邮电大学计算机学院学生建立的一个 GitHub 组织，旨在收集校内历年资料造福后人。"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.85
+  },
+  {
+    "task_id": "task_71272ab6e47348e8",
+    "doc_id": "github-NJUPTFreeExams-NJUPT-TE-Free-Exams-5a117bb9af20dfd99981",
+    "source_mode": "generated_from_llm_fields",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm",
+      "review_required": "llm",
+      "task_frames": "empty_not_applicable"
+    },
+    "task_type": "download",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "南京邮电大学通信工程专业历年考试资料 · NJUPT-TE-Free-Exams",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2024-11-26",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "github:NJUPTFreeExams/NJUPT-TE-Free-Exams",
+      "channel_id": "github:NJUPTFreeExams/NJUPT-TE-Free-Exams:resource",
+      "authority": 0.5,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "NJUPTFreeExams 是由南京邮电大学计算机学院学生建立的一个 GitHub 组织，旨在收集校内历年资料造福后人。"
+      },
+      {
+        "field": "audience",
+        "text": "NJUPTFreeExams 是由南京邮电大学计算机学院学生建立的一个 GitHub 组织，旨在收集校内历年资料造福后人。"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
+  },
+  {
+    "task_id": "task_dc58d10ca0976caa",
+    "doc_id": "github-love98ooo-ZhengFangJiaoWuSystemTampermonkeyScript-b704201def39004c085e",
+    "source_mode": "generated_from_llm_fields",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm",
+      "review_required": "llm",
+      "task_frames": "empty_not_applicable"
+    },
+    "task_type": "download",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "南京邮电大学正方教务系统油猴脚本，主要用于查询平时分和卷面分 · ZhengFangJiaoWuSystemTampermonkeyScript",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2024-01-10",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "github:love98ooo/ZhengFangJiaoWuSystemTampermonkeyScript",
+      "channel_id": "github:love98ooo/ZhengFangJiaoWuSystemTampermonkeyScript:resource",
+      "authority": 0.5,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "南京邮电大学正方教务系统油猴脚本，主要用于查询平时分和卷面分"
+      },
+      {
+        "field": "general",
+        "text": "点这里安装或手动更新脚本"
+      },
+      {
+        "field": "audience",
+        "text": "南京邮电大学正方教务系统油猴脚本，主要用于查询平时分和卷面分"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.85
+  },
+  {
+    "task_id": "task_c387f07d6af241cf",
+    "doc_id": "github-Moonike1217-NJUPTExamICSBuilder-6d7b3d1df6772dcac729",
+    "source_mode": "generated_from_llm_fields",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm",
+      "review_required": "llm",
+      "task_frames": "empty_not_applicable"
+    },
+    "task_type": "download",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "一个将南京邮电大学考试时间文件转换为ics文件的工具 · 南邮考试日历生成器",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2026-05-24",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "github:Moonike1217/NJUPTExamICSBuilder",
+      "channel_id": "github:Moonike1217/NJUPTExamICSBuilder:resource",
+      "authority": 0.5,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "这是一个帮助南京邮电大学学生将考试信息转换为 ICS 日历文件的工具"
+      },
+      {
+        "field": "general",
+        "text": "使用方法 1. 上传教务处考试安排Excel文件 2. 输入学号查询您的考试信息"
+      },
+      {
+        "field": "audience",
+        "text": "这是一个帮助南京邮电大学学生将考试信息转换为 ICS 日历文件的工具"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.85
+  },
+  {
+    "task_id": "task_be081caa26033ab9",
+    "doc_id": "github-NJUPTFreeExams-NJUPT-General-Free-Exams-5360fe1c3b08d1d4ed43",
+    "source_mode": "generated_from_llm_fields",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm",
+      "review_required": "llm",
+      "task_frames": "empty_not_applicable"
+    },
+    "task_type": "download",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "南京邮电大学课程资源共享平台，此仓库包括门户网站和通识类课程... · NJUPT-General-Free-Exams",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2026-01-20",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "github:NJUPTFreeExams/NJUPT-General-Free-Exams",
+      "channel_id": "github:NJUPTFreeExams/NJUPT-General-Free-Exams:resource",
+      "authority": 0.5,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "NJUPTFreeExams 是由南京邮电大学计算机学院学生建立的一个 GitHub 组织，旨在收集校内历年资料造福后人。"
+      },
+      {
+        "field": "audience",
+        "text": "NJUPTFreeExams 是由南京邮电大学计算机学院学生建立的一个 GitHub 组织，旨在收集校内历年资料造福后人。"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.85
+  },
+  {
+    "task_id": "task_2b85853c1a7aa07d",
+    "doc_id": "github-hicancan-njupt-jwxt-assistant-f03fa4877a28106f430e",
+    "source_mode": "generated_from_llm_fields",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm",
+      "review_required": "llm",
+      "task_frames": "empty_not_applicable"
+    },
+    "task_type": "download",
+    "who": {
+      "audience": [
+        "本科生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "教务助手资料 · 南邮教务助手 (NJUPT JWXT Assistant)",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2025-12-29",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "github:hicancan/njupt-jwxt-assistant",
+      "channel_id": "github:hicancan/njupt-jwxt-assistant:resource",
+      "authority": 0.72,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "南邮教务助手 NJUPT JWXT Assistant 基于 WXT + React + TypeScript + Tailwind CSS 的南邮教务系统增强扩展"
+      },
+      {
+        "field": "general",
+        "text": "功能 - 🔐 自动登录 - 自动填充学号和密码 - 📝 一键评教 - 自动完成课程评教，支持随机打分避免模式检测 - 📅 课表导出 - 解析课表并导出为 ICS 日历格式"
+      },
+      {
+        "field": "audience",
+        "text": "南邮教务助手 NJUPT JWXT Assistant 基于 WXT + React + TypeScript + Tailwind CSS 的南邮教务系统增强扩展"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
+  },
+  {
     "task_id": "task_7e38ffa8a1e92922",
     "doc_id": "cs-2310a7e236b7a19f9487",
     "source_mode": "generated_from_llm_fields",
@@ -1688,8 +2437,6 @@
       "evidence": "llm",
       "sensitive": "llm",
       "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
       "task_frames": "llm_raw_task_frame"
     },
     "task_type": "application",
@@ -1767,8 +2514,6 @@
       "evidence": "llm",
       "sensitive": "llm",
       "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
       "task_frames": "llm_raw_task_frame"
     },
     "task_type": "application",
@@ -1831,6 +2576,615 @@
     "confidence": 0.6
   },
   {
+    "task_id": "task_165af783f32fbed8",
+    "doc_id": "github-renyuanzhe-NJUPT-CS-Courses-89624db7d227f3a5ec71",
+    "source_mode": "generated_from_llm_fields",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm",
+      "review_required": "llm",
+      "task_frames": "empty_not_applicable"
+    },
+    "task_type": "download",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "NJUPT南京邮电大学,计算机相关课程的实验报告，大作业以及... · NJUPT-CS-Courses",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2023-06-28",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "github:renyuanzhe/NJUPT-CS-Courses",
+      "channel_id": "github:renyuanzhe/NJUPT-CS-Courses:resource",
+      "authority": 0.5,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "此仓库包含了南京邮电大学计算机专业多门课程的的学习资料，实验报告以及大作业。"
+      },
+      {
+        "field": "general",
+        "text": "有需要的自取，可以借鉴，但请勿直接抄袭。"
+      },
+      {
+        "field": "audience",
+        "text": "此仓库包含了南京邮电大学计算机专业多门课程的的学习资料，实验报告以及大作业。"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
+  },
+  {
+    "task_id": "task_3fb5bf26c3687109",
+    "doc_id": "github-yosunpeng-postgraduate_test_njupt-b65d2cfa1c598600bc07",
+    "source_mode": "generated_from_llm_fields",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm",
+      "review_required": "llm",
+      "task_frames": "empty_not_applicable"
+    },
+    "task_type": "download",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "南京邮电大学研究生期末考试复习资料 · postgraduate\\_test\\_njupt",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2019-05-26",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "github:yosunpeng/postgraduate_test_njupt",
+      "channel_id": "github:yosunpeng/postgraduate_test_njupt:resource",
+      "authority": 0.5,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "南京邮电大学研究生期末考试复习资料"
+      },
+      {
+        "field": "general",
+        "text": "查看文件中的README.pdf"
+      },
+      {
+        "field": "audience",
+        "text": "南京邮电大学研究生期末考试复习资料"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.85
+  },
+  {
+    "task_id": "task_339736211b6c6fe8",
+    "doc_id": "github-xiafanglongfei-NJUPT-auto-evaluate-cb1e0dbaa0cca5ce421e",
+    "source_mode": "generated_from_llm_fields",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm",
+      "review_required": "llm",
+      "task_frames": "empty_not_applicable"
+    },
+    "task_type": "download",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "🐶 南邮本科生学生评教活动的一键自动评价脚本 #南邮# #一... · NJUPT-auto-evaluate",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2022-01-19",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "github:xiafanglongfei/NJUPT-auto-evaluate",
+      "channel_id": "github:xiafanglongfei/NJUPT-auto-evaluate:resource",
+      "authority": 0.5,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "南邮每学期都有一个本科生学生评教的活动，分为两项——“教师满意度调查”和“教学评价”"
+      },
+      {
+        "field": "general",
+        "text": "现在脚本能够一次完成一整项评价"
+      },
+      {
+        "field": "audience",
+        "text": "南邮每学期都有一个本科生学生评教的活动，分为两项——“教师满意度调查”和“教学评价”"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.85
+  },
+  {
+    "task_id": "task_73ee5efbfda144bc",
+    "doc_id": "njupt_notice-0d750d311ccda0e2154a",
+    "source_mode": "generated_from_llm_fields",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm",
+      "review_required": "llm",
+      "task_frames": "empty_not_applicable"
+    },
+    "task_type": "application",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生",
+        "全体学生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "2026 05.22 关于申报2026年学校党建与思想政治教育研究项目的通知",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2026-05-22",
+      "deadline": null,
+      "lifecycle": "active",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "njupt_notice",
+      "channel_id": "njupt_notice_main",
+      "authority": 0.86,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "各基层党委、党总支、直属党支部，各单位、各部门： 为深入学习习近平新时代中国特色社会主义思想，全面贯彻习近平总书记关于教育的重要论述和对江苏工作的重要讲话精神，深入推进马克思主义理论研究和建设工程，聚焦新时代高校党的建设与思想政治教育研究前沿，着力产出一批高质量理论研究成果，有力支撑服务学校高质量发展，经研究，决定开展2026年学校党建与思想政治教育研究项目"
+      },
+      {
+        "field": "audience",
+        "text": "各基层党委、党总支、直属党支部，各单位、各部门： 为深入学习习近平新时代中国特色社会主义思想，全面贯彻习近平总书记关于教育的重要论述和对江苏工作的重要讲话精神，深入推进马克思主义理论研究和建设工程，聚焦新时代高校党的建设与思想政治教育研究前沿，着力产出一批高质量理论研究成果，有力支撑服务学校高质量发展，经研究，决定开展2026年学校党建与思想政治教育研究项目"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.85
+  },
+  {
+    "task_id": "task_32f69df7b10a5e9f",
+    "doc_id": "github-dhiyu-NJUPT-Bachelor-6c0dfd18c09b68d15b36",
+    "source_mode": "generated_from_llm_fields",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm",
+      "review_required": "llm",
+      "task_frames": "empty_not_applicable"
+    },
+    "task_type": "download",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "南京邮电大学本科生毕业设计Latex模板 · 南京邮电大学本科毕业设计Latex模板",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2024-06-05",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "github:dhiyu/NJUPT-Bachelor",
+      "channel_id": "github:dhiyu/NJUPT-Bachelor:resource",
+      "authority": 0.5,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "本模板是南京邮电大学本科生 理工艺教类 毕业设计的Latex模板"
+      },
+      {
+        "field": "general",
+        "text": "欢迎大家使用并提出建议"
+      },
+      {
+        "field": "audience",
+        "text": "本模板是南京邮电大学本科生 理工艺教类 毕业设计的Latex模板"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.85
+  },
+  {
+    "task_id": "task_e4f51fbea127a69e",
+    "doc_id": "github-gzr-lgtm-NJUPThesis-Bachelor-afd91b3fbe9d32896279",
+    "source_mode": "generated_from_llm_fields",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm",
+      "review_required": "llm",
+      "task_frames": "empty_not_applicable"
+    },
+    "task_type": "download",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "LaTeX template for NJUPT Under... · NUPThesis",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2022-05-02",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "github:gzr-lgtm/NJUPThesis-Bachelor",
+      "channel_id": "github:gzr-lgtm/NJUPThesis-Bachelor:resource",
+      "authority": 0.5,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "南京邮电大学毕业论文 LaTex 模版"
+      },
+      {
+        "field": "general",
+        "text": "针对南京邮电大学本科理工艺教类本科生毕业设计、论文的 LaTeX 模版"
+      },
+      {
+        "field": "audience",
+        "text": "南京邮电大学毕业论文 LaTex 模版"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
+  },
+  {
+    "task_id": "task_5a23a9679b45e700",
+    "doc_id": "github-s235784-NJUPT_AutoLogin-3bfbad0bf26507d2f64a",
+    "source_mode": "generated_from_llm_fields",
+    "field_sources": {
+      "category": "display_mapping",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm",
+      "review_required": "llm",
+      "task_frames": "empty_not_applicable"
+    },
+    "task_type": "download",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "南京邮电大学校园网自动登录脚本，支持Linux（OpenWR... · NJUPT_AutoLogin",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2025-09-09",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "github:s235784/NJUPT_AutoLogin",
+      "channel_id": "github:s235784/NJUPT_AutoLogin:resource",
+      "authority": 0.5,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "NJUPT AutoLogin 南京邮电大学校园网自动登录脚本，支持 macOS、Linux（如 OpenWRT）和 MikroTik RouterOS 平台。"
+      },
+      {
+        "field": "general",
+        "text": "1. 下载该脚本 NJUPT-AutoLogin.sh。"
+      },
+      {
+        "field": "audience",
+        "text": "NJUPT AutoLogin 南京邮电大学校园网自动登录脚本，支持 macOS、Linux（如 OpenWRT）和 MikroTik RouterOS 平台。"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.85
+  },
+  {
+    "task_id": "task_4cbe05107853ed5a",
+    "doc_id": "github-ace-trump-tech-NJUPT-Graduation-thesis-45f54f0688c8a8d0c82d",
+    "source_mode": "generated_from_llm_fields",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm",
+      "review_required": "llm",
+      "task_frames": "empty_not_applicable"
+    },
+    "task_type": "download",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "南京邮电大学毕业论文模板（能毕业就行，有时间多回去陪陪家人） · 南京邮电大学毕业论文模板",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2025-05-13",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "github:ace-trump-tech/NJUPT-Graduation-thesis",
+      "channel_id": "github:ace-trump-tech/NJUPT-Graduation-thesis:resource",
+      "authority": 0.5,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "南京邮电大学毕业论文模板"
+      },
+      {
+        "field": "general",
+        "text": "下载模板"
+      },
+      {
+        "field": "general",
+        "text": "点击 Releases 下载最新的模板文件压缩包"
+      },
+      {
+        "field": "audience",
+        "text": "南京邮电大学毕业论文模板"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.85
+  },
+  {
     "task_id": "task_185d824f869f0049",
     "doc_id": "github-hicancan-njupt-net-7f980de7a96003335a87",
     "source_mode": "generated_from_llm_fields",
@@ -1846,8 +3200,6 @@
       "evidence": "llm",
       "sensitive": "llm",
       "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
       "task_frames": "empty_not_applicable"
     },
     "task_type": "download",
@@ -1905,170 +3257,6 @@
     "confidence": 0.85
   },
   {
-    "task_id": "task_da425268e55f53fb",
-    "doc_id": "bwc-8954c655e732d9c8873a",
-    "source_mode": "generated_from_llm_fields",
-    "field_sources": {
-      "category": "display_mapping",
-      "domain": "llm",
-      "intent": "llm",
-      "deadline": "llm",
-      "action_required": "llm",
-      "action_summary": "llm",
-      "required_materials": "llm",
-      "summary": "llm",
-      "evidence": "llm",
-      "sensitive": "llm",
-      "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
-      "task_frames": "llm_raw_task_frame"
-    },
-    "task_type": "application",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生",
-        "教职工"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "关于开展劳动教育课程安全协管实践项目的通知",
-    "action": {
-      "required": true,
-      "verb": "参与",
-      "object": null,
-      "summary": "学生可参与安全协管实践项目，包括协助大型活动保卫、义务消防、自行车有序引导摆放等，需联系指导老师薛宇飞（电话17751772076）协调安排。"
-    },
-    "time": {
-      "published_at": "2026-04-14",
-      "deadline": null,
-      "lifecycle": "active",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "bwc",
-      "channel_id": "bwc_security",
-      "authority": 0.84,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "在《南京邮电大学劳动教育课程大纲》中设置了安全协管实践项目"
-      },
-      {
-        "field": "general",
-        "text": "希望各学院能将此实践项目广而告之，发动广大学生积极参与"
-      },
-      {
-        "field": "general",
-        "text": "保卫处安全协管实践项目指导老师：薛宇飞（联系电话 1 77 51 772076 ）"
-      },
-      {
-        "field": "audience",
-        "text": "在《南京邮电大学劳动教育课程大纲》中设置了安全协管实践项目"
-      },
-      {
-        "field": "action",
-        "text": "在《南京邮电大学劳动教育课程大纲》中设置了安全协管实践项目"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.8
-  },
-  {
-    "task_id": "task_2b85853c1a7aa07d",
-    "doc_id": "github-hicancan-njupt-jwxt-assistant-f03fa4877a28106f430e",
-    "source_mode": "generated_from_llm_fields",
-    "field_sources": {
-      "category": "llm",
-      "domain": "llm",
-      "intent": "llm",
-      "deadline": "llm",
-      "action_required": "llm",
-      "action_summary": "llm",
-      "required_materials": "llm",
-      "summary": "llm",
-      "evidence": "llm",
-      "sensitive": "llm",
-      "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
-      "task_frames": "empty_not_applicable"
-    },
-    "task_type": "download",
-    "who": {
-      "audience": [
-        "本科生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "教务助手资料 · 南邮教务助手 (NJUPT JWXT Assistant)",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": "2025-12-29",
-      "deadline": null,
-      "lifecycle": "evergreen",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "github:hicancan/njupt-jwxt-assistant",
-      "channel_id": "github:hicancan/njupt-jwxt-assistant:resource",
-      "authority": 0.72,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "南邮教务助手 NJUPT JWXT Assistant 基于 WXT + React + TypeScript + Tailwind CSS 的南邮教务系统增强扩展"
-      },
-      {
-        "field": "general",
-        "text": "功能 - 🔐 自动登录 - 自动填充学号和密码 - 📝 一键评教 - 自动完成课程评教，支持随机打分避免模式检测 - 📅 课表导出 - 解析课表并导出为 ICS 日历格式"
-      },
-      {
-        "field": "audience",
-        "text": "南邮教务助手 NJUPT JWXT Assistant 基于 WXT + React + TypeScript + Tailwind CSS 的南邮教务系统增强扩展"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.9
-  },
-  {
     "task_id": "task_a94eb915a8e46be9",
     "doc_id": "hqc-bfd10aa90d5011cdbfa7",
     "source_mode": "generated_from_llm_fields",
@@ -2084,8 +3272,6 @@
       "evidence": "llm",
       "sensitive": "llm",
       "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
       "task_frames": "llm_raw_task_frame"
     },
     "task_type": "application",
@@ -2167,8 +3353,6 @@
       "evidence": "llm",
       "sensitive": "llm",
       "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
       "task_frames": "empty_not_applicable"
     },
     "task_type": "schedule",
@@ -2227,6 +3411,158 @@
     "confidence": 0.9
   },
   {
+    "task_id": "task_6fd84756891cad0f",
+    "doc_id": "github-s235784-NJUPT_AutoLogin-69c4f1af6f3b914fa34c",
+    "source_mode": "generated_from_llm_fields",
+    "field_sources": {
+      "category": "display_mapping",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm",
+      "review_required": "llm",
+      "task_frames": "empty_not_applicable"
+    },
+    "task_type": "download",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "南京邮电大学校园网自动登录脚本，支持Linux（OpenWR... · NJUPT_AutoLogin RouterOS",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2025-09-09",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "github:s235784/NJUPT_AutoLogin",
+      "channel_id": "github:s235784/NJUPT_AutoLogin:resource",
+      "authority": 0.5,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "NJUPT AutoLogin RouterOS 适用于 RouterOS v7.11.2 及以上版本；在 Python 3.8 及以上版本通过测试。"
+      },
+      {
+        "field": "general",
+        "text": "1. 下载 RouterOS/NJUPT Auto Login.py 和 RouterOS/config.json"
+      },
+      {
+        "field": "audience",
+        "text": "NJUPT AutoLogin RouterOS 适用于 RouterOS v7.11.2 及以上版本；在 Python 3.8 及以上版本通过测试。"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.85
+  },
+  {
+    "task_id": "task_9337e2ea186918e2",
+    "doc_id": "github-Freedomisgood-NjuptCmcc-2e4d2ee54922589eb084",
+    "source_mode": "generated_from_llm_fields",
+    "field_sources": {
+      "category": "display_mapping",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm",
+      "review_required": "llm",
+      "task_frames": "empty_not_applicable"
+    },
+    "task_type": "download",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "校园网一键上网脚本 · 说明：",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2021-08-15",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "github:Freedomisgood/NjuptCmcc",
+      "channel_id": "github:Freedomisgood/NjuptCmcc:resource",
+      "authority": 0.5,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "校园网一键上网脚本"
+      },
+      {
+        "field": "general",
+        "text": "下载 V2.0.1 蓝奏云下载链接"
+      },
+      {
+        "field": "audience",
+        "text": "校园网一键上网脚本"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.85
+  },
+  {
     "task_id": "task_a797c728d6ed8a23",
     "doc_id": "hqc-0d2ca4f4fe0d9bac05c1",
     "source_mode": "generated_from_llm_fields",
@@ -2242,8 +3578,6 @@
       "evidence": "llm",
       "sensitive": "llm",
       "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
       "task_frames": "empty_not_applicable"
     },
     "task_type": "schedule",
@@ -2302,6 +3636,79 @@
     "confidence": 0.9
   },
   {
+    "task_id": "task_68336e61014c072f",
+    "doc_id": "archives-b38698c994ad71856b52",
+    "source_mode": "generated_from_llm_fields",
+    "field_sources": {
+      "category": "display_mapping",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm",
+      "review_required": "llm",
+      "task_frames": "empty_not_applicable"
+    },
+    "task_type": "schedule",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生",
+        "校友"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "档案馆2025年暑假工作安排",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": null,
+      "deadline": null,
+      "lifecycle": "unknown",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "archives",
+      "channel_id": "archives_notice",
+      "authority": 0.62,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "档案馆2025年暑假工作安排"
+      },
+      {
+        "field": "audience",
+        "text": "档案馆2025年暑假工作安排"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
+  },
+  {
     "task_id": "task_c5227fe556ec47c9",
     "doc_id": "xxb-2652f8ad86b44f71b459",
     "source_mode": "generated_from_llm_fields",
@@ -2317,8 +3724,6 @@
       "evidence": "llm",
       "sensitive": "llm",
       "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
       "task_frames": "empty_not_applicable"
     },
     "task_type": "download",
@@ -2377,6 +3782,82 @@
     "confidence": 0.6
   },
   {
+    "task_id": "task_0ff2d8c6af470fe0",
+    "doc_id": "github-lux-QAQ-NJUPT_Fastlogin-761863a2a7039f75e0eb",
+    "source_mode": "generated_from_llm_fields",
+    "field_sources": {
+      "category": "display_mapping",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm",
+      "review_required": "llm",
+      "task_frames": "empty_not_applicable"
+    },
+    "task_type": "download",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "南京邮电大学校园网最快登录脚本 for Android Wi... · NJUPT_Fastlogin",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2025-12-29",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "github:lux-QAQ/NJUPT_Fastlogin",
+      "channel_id": "github:lux-QAQ/NJUPT_Fastlogin:resource",
+      "authority": 0.5,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "NJUPT Fastlogin 由于之前使用python写的南邮校园网登录脚本速度太慢了"
+      },
+      {
+        "field": "general",
+        "text": "Android 直接去下 Release版本 开箱即用"
+      },
+      {
+        "field": "audience",
+        "text": "NJUPT Fastlogin 由于之前使用python写的南邮校园网登录脚本速度太慢了"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.7
+  },
+  {
     "task_id": "task_73739c37c0749e8b",
     "doc_id": "hqc-44cadcfc99f71a45ed7c",
     "source_mode": "generated_from_llm_fields",
@@ -2392,8 +3873,6 @@
       "evidence": "llm",
       "sensitive": "llm",
       "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
       "task_frames": "empty_not_applicable"
     },
     "task_type": "schedule",
@@ -2467,8 +3946,6 @@
       "evidence": "llm",
       "sensitive": "llm",
       "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
       "task_frames": "empty_not_applicable"
     },
     "task_type": "schedule",
@@ -2525,1579 +4002,6 @@
       "review_required": false
     },
     "confidence": 0.9
-  },
-  {
-    "task_id": "task_c6249174ee7f6ff5",
-    "doc_id": "simp-3567f2f1c5697d1c40a5",
-    "source_mode": "generated_from_llm_fields",
-    "field_sources": {
-      "category": "llm",
-      "domain": "llm",
-      "intent": "llm",
-      "deadline": "llm",
-      "action_required": "llm",
-      "action_summary": "llm",
-      "required_materials": "llm",
-      "summary": "llm",
-      "evidence": "llm",
-      "sensitive": "llm",
-      "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
-      "task_frames": "llm_raw_task_frame"
-    },
-    "task_type": "application",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生",
-        "现代邮政学院"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "南京邮电大学智能时空信息与大数据微专业招生简章",
-    "action": {
-      "required": true,
-      "verb": "apply",
-      "object": null,
-      "summary": "报名智能时空信息与大数据微专业，需完成小程序报名和提交申请表。"
-    },
-    "time": {
-      "published_at": null,
-      "deadline": "2026-03-31T23:59:00+08:00",
-      "lifecycle": "expired",
-      "urgency_days": -55
-    },
-    "materials": [
-      {
-        "name": "{'name': '南京邮电大学本科生微专业学习申请表', 'role': '申请表', 'required': True, 'sensitive': False}",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
-      }
-    ],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "simp",
-      "channel_id": "simp_academic",
-      "authority": 0.68,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "报名时间： 3 月 24 日— 3 月 31 日"
-      },
-      {
-        "field": "general",
-        "text": "第一步： 小程序报名 扫描下方二维码进入小程序，填写报名信息。 第二步： 提交《南京邮电大学本科生微专业学习申请表》"
-      },
-      {
-        "field": "audience",
-        "text": "报名时间： 3 月 24 日— 3 月 31 日"
-      },
-      {
-        "field": "action",
-        "text": "报名时间： 3 月 24 日— 3 月 31 日"
-      },
-      {
-        "field": "deadline",
-        "text": "报名时间： 3 月 24 日— 3 月 31 日"
-      },
-      {
-        "field": "materials",
-        "text": "附件/材料：{'name': '南京邮电大学本科生微专业学习申请表', 'role': '申请表', 'required': True, 'sensitive': False}"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.9
-  },
-  {
-    "task_id": "task_68336e61014c072f",
-    "doc_id": "archives-b38698c994ad71856b52",
-    "source_mode": "generated_from_llm_fields",
-    "field_sources": {
-      "category": "display_mapping",
-      "domain": "llm",
-      "intent": "llm",
-      "deadline": "llm",
-      "action_required": "llm",
-      "action_summary": "llm",
-      "required_materials": "llm",
-      "summary": "llm",
-      "evidence": "llm",
-      "sensitive": "llm",
-      "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
-      "task_frames": "empty_not_applicable"
-    },
-    "task_type": "schedule",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生",
-        "校友"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "档案馆2025年暑假工作安排",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": null,
-      "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "archives",
-      "channel_id": "archives_notice",
-      "authority": 0.62,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "档案馆2025年暑假工作安排"
-      },
-      {
-        "field": "audience",
-        "text": "档案馆2025年暑假工作安排"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.9
-  },
-  {
-    "task_id": "task_ab7e9a4e82712da3",
-    "doc_id": "github-NJUPTFreeExams-NJUPT-CST-Free-Exams-6169d0395e43fe5cb864",
-    "source_mode": "generated_from_llm_fields",
-    "field_sources": {
-      "category": "llm",
-      "domain": "llm",
-      "intent": "llm",
-      "deadline": "llm",
-      "action_required": "llm",
-      "action_summary": "llm",
-      "required_materials": "llm",
-      "summary": "llm",
-      "evidence": "llm",
-      "sensitive": "llm",
-      "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
-      "task_frames": "empty_not_applicable"
-    },
-    "task_type": "download",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "【Deprecated】南京邮电大学计算机科学与技术专业历年... · NJUPT-CS-Free-Exams",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": "2021-08-29",
-      "deadline": null,
-      "lifecycle": "evergreen",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "github:NJUPTFreeExams/NJUPT-CST-Free-Exams",
-      "channel_id": "github:NJUPTFreeExams/NJUPT-CST-Free-Exams:resource",
-      "authority": 0.5,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "南京邮电大学计算机科学与技术专业历年考试资料"
-      },
-      {
-        "field": "general",
-        "text": "此 repo 从 2021-09 开始不再维护 所有的资料已迁移至 NJUPT-CS-FREE"
-      },
-      {
-        "field": "audience",
-        "text": "南京邮电大学计算机科学与技术专业历年考试资料"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.86
-  },
-  {
-    "task_id": "task_fb55fba947594c56",
-    "doc_id": "github-NJUPTFreeExams-NJUPT-InfoSec-Free-Exams-e6e8024e7e61b78b68d8",
-    "source_mode": "generated_from_llm_fields",
-    "field_sources": {
-      "category": "llm",
-      "domain": "llm",
-      "intent": "llm",
-      "deadline": "llm",
-      "action_required": "llm",
-      "action_summary": "llm",
-      "required_materials": "llm",
-      "summary": "llm",
-      "evidence": "llm",
-      "sensitive": "llm",
-      "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
-      "task_frames": "empty_not_applicable"
-    },
-    "task_type": "download",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "【Deprecated】南京邮电大学信息安全专业历年考试资料... · NJUPT_InfoSec_Free_Exams",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": "2021-08-29",
-      "deadline": null,
-      "lifecycle": "evergreen",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "github:NJUPTFreeExams/NJUPT-InfoSec-Free-Exams",
-      "channel_id": "github:NJUPTFreeExams/NJUPT-InfoSec-Free-Exams:resource",
-      "authority": 0.5,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "南京邮电大学信息安全专业历年考试资料"
-      },
-      {
-        "field": "general",
-        "text": "本repo下资料仅供个人学习交流使用，严禁用作商业用途，请在下载后24小时内删除。"
-      },
-      {
-        "field": "audience",
-        "text": "南京邮电大学信息安全专业历年考试资料"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.85
-  },
-  {
-    "task_id": "task_d999b71905115e76",
-    "doc_id": "github-NJUPTFreeExams-NJUPT-CS-FREE-2c2417a9008388b2e50e",
-    "source_mode": "generated_from_llm_fields",
-    "field_sources": {
-      "category": "llm",
-      "domain": "llm",
-      "intent": "llm",
-      "deadline": "llm",
-      "action_required": "llm",
-      "action_summary": "llm",
-      "required_materials": "llm",
-      "summary": "llm",
-      "evidence": "llm",
-      "sensitive": "llm",
-      "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
-      "task_frames": "empty_not_applicable"
-    },
-    "task_type": "download",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "南京邮电大学计算机相关专业历年考试资料 · NJUPT-CS-FREE",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": "2026-01-20",
-      "deadline": null,
-      "lifecycle": "evergreen",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "github:NJUPTFreeExams/NJUPT-CS-FREE",
-      "channel_id": "github:NJUPTFreeExams/NJUPT-CS-FREE:resource",
-      "authority": 0.5,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "NJUPTFreeExams 是由南京邮电大学计算机学院学生建立的一个 GitHub 组织，旨在收集校内历年资料造福后人。"
-      },
-      {
-        "field": "general",
-        "text": "考虑到计算机学院、软件学院、网络空间安全学院各专业课程的相似性，我们建立了此仓库"
-      },
-      {
-        "field": "audience",
-        "text": "NJUPTFreeExams 是由南京邮电大学计算机学院学生建立的一个 GitHub 组织，旨在收集校内历年资料造福后人。"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.85
-  },
-  {
-    "task_id": "task_71272ab6e47348e8",
-    "doc_id": "github-NJUPTFreeExams-NJUPT-TE-Free-Exams-5a117bb9af20dfd99981",
-    "source_mode": "generated_from_llm_fields",
-    "field_sources": {
-      "category": "llm",
-      "domain": "llm",
-      "intent": "llm",
-      "deadline": "llm",
-      "action_required": "llm",
-      "action_summary": "llm",
-      "required_materials": "llm",
-      "summary": "llm",
-      "evidence": "llm",
-      "sensitive": "llm",
-      "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
-      "task_frames": "empty_not_applicable"
-    },
-    "task_type": "download",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "南京邮电大学通信工程专业历年考试资料 · NJUPT-TE-Free-Exams",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": "2024-11-26",
-      "deadline": null,
-      "lifecycle": "evergreen",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "github:NJUPTFreeExams/NJUPT-TE-Free-Exams",
-      "channel_id": "github:NJUPTFreeExams/NJUPT-TE-Free-Exams:resource",
-      "authority": 0.5,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "NJUPTFreeExams 是由南京邮电大学计算机学院学生建立的一个 GitHub 组织，旨在收集校内历年资料造福后人。"
-      },
-      {
-        "field": "audience",
-        "text": "NJUPTFreeExams 是由南京邮电大学计算机学院学生建立的一个 GitHub 组织，旨在收集校内历年资料造福后人。"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.9
-  },
-  {
-    "task_id": "task_82e14ff56851f522",
-    "doc_id": "github-NJUPTFreeExams-NJUPT-AUTO-Free-Exams-75ccdaeaf3facc3ffdbd",
-    "source_mode": "generated_from_llm_fields",
-    "field_sources": {
-      "category": "llm",
-      "domain": "llm",
-      "intent": "llm",
-      "deadline": "llm",
-      "action_required": "llm",
-      "action_summary": "llm",
-      "required_materials": "llm",
-      "summary": "llm",
-      "evidence": "llm",
-      "sensitive": "llm",
-      "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
-      "task_frames": "empty_not_applicable"
-    },
-    "task_type": "download",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "南京邮电大学自动化专业历年考试资料 · NJUPT-AUTO-Free-Exams",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": "2024-11-27",
-      "deadline": null,
-      "lifecycle": "evergreen",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "github:NJUPTFreeExams/NJUPT-AUTO-Free-Exams",
-      "channel_id": "github:NJUPTFreeExams/NJUPT-AUTO-Free-Exams:resource",
-      "authority": 0.5,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "NJUPTFreeExams 是由南京邮电大学计算机学院学生建立的一个 GitHub 组织，旨在收集校内历年资料造福后人。"
-      },
-      {
-        "field": "general",
-        "text": "NJUPT-AUTO-Free-Exams ! Stars ... 项目的 自动化专业 资料分仓库。"
-      },
-      {
-        "field": "audience",
-        "text": "NJUPTFreeExams 是由南京邮电大学计算机学院学生建立的一个 GitHub 组织，旨在收集校内历年资料造福后人。"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.85
-  },
-  {
-    "task_id": "task_dc58d10ca0976caa",
-    "doc_id": "github-love98ooo-ZhengFangJiaoWuSystemTampermonkeyScript-b704201def39004c085e",
-    "source_mode": "generated_from_llm_fields",
-    "field_sources": {
-      "category": "llm",
-      "domain": "llm",
-      "intent": "llm",
-      "deadline": "llm",
-      "action_required": "llm",
-      "action_summary": "llm",
-      "required_materials": "llm",
-      "summary": "llm",
-      "evidence": "llm",
-      "sensitive": "llm",
-      "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
-      "task_frames": "empty_not_applicable"
-    },
-    "task_type": "download",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "南京邮电大学正方教务系统油猴脚本，主要用于查询平时分和卷面分 · ZhengFangJiaoWuSystemTampermonkeyScript",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": "2024-01-10",
-      "deadline": null,
-      "lifecycle": "evergreen",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "github:love98ooo/ZhengFangJiaoWuSystemTampermonkeyScript",
-      "channel_id": "github:love98ooo/ZhengFangJiaoWuSystemTampermonkeyScript:resource",
-      "authority": 0.5,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "南京邮电大学正方教务系统油猴脚本，主要用于查询平时分和卷面分"
-      },
-      {
-        "field": "general",
-        "text": "点这里安装或手动更新脚本"
-      },
-      {
-        "field": "audience",
-        "text": "南京邮电大学正方教务系统油猴脚本，主要用于查询平时分和卷面分"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.85
-  },
-  {
-    "task_id": "task_c387f07d6af241cf",
-    "doc_id": "github-Moonike1217-NJUPTExamICSBuilder-6d7b3d1df6772dcac729",
-    "source_mode": "generated_from_llm_fields",
-    "field_sources": {
-      "category": "llm",
-      "domain": "llm",
-      "intent": "llm",
-      "deadline": "llm",
-      "action_required": "llm",
-      "action_summary": "llm",
-      "required_materials": "llm",
-      "summary": "llm",
-      "evidence": "llm",
-      "sensitive": "llm",
-      "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
-      "task_frames": "empty_not_applicable"
-    },
-    "task_type": "download",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "一个将南京邮电大学考试时间文件转换为ics文件的工具 · 南邮考试日历生成器",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": "2026-05-24",
-      "deadline": null,
-      "lifecycle": "evergreen",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "github:Moonike1217/NJUPTExamICSBuilder",
-      "channel_id": "github:Moonike1217/NJUPTExamICSBuilder:resource",
-      "authority": 0.5,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "这是一个帮助南京邮电大学学生将考试信息转换为 ICS 日历文件的工具"
-      },
-      {
-        "field": "general",
-        "text": "使用方法 1. 上传教务处考试安排Excel文件 2. 输入学号查询您的考试信息"
-      },
-      {
-        "field": "audience",
-        "text": "这是一个帮助南京邮电大学学生将考试信息转换为 ICS 日历文件的工具"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.85
-  },
-  {
-    "task_id": "task_be081caa26033ab9",
-    "doc_id": "github-NJUPTFreeExams-NJUPT-General-Free-Exams-5360fe1c3b08d1d4ed43",
-    "source_mode": "generated_from_llm_fields",
-    "field_sources": {
-      "category": "llm",
-      "domain": "llm",
-      "intent": "llm",
-      "deadline": "llm",
-      "action_required": "llm",
-      "action_summary": "llm",
-      "required_materials": "llm",
-      "summary": "llm",
-      "evidence": "llm",
-      "sensitive": "llm",
-      "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
-      "task_frames": "empty_not_applicable"
-    },
-    "task_type": "download",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "南京邮电大学课程资源共享平台，此仓库包括门户网站和通识类课程... · NJUPT-General-Free-Exams",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": "2026-01-20",
-      "deadline": null,
-      "lifecycle": "evergreen",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "github:NJUPTFreeExams/NJUPT-General-Free-Exams",
-      "channel_id": "github:NJUPTFreeExams/NJUPT-General-Free-Exams:resource",
-      "authority": 0.5,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "NJUPTFreeExams 是由南京邮电大学计算机学院学生建立的一个 GitHub 组织，旨在收集校内历年资料造福后人。"
-      },
-      {
-        "field": "audience",
-        "text": "NJUPTFreeExams 是由南京邮电大学计算机学院学生建立的一个 GitHub 组织，旨在收集校内历年资料造福后人。"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.85
-  },
-  {
-    "task_id": "task_165af783f32fbed8",
-    "doc_id": "github-renyuanzhe-NJUPT-CS-Courses-89624db7d227f3a5ec71",
-    "source_mode": "generated_from_llm_fields",
-    "field_sources": {
-      "category": "llm",
-      "domain": "llm",
-      "intent": "llm",
-      "deadline": "llm",
-      "action_required": "llm",
-      "action_summary": "llm",
-      "required_materials": "llm",
-      "summary": "llm",
-      "evidence": "llm",
-      "sensitive": "llm",
-      "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
-      "task_frames": "empty_not_applicable"
-    },
-    "task_type": "download",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "NJUPT南京邮电大学,计算机相关课程的实验报告，大作业以及... · NJUPT-CS-Courses",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": "2023-06-28",
-      "deadline": null,
-      "lifecycle": "evergreen",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "github:renyuanzhe/NJUPT-CS-Courses",
-      "channel_id": "github:renyuanzhe/NJUPT-CS-Courses:resource",
-      "authority": 0.5,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "此仓库包含了南京邮电大学计算机专业多门课程的的学习资料，实验报告以及大作业。"
-      },
-      {
-        "field": "general",
-        "text": "有需要的自取，可以借鉴，但请勿直接抄袭。"
-      },
-      {
-        "field": "audience",
-        "text": "此仓库包含了南京邮电大学计算机专业多门课程的的学习资料，实验报告以及大作业。"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.9
-  },
-  {
-    "task_id": "task_3fb5bf26c3687109",
-    "doc_id": "github-yosunpeng-postgraduate_test_njupt-b65d2cfa1c598600bc07",
-    "source_mode": "generated_from_llm_fields",
-    "field_sources": {
-      "category": "llm",
-      "domain": "llm",
-      "intent": "llm",
-      "deadline": "llm",
-      "action_required": "llm",
-      "action_summary": "llm",
-      "required_materials": "llm",
-      "summary": "llm",
-      "evidence": "llm",
-      "sensitive": "llm",
-      "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
-      "task_frames": "empty_not_applicable"
-    },
-    "task_type": "download",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "南京邮电大学研究生期末考试复习资料 · postgraduate\\_test\\_njupt",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": "2019-05-26",
-      "deadline": null,
-      "lifecycle": "evergreen",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "github:yosunpeng/postgraduate_test_njupt",
-      "channel_id": "github:yosunpeng/postgraduate_test_njupt:resource",
-      "authority": 0.5,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "南京邮电大学研究生期末考试复习资料"
-      },
-      {
-        "field": "general",
-        "text": "查看文件中的README.pdf"
-      },
-      {
-        "field": "audience",
-        "text": "南京邮电大学研究生期末考试复习资料"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.85
-  },
-  {
-    "task_id": "task_339736211b6c6fe8",
-    "doc_id": "github-xiafanglongfei-NJUPT-auto-evaluate-cb1e0dbaa0cca5ce421e",
-    "source_mode": "generated_from_llm_fields",
-    "field_sources": {
-      "category": "llm",
-      "domain": "llm",
-      "intent": "llm",
-      "deadline": "llm",
-      "action_required": "llm",
-      "action_summary": "llm",
-      "required_materials": "llm",
-      "summary": "llm",
-      "evidence": "llm",
-      "sensitive": "llm",
-      "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
-      "task_frames": "empty_not_applicable"
-    },
-    "task_type": "download",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "🐶 南邮本科生学生评教活动的一键自动评价脚本 #南邮# #一... · NJUPT-auto-evaluate",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": "2022-01-19",
-      "deadline": null,
-      "lifecycle": "evergreen",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "github:xiafanglongfei/NJUPT-auto-evaluate",
-      "channel_id": "github:xiafanglongfei/NJUPT-auto-evaluate:resource",
-      "authority": 0.5,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "南邮每学期都有一个本科生学生评教的活动，分为两项——“教师满意度调查”和“教学评价”"
-      },
-      {
-        "field": "general",
-        "text": "现在脚本能够一次完成一整项评价"
-      },
-      {
-        "field": "audience",
-        "text": "南邮每学期都有一个本科生学生评教的活动，分为两项——“教师满意度调查”和“教学评价”"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.85
-  },
-  {
-    "task_id": "task_32f69df7b10a5e9f",
-    "doc_id": "github-dhiyu-NJUPT-Bachelor-6c0dfd18c09b68d15b36",
-    "source_mode": "generated_from_llm_fields",
-    "field_sources": {
-      "category": "llm",
-      "domain": "llm",
-      "intent": "llm",
-      "deadline": "llm",
-      "action_required": "llm",
-      "action_summary": "llm",
-      "required_materials": "llm",
-      "summary": "llm",
-      "evidence": "llm",
-      "sensitive": "llm",
-      "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
-      "task_frames": "empty_not_applicable"
-    },
-    "task_type": "download",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "南京邮电大学本科生毕业设计Latex模板 · 南京邮电大学本科毕业设计Latex模板",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": "2024-06-05",
-      "deadline": null,
-      "lifecycle": "evergreen",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "github:dhiyu/NJUPT-Bachelor",
-      "channel_id": "github:dhiyu/NJUPT-Bachelor:resource",
-      "authority": 0.5,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "本模板是南京邮电大学本科生 理工艺教类 毕业设计的Latex模板"
-      },
-      {
-        "field": "general",
-        "text": "欢迎大家使用并提出建议"
-      },
-      {
-        "field": "audience",
-        "text": "本模板是南京邮电大学本科生 理工艺教类 毕业设计的Latex模板"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.85
-  },
-  {
-    "task_id": "task_e4f51fbea127a69e",
-    "doc_id": "github-gzr-lgtm-NJUPThesis-Bachelor-afd91b3fbe9d32896279",
-    "source_mode": "generated_from_llm_fields",
-    "field_sources": {
-      "category": "llm",
-      "domain": "llm",
-      "intent": "llm",
-      "deadline": "llm",
-      "action_required": "llm",
-      "action_summary": "llm",
-      "required_materials": "llm",
-      "summary": "llm",
-      "evidence": "llm",
-      "sensitive": "llm",
-      "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
-      "task_frames": "empty_not_applicable"
-    },
-    "task_type": "download",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "LaTeX template for NJUPT Under... · NUPThesis",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": "2022-05-02",
-      "deadline": null,
-      "lifecycle": "evergreen",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "github:gzr-lgtm/NJUPThesis-Bachelor",
-      "channel_id": "github:gzr-lgtm/NJUPThesis-Bachelor:resource",
-      "authority": 0.5,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "南京邮电大学毕业论文 LaTex 模版"
-      },
-      {
-        "field": "general",
-        "text": "针对南京邮电大学本科理工艺教类本科生毕业设计、论文的 LaTeX 模版"
-      },
-      {
-        "field": "audience",
-        "text": "南京邮电大学毕业论文 LaTex 模版"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.9
-  },
-  {
-    "task_id": "task_5a23a9679b45e700",
-    "doc_id": "github-s235784-NJUPT_AutoLogin-3bfbad0bf26507d2f64a",
-    "source_mode": "generated_from_llm_fields",
-    "field_sources": {
-      "category": "display_mapping",
-      "domain": "llm",
-      "intent": "llm",
-      "deadline": "llm",
-      "action_required": "llm",
-      "action_summary": "llm",
-      "required_materials": "llm",
-      "summary": "llm",
-      "evidence": "llm",
-      "sensitive": "llm",
-      "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
-      "task_frames": "empty_not_applicable"
-    },
-    "task_type": "download",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "南京邮电大学校园网自动登录脚本，支持Linux（OpenWR... · NJUPT_AutoLogin",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": "2025-09-09",
-      "deadline": null,
-      "lifecycle": "evergreen",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "github:s235784/NJUPT_AutoLogin",
-      "channel_id": "github:s235784/NJUPT_AutoLogin:resource",
-      "authority": 0.5,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "NJUPT AutoLogin 南京邮电大学校园网自动登录脚本，支持 macOS、Linux（如 OpenWRT）和 MikroTik RouterOS 平台。"
-      },
-      {
-        "field": "general",
-        "text": "1. 下载该脚本 NJUPT-AutoLogin.sh。"
-      },
-      {
-        "field": "audience",
-        "text": "NJUPT AutoLogin 南京邮电大学校园网自动登录脚本，支持 macOS、Linux（如 OpenWRT）和 MikroTik RouterOS 平台。"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.85
-  },
-  {
-    "task_id": "task_4cbe05107853ed5a",
-    "doc_id": "github-ace-trump-tech-NJUPT-Graduation-thesis-45f54f0688c8a8d0c82d",
-    "source_mode": "generated_from_llm_fields",
-    "field_sources": {
-      "category": "llm",
-      "domain": "llm",
-      "intent": "llm",
-      "deadline": "llm",
-      "action_required": "llm",
-      "action_summary": "llm",
-      "required_materials": "llm",
-      "summary": "llm",
-      "evidence": "llm",
-      "sensitive": "llm",
-      "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
-      "task_frames": "empty_not_applicable"
-    },
-    "task_type": "download",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "南京邮电大学毕业论文模板（能毕业就行，有时间多回去陪陪家人） · 南京邮电大学毕业论文模板",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": "2025-05-13",
-      "deadline": null,
-      "lifecycle": "evergreen",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "github:ace-trump-tech/NJUPT-Graduation-thesis",
-      "channel_id": "github:ace-trump-tech/NJUPT-Graduation-thesis:resource",
-      "authority": 0.5,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "南京邮电大学毕业论文模板"
-      },
-      {
-        "field": "general",
-        "text": "下载模板"
-      },
-      {
-        "field": "general",
-        "text": "点击 Releases 下载最新的模板文件压缩包"
-      },
-      {
-        "field": "audience",
-        "text": "南京邮电大学毕业论文模板"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.85
-  },
-  {
-    "task_id": "task_9337e2ea186918e2",
-    "doc_id": "github-Freedomisgood-NjuptCmcc-2e4d2ee54922589eb084",
-    "source_mode": "generated_from_llm_fields",
-    "field_sources": {
-      "category": "display_mapping",
-      "domain": "llm",
-      "intent": "llm",
-      "deadline": "llm",
-      "action_required": "llm",
-      "action_summary": "llm",
-      "required_materials": "llm",
-      "summary": "llm",
-      "evidence": "llm",
-      "sensitive": "llm",
-      "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
-      "task_frames": "empty_not_applicable"
-    },
-    "task_type": "download",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "校园网一键上网脚本 · 说明：",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": "2021-08-15",
-      "deadline": null,
-      "lifecycle": "evergreen",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "github:Freedomisgood/NjuptCmcc",
-      "channel_id": "github:Freedomisgood/NjuptCmcc:resource",
-      "authority": 0.5,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "校园网一键上网脚本"
-      },
-      {
-        "field": "general",
-        "text": "下载 V2.0.1 蓝奏云下载链接"
-      },
-      {
-        "field": "audience",
-        "text": "校园网一键上网脚本"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.85
-  },
-  {
-    "task_id": "task_6fd84756891cad0f",
-    "doc_id": "github-s235784-NJUPT_AutoLogin-69c4f1af6f3b914fa34c",
-    "source_mode": "generated_from_llm_fields",
-    "field_sources": {
-      "category": "display_mapping",
-      "domain": "llm",
-      "intent": "llm",
-      "deadline": "llm",
-      "action_required": "llm",
-      "action_summary": "llm",
-      "required_materials": "llm",
-      "summary": "llm",
-      "evidence": "llm",
-      "sensitive": "llm",
-      "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
-      "task_frames": "empty_not_applicable"
-    },
-    "task_type": "download",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "南京邮电大学校园网自动登录脚本，支持Linux（OpenWR... · NJUPT_AutoLogin RouterOS",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": "2025-09-09",
-      "deadline": null,
-      "lifecycle": "evergreen",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "github:s235784/NJUPT_AutoLogin",
-      "channel_id": "github:s235784/NJUPT_AutoLogin:resource",
-      "authority": 0.5,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "NJUPT AutoLogin RouterOS 适用于 RouterOS v7.11.2 及以上版本；在 Python 3.8 及以上版本通过测试。"
-      },
-      {
-        "field": "general",
-        "text": "1. 下载 RouterOS/NJUPT Auto Login.py 和 RouterOS/config.json"
-      },
-      {
-        "field": "audience",
-        "text": "NJUPT AutoLogin RouterOS 适用于 RouterOS v7.11.2 及以上版本；在 Python 3.8 及以上版本通过测试。"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.85
-  },
-  {
-    "task_id": "task_0ff2d8c6af470fe0",
-    "doc_id": "github-lux-QAQ-NJUPT_Fastlogin-761863a2a7039f75e0eb",
-    "source_mode": "generated_from_llm_fields",
-    "field_sources": {
-      "category": "display_mapping",
-      "domain": "llm",
-      "intent": "llm",
-      "deadline": "llm",
-      "action_required": "llm",
-      "action_summary": "llm",
-      "required_materials": "llm",
-      "summary": "llm",
-      "evidence": "llm",
-      "sensitive": "llm",
-      "review_required": "llm",
-      "student_score": "hybrid_rank_feature",
-      "importance_score": "hybrid_rank_feature",
-      "task_frames": "empty_not_applicable"
-    },
-    "task_type": "download",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "南京邮电大学校园网最快登录脚本 for Android Wi... · NJUPT_Fastlogin",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": "2025-12-29",
-      "deadline": null,
-      "lifecycle": "evergreen",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "github:lux-QAQ/NJUPT_Fastlogin",
-      "channel_id": "github:lux-QAQ/NJUPT_Fastlogin:resource",
-      "authority": 0.5,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "NJUPT Fastlogin 由于之前使用python写的南邮校园网登录脚本速度太慢了"
-      },
-      {
-        "field": "general",
-        "text": "Android 直接去下 Release版本 开箱即用"
-      },
-      {
-        "field": "audience",
-        "text": "NJUPT Fastlogin 由于之前使用python写的南邮校园网登录脚本速度太慢了"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.7
   },
   {
     "task_id": "task_a5b73aa3e859412c",
@@ -4172,8 +4076,6 @@
       "evidence": "heuristic",
       "sensitive": "heuristic",
       "review_required": "heuristic",
-      "student_score": "rule_guard",
-      "importance_score": "rule_guard",
       "task_frames": "heuristic_rule_frame"
     }
   }

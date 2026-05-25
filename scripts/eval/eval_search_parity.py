@@ -2,8 +2,8 @@
 
 The gate has two jobs:
 1. verify Python route fixtures still match query_routes.json;
-2. require real TypeScript frontend ranking output, then compare Python ranking
-   against it for critical, non-data-gap search journeys.
+2. require real TypeScript frontend recall output, then compare Python recall
+   order against it for critical, non-data-gap search journeys.
 """
 
 import argparse
@@ -19,9 +19,6 @@ sys.path.insert(0, os.path.join(BASE_DIR, "scripts", "eval"))
 
 from search.query_router import route_query, load_query_routes
 from search.vertical_ranker import vertical_rank_documents
-from eval_product_search import build_exam_documents_py
-
-
 CRITICAL_QUERIES = {
     "B250403",
     "B250403 高数",
@@ -90,12 +87,8 @@ def evaluate_route_parity() -> Dict[str, Any]:
     }
 
 
-def _load_documents_with_exam_vertical() -> List[Dict[str, Any]]:
-    documents = load_json(os.path.join(BASE_DIR, "public", "index", "documents.json"))
-    exam_data_path = os.path.join(BASE_DIR, "public", "data", "all_exams.json")
-    if os.path.exists(exam_data_path):
-        documents = documents + build_exam_documents_py(load_json(exam_data_path))
-    return documents
+def _load_notice_documents() -> List[Dict[str, Any]]:
+    return load_json(os.path.join(BASE_DIR, "public", "index", "documents.json"))
 
 
 def _metrics(details: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
@@ -116,15 +109,13 @@ def _metrics(details: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
     }
 
 
-def evaluate_ranking_parity(ts_results_path: str) -> Dict[str, Any]:
+def evaluate_recall_parity(ts_results_path: str) -> Dict[str, Any]:
     if not ts_results_path or not os.path.exists(ts_results_path):
         raise FileNotFoundError("TS search results are required. Run eval_frontend_search.ts and pass --ts-results.")
 
     ts_results = load_json(ts_results_path)
-    documents = _load_documents_with_exam_vertical()
-    hybrid_index = load_json(os.path.join(BASE_DIR, "public", "index", "hybrid_index.json"))
+    documents = _load_notice_documents()
     query_aliases = load_json(os.path.join(BASE_DIR, "config", "query_aliases.json"))
-    ranking_weights = load_json(os.path.join(BASE_DIR, "config", "ranking_weights.json"))
     cases = {case["query"]: case for case in load_json(os.path.join(BASE_DIR, "eval", "search_cases.json"))}
     doc_lookup = {str(doc.get("id", "")): doc for doc in documents}
 
@@ -134,7 +125,7 @@ def evaluate_ranking_parity(ts_results_path: str) -> Dict[str, Any]:
         if not query.strip():
             continue
 
-        py_ranked = vertical_rank_documents(query, documents, hybrid_index, query_aliases, ranking_weights, limit=5)
+        py_ranked = vertical_rank_documents(query, documents, query_aliases=query_aliases, limit=5)
         py_top5_ids = [str(doc.get("id", "")) for doc in py_ranked[:5]]
         ts_top5_ids = [str(item) for item in ts_case.get("top5_ids", [])]
 
@@ -142,17 +133,18 @@ def evaluate_ranking_parity(ts_results_path: str) -> Dict[str, Any]:
         ts_set = set(ts_top5_ids)
         union = py_set | ts_set
         intersection = py_set & ts_set
-        jaccard = len(intersection) / len(union) if union else 0.0
+        jaccard = len(intersection) / len(union) if union else 1.0
 
         py_top1 = py_top5_ids[0] if py_top5_ids else ""
         ts_top1 = ts_top5_ids[0] if ts_top5_ids else ""
         py_doc = doc_lookup.get(py_top1, {})
         ts_doc = doc_lookup.get(ts_top1, {})
-        source_match = bool(py_doc and ts_doc) and (
+        both_empty = not py_top5_ids and not ts_top5_ids
+        source_match = both_empty or (bool(py_doc and ts_doc) and (
             py_doc.get("source_id") == ts_doc.get("source_id")
             or py_doc.get("source") == ts_doc.get("source")
             or py_doc.get("domain") == ts_doc.get("domain")
-        )
+        ))
 
         all_ids = list(dict.fromkeys(py_top5_ids + ts_top5_ids))
         kendall = 0.0
@@ -180,7 +172,7 @@ def evaluate_ranking_parity(ts_results_path: str) -> Dict[str, Any]:
                 "py_top5": py_top5_ids,
                 "ts_top5": ts_top5_ids,
                 "jaccard": round(jaccard, 4),
-                "top1_match": bool(py_top1 and ts_top1 and py_top1 == ts_top1),
+                "top1_match": both_empty or bool(py_top1 and ts_top1 and py_top1 == ts_top1),
                 "top1_source_match": source_match,
                 "kendall_tau": round(kendall, 4),
                 "is_data_gap_allowed": bool(case.get("data_gap_allowed", False)),
@@ -217,9 +209,9 @@ def main() -> None:
 
     route_parity = evaluate_route_parity()
     try:
-        ranking_parity = evaluate_ranking_parity(args.ts_results or "")
+        recall_parity = evaluate_recall_parity(args.ts_results or "")
     except Exception as exc:
-        ranking_parity = {"parity_available": False, "note": str(exc)}
+        recall_parity = {"parity_available": False, "note": str(exc)}
 
     report = {
         "timestamp": datetime.now().isoformat(),
@@ -231,7 +223,7 @@ def main() -> None:
             "critical_top1_source_match_rate": args.min_critical_top1_source_match_rate,
         },
         "route_parity": route_parity,
-        "ranking_parity": ranking_parity,
+        "recall_parity": recall_parity,
     }
 
     reports_dir = os.path.join(BASE_DIR, "eval", "reports")
@@ -250,19 +242,19 @@ def main() -> None:
 
     failed = route_parity["route_failed"] > 0
 
-    if ranking_parity["parity_available"]:
-        critical = ranking_parity["critical_metrics"]
+    if recall_parity["parity_available"]:
+        critical = recall_parity["critical_metrics"]
         print(
-            "Ranking Parity "
-            f"({ranking_parity['gate_sample']}): "
-            f"top1_match={ranking_parity['top1_match_rate']}, "
-            f"avg_jaccard={ranking_parity['avg_jaccard']}, "
+            "Recall Parity "
+            f"({recall_parity['gate_sample']}): "
+            f"top1_match={recall_parity['top1_match_rate']}, "
+            f"avg_jaccard={recall_parity['avg_jaccard']}, "
             f"critical_source_match={critical['top1_source_match_rate']}"
         )
-        if ranking_parity["top1_match_rate"] < args.min_top1_match_rate:
+        if recall_parity["top1_match_rate"] < args.min_top1_match_rate:
             print(f"  [FAIL] top1_match_rate < {args.min_top1_match_rate}")
             failed = True
-        if ranking_parity["avg_jaccard"] < args.min_avg_jaccard:
+        if recall_parity["avg_jaccard"] < args.min_avg_jaccard:
             print(f"  [FAIL] avg_jaccard < {args.min_avg_jaccard}")
             failed = True
         if critical["top1_match_rate"] < args.min_critical_top1_match_rate:
@@ -272,7 +264,7 @@ def main() -> None:
             print(f"  [FAIL] critical top1 source match < {args.min_critical_top1_source_match_rate}")
             failed = True
     else:
-        print(f"Ranking Parity: {ranking_parity.get('note', 'Not available')}")
+        print(f"Recall Parity: {recall_parity.get('note', 'Not available')}")
         failed = True
 
     print(f"Report saved to: {report_path}")

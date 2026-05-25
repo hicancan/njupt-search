@@ -16,7 +16,7 @@ import { ResultsView } from '@/views/ResultsView';
 
 function App() {
     const { exams: allExams, loading: examLoading, error: examError, sourceUrl, sourceTitle, generatedAt, totalRecords } = useExamData();
-    const { documents: noticeDocuments, hybridIndex, queryAliases, optionalUnavailable, loading: searchLoading, error: searchError } = useSearchIndex();
+    const { documents: noticeDocuments, queryAliases, optionalUnavailable, loading: searchLoading, error: searchError } = useSearchIndex();
     const { newDataAvailable, reloadToUpdate } = useDataUpdateNotifier();
 
     const { classParam, qParam, navigate } = useUrlState();
@@ -29,7 +29,7 @@ function App() {
     const searchQuery = initialQuery;
     const manualSelection = classParam;
 
-    const { rankedResults, learningResources } = useSearchEngine(noticeDocuments, allExams, searchQuery, hybridIndex, queryAliases);
+    const { recalledResults, learningResources } = useSearchEngine(noticeDocuments, searchQuery, queryAliases);
     const classSearchResult = useClassSearch(allExams, initialQuery, manualSelection);
     const currentClass = classSearchResult.mode === 'DETAIL' ? classSearchResult.classes[0] || null : null;
     const { selectedIds, toggleExamSelection } = useSelectedExamIds(currentClass, classSearchResult.exams);
@@ -133,7 +133,7 @@ function App() {
                 <ResultsView
                     isLoading={isLoading}
                     query={searchQuery}
-                    results={rankedResults}
+                    results={recalledResults}
                     resources={learningResources}
                     classMode={classSearchResult}
                     selectedIds={selectedIds}

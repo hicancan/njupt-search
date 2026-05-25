@@ -2,7 +2,7 @@
 
 ## Why Frontend Is Truth
 
-Users search through the React frontend, which calls `rankSearchDocuments`, `buildExamDocuments`, and `routeQuery` in TypeScript. A Python-only gate can pass while the browser returns empty or irrelevant results, so v1.3 requires a frontend evaluation artifact before product and parity gates run.
+Users search through the React frontend, which calls `recallSearchDocuments` and `routeQuery` in TypeScript. A Python-only gate can pass while the browser returns empty or irrelevant results, so v1.3 requires a frontend evaluation artifact before product and parity gates run.
 
 ## Evaluation Flow
 
@@ -25,7 +25,7 @@ The TypeScript report contains the route result and top-5 document ids/titles/do
 - critical top1 source/domain compatibility: `1.00`
 
 The parity gate is intentionally not the product truth. It exposes Python/TS drift while the Product Gate blocks on frontend results.
-For v1.3, Python `vertical_rank_documents` mirrors the frontend scoring path closely enough that critical non-data-gap top1 parity must remain exact.
+For v1.3, Python `vertical_rank_documents` is a legacy entry point that delegates to the same recall semantics as the frontend.
 
 ## Adding A Search Case
 

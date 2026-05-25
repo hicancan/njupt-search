@@ -37,11 +37,6 @@ export interface Manifest {
     source_title?: string; // Title of the news article
 }
 
-export const clamp01 = (value: number): number => {
-    if (!Number.isFinite(value)) return 0;
-    return Math.min(1, Math.max(0, value));
-};
-
 export const SearchDocumentKindSchema = z.enum(['notice', 'exam', 'resource']);
 export type SearchDocumentKind = z.infer<typeof SearchDocumentKindSchema>;
 
@@ -200,16 +195,15 @@ export const SearchDocumentSchema = z.object({
     content: z.string().min(1),
     summary: z.string().optional(),
     attachments: z.array(SearchAttachmentSchema).default([]),
-    student_score: z.number().transform(clamp01),
-    freshness_score: z.number().transform(clamp01),
-    importance_score: z.number().transform(clamp01),
-    source_weight: z.number().transform(clamp01).optional(),
     tags: z.array(z.string()),
     hash: z.string().min(1),
     cache_key: z.string().optional(),
     llm_schema_version: z.string().optional(),
     llm: SearchDocumentLLMSchema.optional(),
     canonical: z.record(z.string(), z.unknown()).optional(),
+    notice_card: z.record(z.string(), z.unknown()).optional(),
+    typed_search_terms: z.array(z.record(z.string(), z.unknown())).optional(),
+    synonyms: z.array(z.string()).optional(),
     rule_guard: z.record(z.string(), z.unknown()).optional(),
     semantic_mode: SearchSemanticModeSchema.optional(),
     field_sources: z.record(z.string(), z.string()).optional(),
@@ -222,8 +216,6 @@ export type SearchDocument = z.infer<typeof SearchDocumentSchema>;
 export interface RankedSearchDocument extends SearchDocument {
     score: number;
     score_reason: string;
-    score_components?: Record<string, number>;
-    degraded_fallback?: boolean;
 }
 
 export const SearchManifestSourceSchema = z.object({
@@ -260,7 +252,6 @@ export const SearchManifestSchema = z.object({
     field_source_counts: z.record(z.string(), z.any()).optional(),
     task_frame_source_mode_counts: z.record(z.string(), z.number()).optional(),
     llm_missing_field_counts: z.record(z.string(), z.number()).optional(),
-    hybrid_score_field_count: z.number().optional(),
     training_eligible_count: z.number().optional(),
     heuristic_degraded_count: z.number().optional(),
     llm_purity_rate: z.number().optional(),

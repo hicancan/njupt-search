@@ -48,9 +48,6 @@ REQUIRED_DOCUMENT_FIELDS = {
     "published_at",
     "content",
     "attachments",
-    "student_score",
-    "freshness_score",
-    "importance_score",
     "tags",
     "hash",
     "canonical",
@@ -58,11 +55,8 @@ REQUIRED_DOCUMENT_FIELDS = {
     "task_frames",
     "semantic_pipeline_version",
     "raw_field_presence",
-    "student_score_source",
-    "importance_score_source",
 }
 TASK_FRAMES_PATH = os.path.join(BASE_DIR, "public", "index", "task_frames.json")
-HYBRID_INDEX_PATH = os.path.join(BASE_DIR, "public", "index", "hybrid_index.json")
 PUBLIC_QUERY_ALIASES_PATH = os.path.join(BASE_DIR, "public", "index", "query_aliases.json")
 PUBLIC_ONTOLOGY_PATH = os.path.join(BASE_DIR, "public", "index", "ontology.json")
 
@@ -142,15 +136,12 @@ def validate_source_channels() -> None:
 
 def validate_llm_fixture() -> None:
     fixture = {
-        "is_student_facing": True,
-        "student_relevance": 0.92,
         "audience": ["本科生"],
         "category": "项目",
         "domain": "international",
         "intent": "apply",
         "sub_category": "海外交流",
         "tags": ["海外交流", "报名"],
-        "importance_score": 0.88,
         "deadline": "2026-04-23T12:00:00+08:00",
         "action_required": True,
         "action_type": "报名",
@@ -216,10 +207,12 @@ def validate_documents() -> None:
             or rule_guard.get("allow_llm") is False
         ) and document.get("task_frames"):
             fail(f"guarded document {doc_id} must not have task_frames")
-        for field in ("student_score", "freshness_score", "importance_score"):
-            value = document[field]
-            if not isinstance(value, (int, float)) or not 0 <= float(value) <= 1:
-                fail(f"document {doc_id} has invalid {field}: {value}")
+        if document.get("notice_card") is not None and not isinstance(document.get("notice_card"), dict):
+            fail(f"document {doc_id} has invalid notice_card")
+        if document.get("typed_search_terms") is not None and not isinstance(document.get("typed_search_terms"), list):
+            fail(f"document {doc_id} has invalid typed_search_terms")
+        if document.get("synonyms") is not None and not isinstance(document.get("synonyms"), list):
+            fail(f"document {doc_id} has invalid synonyms")
         for date_field in ("published_at", "deadline"):
             value = document.get(date_field)
             if value:
@@ -326,8 +319,8 @@ def validate_manifest() -> None:
                 fail(f"Critical source {s_id} has 0 documents across all channels and no valid fallback status.")
 
 
-def validate_task_frames_and_hybrid_index() -> None:
-    for path in (TASK_FRAMES_PATH, HYBRID_INDEX_PATH, PUBLIC_QUERY_ALIASES_PATH, PUBLIC_ONTOLOGY_PATH):
+def validate_task_frames_and_public_terms() -> None:
+    for path in (TASK_FRAMES_PATH, PUBLIC_QUERY_ALIASES_PATH, PUBLIC_ONTOLOGY_PATH):
         if not os.path.exists(path):
             fail(f"required public index artifact missing: {path}")
     task_frames = read_json(TASK_FRAMES_PATH)
@@ -344,12 +337,6 @@ def validate_task_frames_and_hybrid_index() -> None:
         validate_contract_value(TASK_FRAMES_PATH, frame_id, "task_type", frame.get("task_type"), TASK_TYPES)
         time_payload = frame.get("time") if isinstance(frame.get("time"), dict) else {}
         validate_contract_value(TASK_FRAMES_PATH, frame_id, "time.lifecycle", time_payload.get("lifecycle"), SEARCH_LIFECYCLES)
-    hybrid = read_json(HYBRID_INDEX_PATH)
-    if not isinstance(hybrid, dict) or hybrid.get("version") != "hytask-hybrid-index-v1":
-        fail("hybrid_index.json has invalid version")
-    if int(hybrid.get("doc_count", 0) or 0) <= 0:
-        fail("hybrid_index has no documents")
-
 
 def main() -> None:
     os.chdir(BASE_DIR)
@@ -357,7 +344,7 @@ def main() -> None:
     validate_llm_fixture()
     validate_documents()
     validate_manifest()
-    validate_task_frames_and_hybrid_index()
+    validate_task_frames_and_public_terms()
     print("[validate_search_index] ok")
 
 

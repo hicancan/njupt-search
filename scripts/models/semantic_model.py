@@ -236,9 +236,12 @@ def infer_lifecycle(published_at: str | None, deadline: str | None, now: datetim
     if deadline:
         try:
             deadline_dt = datetime.fromisoformat(deadline)
-            if deadline_dt.tzinfo is None:
+            compare_now = now
+            if deadline_dt.tzinfo is None and now.tzinfo is not None:
                 deadline_dt = deadline_dt.replace(tzinfo=now.tzinfo)
-            return "expired" if deadline_dt < now else "active"
+            elif deadline_dt.tzinfo is not None and now.tzinfo is None:
+                compare_now = now.replace(tzinfo=deadline_dt.tzinfo)
+            return "expired" if deadline_dt < compare_now else "active"
         except ValueError:
             return "unknown"
 

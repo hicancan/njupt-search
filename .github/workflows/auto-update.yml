@@ -129,14 +129,13 @@ jobs:
             scripts/core/semantic_verifier.py \
             scripts/core/evidence_pack.py \
             scripts/core/rule_guard.py \
-            scripts/core/hybrid_ranker.py \
+            scripts/core/tokenizer.py \
             scripts/core/query_expander.py \
             scripts/core/task_extractor.py \
             scripts/models/canonical_document.py \
             scripts/models/search_contract.py \
             scripts/models/source_graph.py \
             scripts/models/task_frame.py \
-            scripts/models/hybrid_index.py \
             scripts/search/query_router.py \
             scripts/search/vertical_ranker.py \
             scripts/eval/eval_product_search.py \

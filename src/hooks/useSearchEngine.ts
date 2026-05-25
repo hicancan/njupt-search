@@ -1,30 +1,23 @@
 import { useMemo } from 'react';
-import { SearchDocument, Exam } from '@/types';
-import { buildExamDocuments, rankSearchDocuments, getLearningResources } from '@/utils/searchIndex';
+import { SearchDocument } from '@/types';
+import { recallSearchDocuments } from '@/utils/searchIndex';
 
 export function useSearchEngine(
     noticeDocuments: SearchDocument[],
-    allExams: Exam[],
     searchQuery: string,
-    hybridIndex: Record<string, unknown> | null,
     queryAliases: Record<string, unknown>
 ) {
-    const examDocuments = useMemo(() => buildExamDocuments(allExams), [allExams]);
-    const allDocuments = useMemo(() => [...noticeDocuments, ...examDocuments], [noticeDocuments, examDocuments]);
-    
-    const rankedResults = useMemo(
+    const recalledResults = useMemo(
         () => {
             const trimmed = searchQuery.trim();
             if (trimmed.length < 2) return [];
-            return rankSearchDocuments(allDocuments, searchQuery, hybridIndex, queryAliases);
+            return recallSearchDocuments(noticeDocuments, searchQuery, queryAliases);
         },
-        [allDocuments, searchQuery, hybridIndex, queryAliases]
+        [noticeDocuments, searchQuery, queryAliases]
     );
-    
-    const learningResources = useMemo(() => getLearningResources(searchQuery), [searchQuery]);
 
     return {
-        rankedResults,
-        learningResources
+        recalledResults,
+        learningResources: [] as SearchDocument[]
     };
 }

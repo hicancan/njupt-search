@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-25T19:53:23.846587",
+  "timestamp": "2026-05-25T21:29:30.478604",
   "thresholds": {
     "route_fixture": 1.0,
     "critical_top1_match_rate": 1.0,
@@ -13,23 +13,23 @@
     "route_failed": 0,
     "route_errors": []
   },
-  "ranking_parity": {
+  "recall_parity": {
     "parity_available": true,
     "total_queries": 14,
     "top1_match_count": 14,
     "top1_match_rate": 1.0,
     "top1_source_match_count": 14,
     "top1_source_match_rate": 1.0,
-    "avg_jaccard": 1.0,
-    "avg_kendall_tau": 0.8571,
+    "avg_jaccard": 0.9464,
+    "avg_kendall_tau": 0.7273,
     "all_metrics": {
       "total_queries": 30,
-      "top1_match_count": 29,
-      "top1_match_rate": 0.9667,
-      "top1_source_match_count": 29,
-      "top1_source_match_rate": 0.9667,
-      "avg_jaccard": 0.9667,
-      "avg_kendall_tau": 0.8667
+      "top1_match_count": 30,
+      "top1_match_rate": 1.0,
+      "top1_source_match_count": 30,
+      "top1_source_match_rate": 1.0,
+      "avg_jaccard": 0.95,
+      "avg_kendall_tau": 0.5455
     },
     "comparable_metrics": {
       "total_queries": 22,
@@ -37,8 +37,8 @@
       "top1_match_rate": 1.0,
       "top1_source_match_count": 22,
       "top1_source_match_rate": 1.0,
-      "avg_jaccard": 1.0,
-      "avg_kendall_tau": 0.9091
+      "avg_jaccard": 0.9318,
+      "avg_kendall_tau": 0.7438
     },
     "critical_metrics": {
       "total_queries": 14,
@@ -46,55 +46,31 @@
       "top1_match_rate": 1.0,
       "top1_source_match_count": 14,
       "top1_source_match_rate": 1.0,
-      "avg_jaccard": 1.0,
-      "avg_kendall_tau": 0.8571
+      "avg_jaccard": 0.9464,
+      "avg_kendall_tau": 0.7273
     },
     "gate_sample": "critical_non_data_gap",
     "details": [
       {
         "query": "四六级",
-        "py_top5": [
-          "simp-916527c5424f64b391da",
-          "jwc-7302a28b49d7e92c069f",
-          "ygb-2d1cbb54989b3129a211",
-          "job-ce4500e0b0dad687f8d2",
-          "jwc-59a29f409eb78f77b1e1"
-        ],
-        "ts_top5": [
-          "simp-916527c5424f64b391da",
-          "jwc-7302a28b49d7e92c069f",
-          "ygb-2d1cbb54989b3129a211",
-          "job-ce4500e0b0dad687f8d2",
-          "jwc-59a29f409eb78f77b1e1"
-        ],
+        "py_top5": [],
+        "ts_top5": [],
         "jaccard": 1.0,
         "top1_match": true,
         "top1_source_match": true,
-        "kendall_tau": 1.0,
+        "kendall_tau": 0.0,
         "is_data_gap_allowed": true,
         "is_critical": false,
         "route_match": true
       },
       {
         "query": "CET",
-        "py_top5": [
-          "simp-916527c5424f64b391da",
-          "jwc-7302a28b49d7e92c069f",
-          "ygb-2d1cbb54989b3129a211",
-          "job-ce4500e0b0dad687f8d2",
-          "jwc-59a29f409eb78f77b1e1"
-        ],
-        "ts_top5": [
-          "simp-916527c5424f64b391da",
-          "jwc-7302a28b49d7e92c069f",
-          "ygb-2d1cbb54989b3129a211",
-          "job-ce4500e0b0dad687f8d2",
-          "jwc-59a29f409eb78f77b1e1"
-        ],
+        "py_top5": [],
+        "ts_top5": [],
         "jaccard": 1.0,
         "top1_match": true,
         "top1_source_match": true,
-        "kendall_tau": 1.0,
+        "kendall_tau": 0.0,
         "is_data_gap_allowed": true,
         "is_critical": false,
         "route_match": true
@@ -103,9 +79,9 @@
         "query": "四级",
         "py_top5": [],
         "ts_top5": [],
-        "jaccard": 0.0,
-        "top1_match": false,
-        "top1_source_match": false,
+        "jaccard": 1.0,
+        "top1_match": true,
+        "top1_source_match": true,
         "kendall_tau": 0.0,
         "is_data_gap_allowed": true,
         "is_critical": false,
@@ -113,12 +89,8 @@
       },
       {
         "query": "六级",
-        "py_top5": [
-          "github-Wonz5130-NJUPT-Yellow-Page-6b26212a59d0020a7963"
-        ],
-        "ts_top5": [
-          "github-Wonz5130-NJUPT-Yellow-Page-6b26212a59d0020a7963"
-        ],
+        "py_top5": [],
+        "ts_top5": [],
         "jaccard": 1.0,
         "top1_match": true,
         "top1_source_match": true,
@@ -129,48 +101,24 @@
       },
       {
         "query": "论文答辩",
-        "py_top5": [
-          "yzb-46fad1a32e8fe5b2292f",
-          "xsc-15efe5746b1ead8db1fd",
-          "news-cbd56e0e02b3e55bc381",
-          "lib-a25dec89a51e270257cc",
-          "job-ce4500e0b0dad687f8d2"
-        ],
-        "ts_top5": [
-          "yzb-46fad1a32e8fe5b2292f",
-          "xsc-15efe5746b1ead8db1fd",
-          "news-cbd56e0e02b3e55bc381",
-          "lib-a25dec89a51e270257cc",
-          "job-ce4500e0b0dad687f8d2"
-        ],
+        "py_top5": [],
+        "ts_top5": [],
         "jaccard": 1.0,
         "top1_match": true,
         "top1_source_match": true,
-        "kendall_tau": 1.0,
+        "kendall_tau": 0.0,
         "is_data_gap_allowed": true,
         "is_critical": false,
         "route_match": true
       },
       {
         "query": "毕业答辩",
-        "py_top5": [
-          "news-cbd56e0e02b3e55bc381",
-          "xsc-15efe5746b1ead8db1fd",
-          "yzb-46fad1a32e8fe5b2292f",
-          "lib-a25dec89a51e270257cc",
-          "job-ce4500e0b0dad687f8d2"
-        ],
-        "ts_top5": [
-          "news-cbd56e0e02b3e55bc381",
-          "xsc-15efe5746b1ead8db1fd",
-          "yzb-46fad1a32e8fe5b2292f",
-          "lib-a25dec89a51e270257cc",
-          "job-ce4500e0b0dad687f8d2"
-        ],
+        "py_top5": [],
+        "ts_top5": [],
         "jaccard": 1.0,
         "top1_match": true,
         "top1_source_match": true,
-        "kendall_tau": 1.0,
+        "kendall_tau": 0.0,
         "is_data_gap_allowed": true,
         "is_critical": false,
         "route_match": true
@@ -179,14 +127,14 @@
         "query": "大创答辩",
         "py_top5": [
           "cxcy-3dfeb8f05ac3e0d231fb",
-          "cxcy-c4132762db65faac8b56",
+          "cxcy-437f8378c368271fb380",
           "cxcy-ac6a840bf5e5acb2ae47",
           "cxcy-18b0923654eab80cce87",
           "cxcy-42c19e3bc86cd210fe17"
         ],
         "ts_top5": [
           "cxcy-3dfeb8f05ac3e0d231fb",
-          "cxcy-c4132762db65faac8b56",
+          "cxcy-437f8378c368271fb380",
           "cxcy-ac6a840bf5e5acb2ae47",
           "cxcy-18b0923654eab80cce87",
           "cxcy-42c19e3bc86cd210fe17"
@@ -203,13 +151,11 @@
         "query": "医保",
         "py_top5": [
           "hqc-edfe9e6977f742324c51",
-          "ygb-cc83b3e083a981d7092d",
-          "simp-0b735b8b44f5e54325aa"
+          "ygb-cc83b3e083a981d7092d"
         ],
         "ts_top5": [
           "hqc-edfe9e6977f742324c51",
-          "ygb-cc83b3e083a981d7092d",
-          "simp-0b735b8b44f5e54325aa"
+          "ygb-cc83b3e083a981d7092d"
         ],
         "jaccard": 1.0,
         "top1_match": true,
@@ -238,12 +184,12 @@
       {
         "query": "报销",
         "py_top5": [
-          "hqc-edfe9e6977f742324c51",
-          "cwc-269bc4ce4ecc08fc1f5a"
+          "cwc-269bc4ce4ecc08fc1f5a",
+          "hqc-edfe9e6977f742324c51"
         ],
         "ts_top5": [
-          "hqc-edfe9e6977f742324c51",
-          "cwc-269bc4ce4ecc08fc1f5a"
+          "cwc-269bc4ce4ecc08fc1f5a",
+          "hqc-edfe9e6977f742324c51"
         ],
         "jaccard": 1.0,
         "top1_match": true,
@@ -271,24 +217,12 @@
       },
       {
         "query": "B250403",
-        "py_top5": [
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-1794",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-5161",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-5162",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-3402",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-4174"
-        ],
-        "ts_top5": [
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-1794",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-5161",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-5162",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-3402",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-4174"
-        ],
+        "py_top5": [],
+        "ts_top5": [],
         "jaccard": 1.0,
         "top1_match": true,
         "top1_source_match": true,
-        "kendall_tau": 1.0,
+        "kendall_tau": 0.0,
         "is_data_gap_allowed": false,
         "is_critical": true,
         "route_match": true
@@ -296,18 +230,12 @@
       {
         "query": "B250403 高数",
         "py_top5": [
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-2382",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-1794",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-5161",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-5162",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-3402"
+          "github-NJUPTFreeExams-NJUPT-CST-Free-Exams-6169d0395e43fe5cb864",
+          "news-771826cf907fd8229247"
         ],
         "ts_top5": [
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-2382",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-1794",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-5161",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-5162",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-3402"
+          "github-NJUPTFreeExams-NJUPT-CST-Free-Exams-6169d0395e43fe5cb864",
+          "news-771826cf907fd8229247"
         ],
         "jaccard": 1.0,
         "top1_match": true,
@@ -321,17 +249,11 @@
         "query": "高数",
         "py_top5": [
           "github-NJUPTFreeExams-NJUPT-CST-Free-Exams-6169d0395e43fe5cb864",
-          "github-NJUPTFreeExams-NJUPT-InfoSec-Free-Exams-e6e8024e7e61b78b68d8",
-          "github-yosunpeng-postgraduate_test_njupt-b65d2cfa1c598600bc07",
-          "jwc-59a29f409eb78f77b1e1",
-          "jwc-391500a8447efc7bd72f"
+          "news-771826cf907fd8229247"
         ],
         "ts_top5": [
           "github-NJUPTFreeExams-NJUPT-CST-Free-Exams-6169d0395e43fe5cb864",
-          "github-NJUPTFreeExams-NJUPT-InfoSec-Free-Exams-e6e8024e7e61b78b68d8",
-          "github-yosunpeng-postgraduate_test_njupt-b65d2cfa1c598600bc07",
-          "jwc-59a29f409eb78f77b1e1",
-          "jwc-391500a8447efc7bd72f"
+          "news-771826cf907fd8229247"
         ],
         "jaccard": 1.0,
         "top1_match": true,
@@ -343,24 +265,12 @@
       },
       {
         "query": "高数考试",
-        "py_top5": [
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-2646",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-2647",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-2648",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-2649",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-2650"
-        ],
-        "ts_top5": [
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-2646",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-2647",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-2648",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-2649",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-2650"
-        ],
+        "py_top5": [],
+        "ts_top5": [],
         "jaccard": 1.0,
         "top1_match": true,
         "top1_source_match": true,
-        "kendall_tau": 1.0,
+        "kendall_tau": 0.0,
         "is_data_gap_allowed": false,
         "is_critical": false,
         "route_match": true
@@ -368,18 +278,12 @@
       {
         "query": "离散数学",
         "py_top5": [
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-1776",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-1777",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-1778",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-1779",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-1780"
+          "github-NJUPTFreeExams-NJUPT-CST-Free-Exams-6169d0395e43fe5cb864",
+          "github-NJUPTFreeExams-NJUPT-InfoSec-Free-Exams-e6e8024e7e61b78b68d8"
         ],
         "ts_top5": [
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-1776",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-1777",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-1778",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-1779",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-1780"
+          "github-NJUPTFreeExams-NJUPT-CST-Free-Exams-6169d0395e43fe5cb864",
+          "github-NJUPTFreeExams-NJUPT-InfoSec-Free-Exams-e6e8024e7e61b78b68d8"
         ],
         "jaccard": 1.0,
         "top1_match": true,
@@ -392,18 +296,18 @@
       {
         "query": "大创",
         "py_top5": [
+          "news-cbd56e0e02b3e55bc381",
           "cxcy-3dfeb8f05ac3e0d231fb",
-          "cxcy-c4132762db65faac8b56",
+          "cxcy-437f8378c368271fb380",
           "cxcy-ac6a840bf5e5acb2ae47",
-          "cxcy-18b0923654eab80cce87",
-          "cxcy-42c19e3bc86cd210fe17"
+          "cxcy-18b0923654eab80cce87"
         ],
         "ts_top5": [
+          "news-cbd56e0e02b3e55bc381",
           "cxcy-3dfeb8f05ac3e0d231fb",
-          "cxcy-c4132762db65faac8b56",
+          "cxcy-437f8378c368271fb380",
           "cxcy-ac6a840bf5e5acb2ae47",
-          "cxcy-18b0923654eab80cce87",
-          "cxcy-42c19e3bc86cd210fe17"
+          "cxcy-18b0923654eab80cce87"
         ],
         "jaccard": 1.0,
         "top1_match": true,
@@ -417,17 +321,17 @@
         "query": "奖学金",
         "py_top5": [
           "xsc-1624f141fe26342ee80b",
+          "jwc-acae1866bba9bae13b2c",
           "ygb-2d1cbb54989b3129a211",
-          "xsc-4d899ea5ef4f3625c66d",
           "ygb-56099b105a3cc0139b86",
-          "bc-92e1118322b55c02bda3"
+          "bc-b23f8a63ff78f1eaa837"
         ],
         "ts_top5": [
           "xsc-1624f141fe26342ee80b",
+          "jwc-acae1866bba9bae13b2c",
           "ygb-2d1cbb54989b3129a211",
-          "xsc-4d899ea5ef4f3625c66d",
           "ygb-56099b105a3cc0139b86",
-          "bc-92e1118322b55c02bda3"
+          "bc-b23f8a63ff78f1eaa837"
         ],
         "jaccard": 1.0,
         "top1_match": true,
@@ -440,23 +344,23 @@
       {
         "query": "助学金",
         "py_top5": [
-          "ygb-cc83b3e083a981d7092d",
           "njupt_notice-6554d92219634f721faf",
           "xsc-1624f141fe26342ee80b",
-          "bc-92e1118322b55c02bda3",
-          "bc-c7dc72d8038a09655ec9"
+          "cxcy-ac6a840bf5e5acb2ae47",
+          "cxcy-18b0923654eab80cce87",
+          "bc-92e1118322b55c02bda3"
         ],
         "ts_top5": [
-          "ygb-cc83b3e083a981d7092d",
           "njupt_notice-6554d92219634f721faf",
           "xsc-1624f141fe26342ee80b",
-          "bc-92e1118322b55c02bda3",
-          "bc-c7dc72d8038a09655ec9"
+          "ygb-2d1cbb54989b3129a211",
+          "ygb-56099b105a3cc0139b86",
+          "xsc-4d899ea5ef4f3625c66d"
         ],
-        "jaccard": 1.0,
+        "jaccard": 0.25,
         "top1_match": true,
         "top1_source_match": true,
-        "kendall_tau": 1.0,
+        "kendall_tau": 0.1818,
         "is_data_gap_allowed": false,
         "is_critical": true,
         "route_match": true
@@ -464,23 +368,23 @@
       {
         "query": "困难认定",
         "py_top5": [
-          "ygb-cc83b3e083a981d7092d",
           "njupt_notice-6554d92219634f721faf",
-          "bc-92e1118322b55c02bda3",
-          "bc-c7dc72d8038a09655ec9",
-          "xsc-1624f141fe26342ee80b"
+          "xsc-1624f141fe26342ee80b",
+          "cxcy-ac6a840bf5e5acb2ae47",
+          "cxcy-18b0923654eab80cce87",
+          "bc-92e1118322b55c02bda3"
         ],
         "ts_top5": [
-          "ygb-cc83b3e083a981d7092d",
           "njupt_notice-6554d92219634f721faf",
-          "bc-92e1118322b55c02bda3",
-          "bc-c7dc72d8038a09655ec9",
-          "xsc-1624f141fe26342ee80b"
+          "xsc-1624f141fe26342ee80b",
+          "ygb-2d1cbb54989b3129a211",
+          "ygb-56099b105a3cc0139b86",
+          "xsc-4d899ea5ef4f3625c66d"
         ],
-        "jaccard": 1.0,
+        "jaccard": 0.25,
         "top1_match": true,
         "top1_source_match": true,
-        "kendall_tau": 1.0,
+        "kendall_tau": 0.1818,
         "is_data_gap_allowed": false,
         "is_critical": false,
         "route_match": true
@@ -488,18 +392,18 @@
       {
         "query": "宣讲会",
         "py_top5": [
-          "job-6b5a43035e1c693fbb4b",
+          "news-cbd56e0e02b3e55bc381",
           "job-ce4500e0b0dad687f8d2",
-          "job-cb39d4504f396ce1a5a3",
           "job-67dc85ca08fe979eb024",
-          "job-b0e2b8b567544887e8c7"
+          "xsc-1624f141fe26342ee80b",
+          "job-0e4b5b0f266a9a2866e6"
         ],
         "ts_top5": [
-          "job-6b5a43035e1c693fbb4b",
+          "news-cbd56e0e02b3e55bc381",
           "job-ce4500e0b0dad687f8d2",
-          "job-cb39d4504f396ce1a5a3",
           "job-67dc85ca08fe979eb024",
-          "job-b0e2b8b567544887e8c7"
+          "xsc-1624f141fe26342ee80b",
+          "job-0e4b5b0f266a9a2866e6"
         ],
         "jaccard": 1.0,
         "top1_match": true,
@@ -514,16 +418,16 @@
         "py_top5": [
           "job-ce4500e0b0dad687f8d2",
           "job-67dc85ca08fe979eb024",
+          "job-0e4b5b0f266a9a2866e6",
           "job-b0e2b8b567544887e8c7",
-          "job-af73d8b77101ce20b005",
-          "job-85fe09dc12906fa9d158"
+          "job-286aa0035d13ca9a1f18"
         ],
         "ts_top5": [
           "job-ce4500e0b0dad687f8d2",
           "job-67dc85ca08fe979eb024",
+          "job-0e4b5b0f266a9a2866e6",
           "job-b0e2b8b567544887e8c7",
-          "job-af73d8b77101ce20b005",
-          "job-85fe09dc12906fa9d158"
+          "job-286aa0035d13ca9a1f18"
         ],
         "jaccard": 1.0,
         "top1_match": true,
@@ -536,18 +440,18 @@
       {
         "query": "实习",
         "py_top5": [
-          "job-cb39d4504f396ce1a5a3",
+          "news-cbd56e0e02b3e55bc381",
           "job-ce4500e0b0dad687f8d2",
           "job-67dc85ca08fe979eb024",
-          "job-b0e2b8b567544887e8c7",
-          "job-af73d8b77101ce20b005"
+          "xsc-1624f141fe26342ee80b",
+          "job-0e4b5b0f266a9a2866e6"
         ],
         "ts_top5": [
-          "job-cb39d4504f396ce1a5a3",
+          "news-cbd56e0e02b3e55bc381",
           "job-ce4500e0b0dad687f8d2",
           "job-67dc85ca08fe979eb024",
-          "job-b0e2b8b567544887e8c7",
-          "job-af73d8b77101ce20b005"
+          "xsc-1624f141fe26342ee80b",
+          "job-0e4b5b0f266a9a2866e6"
         ],
         "jaccard": 1.0,
         "top1_match": true,
@@ -561,17 +465,17 @@
         "query": "停电",
         "py_top5": [
           "hqc-0d2ca4f4fe0d9bac05c1",
+          "hqc-ec3775e276c31fc7153f",
           "hqc-6cc6532cca3bd115388a",
           "hqc-44cadcfc99f71a45ed7c",
-          "hqc-ec3775e276c31fc7153f",
-          "hqc-b279952a9f7b366cb41e"
+          "hqc-7256c33e2b10e787d6a0"
         ],
         "ts_top5": [
           "hqc-0d2ca4f4fe0d9bac05c1",
+          "hqc-ec3775e276c31fc7153f",
           "hqc-6cc6532cca3bd115388a",
           "hqc-44cadcfc99f71a45ed7c",
-          "hqc-ec3775e276c31fc7153f",
-          "hqc-b279952a9f7b366cb41e"
+          "hqc-7256c33e2b10e787d6a0"
         ],
         "jaccard": 1.0,
         "top1_match": true,
@@ -584,18 +488,18 @@
       {
         "query": "校园网",
         "py_top5": [
-          "xxb-2652f8ad86b44f71b459",
           "github-hicancan-njupt-net-7f980de7a96003335a87",
-          "xxb-041dc94e61b52ad09e93",
-          "github-s235784-NJUPT_AutoLogin-3bfbad0bf26507d2f64a",
-          "github-Freedomisgood-NjuptCmcc-2e4d2ee54922589eb084"
+          "simp-0b735b8b44f5e54325aa",
+          "github-lux-QAQ-NJUPT_Fastlogin-761863a2a7039f75e0eb",
+          "xxb-2652f8ad86b44f71b459",
+          "ygb-79a6b3cc500b74b5b5a2"
         ],
         "ts_top5": [
-          "xxb-2652f8ad86b44f71b459",
           "github-hicancan-njupt-net-7f980de7a96003335a87",
-          "xxb-041dc94e61b52ad09e93",
-          "github-s235784-NJUPT_AutoLogin-3bfbad0bf26507d2f64a",
-          "github-Freedomisgood-NjuptCmcc-2e4d2ee54922589eb084"
+          "simp-0b735b8b44f5e54325aa",
+          "github-lux-QAQ-NJUPT_Fastlogin-761863a2a7039f75e0eb",
+          "xxb-2652f8ad86b44f71b459",
+          "ygb-79a6b3cc500b74b5b5a2"
         ],
         "jaccard": 1.0,
         "top1_match": true,
@@ -608,18 +512,18 @@
       {
         "query": "图书馆开放",
         "py_top5": [
-          "lib-e8acaaa1135301e4a4b0",
-          "lib-09c9e68fc3e5b4646620",
           "lib-11d97c68bd141c921e9a",
-          "lib-a9f1db0b16e99696466c",
-          "lib-218f5492ea9dec3ae5a5"
+          "lib-3716ab8adb68434fce4f",
+          "lib-e8acaaa1135301e4a4b0",
+          "lib-3483d61452f94397984b",
+          "lib-09c9e68fc3e5b4646620"
         ],
         "ts_top5": [
-          "lib-e8acaaa1135301e4a4b0",
-          "lib-09c9e68fc3e5b4646620",
           "lib-11d97c68bd141c921e9a",
-          "lib-a9f1db0b16e99696466c",
-          "lib-218f5492ea9dec3ae5a5"
+          "lib-3716ab8adb68434fce4f",
+          "lib-e8acaaa1135301e4a4b0",
+          "lib-3483d61452f94397984b",
+          "lib-09c9e68fc3e5b4646620"
         ],
         "jaccard": 1.0,
         "top1_match": true,
@@ -633,17 +537,15 @@
         "query": "档案",
         "py_top5": [
           "archives-b38698c994ad71856b52",
+          "lib-0babdf8811b922d892a5",
           "lib-f3e58588ec5a3b984b8b",
-          "exchange-176cb6ec00a0d59cab1e",
-          "exchange-5b8b5d43475cad50110e",
-          "exchange-8c940f9a9a38972abe4d"
+          "ygb-cc83b3e083a981d7092d"
         ],
         "ts_top5": [
           "archives-b38698c994ad71856b52",
+          "lib-0babdf8811b922d892a5",
           "lib-f3e58588ec5a3b984b8b",
-          "exchange-176cb6ec00a0d59cab1e",
-          "exchange-5b8b5d43475cad50110e",
-          "exchange-8c940f9a9a38972abe4d"
+          "ygb-cc83b3e083a981d7092d"
         ],
         "jaccard": 1.0,
         "top1_match": true,
@@ -656,18 +558,18 @@
       {
         "query": "毕业设计",
         "py_top5": [
-          "github-dhiyu-NJUPT-Bachelor-6c0dfd18c09b68d15b36",
+          "cxcy-ac6a840bf5e5acb2ae47",
+          "cxcy-18b0923654eab80cce87",
           "github-ace-trump-tech-NJUPT-Graduation-thesis-45f54f0688c8a8d0c82d",
-          "github-gzr-lgtm-NJUPThesis-Bachelor-afd91b3fbe9d32896279",
-          "job-ce4500e0b0dad687f8d2",
-          "job-67dc85ca08fe979eb024"
+          "github-dhiyu-NJUPT-Bachelor-6c0dfd18c09b68d15b36",
+          "github-gzr-lgtm-NJUPThesis-Bachelor-afd91b3fbe9d32896279"
         ],
         "ts_top5": [
-          "github-dhiyu-NJUPT-Bachelor-6c0dfd18c09b68d15b36",
+          "cxcy-ac6a840bf5e5acb2ae47",
+          "cxcy-18b0923654eab80cce87",
           "github-ace-trump-tech-NJUPT-Graduation-thesis-45f54f0688c8a8d0c82d",
-          "github-gzr-lgtm-NJUPThesis-Bachelor-afd91b3fbe9d32896279",
-          "job-ce4500e0b0dad687f8d2",
-          "job-67dc85ca08fe979eb024"
+          "github-dhiyu-NJUPT-Bachelor-6c0dfd18c09b68d15b36",
+          "github-gzr-lgtm-NJUPThesis-Bachelor-afd91b3fbe9d32896279"
         ],
         "jaccard": 1.0,
         "top1_match": true,
@@ -679,48 +581,24 @@
       },
       {
         "query": "蓝桥杯",
-        "py_top5": [
-          "pg-d225c1da2add6e42ebcc",
-          "news-d3ea2fe86561660ce712",
-          "news-09e1f939c948d0707786",
-          "hqc-bfd10aa90d5011cdbfa7",
-          "github-NJUPT-CG-NCTF2018-cc514192c7ef53998319"
-        ],
-        "ts_top5": [
-          "pg-d225c1da2add6e42ebcc",
-          "news-d3ea2fe86561660ce712",
-          "news-09e1f939c948d0707786",
-          "hqc-bfd10aa90d5011cdbfa7",
-          "github-NJUPT-CG-NCTF2018-cc514192c7ef53998319"
-        ],
+        "py_top5": [],
+        "ts_top5": [],
         "jaccard": 1.0,
         "top1_match": true,
         "top1_source_match": true,
-        "kendall_tau": 1.0,
+        "kendall_tau": 0.0,
         "is_data_gap_allowed": true,
         "is_critical": false,
         "route_match": true
       },
       {
         "query": "挑战杯",
-        "py_top5": [
-          "news-d3ea2fe86561660ce712",
-          "pg-d225c1da2add6e42ebcc",
-          "hqc-bfd10aa90d5011cdbfa7",
-          "news-09e1f939c948d0707786",
-          "github-NJUPT-CG-NCTF2018-cc514192c7ef53998319"
-        ],
-        "ts_top5": [
-          "news-d3ea2fe86561660ce712",
-          "pg-d225c1da2add6e42ebcc",
-          "hqc-bfd10aa90d5011cdbfa7",
-          "news-09e1f939c948d0707786",
-          "github-NJUPT-CG-NCTF2018-cc514192c7ef53998319"
-        ],
+        "py_top5": [],
+        "ts_top5": [],
         "jaccard": 1.0,
         "top1_match": true,
         "top1_source_match": true,
-        "kendall_tau": 1.0,
+        "kendall_tau": 0.0,
         "is_data_gap_allowed": true,
         "is_critical": false,
         "route_match": true

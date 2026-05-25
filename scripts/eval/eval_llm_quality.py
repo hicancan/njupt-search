@@ -60,10 +60,6 @@ def run_evaluation(documents_path: str, manifest_path: str, strict: bool = True)
     for d in docs:
         if not d.get("semantic_pipeline_version"):
             errors.append(f"Doc {d['id']} missing semantic_pipeline_version")
-        if not d.get("student_score_source"):
-            errors.append(f"Doc {d['id']} missing student_score_source")
-        if not d.get("importance_score_source"):
-            errors.append(f"Doc {d['id']} missing importance_score_source")
 
     # Check 3: task_frame_source_mode_counts.unknown 必须为 0
     tf_unknown = manifest.get("task_frame_source_mode_counts", {}).get("unknown", 0)
@@ -83,7 +79,7 @@ def run_evaluation(documents_path: str, manifest_path: str, strict: bool = True)
                 
     # Check 6: field_source_counts should not have 100% nulls
     field_counts = manifest.get("field_source_counts", {})
-    for field in ["review_required", "student_score", "importance_score", "task_frames"]:
+    for field in ["review_required", "task_frames"]:
         field_nulls = field_counts.get(field, {}).get("null", 0)
         if field_nulls == total and total > 0:
             errors.append(f"field_source_counts.{field}.null == total ({total})")

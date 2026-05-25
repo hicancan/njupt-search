@@ -7,7 +7,6 @@ import { fetchJson } from '@/utils/fetch';
 interface UseSearchIndexResult {
     documents: SearchDocument[];
     manifest: SearchManifest | null;
-    hybridIndex: Record<string, unknown> | null;
     queryAliases: Record<string, unknown>;
     ontology: Record<string, unknown> | null;
     optionalUnavailable: string[];
@@ -20,7 +19,6 @@ interface UseSearchIndexResult {
 export function useSearchIndex(): UseSearchIndexResult {
     const [documents, setDocuments] = useState<SearchDocument[]>([]);
     const [manifest, setManifest] = useState<SearchManifest | null>(null);
-    const [hybridIndex, setHybridIndex] = useState<Record<string, unknown> | null>(null);
     const [queryAliases, setQueryAliases] = useState<Record<string, unknown>>({});
     const [ontology, setOntology] = useState<Record<string, unknown> | null>(null);
     const [optionalUnavailable, setOptionalUnavailable] = useState<string[]>([]);
@@ -40,19 +38,11 @@ export function useSearchIndex(): UseSearchIndexResult {
             const parsedManifest = parseSearchManifest(manifestPayload, APP_CONFIG.DATA_URLS.SEARCH_MANIFEST);
 
             const optionalResults = await Promise.allSettled([
-                fetchJson(APP_CONFIG.DATA_URLS.HYBRID_INDEX, controller.signal),
                 fetchJson(APP_CONFIG.DATA_URLS.QUERY_ALIASES, controller.signal),
                 fetchJson(APP_CONFIG.DATA_URLS.ONTOLOGY, controller.signal)
             ]);
             const unavailable: string[] = [];
-            const [hybridResult, aliasesResult, ontologyResult] = optionalResults;
-
-            if (hybridResult?.status === 'fulfilled') {
-                setHybridIndex(hybridResult.value as Record<string, unknown>);
-            } else {
-                setHybridIndex(null);
-                unavailable.push('hybrid_index');
-            }
+            const [aliasesResult, ontologyResult] = optionalResults;
 
             if (aliasesResult?.status === 'fulfilled') {
                 setQueryAliases(aliasesResult.value as Record<string, unknown>);
@@ -86,7 +76,6 @@ export function useSearchIndex(): UseSearchIndexResult {
                 console.error(err);
                 setDocuments([]);
                 setManifest(null);
-                setHybridIndex(null);
                 setQueryAliases({});
                 setOntology(null);
                 setOptionalUnavailable([]);
@@ -101,5 +90,5 @@ export function useSearchIndex(): UseSearchIndexResult {
         return () => controller.abort();
     }, []);
 
-    return { documents, manifest, hybridIndex, queryAliases, ontology, optionalUnavailable, loading, error };
+    return { documents, manifest, queryAliases, ontology, optionalUnavailable, loading, error };
 }

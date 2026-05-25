@@ -10,10 +10,10 @@ HyTask-RAG is the njupt-search v1 architecture before small-model training:
 -> LLM/Rule SemanticResult
 -> Semantic Verifier
 -> TaskFrame
--> HybridIndex
+-> NoticeCard / TypedSearchTerms
 -> Query Understanding
--> Hybrid Retrieval
--> Student Utility Ranking
+-> Candidate Recall
+-> Chronological Display
 -> Product UI
 -> Self Evaluation
 -> Static Deploy
@@ -21,7 +21,7 @@ HyTask-RAG is the njupt-search v1 architecture before small-model training:
 
 ## Source-Channel Graph
 
-`config/source_channels.json` is the production graph. A source is an authority origin; a channel is the audited crawl and ranking unit. Runtime code does not use `campus_sources.json` as a main path.
+`config/source_channels.json` is the production graph. A source is an authority origin; a channel is the audited crawl and coverage unit. Runtime code does not use `campus_sources.json` as a main path.
 
 Channel fields include:
 
@@ -105,22 +105,11 @@ Removal counts are written into document `semantic_verifier` metadata and summar
 
 Evidence must be grounded in extracted page text, attachment names, or trusted structured data. Missing fields stay null/empty and reviewable.
 
-## HybridIndex And Retrieval
+## Notice Cards And Recall
 
-`scripts/models/hybrid_index.py` produces `public/index/hybrid_index.json`. Ranking combines:
+`scripts/update_search_index.py` writes notice cards, typed search terms, synonyms, TaskFrame fields, materials, locations, attachments, evidence, and risk directly into `public/index/documents.json`.
 
-```text
-Score(q,d)
-= BM25(q,d)
-+ Field(q,d)
-+ Tag(q,d)
-+ Entity(q,d)
-+ SemanticExpansion(q,d)
-+ Utility(d)
-- Risk(d)
-```
-
-Python ranking lives in `scripts/core/hybrid_ranker.py`; frontend ranking lives in `src/utils/searchIndex.ts`. Both expose score components or score reasons so results are explainable.
+Runtime search does not build a BM25 or hybrid index. Python and TypeScript both perform candidate recall from the same document fields and route rules, then display recalled candidates by `published_at` descending. `score = 1` is retained only as a result-card compatibility field.
 
 ## Query Understanding
 
@@ -137,7 +126,6 @@ The deployable frontend consumes:
 ```text
 public/index/documents.json
 public/index/task_frames.json
-public/index/hybrid_index.json
 public/index/query_aliases.json
 public/index/ontology.json
 public/index/manifest.json

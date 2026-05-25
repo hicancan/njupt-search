@@ -17,7 +17,6 @@ MANIFEST_PATH = os.path.join(INDEX_DIR, "manifest.json")
 SOURCE_CHANNEL_CONFIG_PATH = os.path.join(BASE_DIR, "config", "source_channels.json")
 QUERY_ALIASES_PATH = os.path.join(BASE_DIR, "config", "query_aliases.json")
 ONTOLOGY_PATH = os.path.join(BASE_DIR, "config", "ontology.json")
-RANKING_WEIGHTS_PATH = os.path.join(BASE_DIR, "config", "ranking_weights.json")
 GITHUB_SOURCE_CONFIG_PATH = os.path.join(BASE_DIR, "config", "github_search_sources.json")
 LLM_CACHE_PATH = os.path.join(BASE_DIR, "cache", "search_llm_cache.json")
 

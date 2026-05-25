@@ -15,7 +15,7 @@ from bs4 import BeautifulSoup
 
 from config.indexer_config import (
     BASE_DIR, PUBLIC_DIR, INDEX_DIR, DOCUMENTS_PATH, MANIFEST_PATH, GITHUB_SOURCE_CONFIG_PATH,
-    LLM_CACHE_PATH, QUERY_ALIASES_PATH, ONTOLOGY_PATH, RANKING_WEIGHTS_PATH, SOURCE_CHANNEL_CONFIG_PATH,
+    LLM_CACHE_PATH, QUERY_ALIASES_PATH, ONTOLOGY_PATH, SOURCE_CHANNEL_CONFIG_PATH,
     BEIJING_TZ, HEADERS, MAX_DOCS_PER_SOURCE, DETAIL_FETCH_LIMIT_PER_SOURCE, REQUEST_TIMEOUT,
     MIN_STUDENT_SCORE, GITHUB_TOKEN_ENV, GITHUB_API_BASE, GITHUB_FILE_SIZE_LIMIT_BYTES,
     NEGATIVE_KEYWORDS, SourceConfig, GitHubSourceConfig, SOURCES,
@@ -69,7 +69,6 @@ from models.semantic_model import (
     normalize_domain, normalize_intent, normalize_source_type
 )
 from models.canonical_document import RawDocument, canonicalize_raw_document
-from models.hybrid_index import build_hybrid_index
 from models.source_graph import load_source_channel_graph
 from core.rule_guard import evaluate_rule_guard, restricted_summary
 from core.task_extractor import extract_task_frames
@@ -89,7 +88,6 @@ SOURCE_PRIORITY = {
 }
 
 TASK_FRAMES_PATH = os.path.join(INDEX_DIR, "task_frames.json")
-HYBRID_INDEX_PATH = os.path.join(INDEX_DIR, "hybrid_index.json")
 PUBLIC_QUERY_ALIASES_PATH = os.path.join(INDEX_DIR, "query_aliases.json")
 PUBLIC_ONTOLOGY_PATH = os.path.join(INDEX_DIR, "ontology.json")
 SEMANTIC_FIELDS_TO_TRACK = [
@@ -104,8 +102,6 @@ SEMANTIC_FIELDS_TO_TRACK = [
     "evidence",
     "sensitive",
     "review_required",
-    "student_score",
-    "importance_score",
     "task_frames",
 ]
 
@@ -225,8 +221,7 @@ def cached_with_freshness(cached: dict[str, Any], published_at: str | None, now:
     llm_meta = cached.get("llm") if isinstance(cached.get("llm"), dict) else {}
     if llm_meta.get("used"):
         _RUN_STATS["llm_reused"] += 1
-    fresh_at = published_at or cached.get("published_at")
-    return {**cached, "freshness_score": calculate_freshness(fresh_at, now)}
+    return dict(cached)
 
 
 def cached_documents_for_source_id(id_prefix: str) -> list[dict[str, Any]]:
@@ -428,7 +423,6 @@ def build_restricted_document(
     category = infer_category(scoring_text)
     domain = infer_domain(scoring_text, category, source.source_type)
     intent = infer_intent(scoring_text, False, 0)
-    student_score = max(0.58, calculate_student_score(title, source.source_weight))
     return {
         "id": f"{source.id}-{digest}",
         "kind": "notice",
@@ -462,10 +456,6 @@ def build_restricted_document(
         "content": title,
         "summary": restricted_summary(),
         "attachments": [],
-        "student_score": student_score,
-        "freshness_score": calculate_freshness(published_at, now),
-        "importance_score": calculate_importance_score(title, category, 0, source.source_weight),
-        "source_weight": source.source_weight,
         "tags": infer_tags(scoring_text, category),
         "hash": digest,
         "cache_key": llm_cache_key(source.id, url, content, []),
@@ -493,10 +483,7 @@ def build_restricted_document(
     }
 
 
-from core.indexer_scoring import (
-    calculate_freshness, infer_category, infer_tags, calculate_student_score,
-    is_student_facing_document, calculate_importance_score
-)
+from core.indexer_scoring import infer_category, infer_tags
 
 
 def extract_attachments(soup: BeautifulSoup, page_url: str, selector: str | None = None) -> list[dict[str, str]]:
@@ -776,10 +763,6 @@ def build_search_document_from_prepared(
     from core.semantic_pipeline import route_semantic_pipeline
     semantic = route_semantic_pipeline(entry, llm_result, guard, _RUN_CONFIG, now)
 
-    min_student_score = entry.get("min_student_score")
-    if min_student_score is not None:
-        semantic.student_score = max(float(min_student_score), semantic.student_score)
-
     for tag in entry.get("extra_tags", []):
         if tag and tag not in semantic.tags:
             semantic.tags.append(tag)
@@ -820,10 +803,6 @@ def build_search_document_from_prepared(
         "content": semantic.content,
         "summary": semantic.summary,
         "attachments": semantic.attachments,
-        "student_score": semantic.student_score,
-        "freshness_score": calculate_freshness(entry.get("published_at"), now),
-        "importance_score": semantic.importance_score,
-        "source_weight": entry["source_weight"],
         "tags": semantic.tags[:10],
         "hash": entry["hash"],
         "cache_key": entry["cache_key"],
@@ -837,12 +816,6 @@ def build_search_document_from_prepared(
         "llm_prompt_version": "v2",
         "llm_input_pack_version": "v1",
         "raw_field_presence": semantic.raw_field_presence,
-        "llm_student_relevance": semantic.llm_student_relevance,
-        "llm_importance_score": semantic.llm_importance_score,
-        "rule_student_score": semantic.rule_student_score,
-        "rule_importance_score": semantic.rule_importance_score,
-        "student_score_source": semantic.student_score_source,
-        "importance_score_source": semantic.importance_score_source,
         "llm_failure": semantic.llm_failure,
         "crawler": entry.get("crawler", {}),
     }
@@ -1202,7 +1175,6 @@ def prepare_job_entry(
         "hash": digest,
         "cache_key": cache_key,
         "lifecycle_kind": "notice",
-        "min_student_score": 0.68,
         "canonical": canonicalize_raw_document(RawDocument(
             raw_id=f"{source.id}-{digest}",
             source_id=source.id,
@@ -1473,7 +1445,6 @@ def prepare_github_entry(
         "hash": digest,
         "cache_key": cache_key,
         "lifecycle_kind": "resource",
-        "min_student_score": 0.55,
         "extra_tags": ["GitHub资料"],
         "canonical": canonicalize_raw_document(RawDocument(
             raw_id=f"github-{source.repo.replace('/', '-')}-{digest}",
@@ -1648,28 +1619,17 @@ def crawl_source(source: SourceConfig, now: datetime) -> tuple[list[dict[str, An
                 enriched.append(doc)
                 channel_stats.setdefault(str(doc.get("channel_id")), {"candidates": 0, "list_errors": [], "documents": 0})["documents"] += 1
 
-        filtered = [document for document in enriched if is_student_facing_document(document)]
         enriched.sort(
             key=lambda item: (
-                item["student_score"],
-                item["freshness_score"],
-                item["importance_score"],
-                item["published_at"] or "",
+                item.get("published_at") or "",
+                item.get("id") or "",
             ),
             reverse=True,
         )
-        filtered.sort(
-            key=lambda item: (
-                item["student_score"],
-                item["freshness_score"],
-                item["importance_score"],
-                item["published_at"] or "",
-            ),
-            reverse=True,
-        )
-        documents = filtered[:MAX_DOCS_PER_SOURCE]
+        documents = enriched[:MAX_DOCS_PER_SOURCE]
         manifest_entry["candidates"] = len(enriched)
-        manifest_entry["filtered_out"] = len(enriched) - len(filtered)
+        manifest_entry["filtered_out"] = 0
+        manifest_entry["capped_out"] = max(0, len(enriched) - len(documents))
         manifest_entry["documents"] = len(documents)
         enriched_channels = []
         for channel_entry in manifest_entry["channels"]:
@@ -1702,12 +1662,10 @@ def deduplicate_documents(documents: list[dict[str, Any]]) -> list[dict[str, Any
     best_by_key: dict[str, dict[str, Any]] = {}
     url_keys: set[str] = set()
 
-    def rank(document: dict[str, Any]) -> tuple[float, float, float, float, int]:
+    def rank(document: dict[str, Any]) -> tuple[str, float, int]:
         return (
+            str(document.get("published_at") or ""),
             SOURCE_PRIORITY.get(str(document.get("source")), float(document.get("source_weight", 0.5))),
-            float(document.get("student_score", 0)),
-            float(document.get("importance_score", 0)),
-            float(document.get("freshness_score", 0)),
             len(str(document.get("content", ""))),
         )
 
@@ -1757,7 +1715,7 @@ def infer_cached_semantic_mode(document: dict[str, Any]) -> str:
         return "llm" if any(str(value).startswith("llm") for value in field_sources.values()) else "heuristic"
     if llm_payload.get("used") is False:
         return "heuristic"
-    if llm_payload.get("raw_field_presence") or llm_payload.get("__llm_provider") or "student_relevance" in llm_payload:
+    if llm_payload.get("raw_field_presence") or llm_payload.get("__llm_provider"):
         return "llm"
     return "unprocessed"
 
@@ -1781,8 +1739,6 @@ def default_field_sources_for(document: dict[str, Any], semantic_mode: str, raw_
             "evidence": llm_field_source("evidence", raw_presence),
             "sensitive": llm_field_source("sensitive", raw_presence),
             "review_required": llm_field_source("review_required", raw_presence),
-            "student_score": "hybrid_rank_feature",
-            "importance_score": "hybrid_rank_feature",
             "task_frames": "llm_raw_task_frame" if document.get("task_frames") else "empty_not_applicable",
         }
     if semantic_mode == "structured_exam":
@@ -1791,8 +1747,6 @@ def default_field_sources_for(document: dict[str, Any], semantic_mode: str, raw_
         return {field: "rule_guard" for field in SEMANTIC_FIELDS_TO_TRACK}
     if semantic_mode in {"heuristic", "heuristic_degraded"}:
         sources = {field: "heuristic" for field in SEMANTIC_FIELDS_TO_TRACK}
-        sources["student_score"] = "rule_guard"
-        sources["importance_score"] = "rule_guard"
         sources["task_frames"] = "heuristic_rule_frame"
         return sources
     return {field: "unprocessed" for field in SEMANTIC_FIELDS_TO_TRACK}
@@ -1816,10 +1770,6 @@ def ensure_document_provenance(document: dict[str, Any]) -> dict[str, Any]:
     document["field_sources"] = field_sources
 
     document.setdefault("semantic_pipeline_version", SEMANTIC_PIPELINE_VERSION)
-    score_source = "hybrid_rank_feature" if semantic_mode == "llm" else field_sources.get("student_score", "unprocessed")
-    importance_source = "hybrid_rank_feature" if semantic_mode == "llm" else field_sources.get("importance_score", "unprocessed")
-    document.setdefault("student_score_source", score_source)
-    document.setdefault("importance_score_source", importance_source)
     document.setdefault("llm_failure", None)
     return document
 
@@ -1854,6 +1804,187 @@ def normalize_existing_task_frames(document: dict[str, Any]) -> None:
             frame["source_mode"] = source_mode
         if not isinstance(frame.get("field_sources"), dict) or not frame.get("field_sources"):
             frame["field_sources"] = field_sources
+
+
+def unique_text_values(values: list[Any], limit: int = 32) -> list[str]:
+    result: list[str] = []
+    seen: set[str] = set()
+    for value in values:
+        text = clean_text(str(value or ""))
+        if not text:
+            continue
+        key = re.sub(r"\s+", "", text).lower()
+        if not key or key in seen:
+            continue
+        seen.add(key)
+        result.append(text)
+        if len(result) >= limit:
+            break
+    return result
+
+
+def frame_list(document: dict[str, Any]) -> list[dict[str, Any]]:
+    return [frame for frame in document.get("task_frames", []) or [] if isinstance(frame, dict)]
+
+
+def query_alias_synonyms_for_document(document: dict[str, Any], query_aliases: dict[str, Any]) -> list[str]:
+    recall_text = " ".join(
+        [
+            str(document.get("title") or ""),
+            str(document.get("summary") or ""),
+            " ".join(str(item) for item in document.get("tags", []) or []),
+            " ".join(str(item) for item in document.get("required_materials", []) or []),
+        ]
+    )
+    normalized_text = re.sub(r"\s+", "", recall_text).lower()
+    values: list[str] = []
+    for key, payload in (query_aliases or {}).items():
+        if not isinstance(payload, dict):
+            continue
+        aliases = [str(item) for item in payload.get("aliases", []) or []]
+        terms = [str(key), *aliases]
+        text_match = any(re.sub(r"\s+", "", term).lower() in normalized_text for term in terms if term)
+        if text_match:
+            values.extend(terms)
+    return unique_text_values(values, limit=40)
+
+
+def build_notice_card(document: dict[str, Any]) -> dict[str, Any]:
+    frames = frame_list(document)
+    actions: list[Any] = [document.get("action_type"), document.get("action_summary")]
+    objects: list[Any] = [document.get("title")]
+    deadlines: list[Any] = [document.get("deadline")]
+    materials: list[Any] = list(document.get("required_materials") or [])
+    locations: list[Any] = []
+    evidence: list[Any] = list(document.get("evidence") or [])
+
+    for frame in frames:
+        action = frame.get("action") if isinstance(frame.get("action"), dict) else {}
+        time_payload = frame.get("time") if isinstance(frame.get("time"), dict) else {}
+        location = frame.get("location") if isinstance(frame.get("location"), dict) else {}
+        objects.extend([frame.get("what"), action.get("object")])
+        actions.extend([action.get("verb"), action.get("summary")])
+        deadlines.append(time_payload.get("deadline"))
+        materials.extend(
+            item.get("name")
+            for item in frame.get("materials", []) or []
+            if isinstance(item, dict)
+        )
+        locations.extend([location.get("place"), location.get("online"), location.get("contact")])
+        evidence.extend(
+            item.get("text")
+            for item in frame.get("evidence", []) or []
+            if isinstance(item, dict)
+        )
+
+    attachments = [
+        {
+            "name": attachment.get("name"),
+            "url": attachment.get("url"),
+            "type": attachment.get("type"),
+            "role": attachment.get("role"),
+            "description": attachment.get("description"),
+            "sensitive": bool(attachment.get("sensitive", False)),
+        }
+        for attachment in document.get("attachments", []) or []
+        if isinstance(attachment, dict)
+    ]
+    guard = document.get("rule_guard") if isinstance(document.get("rule_guard"), dict) else {}
+    deadline_values = unique_text_values(deadlines, limit=8)
+    return {
+        "title": document.get("title"),
+        "summary": document.get("summary"),
+        "source": {
+            "source_id": document.get("source_id"),
+            "channel_id": document.get("channel_id"),
+            "name": document.get("source"),
+            "channel": document.get("channel"),
+            "url": document.get("url"),
+            "published_at": document.get("published_at"),
+        },
+        "audience": list(document.get("audience") or []),
+        "category": document.get("category"),
+        "domain": document.get("domain"),
+        "intent": document.get("intent"),
+        "objects": unique_text_values(objects, limit=20),
+        "actions": unique_text_values(actions, limit=20),
+        "deadline": deadline_values[0] if deadline_values else None,
+        "deadlines": deadline_values,
+        "materials": unique_text_values(materials, limit=24),
+        "locations": unique_text_values(locations, limit=16),
+        "attachments": attachments,
+        "risk": {
+            "sensitive": bool(document.get("sensitive")),
+            "review_required": bool(document.get("review_required")),
+            "restricted": bool(document.get("status") == "restricted" or guard.get("restricted")),
+            "low_evidence": bool(guard.get("low_evidence")),
+            "risk_flags": list(document.get("risk_flags") or []),
+        },
+        "evidence": unique_text_values(evidence, limit=20),
+    }
+
+
+def build_typed_search_terms(document: dict[str, Any], synonyms: list[str]) -> list[dict[str, str]]:
+    terms: list[dict[str, str]] = []
+    seen: set[tuple[str, str]] = set()
+
+    def add(term_type: str, value: Any, source: str) -> None:
+        text = clean_text(str(value or ""))
+        if not text:
+            return
+        key = (term_type, re.sub(r"\s+", "", text).lower())
+        if key in seen:
+            return
+        seen.add(key)
+        terms.append({"type": term_type, "term": text, "source": source})
+
+    for term_type, values, source in (
+        ("title", [document.get("title")], "source"),
+        ("summary", [document.get("summary")], "evidence"),
+        ("source", [document.get("source"), document.get("channel"), document.get("source_id"), document.get("channel_id")], "source"),
+        ("category", [document.get("category"), document.get("domain"), document.get("intent")], "semantic"),
+        ("audience", list(document.get("audience") or []), "semantic"),
+        ("tag", list(document.get("tags") or []), "semantic"),
+        ("material", list(document.get("required_materials") or []), "semantic"),
+        ("evidence", list(document.get("evidence") or []), "evidence"),
+        ("synonym", synonyms, "query_aliases"),
+    ):
+        for value in values:
+            add(term_type, value, source)
+
+    for attachment in document.get("attachments", []) or []:
+        if isinstance(attachment, dict):
+            add("attachment", attachment.get("name"), "source")
+            add("attachment", attachment.get("description"), "source")
+
+    for frame in frame_list(document):
+        action = frame.get("action") if isinstance(frame.get("action"), dict) else {}
+        time_payload = frame.get("time") if isinstance(frame.get("time"), dict) else {}
+        location = frame.get("location") if isinstance(frame.get("location"), dict) else {}
+        add("object", frame.get("what"), "task_frame")
+        add("object", action.get("object"), "task_frame")
+        add("action", action.get("verb"), "task_frame")
+        add("action", action.get("summary"), "task_frame")
+        add("deadline", time_payload.get("deadline"), "task_frame")
+        add("location", location.get("place"), "task_frame")
+        add("location", location.get("online"), "task_frame")
+        add("location", location.get("contact"), "task_frame")
+        for material in frame.get("materials", []) or []:
+            if isinstance(material, dict):
+                add("material", material.get("name"), "task_frame")
+        for evidence in frame.get("evidence", []) or []:
+            if isinstance(evidence, dict):
+                add("evidence", evidence.get("text"), "task_frame")
+    return terms[:120]
+
+
+def attach_notice_card_and_terms(document: dict[str, Any], query_aliases: dict[str, Any]) -> dict[str, Any]:
+    doc = dict(document)
+    synonyms = query_alias_synonyms_for_document(doc, query_aliases)
+    doc["notice_card"] = build_notice_card(doc)
+    doc["synonyms"] = synonyms
+    doc["typed_search_terms"] = build_typed_search_terms(doc, synonyms)
+    return doc
 
 
 def finalize_hytask_documents(documents: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -2067,25 +2198,16 @@ def main() -> None:
 
     all_documents = deduplicate_documents(all_documents)
     all_documents = finalize_hytask_documents(all_documents)
+    query_aliases = read_json_file(QUERY_ALIASES_PATH, {})
+    ontology = read_json_file(ONTOLOGY_PATH, {})
+    all_documents = [attach_notice_card_and_terms(document, query_aliases) for document in all_documents]
     task_frames = [frame for document in all_documents for frame in document.get("task_frames", [])]
     all_documents.sort(
         key=lambda item: (
-            item["student_score"],
-            item["freshness_score"],
-            item["importance_score"],
-            item["published_at"] or "",
+            item.get("published_at") or "",
+            item.get("id") or "",
         ),
         reverse=True,
-    )
-    query_aliases = read_json_file(QUERY_ALIASES_PATH, {})
-    ontology = read_json_file(ONTOLOGY_PATH, {})
-    ranking_weights = read_json_file(RANKING_WEIGHTS_PATH, {})
-    hybrid_index = build_hybrid_index(
-        all_documents,
-        task_frames,
-        ranking_weights=ranking_weights,
-        query_aliases=query_aliases,
-        ontology=ontology,
     )
     source_graph = load_source_channel_graph(SOURCE_CHANNEL_CONFIG_PATH)
     evidence_coverage = calculate_evidence_coverage(task_frames)
@@ -2118,8 +2240,6 @@ def main() -> None:
         src_mode = frame.get("source_mode", "unknown")
         task_frame_source_mode_counts[src_mode] = task_frame_source_mode_counts.get(src_mode, 0) + 1
         
-    hybrid_score_field_count = sum(1 for doc in all_documents if doc.get("student_score_source") == "hybrid_rank_feature")
-    
     training_eligible_count = sum(1 for d in all_documents if d.get("semantic_mode") == "llm" and not d.get("review_required") and float(d.get("confidence", 0) or 0) >= 0.8)
     heuristic_degraded_count = semantic_mode_counts.get("heuristic_degraded", 0)
     
@@ -2131,7 +2251,7 @@ def main() -> None:
     manifest = {
         "generated_at": now.isoformat(),
         "total_documents": len(all_documents),
-        "strategy": "hytask-rag-source-channel-taskframe-hybrid-index-v1",
+        "strategy": "source-fidelity-offline-llm-card-recall-chronological-v1",
         "semantic_pipeline_version": SEMANTIC_PIPELINE_VERSION,
         "llm_schema_version": active_llm_schema_version(),
         "llm_enabled": runtime_llm_enabled(),
@@ -2145,7 +2265,6 @@ def main() -> None:
         "field_source_counts": field_source_counts,
         "task_frame_source_mode_counts": task_frame_source_mode_counts,
         "llm_missing_field_counts": llm_missing_field_counts,
-        "hybrid_score_field_count": hybrid_score_field_count,
         "training_eligible_count": training_eligible_count,
         "heuristic_degraded_count": heuristic_degraded_count,
         "llm_purity_rate": llm_purity_rate,
@@ -2165,11 +2284,6 @@ def main() -> None:
         "low_evidence_count": sum(1 for document in all_documents if (document.get("rule_guard") or {}).get("low_evidence")),
         "restricted_count": sum(1 for document in all_documents if document.get("status") == "restricted" or (document.get("rule_guard") or {}).get("restricted")),
         "sensitive_count": sum(1 for document in all_documents if document.get("sensitive") or (document.get("rule_guard") or {}).get("sensitive")),
-        "hybrid_index": {
-            "doc_count": hybrid_index.get("doc_count"),
-            "task_frame_count": hybrid_index.get("task_frame_count"),
-            "avg_doc_len": hybrid_index.get("avg_doc_len"),
-        },
         "sources": source_entries,
     }
 
@@ -2190,14 +2304,13 @@ def main() -> None:
 
     docs_changed = write_json_if_changed(DOCUMENTS_PATH, all_documents)
     tasks_changed = write_json_if_changed(TASK_FRAMES_PATH, task_frames)
-    hybrid_changed = write_json_if_changed(HYBRID_INDEX_PATH, hybrid_index)
     aliases_changed = write_json_if_changed(PUBLIC_QUERY_ALIASES_PATH, query_aliases)
     ontology_changed = write_json_if_changed(PUBLIC_ONTOLOGY_PATH, ontology)
     manifest_changed = write_json_if_changed(MANIFEST_PATH, manifest)
     llm_cache_changed = save_llm_cache(now)
     print(f"Generated {len(all_documents)} search documents")
     print(f"Generated {len(task_frames)} task frames")
-    print(f"documents.json changed: {docs_changed}; task_frames.json changed: {tasks_changed}; hybrid_index.json changed: {hybrid_changed}; query_aliases.json changed: {aliases_changed}; ontology.json changed: {ontology_changed}; manifest.json changed: {manifest_changed}; LLM cache changed: {llm_cache_changed}")
+    print(f"documents.json changed: {docs_changed}; task_frames.json changed: {tasks_changed}; query_aliases.json changed: {aliases_changed}; ontology.json changed: {ontology_changed}; manifest.json changed: {manifest_changed}; LLM cache changed: {llm_cache_changed}")
 
 
 if __name__ == "__main__":

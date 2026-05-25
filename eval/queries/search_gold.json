@@ -1,14 +1,15 @@
 {
   "version": 1,
   "description": "Durable product query gold set for njupt-search. eval/search_cases.json remains the executable gate; this file documents the intended coverage categories and acceptance semantics.",
-  "statuses": ["strict_pass", "data_gap", "degraded_pass", "fail"],
+  "statuses": ["strict_pass", "data_gap", "fail"],
   "metrics": ["MRR@5", "NDCG@5", "Recall@10", "top1_source_correctness", "route_accuracy", "python_ts_drift", "grounded_task_frame_rate", "restricted_leakage_count"],
   "categories": [
     {
       "name": "exam_class_lookup",
-      "queries": ["B250403", "B250403 高数", "高数考试"],
+      "queries": ["B250403", "B250403 高数"],
       "expected_route": "class_exam_lookup",
-      "critical": true
+      "critical": true,
+      "surface": "class_exam_lookup_outside_notice_search"
     },
     {
       "name": "cet_notice",

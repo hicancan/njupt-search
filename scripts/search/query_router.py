@@ -83,7 +83,6 @@ def route_query(raw_query: str, routes: List[Dict[str, Any]]) -> Dict[str, Any]:
         "bad_result_terms": best_route.get("bad_result_terms", []),
         "must_include_terms_for_top_results": best_route.get("must_include_terms_for_top_results", []),
         "allow_resource_top5": best_route.get("allow_resource_top5", True),
-        "allow_blocked_fallback": best_route.get("allow_blocked_fallback", True),
         "freshness_preference": best_route.get("freshness_preference", "none"),
         "top1_prefer_exact_title": best_route.get("top1_prefer_exact_title", False),
         "alternative_routes": alt_routes,

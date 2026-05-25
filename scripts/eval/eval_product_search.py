@@ -15,7 +15,6 @@ BEIJING_TZ = timezone(timedelta(hours=8))
 
 STATUS_STRICT_PASS = "strict_pass"
 STATUS_DATA_GAP = "data_gap"
-STATUS_DEGRADED_PASS = "degraded_pass"
 STATUS_FAIL = "fail"
 
 
@@ -24,126 +23,8 @@ def load_json(path: str) -> Any:
         return json.load(f)
 
 
-def _days_from_now(date_like: Any) -> Optional[float]:
-    if not date_like:
-        return None
-    try:
-        dt = datetime.fromisoformat(str(date_like))
-        if dt.tzinfo is None:
-            dt = dt.replace(tzinfo=BEIJING_TZ)
-        return (datetime.now(BEIJING_TZ) - dt).total_seconds() / 86400
-    except (ValueError, TypeError):
-        return None
-
-
-def _calc_freshness(date_like: Any) -> float:
-    days = _days_from_now(date_like)
-    if days is None:
-        return 0.45
-    if days < -120:
-        return 0.66
-    if days < 0:
-        return 0.95
-    if days <= 3:
-        return 1.0
-    if days <= 7:
-        return 0.92
-    if days <= 30:
-        return 0.78
-    if days <= 180:
-        return 0.58
-    return 0.42
-
-
-def build_exam_documents_py(exams: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-    """Mirrors TypeScript buildExamDocuments in searchIndex.ts for Python gates."""
-    documents = []
-    for exam in exams:
-        title = f"{exam.get('class_name', '')} {exam.get('course_name', '')} 考试安排"
-        content = " ".join(
-            str(exam.get(k, "") or "")
-            for k in [
-                "class_name",
-                "course_name",
-                "course_code",
-                "teacher",
-                "location",
-                "raw_time",
-                "campus",
-                "school",
-                "student_school",
-                "major",
-                "grade",
-                "notes",
-            ]
-        )
-        raw_time = exam.get("raw_time") or ""
-        location = exam.get("location") or ""
-        exam_id = exam.get("id", "")
-        published_at = exam.get("date") or exam.get("start_timestamp")
-
-        documents.append(
-            {
-                "id": f"exam-{exam_id}",
-                "kind": "exam",
-                "source_id": "exam_vertical",
-                "channel_id": "exam_schedule",
-                "channel": "考试安排",
-                "title": title,
-                "url": f"?class={exam.get('class_name', '')}",
-                "source": "考试垂直频道",
-                "source_domain": "jwc.njupt.edu.cn",
-                "source_type": "exam_vertical",
-                "category": "考试",
-                "domain": "exam",
-                "intent": "schedule",
-                "lifecycle": "active",
-                "evidence": [raw_time or location or title],
-                "confidence": 0.6 if exam.get("parse_error") else 0.98,
-                "sub_category": None,
-                "deadline": None,
-                "action_required": False,
-                "action_type": None,
-                "action_summary": None,
-                "required_materials": [],
-                "sensitive": False,
-                "sensitive_types": [],
-                "review_required": False,
-                "risk_flags": [],
-                "audience": ["本科生"],
-                "published_at": published_at,
-                "content": content or title,
-                "summary": f"{raw_time or '时间待确认'} · {location or '地点待确认'}",
-                "attachments": [],
-                "student_score": 1.0,
-                "freshness_score": _calc_freshness(published_at),
-                "importance_score": 0.94,
-                "source_weight": 1.0,
-                "tags": [
-                    item
-                    for item in [
-                        "考试",
-                        "期末",
-                        exam.get("class_name", ""),
-                        exam.get("course_name", ""),
-                        exam.get("campus", ""),
-                        exam.get("major", ""),
-                    ]
-                    if item
-                ],
-                "hash": exam_id,
-                "class_name": exam.get("class_name"),
-                "exam_id": exam_id,
-            }
-        )
-    return documents
-
-
 def load_documents() -> Tuple[List[Dict[str, Any]], Dict[str, Dict[str, Any]]]:
     documents = load_json(os.path.join(BASE_DIR, "public", "index", "documents.json"))
-    exam_data_path = os.path.join(BASE_DIR, "public", "data", "all_exams.json")
-    if os.path.exists(exam_data_path):
-        documents = documents + build_exam_documents_py(load_json(exam_data_path))
     return documents, {str(doc.get("id", "")): doc for doc in documents}
 
 
@@ -230,7 +111,6 @@ def _simplify_doc(doc: Dict[str, Any]) -> Dict[str, Any]:
         "source_id": doc.get("source_id"),
         "channel_id": doc.get("channel_id"),
         "kind": doc.get("kind"),
-        "degraded_fallback": bool(doc.get("degraded_fallback")),
     }
 
 
@@ -279,7 +159,6 @@ def _evaluate_result_set(
     label: str,
 ) -> Dict[str, Any]:
     reasons: List[str] = []
-    degraded = any(bool(doc.get("degraded_fallback")) for doc in top5)
     top3 = top5[:3]
     top1 = top5[0] if top5 else None
 
@@ -341,12 +220,8 @@ def _evaluate_result_set(
         if doc.get("domain") in forbidden_domains:
             reasons.append(f"{label}: doc '{doc.get('title')}' uses forbidden domain")
 
-    if degraded and not case.get("allow_degraded_fallback", True):
-        reasons.append(f"{label}: degraded fallback is not allowed")
-
     return {
         "passed": len(reasons) == 0,
-        "degraded": degraded,
         "failure_reasons": reasons,
     }
 
@@ -371,9 +246,7 @@ def evaluate_cases(mode: str, ts_results_path: Optional[str], max_data_gap_group
     index_dir = os.path.join(BASE_DIR, "public", "index")
     notice_documents = load_json(os.path.join(index_dir, "documents.json"))
     documents, document_lookup = load_documents()
-    hybrid_index = load_json(os.path.join(index_dir, "hybrid_index.json"))
     query_aliases = load_json(os.path.join(BASE_DIR, "config", "query_aliases.json"))
-    ranking_weights = load_json(os.path.join(BASE_DIR, "config", "ranking_weights.json"))
     routes = load_query_routes(os.path.join(BASE_DIR, "config", "query_routes.json"))
     channels = _load_manifest_channels()
     cases = load_json(os.path.join(BASE_DIR, "eval", "search_cases.json"))
@@ -387,7 +260,7 @@ def evaluate_cases(mode: str, ts_results_path: Optional[str], max_data_gap_group
         ts_results = load_json(ts_results_path)
         ts_results_by_query = {item["query"]: item for item in ts_results}
 
-    status_counts = {STATUS_STRICT_PASS: 0, STATUS_DATA_GAP: 0, STATUS_DEGRADED_PASS: 0, STATUS_FAIL: 0}
+    status_counts = {STATUS_STRICT_PASS: 0, STATUS_DATA_GAP: 0, STATUS_FAIL: 0}
     data_gap_cases: List[str] = []
     data_gap_channels: Dict[str, List[str]] = {}
     data_gap_groups: set[str] = set()
@@ -407,7 +280,7 @@ def evaluate_cases(mode: str, ts_results_path: Optional[str], max_data_gap_group
         evals: Dict[str, Dict[str, Any]] = {}
 
         if "python" in selected_modes:
-            python_top5 = vertical_rank_documents(query, documents, hybrid_index, query_aliases, ranking_weights, limit=5)
+            python_top5 = vertical_rank_documents(query, documents, query_aliases=query_aliases, limit=5)
             evals["python"] = _evaluate_result_set(case, python_top5, py_route_ok, py_route_obj, "python")
 
         if "frontend" in selected_modes:
@@ -416,7 +289,6 @@ def evaluate_cases(mode: str, ts_results_path: Optional[str], max_data_gap_group
 
         blocking_evals = [evals[name] for name in blocking_modes if name in evals]
         selected_pass = all(result["passed"] for result in blocking_evals)
-        selected_degraded = any(result["degraded"] for result in blocking_evals)
         failure_reasons = [reason for result in evals.values() for reason in result["failure_reasons"]]
         blocking_failure_reasons = [reason for result in blocking_evals for reason in result["failure_reasons"]]
 
@@ -428,9 +300,7 @@ def evaluate_cases(mode: str, ts_results_path: Optional[str], max_data_gap_group
             and set(gap_channels) == set(str(item) for item in case.get("coverage_channels", []) or [])
         )
 
-        if selected_pass and selected_degraded:
-            status = STATUS_DEGRADED_PASS
-        elif selected_pass:
+        if selected_pass:
             status = STATUS_STRICT_PASS
         elif is_data_gap:
             status = STATUS_DATA_GAP
@@ -470,7 +340,6 @@ def evaluate_cases(mode: str, ts_results_path: Optional[str], max_data_gap_group
         "strict_pass_count": status_counts[STATUS_STRICT_PASS],
         "data_gap_count": len(data_gap_groups),
         "data_gap_case_count": len(data_gap_cases),
-        "degraded_pass_count": status_counts[STATUS_DEGRADED_PASS],
         "fail_count": status_counts[STATUS_FAIL],
         "data_gap_cases": data_gap_cases,
         "data_gap_channels": data_gap_channels,
@@ -510,7 +379,6 @@ def main() -> None:
         "Status Counts: "
         f"strict={counts[STATUS_STRICT_PASS]}, "
         f"data_gap={counts[STATUS_DATA_GAP]}, "
-        f"degraded={counts[STATUS_DEGRADED_PASS]}, "
         f"fail={counts[STATUS_FAIL]}"
     )
     print(f"Data Gap Groups: {report['data_gap_count']}/{report['max_data_gap_groups']} {report['data_gap_groups']}")

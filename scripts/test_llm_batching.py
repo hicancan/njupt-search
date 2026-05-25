@@ -20,15 +20,12 @@ class LLMBatchingTests(unittest.TestCase):
             "results": [
                 {
                     "id": "doc-1",
-                    "is_student_facing": True,
-                    "student_relevance": 0.9,
                     "audience": ["本科生"],
                     "category": "项目",
                     "domain": "international",
                     "intent": "apply",
                     "sub_category": "海外交流",
                     "tags": ["海外交流", "报名"],
-                    "importance_score": 0.85,
                     "deadline": None,
                     "action_required": True,
                     "action_type": "报名",

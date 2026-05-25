@@ -55,26 +55,22 @@ cases = [
     "query": "\u56db\u516d\u7ea7", # 四六级
     "route": "cet_notice_search",
     "top5_must_include_any_terms": ["\u56db\u7ea7", "\u516d\u7ea7", "CET", "\u56db\u516d\u7ea7"],
-    "top5_must_not_include_any_terms": ["\u6155\u8bfe", "\u5c01\u95ed\u6559\u5b66\u697c", "\u666e\u901a\u671f\u672b"],
-    "allow_degraded_fallback": False
+    "top5_must_not_include_any_terms": ["\u6155\u8bfe", "\u5c01\u95ed\u6559\u5b66\u697c", "\u666e\u901a\u671f\u672b"]
   },
   {
     "query": "CET",
     "route": "cet_notice_search",
-    "top5_must_include_any_terms": ["\u56db\u7ea7", "\u516d\u7ea7", "CET", "\u56db\u516d\u7ea7"],
-    "allow_degraded_fallback": False
+    "top5_must_include_any_terms": ["\u56db\u7ea7", "\u516d\u7ea7", "CET", "\u56db\u516d\u7ea7"]
   },
   {
     "query": "\u56db\u7ea7", # 四级
     "route": "cet_notice_search",
-    "top5_must_include_any_terms": ["\u56db\u7ea7", "\u516d\u7ea7", "CET", "\u56db\u516d\u7ea7"],
-    "allow_degraded_fallback": False
+    "top5_must_include_any_terms": ["\u56db\u7ea7", "\u516d\u7ea7", "CET", "\u56db\u516d\u7ea7"]
   },
   {
     "query": "\u516d\u7ea7", # 六级
     "route": "cet_notice_search",
-    "top5_must_include_any_terms": ["\u56db\u7ea7", "\u516d\u7ea7", "CET", "\u56db\u516d\u7ea7"],
-    "allow_degraded_fallback": False
+    "top5_must_include_any_terms": ["\u56db\u7ea7", "\u516d\u7ea7", "CET", "\u56db\u516d\u7ea7"]
   },
   {
     "query": "\u8bba\u6587\u7b54\u8fa9", # 论文答辩
@@ -82,14 +78,12 @@ cases = [
     "top5_must_include_any_terms": ["\u8bba\u6587", "\u7b54\u8fa9", "\u5b66\u4f4d", "\u6bd5\u4e1a"],
     "top5_must_not_include_any_terms": ["\u7533\u8bf7\u8003\u6838\u5236", "\u62db\u751f\u5b9e\u65bd\u7ec6\u5219", "\u57f9\u517b\u65b9\u6848"],
     "top5_must_not_source_any": ["cxcy"],
-    "top5_must_not_domain_any": ["innovation_project"],
-    "allow_degraded_fallback": False
+    "top5_must_not_domain_any": ["innovation_project"]
   },
   {
     "query": "\u6bd5\u4e1a\u7b54\u8fa9", # 毕业答辩
     "route": "degree_defense_search",
-    "top5_must_include_any_terms": ["\u8bba\u6587", "\u7b54\u8fa9", "\u5b66\u4f4d", "\u6bd5\u4e1a"],
-    "allow_degraded_fallback": False
+    "top5_must_include_any_terms": ["\u8bba\u6587", "\u7b54\u8fa9", "\u5b66\u4f4d", "\u6bd5\u4e1a"]
   },
   {
     "query": "\u5927\u521b\u7b54\u8fa9", # 大创答辩
@@ -124,11 +118,14 @@ cases = [
   {
     "query": "B250403",
     "route": "class_exam_lookup",
-    "top1_must_source": "exam_vertical"
+    "allow_empty": True,
+    "surface": "class_exam_lookup"
   },
   {
     "query": "B250403 \u9ad8\u6570",
-    "route": "class_exam_lookup"
+    "route": "class_exam_lookup",
+    "allow_empty": True,
+    "surface": "class_exam_lookup"
   },
   {
     "query": "\u9ad8\u6570",

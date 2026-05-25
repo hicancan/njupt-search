@@ -1,7 +1,7 @@
 /**
  * eval_frontend_search.ts
  *
- * Runs the REAL TypeScript rankSearchDocuments / routeQuery / buildExamDocuments
+ * Runs the REAL TypeScript recallSearchDocuments / routeQuery
  * against eval/search_cases.json and outputs JSON for Python eval_search_parity.py.
  *
  * Usage:
@@ -14,9 +14,9 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 // Use real TS source via @/ aliases (resolved by tsx + tsconfig)
-import { rankSearchDocuments, buildExamDocuments, parseSearchDocuments } from '../../src/utils/searchIndex.js';
+import { recallSearchDocuments, parseSearchDocuments } from '../../src/utils/searchIndex.js';
 import { routeQuery } from '../../src/utils/queryRouter.js';
-import type { SearchDocument, Exam } from '../../src/types/index.js';
+import type { SearchDocument } from '../../src/types/index.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const BASE_DIR = join(__dirname, '..', '..');
@@ -46,20 +46,9 @@ async function main() {
         loadJson(join(indexDir, 'documents.json')),
         'documents.json'
     );
-    const hybridIndex = loadJson(join(indexDir, 'hybrid_index.json')) as Record<string, unknown>;
     const queryAliases = loadJson(join(BASE_DIR, 'config', 'query_aliases.json')) as Record<string, unknown>;
-
-    // Load exam data and build exam documents (mirrors frontend useSearchEngine)
-    const examDataPath = join(BASE_DIR, 'public', 'data', 'all_exams.json');
-    let allDocuments = noticeDocs;
-    try {
-        const examData = loadJson(examDataPath) as Exam[];
-        const examDocs = buildExamDocuments(examData) as SearchDocument[];
-        allDocuments = [...noticeDocs, ...examDocs];
-        console.log(`[eval_frontend_search] Loaded ${noticeDocs.length} notice docs + ${examDocs.length} exam docs = ${allDocuments.length} total`);
-    } catch {
-        console.log(`[eval_frontend_search] Loaded ${noticeDocs.length} notice docs (no exam data)`);
-    }
+    const allDocuments: SearchDocument[] = noticeDocs;
+    console.log(`[eval_frontend_search] Loaded ${noticeDocs.length} notice docs`);
 
     // Load search cases
     const casesPath = join(BASE_DIR, 'eval', 'search_cases.json');
@@ -86,9 +75,9 @@ async function main() {
         const routeObj = routeQuery(query);
         const routeMatch = routeObj.query_type === expectedRoute;
 
-        // Rank
-        const ranked = rankSearchDocuments(allDocuments, query, hybridIndex, queryAliases);
-        const top5 = ranked.slice(0, 5);
+        // Recall candidates; display order is strictly newest published_at first.
+        const recalled = recallSearchDocuments(allDocuments, query, queryAliases);
+        const top5 = recalled.slice(0, 5);
 
         results.push({
             query,

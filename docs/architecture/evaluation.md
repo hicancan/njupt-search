@@ -9,7 +9,6 @@ The executable product gate is `eval/search_cases.json`.
 - route accuracy
 - `strict_pass`
 - `data_gap`
-- `degraded_pass`
 - `fail`
 - Precision@5
 - MRR

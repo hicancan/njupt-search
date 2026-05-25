@@ -68,7 +68,7 @@ function SearchResultCard({ document, onOpenClass }: SearchResultCardProps) {
     const isExam = document.kind === 'exam' && document.class_name;
     const isRestricted = document.status === 'restricted';
     const primaryTask = document.task_frames[0];
-    const scoreReason = (document as Partial<RankedSearchDocument>).score_reason || '';
+    const recallReason = (document as Partial<RankedSearchDocument>).score_reason || '';
     const attachmentChips = document.attachments
         .filter(attachment => attachment.role || attachment.sensitive)
         .slice(0, 3);
@@ -206,11 +206,11 @@ function SearchResultCard({ document, onOpenClass }: SearchResultCardProps) {
                 <span className="text-[#70757a] dark:text-[#9aa0a6] font-medium mr-2">{formatSearchDate(document.published_at)}</span>
                 {document.summary || document.content}
             </div>
-            {scoreReason || document.semantic_mode ? (
+            {recallReason || document.semantic_mode ? (
                 <details className="mt-1 text-[12px] text-[#70757a] dark:text-[#9aa0a6]">
                     <summary className="cursor-pointer select-none inline-flex hover:text-[#202124] dark:hover:text-[#e8eaed]">调试信息</summary>
                     <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1">
-                    {scoreReason && <span>排序依据：{scoreReason}</span>}
+                    {recallReason && <span>召回依据：{recallReason}</span>}
                     {document.semantic_mode && (
                         <span>
                             语义模式：
@@ -382,11 +382,6 @@ export function ResultsView({
                                         ? `当前理解：${getRouteName(routeInfo.query_type)} | 找到 ${filteredResults.length} 条结果`
                                         : '未输入关键词时展示近期高价值校园信息。'}
                                 </p>
-                                {filteredResults.some(r => (r as { degraded_fallback?: boolean }).degraded_fallback) && (
-                                    <p className="mt-1 text-xs text-[#e37400] dark:text-[#fdd663] bg-[#fef7e0] dark:bg-[#3d2e00] p-2 rounded">
-                                        以下结果为降级补位：当前没有找到完全匹配的官方通知。
-                                    </p>
-                                )}
                             </div>
                             <div className="flex flex-wrap gap-2">
                                 <select

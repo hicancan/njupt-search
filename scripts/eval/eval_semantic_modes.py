@@ -40,9 +40,6 @@ def main():
     for field, count in missing_fields.items():
         print(f"{field}: {count}")
 
-    print("\n--- Hybrid Score Coverage ---")
-    print(f"Hybrid Score Fields: {manifest.get('hybrid_score_field_count', 0)}")
-
     print("\n--- Field Sources ---")
     sources = manifest.get('field_source_counts', {})
     for field, counts in sources.items():

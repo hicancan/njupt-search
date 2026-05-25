@@ -19,7 +19,7 @@ from models.semantic_model import SEARCH_DOMAINS, SEARCH_INTENTS, normalize_doma
 from core.llm_task_frame import task_frame_prompt_contract
 from core.evidence_pack import build_evidence_pack
 
-LLM_SCHEMA_VERSION = "hytask-taskframe-v2.1"
+LLM_SCHEMA_VERSION = "hytask-taskframe-v2.2"
 GEMINI_MODEL_NAME = os.environ.get("GEMINI_MODEL", "gemini-3.1-flash-lite")
 LLM_MODEL_NAME = DEEPSEEK_MODEL
 
@@ -54,15 +54,12 @@ class AttachmentRole(BaseModel):
 
 
 class LLMRawResult(BaseModel):
-    is_student_facing: bool | None = None
-    student_relevance: float | None = None
     audience: list[str] | None = None
     category: SearchCategory | None = None
     domain: SearchDomain | None = None
     intent: SearchIntent | None = None
     sub_category: str | None = None
     tags: list[str] | None = None
-    importance_score: float | None = None
     deadline: str | None = None
     deadline_missing_reason: str | None = None
     action_required: bool | None = None
@@ -337,15 +334,12 @@ intent 枚举: __INTENT_ENUM__
 每个 result 的 JSON 字段：
 {
   "id": "输入文档 id",
-  "is_student_facing": true,
-  "student_relevance": 0.95,
   "audience": ["本科生", "研究生"],
   "category": "公告",
   "domain": "news",
   "intent": "read",
   "sub_category": null,
   "tags": ["标签1", "标签2"],
-  "importance_score": 0.85,
   "deadline": null,
   "deadline_missing_reason": "no_explicit_deadline|ambiguous|not_applicable",
   "action_required": false,
@@ -527,7 +521,7 @@ def analyze_documents_batch_with_llm(
             errors.append(f"{candidate_provider}: {redact_for_log(exc)}")
             continue
 
-    print(f"LLM batch scoring error: all providers failed: {errors}")
+    print(f"LLM batch extraction error: all providers failed: {errors}")
     return {}
 
 
