@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-25T21:29:30.499226+08:00",
+  "timestamp": "2026-05-25T23:13:43.263478+08:00",
   "mode": "both",
   "evaluated_modes": [
     "python",
@@ -1125,16 +1125,6 @@
       "frontend_pass": true,
       "python_top5": [
         {
-          "id": "github-NJUPTFreeExams-NJUPT-CST-Free-Exams-6169d0395e43fe5cb864",
-          "title": "【Deprecated】南京邮电大学计算机科学与技术专业历年... · NJUPT-CS-Free-Exams",
-          "domain": "resource",
-          "intent": "download",
-          "source": "【Deprecated】南京邮电大学计算机科学与技术专业历年...",
-          "source_id": "github:NJUPTFreeExams/NJUPT-CST-Free-Exams",
-          "channel_id": "github:NJUPTFreeExams/NJUPT-CST-Free-Exams:resource",
-          "kind": "resource"
-        },
-        {
           "id": "news-771826cf907fd8229247",
           "title": "学业指导中心“一对一”学业帮扶工作展现互助力量",
           "domain": "academic",
@@ -1143,20 +1133,20 @@
           "source_id": "news",
           "channel_id": "news_campus",
           "kind": "notice"
+        },
+        {
+          "id": "github-NJUPTFreeExams-NJUPT-CST-Free-Exams-6169d0395e43fe5cb864",
+          "title": "【Deprecated】南京邮电大学计算机科学与技术专业历年... · NJUPT-CS-Free-Exams",
+          "domain": "resource",
+          "intent": "download",
+          "source": "【Deprecated】南京邮电大学计算机科学与技术专业历年...",
+          "source_id": "github:NJUPTFreeExams/NJUPT-CST-Free-Exams",
+          "channel_id": "github:NJUPTFreeExams/NJUPT-CST-Free-Exams:resource",
+          "kind": "resource"
         }
       ],
       "frontend_top5": [
         {
-          "id": "github-NJUPTFreeExams-NJUPT-CST-Free-Exams-6169d0395e43fe5cb864",
-          "title": "【Deprecated】南京邮电大学计算机科学与技术专业历年... · NJUPT-CS-Free-Exams",
-          "domain": "resource",
-          "intent": "download",
-          "source": "【Deprecated】南京邮电大学计算机科学与技术专业历年...",
-          "source_id": "github:NJUPTFreeExams/NJUPT-CST-Free-Exams",
-          "channel_id": "github:NJUPTFreeExams/NJUPT-CST-Free-Exams:resource",
-          "kind": "resource"
-        },
-        {
           "id": "news-771826cf907fd8229247",
           "title": "学业指导中心“一对一”学业帮扶工作展现互助力量",
           "domain": "academic",
@@ -1165,6 +1155,16 @@
           "source_id": "news",
           "channel_id": "news_campus",
           "kind": "notice"
+        },
+        {
+          "id": "github-NJUPTFreeExams-NJUPT-CST-Free-Exams-6169d0395e43fe5cb864",
+          "title": "【Deprecated】南京邮电大学计算机科学与技术专业历年... · NJUPT-CS-Free-Exams",
+          "domain": "resource",
+          "intent": "download",
+          "source": "【Deprecated】南京邮电大学计算机科学与技术专业历年...",
+          "source_id": "github:NJUPTFreeExams/NJUPT-CST-Free-Exams",
+          "channel_id": "github:NJUPTFreeExams/NJUPT-CST-Free-Exams:resource",
+          "kind": "resource"
         }
       ],
       "failure_reasons": [],
@@ -1644,26 +1644,6 @@
           "kind": "notice"
         },
         {
-          "id": "cxcy-ac6a840bf5e5acb2ae47",
-          "title": "关于组织开展2025年度大学生创新创业训练计划项目申报工作的通知",
-          "domain": "project",
-          "intent": "apply",
-          "source": "创新创业教育学院",
-          "source_id": "cxcy",
-          "channel_id": "cxcy_project",
-          "kind": "notice"
-        },
-        {
-          "id": "cxcy-18b0923654eab80cce87",
-          "title": "关于组织开展2023年度大学生创新创业训练计划项目申报工作的通知",
-          "domain": "project",
-          "intent": "apply",
-          "source": "创新创业教育学院",
-          "source_id": "cxcy",
-          "channel_id": "cxcy_project",
-          "kind": "notice"
-        },
-        {
           "id": "bc-92e1118322b55c02bda3",
           "title": "院发〔2020〕15号：南京邮电大学管理学院学生出国（境）访学资助管理办法（试行）",
           "domain": "scholarship",
@@ -1671,6 +1651,26 @@
           "source": "管理学院",
           "source_id": "bc",
           "channel_id": "bc_academic",
+          "kind": "notice"
+        },
+        {
+          "id": "bc-c7dc72d8038a09655ec9",
+          "title": "院发〔2020〕14号：南京邮电大学管理学院本科生出国（境）深造资助管理办法（试行）",
+          "domain": "scholarship",
+          "intent": "read",
+          "source": "管理学院",
+          "source_id": "bc",
+          "channel_id": "bc_academic",
+          "kind": "notice"
+        },
+        {
+          "id": "ygb-cc83b3e083a981d7092d",
+          "title": "南京邮电大学经济困难研究生认定及资助管理办法",
+          "domain": "subsidy",
+          "intent": "read",
+          "source": "研究生工作部",
+          "source_id": "ygb",
+          "channel_id": "ygb_scholarship",
           "kind": "notice"
         }
       ],
@@ -1696,33 +1696,33 @@
           "kind": "notice"
         },
         {
-          "id": "ygb-2d1cbb54989b3129a211",
-          "title": "我校举行首届“研究生学术创新嘉年华”启动仪式暨研究生表彰大会",
+          "id": "bc-92e1118322b55c02bda3",
+          "title": "院发〔2020〕15号：南京邮电大学管理学院学生出国（境）访学资助管理办法（试行）",
           "domain": "scholarship",
-          "intent": "publicity",
-          "source": "研究生工作部",
-          "source_id": "ygb",
-          "channel_id": "ygb_scholarship",
+          "intent": "read",
+          "source": "管理学院",
+          "source_id": "bc",
+          "channel_id": "bc_academic",
           "kind": "notice"
         },
         {
-          "id": "ygb-56099b105a3cc0139b86",
-          "title": "我校第六届研究生“十大学术之星”终评风采展示活动圆满举行",
+          "id": "bc-c7dc72d8038a09655ec9",
+          "title": "院发〔2020〕14号：南京邮电大学管理学院本科生出国（境）深造资助管理办法（试行）",
           "domain": "scholarship",
-          "intent": "publicity",
-          "source": "研究生工作部",
-          "source_id": "ygb",
-          "channel_id": "ygb_scholarship",
+          "intent": "read",
+          "source": "管理学院",
+          "source_id": "bc",
+          "channel_id": "bc_academic",
           "kind": "notice"
         },
         {
-          "id": "xsc-4d899ea5ef4f3625c66d",
-          "title": "南邮举行2025年学生表彰大会",
-          "domain": "scholarship",
-          "intent": "publicity",
-          "source": "学生工作处",
-          "source_id": "xsc",
-          "channel_id": "xsc_dormitory",
+          "id": "ygb-cc83b3e083a981d7092d",
+          "title": "南京邮电大学经济困难研究生认定及资助管理办法",
+          "domain": "subsidy",
+          "intent": "read",
+          "source": "研究生工作部",
+          "source_id": "ygb",
+          "channel_id": "ygb_scholarship",
           "kind": "notice"
         }
       ],
@@ -1783,26 +1783,6 @@
           "kind": "notice"
         },
         {
-          "id": "cxcy-ac6a840bf5e5acb2ae47",
-          "title": "关于组织开展2025年度大学生创新创业训练计划项目申报工作的通知",
-          "domain": "project",
-          "intent": "apply",
-          "source": "创新创业教育学院",
-          "source_id": "cxcy",
-          "channel_id": "cxcy_project",
-          "kind": "notice"
-        },
-        {
-          "id": "cxcy-18b0923654eab80cce87",
-          "title": "关于组织开展2023年度大学生创新创业训练计划项目申报工作的通知",
-          "domain": "project",
-          "intent": "apply",
-          "source": "创新创业教育学院",
-          "source_id": "cxcy",
-          "channel_id": "cxcy_project",
-          "kind": "notice"
-        },
-        {
           "id": "bc-92e1118322b55c02bda3",
           "title": "院发〔2020〕15号：南京邮电大学管理学院学生出国（境）访学资助管理办法（试行）",
           "domain": "scholarship",
@@ -1810,6 +1790,26 @@
           "source": "管理学院",
           "source_id": "bc",
           "channel_id": "bc_academic",
+          "kind": "notice"
+        },
+        {
+          "id": "bc-c7dc72d8038a09655ec9",
+          "title": "院发〔2020〕14号：南京邮电大学管理学院本科生出国（境）深造资助管理办法（试行）",
+          "domain": "scholarship",
+          "intent": "read",
+          "source": "管理学院",
+          "source_id": "bc",
+          "channel_id": "bc_academic",
+          "kind": "notice"
+        },
+        {
+          "id": "ygb-cc83b3e083a981d7092d",
+          "title": "南京邮电大学经济困难研究生认定及资助管理办法",
+          "domain": "subsidy",
+          "intent": "read",
+          "source": "研究生工作部",
+          "source_id": "ygb",
+          "channel_id": "ygb_scholarship",
           "kind": "notice"
         }
       ],
@@ -1835,33 +1835,33 @@
           "kind": "notice"
         },
         {
-          "id": "ygb-2d1cbb54989b3129a211",
-          "title": "我校举行首届“研究生学术创新嘉年华”启动仪式暨研究生表彰大会",
+          "id": "bc-92e1118322b55c02bda3",
+          "title": "院发〔2020〕15号：南京邮电大学管理学院学生出国（境）访学资助管理办法（试行）",
           "domain": "scholarship",
-          "intent": "publicity",
-          "source": "研究生工作部",
-          "source_id": "ygb",
-          "channel_id": "ygb_scholarship",
+          "intent": "read",
+          "source": "管理学院",
+          "source_id": "bc",
+          "channel_id": "bc_academic",
           "kind": "notice"
         },
         {
-          "id": "ygb-56099b105a3cc0139b86",
-          "title": "我校第六届研究生“十大学术之星”终评风采展示活动圆满举行",
+          "id": "bc-c7dc72d8038a09655ec9",
+          "title": "院发〔2020〕14号：南京邮电大学管理学院本科生出国（境）深造资助管理办法（试行）",
           "domain": "scholarship",
-          "intent": "publicity",
-          "source": "研究生工作部",
-          "source_id": "ygb",
-          "channel_id": "ygb_scholarship",
+          "intent": "read",
+          "source": "管理学院",
+          "source_id": "bc",
+          "channel_id": "bc_academic",
           "kind": "notice"
         },
         {
-          "id": "xsc-4d899ea5ef4f3625c66d",
-          "title": "南邮举行2025年学生表彰大会",
-          "domain": "scholarship",
-          "intent": "publicity",
-          "source": "学生工作处",
-          "source_id": "xsc",
-          "channel_id": "xsc_dormitory",
+          "id": "ygb-cc83b3e083a981d7092d",
+          "title": "南京邮电大学经济困难研究生认定及资助管理办法",
+          "domain": "subsidy",
+          "intent": "read",
+          "source": "研究生工作部",
+          "source_id": "ygb",
+          "channel_id": "ygb_scholarship",
           "kind": "notice"
         }
       ],
@@ -1902,16 +1902,6 @@
       "frontend_pass": true,
       "python_top5": [
         {
-          "id": "news-cbd56e0e02b3e55bc381",
-          "title": "教务处学业指导中心举行2025届优秀毕业生学习经验分享交流会",
-          "domain": "lecture",
-          "intent": "read",
-          "source": "南邮新闻网",
-          "source_id": "news",
-          "channel_id": "news_campus",
-          "kind": "notice"
-        },
-        {
           "id": "job-ce4500e0b0dad687f8d2",
           "title": "（第五场）“信息报国 邮你同行”南京邮电大学2026届毕业生“春季促就业攻坚行动”系列专场招聘会",
           "domain": "employment",
@@ -1932,18 +1922,28 @@
           "kind": "notice"
         },
         {
-          "id": "xsc-1624f141fe26342ee80b",
-          "title": "南邮师生赴小米南京科技园开展“思源之旅”主题教育活动",
-          "domain": "scholarship",
-          "intent": "publicity",
-          "source": "学生工作处",
-          "source_id": "xsc",
-          "channel_id": "xsc_dormitory",
+          "id": "job-0e4b5b0f266a9a2866e6",
+          "title": "艺术生就业全景图",
+          "domain": "employment",
+          "intent": "attend",
+          "source": "就业信息网",
+          "source_id": "job",
+          "channel_id": "job_talk",
           "kind": "notice"
         },
         {
-          "id": "job-0e4b5b0f266a9a2866e6",
-          "title": "艺术生就业全景图",
+          "id": "job-b0e2b8b567544887e8c7",
+          "title": "（第三场）“信息报国 邮你同行”南京邮电大学2026届毕业生“春季促就业攻坚行动”系列专场招聘会",
+          "domain": "employment",
+          "intent": "attend",
+          "source": "就业信息网",
+          "source_id": "job",
+          "channel_id": "job_talk",
+          "kind": "notice"
+        },
+        {
+          "id": "job-286aa0035d13ca9a1f18",
+          "title": "南京邮电大学2026年信息文科类专业联合春季招聘会",
           "domain": "employment",
           "intent": "attend",
           "source": "就业信息网",
@@ -1954,16 +1954,6 @@
       ],
       "frontend_top5": [
         {
-          "id": "news-cbd56e0e02b3e55bc381",
-          "title": "教务处学业指导中心举行2025届优秀毕业生学习经验分享交流会",
-          "domain": "lecture",
-          "intent": "read",
-          "source": "南邮新闻网",
-          "source_id": "news",
-          "channel_id": "news_campus",
-          "kind": "notice"
-        },
-        {
           "id": "job-ce4500e0b0dad687f8d2",
           "title": "（第五场）“信息报国 邮你同行”南京邮电大学2026届毕业生“春季促就业攻坚行动”系列专场招聘会",
           "domain": "employment",
@@ -1984,18 +1974,28 @@
           "kind": "notice"
         },
         {
-          "id": "xsc-1624f141fe26342ee80b",
-          "title": "南邮师生赴小米南京科技园开展“思源之旅”主题教育活动",
-          "domain": "scholarship",
-          "intent": "publicity",
-          "source": "学生工作处",
-          "source_id": "xsc",
-          "channel_id": "xsc_dormitory",
+          "id": "job-0e4b5b0f266a9a2866e6",
+          "title": "艺术生就业全景图",
+          "domain": "employment",
+          "intent": "attend",
+          "source": "就业信息网",
+          "source_id": "job",
+          "channel_id": "job_talk",
           "kind": "notice"
         },
         {
-          "id": "job-0e4b5b0f266a9a2866e6",
-          "title": "艺术生就业全景图",
+          "id": "job-b0e2b8b567544887e8c7",
+          "title": "（第三场）“信息报国 邮你同行”南京邮电大学2026届毕业生“春季促就业攻坚行动”系列专场招聘会",
+          "domain": "employment",
+          "intent": "attend",
+          "source": "就业信息网",
+          "source_id": "job",
+          "channel_id": "job_talk",
+          "kind": "notice"
+        },
+        {
+          "id": "job-286aa0035d13ca9a1f18",
+          "title": "南京邮电大学2026年信息文科类专业联合春季招聘会",
           "domain": "employment",
           "intent": "attend",
           "source": "就业信息网",
@@ -2180,16 +2180,6 @@
       "frontend_pass": true,
       "python_top5": [
         {
-          "id": "news-cbd56e0e02b3e55bc381",
-          "title": "教务处学业指导中心举行2025届优秀毕业生学习经验分享交流会",
-          "domain": "lecture",
-          "intent": "read",
-          "source": "南邮新闻网",
-          "source_id": "news",
-          "channel_id": "news_campus",
-          "kind": "notice"
-        },
-        {
           "id": "job-ce4500e0b0dad687f8d2",
           "title": "（第五场）“信息报国 邮你同行”南京邮电大学2026届毕业生“春季促就业攻坚行动”系列专场招聘会",
           "domain": "employment",
@@ -2227,21 +2217,21 @@
           "source": "就业信息网",
           "source_id": "job",
           "channel_id": "job_talk",
+          "kind": "notice"
+        },
+        {
+          "id": "jwc-acae1866bba9bae13b2c",
+          "title": "【创新创业教育学院】海外访学交流项目汇总（2025-2026学年第二学期发布）（陆续更新中）",
+          "domain": "international",
+          "intent": "apply",
+          "source": "本科生院 / 教务处",
+          "source_id": "jwc",
+          "channel_id": "jwc_recommendation",
           "kind": "notice"
         }
       ],
       "frontend_top5": [
         {
-          "id": "news-cbd56e0e02b3e55bc381",
-          "title": "教务处学业指导中心举行2025届优秀毕业生学习经验分享交流会",
-          "domain": "lecture",
-          "intent": "read",
-          "source": "南邮新闻网",
-          "source_id": "news",
-          "channel_id": "news_campus",
-          "kind": "notice"
-        },
-        {
           "id": "job-ce4500e0b0dad687f8d2",
           "title": "（第五场）“信息报国 邮你同行”南京邮电大学2026届毕业生“春季促就业攻坚行动”系列专场招聘会",
           "domain": "employment",
@@ -2279,6 +2269,16 @@
           "source": "就业信息网",
           "source_id": "job",
           "channel_id": "job_talk",
+          "kind": "notice"
+        },
+        {
+          "id": "jwc-acae1866bba9bae13b2c",
+          "title": "【创新创业教育学院】海外访学交流项目汇总（2025-2026学年第二学期发布）（陆续更新中）",
+          "domain": "international",
+          "intent": "apply",
+          "source": "本科生院 / 教务处",
+          "source_id": "jwc",
+          "channel_id": "jwc_recommendation",
           "kind": "notice"
         }
       ],
@@ -2470,16 +2470,6 @@
           "kind": "resource"
         },
         {
-          "id": "simp-0b735b8b44f5e54325aa",
-          "title": "云 智算 技术与应用认证 （中国移动共建课程）",
-          "domain": "news",
-          "intent": "read",
-          "source": "现代邮政学院 / 智慧交通学院",
-          "source_id": "simp",
-          "channel_id": "simp_academic",
-          "kind": "notice"
-        },
-        {
           "id": "github-lux-QAQ-NJUPT_Fastlogin-761863a2a7039f75e0eb",
           "title": "南京邮电大学校园网最快登录脚本 for Android Wi... · NJUPT_Fastlogin",
           "domain": "campus_network",
@@ -2508,6 +2498,16 @@
           "source_id": "ygb",
           "channel_id": "ygb_scholarship",
           "kind": "notice"
+        },
+        {
+          "id": "github-s235784-NJUPT_AutoLogin-3bfbad0bf26507d2f64a",
+          "title": "南京邮电大学校园网自动登录脚本，支持Linux（OpenWR... · NJUPT_AutoLogin",
+          "domain": "campus_network",
+          "intent": "download",
+          "source": "南京邮电大学校园网自动登录脚本，支持Linux（OpenWR...",
+          "source_id": "github:s235784/NJUPT_AutoLogin",
+          "channel_id": "github:s235784/NJUPT_AutoLogin:resource",
+          "kind": "resource"
         }
       ],
       "frontend_top5": [
@@ -2522,16 +2522,6 @@
           "kind": "resource"
         },
         {
-          "id": "simp-0b735b8b44f5e54325aa",
-          "title": "云 智算 技术与应用认证 （中国移动共建课程）",
-          "domain": "news",
-          "intent": "read",
-          "source": "现代邮政学院 / 智慧交通学院",
-          "source_id": "simp",
-          "channel_id": "simp_academic",
-          "kind": "notice"
-        },
-        {
           "id": "github-lux-QAQ-NJUPT_Fastlogin-761863a2a7039f75e0eb",
           "title": "南京邮电大学校园网最快登录脚本 for Android Wi... · NJUPT_Fastlogin",
           "domain": "campus_network",
@@ -2560,6 +2550,16 @@
           "source_id": "ygb",
           "channel_id": "ygb_scholarship",
           "kind": "notice"
+        },
+        {
+          "id": "github-s235784-NJUPT_AutoLogin-3bfbad0bf26507d2f64a",
+          "title": "南京邮电大学校园网自动登录脚本，支持Linux（OpenWR... · NJUPT_AutoLogin",
+          "domain": "campus_network",
+          "intent": "download",
+          "source": "南京邮电大学校园网自动登录脚本，支持Linux（OpenWR...",
+          "source_id": "github:s235784/NJUPT_AutoLogin",
+          "channel_id": "github:s235784/NJUPT_AutoLogin:resource",
+          "kind": "resource"
         }
       ],
       "failure_reasons": [],

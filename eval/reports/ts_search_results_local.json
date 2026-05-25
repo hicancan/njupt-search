@@ -1,0 +1,842 @@
+[
+  {
+    "query": "四六级",
+    "route_type": "cet_notice_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [],
+    "top5_titles": [],
+    "top5_sources": [],
+    "top5_domains": [],
+    "top5_channel_ids": [],
+    "expected_route": "cet_notice_search",
+    "route_match": true
+  },
+  {
+    "query": "CET",
+    "route_type": "cet_notice_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [],
+    "top5_titles": [],
+    "top5_sources": [],
+    "top5_domains": [],
+    "top5_channel_ids": [],
+    "expected_route": "cet_notice_search",
+    "route_match": true
+  },
+  {
+    "query": "四级",
+    "route_type": "cet_notice_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [],
+    "top5_titles": [],
+    "top5_sources": [],
+    "top5_domains": [],
+    "top5_channel_ids": [],
+    "expected_route": "cet_notice_search",
+    "route_match": true
+  },
+  {
+    "query": "六级",
+    "route_type": "cet_notice_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [],
+    "top5_titles": [],
+    "top5_sources": [],
+    "top5_domains": [],
+    "top5_channel_ids": [],
+    "expected_route": "cet_notice_search",
+    "route_match": true
+  },
+  {
+    "query": "论文答辩",
+    "route_type": "degree_defense_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [],
+    "top5_titles": [],
+    "top5_sources": [],
+    "top5_domains": [],
+    "top5_channel_ids": [],
+    "expected_route": "degree_defense_search",
+    "route_match": true
+  },
+  {
+    "query": "毕业答辩",
+    "route_type": "degree_defense_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [],
+    "top5_titles": [],
+    "top5_sources": [],
+    "top5_domains": [],
+    "top5_channel_ids": [],
+    "expected_route": "degree_defense_search",
+    "route_match": true
+  },
+  {
+    "query": "大创答辩",
+    "route_type": "innovation_project_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "cxcy-3dfeb8f05ac3e0d231fb",
+      "cxcy-437f8378c368271fb380",
+      "cxcy-ac6a840bf5e5acb2ae47",
+      "cxcy-18b0923654eab80cce87",
+      "cxcy-42c19e3bc86cd210fe17"
+    ],
+    "top5_titles": [
+      "关于做好2023年度大学生创新创业训练计划项目结题验收工作的通知",
+      "关于做好2022年度大学生创新创业训练计划项目结题验收工作的通知",
+      "关于组织开展2025年度大学生创新创业训练计划项目申报工作的通知",
+      "关于组织开展2023年度大学生创新创业训练计划项目申报工作的通知",
+      "关于2023年度大学生创新创业训练计划项目中期检查及2022年度延期项目结题的通知"
+    ],
+    "top5_sources": [
+      "cxcy",
+      "cxcy",
+      "cxcy",
+      "cxcy",
+      "cxcy"
+    ],
+    "top5_domains": [
+      "project",
+      "project",
+      "project",
+      "project",
+      "project"
+    ],
+    "top5_channel_ids": [
+      "cxcy_project",
+      "cxcy_project",
+      "cxcy_project",
+      "cxcy_project",
+      "cxcy_project"
+    ],
+    "expected_route": "innovation_project_search",
+    "route_match": true
+  },
+  {
+    "query": "医保",
+    "route_type": "service_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "hqc-edfe9e6977f742324c51",
+      "ygb-cc83b3e083a981d7092d"
+    ],
+    "top5_titles": [
+      "关于参保学生外地门（急）诊医疗费用零星报销的通知",
+      "南京邮电大学经济困难研究生认定及资助管理办法"
+    ],
+    "top5_sources": [
+      "hqc",
+      "ygb"
+    ],
+    "top5_domains": [
+      "medical_insurance",
+      "subsidy"
+    ],
+    "top5_channel_ids": [
+      "hqc_logistics",
+      "ygb_scholarship"
+    ],
+    "expected_route": "service_search",
+    "route_match": true
+  },
+  {
+    "query": "参保",
+    "route_type": "service_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "hqc-edfe9e6977f742324c51"
+    ],
+    "top5_titles": [
+      "关于参保学生外地门（急）诊医疗费用零星报销的通知"
+    ],
+    "top5_sources": [
+      "hqc"
+    ],
+    "top5_domains": [
+      "medical_insurance"
+    ],
+    "top5_channel_ids": [
+      "hqc_logistics"
+    ],
+    "expected_route": "service_search",
+    "route_match": true
+  },
+  {
+    "query": "报销",
+    "route_type": "service_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "cwc-269bc4ce4ecc08fc1f5a",
+      "hqc-edfe9e6977f742324c51"
+    ],
+    "top5_titles": [
+      "关于全面启用铁路、航空运输电子发票报销的通知",
+      "关于参保学生外地门（急）诊医疗费用零星报销的通知"
+    ],
+    "top5_sources": [
+      "cwc",
+      "hqc"
+    ],
+    "top5_domains": [
+      "logistics",
+      "medical_insurance"
+    ],
+    "top5_channel_ids": [
+      "cwc_notice",
+      "hqc_logistics"
+    ],
+    "expected_route": "service_search",
+    "route_match": true
+  },
+  {
+    "query": "转专业",
+    "route_type": "official_notice_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "jwc-68a41687f15408883b85"
+    ],
+    "top5_titles": [
+      "南京邮电大学本科生转专业管理办法（2025年9月18日修订） 2025-09-26"
+    ],
+    "top5_sources": [
+      "jwc"
+    ],
+    "top5_domains": [
+      "course"
+    ],
+    "top5_channel_ids": [
+      "jwc_course"
+    ],
+    "expected_route": "official_notice_search",
+    "route_match": true
+  },
+  {
+    "query": "B250403",
+    "route_type": "class_exam_lookup",
+    "top1_prefer_exact_title": true,
+    "top5_ids": [],
+    "top5_titles": [],
+    "top5_sources": [],
+    "top5_domains": [],
+    "top5_channel_ids": [],
+    "expected_route": "class_exam_lookup",
+    "route_match": true
+  },
+  {
+    "query": "B250403 高数",
+    "route_type": "class_exam_lookup",
+    "top1_prefer_exact_title": true,
+    "top5_ids": [
+      "github-NJUPTFreeExams-NJUPT-CST-Free-Exams-6169d0395e43fe5cb864",
+      "news-771826cf907fd8229247"
+    ],
+    "top5_titles": [
+      "【Deprecated】南京邮电大学计算机科学与技术专业历年... · NJUPT-CS-Free-Exams",
+      "学业指导中心“一对一”学业帮扶工作展现互助力量"
+    ],
+    "top5_sources": [
+      "github:NJUPTFreeExams/NJUPT-CST-Free-Exams",
+      "news"
+    ],
+    "top5_domains": [
+      "resource",
+      "academic"
+    ],
+    "top5_channel_ids": [
+      "github:NJUPTFreeExams/NJUPT-CST-Free-Exams:resource",
+      "news_campus"
+    ],
+    "expected_route": "class_exam_lookup",
+    "route_match": true
+  },
+  {
+    "query": "高数",
+    "route_type": "resource_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "news-771826cf907fd8229247",
+      "github-NJUPTFreeExams-NJUPT-CST-Free-Exams-6169d0395e43fe5cb864"
+    ],
+    "top5_titles": [
+      "学业指导中心“一对一”学业帮扶工作展现互助力量",
+      "【Deprecated】南京邮电大学计算机科学与技术专业历年... · NJUPT-CS-Free-Exams"
+    ],
+    "top5_sources": [
+      "news",
+      "github:NJUPTFreeExams/NJUPT-CST-Free-Exams"
+    ],
+    "top5_domains": [
+      "academic",
+      "resource"
+    ],
+    "top5_channel_ids": [
+      "news_campus",
+      "github:NJUPTFreeExams/NJUPT-CST-Free-Exams:resource"
+    ],
+    "expected_route": "resource_search",
+    "route_match": true
+  },
+  {
+    "query": "高数考试",
+    "route_type": "exam_notice_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [],
+    "top5_titles": [],
+    "top5_sources": [],
+    "top5_domains": [],
+    "top5_channel_ids": [],
+    "expected_route": "exam_notice_search",
+    "route_match": true
+  },
+  {
+    "query": "离散数学",
+    "route_type": "resource_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "github-NJUPTFreeExams-NJUPT-CST-Free-Exams-6169d0395e43fe5cb864",
+      "github-NJUPTFreeExams-NJUPT-InfoSec-Free-Exams-e6e8024e7e61b78b68d8"
+    ],
+    "top5_titles": [
+      "【Deprecated】南京邮电大学计算机科学与技术专业历年... · NJUPT-CS-Free-Exams",
+      "【Deprecated】南京邮电大学信息安全专业历年考试资料... · NJUPT_InfoSec_Free_Exams"
+    ],
+    "top5_sources": [
+      "github:NJUPTFreeExams/NJUPT-CST-Free-Exams",
+      "github:NJUPTFreeExams/NJUPT-InfoSec-Free-Exams"
+    ],
+    "top5_domains": [
+      "resource",
+      "resource"
+    ],
+    "top5_channel_ids": [
+      "github:NJUPTFreeExams/NJUPT-CST-Free-Exams:resource",
+      "github:NJUPTFreeExams/NJUPT-InfoSec-Free-Exams:resource"
+    ],
+    "expected_route": "resource_search",
+    "route_match": true
+  },
+  {
+    "query": "大创",
+    "route_type": "innovation_project_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "news-cbd56e0e02b3e55bc381",
+      "cxcy-3dfeb8f05ac3e0d231fb",
+      "cxcy-437f8378c368271fb380",
+      "cxcy-ac6a840bf5e5acb2ae47",
+      "cxcy-18b0923654eab80cce87"
+    ],
+    "top5_titles": [
+      "教务处学业指导中心举行2025届优秀毕业生学习经验分享交流会",
+      "关于做好2023年度大学生创新创业训练计划项目结题验收工作的通知",
+      "关于做好2022年度大学生创新创业训练计划项目结题验收工作的通知",
+      "关于组织开展2025年度大学生创新创业训练计划项目申报工作的通知",
+      "关于组织开展2023年度大学生创新创业训练计划项目申报工作的通知"
+    ],
+    "top5_sources": [
+      "news",
+      "cxcy",
+      "cxcy",
+      "cxcy",
+      "cxcy"
+    ],
+    "top5_domains": [
+      "lecture",
+      "project",
+      "project",
+      "project",
+      "project"
+    ],
+    "top5_channel_ids": [
+      "news_campus",
+      "cxcy_project",
+      "cxcy_project",
+      "cxcy_project",
+      "cxcy_project"
+    ],
+    "expected_route": "innovation_project_search",
+    "route_match": true
+  },
+  {
+    "query": "奖学金",
+    "route_type": "scholarship_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "xsc-1624f141fe26342ee80b",
+      "jwc-acae1866bba9bae13b2c",
+      "ygb-2d1cbb54989b3129a211",
+      "ygb-56099b105a3cc0139b86",
+      "bc-b23f8a63ff78f1eaa837"
+    ],
+    "top5_titles": [
+      "南邮师生赴小米南京科技园开展“思源之旅”主题教育活动",
+      "【创新创业教育学院】海外访学交流项目汇总（2025-2026学年第二学期发布）（陆续更新中）",
+      "我校举行首届“研究生学术创新嘉年华”启动仪式暨研究生表彰大会",
+      "我校第六届研究生“十大学术之星”终评风采展示活动圆满举行",
+      "我院师生积极参加第四届南京邮电大学国际交流月活动"
+    ],
+    "top5_sources": [
+      "xsc",
+      "jwc",
+      "ygb",
+      "ygb",
+      "bc"
+    ],
+    "top5_domains": [
+      "scholarship",
+      "international",
+      "scholarship",
+      "scholarship",
+      "international"
+    ],
+    "top5_channel_ids": [
+      "xsc_dormitory",
+      "jwc_recommendation",
+      "ygb_scholarship",
+      "ygb_scholarship",
+      "bc_academic"
+    ],
+    "expected_route": "scholarship_search",
+    "route_match": true
+  },
+  {
+    "query": "助学金",
+    "route_type": "subsidy_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "njupt_notice-6554d92219634f721faf",
+      "xsc-1624f141fe26342ee80b",
+      "bc-92e1118322b55c02bda3",
+      "bc-c7dc72d8038a09655ec9",
+      "ygb-cc83b3e083a981d7092d"
+    ],
+    "top5_titles": [
+      "2026 05.21 关于遴选第十四批“南邮-紫金科创学生创业基金” 资助项目的通知",
+      "南邮师生赴小米南京科技园开展“思源之旅”主题教育活动",
+      "院发〔2020〕15号：南京邮电大学管理学院学生出国（境）访学资助管理办法（试行）",
+      "院发〔2020〕14号：南京邮电大学管理学院本科生出国（境）深造资助管理办法（试行）",
+      "南京邮电大学经济困难研究生认定及资助管理办法"
+    ],
+    "top5_sources": [
+      "njupt_notice",
+      "xsc",
+      "bc",
+      "bc",
+      "ygb"
+    ],
+    "top5_domains": [
+      "project",
+      "scholarship",
+      "scholarship",
+      "scholarship",
+      "subsidy"
+    ],
+    "top5_channel_ids": [
+      "njupt_notice_main",
+      "xsc_dormitory",
+      "bc_academic",
+      "bc_academic",
+      "ygb_scholarship"
+    ],
+    "expected_route": "subsidy_search",
+    "route_match": true
+  },
+  {
+    "query": "困难认定",
+    "route_type": "subsidy_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "njupt_notice-6554d92219634f721faf",
+      "xsc-1624f141fe26342ee80b",
+      "bc-92e1118322b55c02bda3",
+      "bc-c7dc72d8038a09655ec9",
+      "ygb-cc83b3e083a981d7092d"
+    ],
+    "top5_titles": [
+      "2026 05.21 关于遴选第十四批“南邮-紫金科创学生创业基金” 资助项目的通知",
+      "南邮师生赴小米南京科技园开展“思源之旅”主题教育活动",
+      "院发〔2020〕15号：南京邮电大学管理学院学生出国（境）访学资助管理办法（试行）",
+      "院发〔2020〕14号：南京邮电大学管理学院本科生出国（境）深造资助管理办法（试行）",
+      "南京邮电大学经济困难研究生认定及资助管理办法"
+    ],
+    "top5_sources": [
+      "njupt_notice",
+      "xsc",
+      "bc",
+      "bc",
+      "ygb"
+    ],
+    "top5_domains": [
+      "project",
+      "scholarship",
+      "scholarship",
+      "scholarship",
+      "subsidy"
+    ],
+    "top5_channel_ids": [
+      "njupt_notice_main",
+      "xsc_dormitory",
+      "bc_academic",
+      "bc_academic",
+      "ygb_scholarship"
+    ],
+    "expected_route": "subsidy_search",
+    "route_match": true
+  },
+  {
+    "query": "宣讲会",
+    "route_type": "job_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "job-ce4500e0b0dad687f8d2",
+      "job-67dc85ca08fe979eb024",
+      "job-0e4b5b0f266a9a2866e6",
+      "job-b0e2b8b567544887e8c7",
+      "job-286aa0035d13ca9a1f18"
+    ],
+    "top5_titles": [
+      "（第五场）“信息报国 邮你同行”南京邮电大学2026届毕业生“春季促就业攻坚行动”系列专场招聘会",
+      "（第四场）“信息报国 邮你同行”南京邮电大学2026届毕业生“春季促就业攻坚行动”系列专场招聘会",
+      "艺术生就业全景图",
+      "（第三场）“信息报国 邮你同行”南京邮电大学2026届毕业生“春季促就业攻坚行动”系列专场招聘会",
+      "南京邮电大学2026年信息文科类专业联合春季招聘会"
+    ],
+    "top5_sources": [
+      "job",
+      "job",
+      "job",
+      "job",
+      "job"
+    ],
+    "top5_domains": [
+      "employment",
+      "employment",
+      "employment",
+      "employment",
+      "employment"
+    ],
+    "top5_channel_ids": [
+      "job_talk",
+      "job_talk",
+      "job_talk",
+      "job_talk",
+      "job_talk"
+    ],
+    "expected_route": "job_search",
+    "route_match": true
+  },
+  {
+    "query": "招聘",
+    "route_type": "job_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "job-ce4500e0b0dad687f8d2",
+      "job-67dc85ca08fe979eb024",
+      "job-0e4b5b0f266a9a2866e6",
+      "job-b0e2b8b567544887e8c7",
+      "job-286aa0035d13ca9a1f18"
+    ],
+    "top5_titles": [
+      "（第五场）“信息报国 邮你同行”南京邮电大学2026届毕业生“春季促就业攻坚行动”系列专场招聘会",
+      "（第四场）“信息报国 邮你同行”南京邮电大学2026届毕业生“春季促就业攻坚行动”系列专场招聘会",
+      "艺术生就业全景图",
+      "（第三场）“信息报国 邮你同行”南京邮电大学2026届毕业生“春季促就业攻坚行动”系列专场招聘会",
+      "南京邮电大学2026年信息文科类专业联合春季招聘会"
+    ],
+    "top5_sources": [
+      "job",
+      "job",
+      "job",
+      "job",
+      "job"
+    ],
+    "top5_domains": [
+      "employment",
+      "employment",
+      "employment",
+      "employment",
+      "employment"
+    ],
+    "top5_channel_ids": [
+      "job_talk",
+      "job_talk",
+      "job_talk",
+      "job_talk",
+      "job_talk"
+    ],
+    "expected_route": "job_search",
+    "route_match": true
+  },
+  {
+    "query": "实习",
+    "route_type": "job_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "job-ce4500e0b0dad687f8d2",
+      "job-67dc85ca08fe979eb024",
+      "xsc-1624f141fe26342ee80b",
+      "job-0e4b5b0f266a9a2866e6",
+      "jwc-acae1866bba9bae13b2c"
+    ],
+    "top5_titles": [
+      "（第五场）“信息报国 邮你同行”南京邮电大学2026届毕业生“春季促就业攻坚行动”系列专场招聘会",
+      "（第四场）“信息报国 邮你同行”南京邮电大学2026届毕业生“春季促就业攻坚行动”系列专场招聘会",
+      "南邮师生赴小米南京科技园开展“思源之旅”主题教育活动",
+      "艺术生就业全景图",
+      "【创新创业教育学院】海外访学交流项目汇总（2025-2026学年第二学期发布）（陆续更新中）"
+    ],
+    "top5_sources": [
+      "job",
+      "job",
+      "xsc",
+      "job",
+      "jwc"
+    ],
+    "top5_domains": [
+      "employment",
+      "employment",
+      "scholarship",
+      "employment",
+      "international"
+    ],
+    "top5_channel_ids": [
+      "job_talk",
+      "job_talk",
+      "xsc_dormitory",
+      "job_talk",
+      "jwc_recommendation"
+    ],
+    "expected_route": "job_search",
+    "route_match": true
+  },
+  {
+    "query": "停电",
+    "route_type": "campus_alert_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "hqc-0d2ca4f4fe0d9bac05c1",
+      "hqc-ec3775e276c31fc7153f",
+      "hqc-6cc6532cca3bd115388a",
+      "hqc-44cadcfc99f71a45ed7c",
+      "hqc-7256c33e2b10e787d6a0"
+    ],
+    "top5_titles": [
+      "关于寒假期间停电检修的通知",
+      "关于更换仙林竹苑洗浴卡机的通知",
+      "仙林校区停电通知",
+      "三牌楼校区停电通知",
+      "关于梅苑、李苑和北荷的洗浴卡机的通知"
+    ],
+    "top5_sources": [
+      "hqc",
+      "hqc",
+      "hqc",
+      "hqc",
+      "hqc"
+    ],
+    "top5_domains": [
+      "logistics",
+      "life",
+      "logistics",
+      "logistics",
+      "life"
+    ],
+    "top5_channel_ids": [
+      "hqc_logistics",
+      "hqc_logistics",
+      "hqc_logistics",
+      "hqc_logistics",
+      "hqc_logistics"
+    ],
+    "expected_route": "campus_alert_search",
+    "route_match": true
+  },
+  {
+    "query": "校园网",
+    "route_type": "service_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "github-hicancan-njupt-net-7f980de7a96003335a87",
+      "github-lux-QAQ-NJUPT_Fastlogin-761863a2a7039f75e0eb",
+      "xxb-2652f8ad86b44f71b459",
+      "ygb-79a6b3cc500b74b5b5a2",
+      "github-s235784-NJUPT_AutoLogin-3bfbad0bf26507d2f64a"
+    ],
+    "top5_titles": [
+      "njupt-net 校园网络工具 · njupt-net",
+      "南京邮电大学校园网最快登录脚本 for Android Wi... · NJUPT_Fastlogin",
+      "校园网费用缴费单",
+      "郭宇锋书记为研究生新生讲授“思政第一课”",
+      "南京邮电大学校园网自动登录脚本，支持Linux（OpenWR... · NJUPT_AutoLogin"
+    ],
+    "top5_sources": [
+      "github:hicancan/njupt-net",
+      "github:lux-QAQ/NJUPT_Fastlogin",
+      "xxb",
+      "ygb",
+      "github:s235784/NJUPT_AutoLogin"
+    ],
+    "top5_domains": [
+      "campus_network",
+      "campus_network",
+      "campus_network",
+      "lecture",
+      "campus_network"
+    ],
+    "top5_channel_ids": [
+      "github:hicancan/njupt-net:resource",
+      "github:lux-QAQ/NJUPT_Fastlogin:resource",
+      "xxb_download",
+      "ygb_scholarship",
+      "github:s235784/NJUPT_AutoLogin:resource"
+    ],
+    "expected_route": "service_search",
+    "route_match": true
+  },
+  {
+    "query": "图书馆开放",
+    "route_type": "library_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "lib-11d97c68bd141c921e9a",
+      "lib-3716ab8adb68434fce4f",
+      "lib-e8acaaa1135301e4a4b0",
+      "lib-3483d61452f94397984b",
+      "lib-09c9e68fc3e5b4646620"
+    ],
+    "top5_titles": [
+      "图书馆关于2026年“五一”劳动节开放安排的通知",
+      "“衣韵诗香·五洲同吟”主题阅读雅集暨南京邮电大学2026年“阅读文化节”启动仪式成功举办",
+      "关于临时延长图书馆开放时间的通知",
+      "关于举办《回望书香 开卷有益——从<南京的书香>说开去》讲座的通知",
+      "2026年寒假图书馆开放通知"
+    ],
+    "top5_sources": [
+      "lib",
+      "lib",
+      "lib",
+      "lib",
+      "lib"
+    ],
+    "top5_domains": [
+      "library",
+      "lecture",
+      "library",
+      "lecture",
+      "library"
+    ],
+    "top5_channel_ids": [
+      "lib_opening",
+      "lib_opening",
+      "lib_opening",
+      "lib_opening",
+      "lib_opening"
+    ],
+    "expected_route": "library_search",
+    "route_match": true
+  },
+  {
+    "query": "档案",
+    "route_type": "graduation_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "archives-b38698c994ad71856b52",
+      "lib-0babdf8811b922d892a5",
+      "lib-f3e58588ec5a3b984b8b",
+      "ygb-cc83b3e083a981d7092d"
+    ],
+    "top5_titles": [
+      "档案馆2025年暑假工作安排",
+      "南京工业大学图书馆赵乃瑄研究馆员受邀来我馆开展学术报告",
+      "图书馆、档案馆成功举办“品读金陵文脉，邂逅古都风华”主题品读会",
+      "南京邮电大学经济困难研究生认定及资助管理办法"
+    ],
+    "top5_sources": [
+      "archives",
+      "lib",
+      "lib",
+      "ygb"
+    ],
+    "top5_domains": [
+      "archive",
+      "lecture",
+      "lecture",
+      "subsidy"
+    ],
+    "top5_channel_ids": [
+      "archives_notice",
+      "lib_opening",
+      "lib_opening",
+      "ygb_scholarship"
+    ],
+    "expected_route": "graduation_search",
+    "route_match": true
+  },
+  {
+    "query": "毕业设计",
+    "route_type": "graduation_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "cxcy-ac6a840bf5e5acb2ae47",
+      "cxcy-18b0923654eab80cce87",
+      "github-ace-trump-tech-NJUPT-Graduation-thesis-45f54f0688c8a8d0c82d",
+      "github-dhiyu-NJUPT-Bachelor-6c0dfd18c09b68d15b36",
+      "github-gzr-lgtm-NJUPThesis-Bachelor-afd91b3fbe9d32896279"
+    ],
+    "top5_titles": [
+      "关于组织开展2025年度大学生创新创业训练计划项目申报工作的通知",
+      "关于组织开展2023年度大学生创新创业训练计划项目申报工作的通知",
+      "南京邮电大学毕业论文模板（能毕业就行，有时间多回去陪陪家人） · 南京邮电大学毕业论文模板",
+      "南京邮电大学本科生毕业设计Latex模板 · 南京邮电大学本科毕业设计Latex模板",
+      "LaTeX template for NJUPT Under... · NUPThesis"
+    ],
+    "top5_sources": [
+      "cxcy",
+      "cxcy",
+      "github:ace-trump-tech/NJUPT-Graduation-thesis",
+      "github:dhiyu/NJUPT-Bachelor",
+      "github:gzr-lgtm/NJUPThesis-Bachelor"
+    ],
+    "top5_domains": [
+      "project",
+      "project",
+      "resource",
+      "resource",
+      "resource"
+    ],
+    "top5_channel_ids": [
+      "cxcy_project",
+      "cxcy_project",
+      "github:ace-trump-tech/NJUPT-Graduation-thesis:resource",
+      "github:dhiyu/NJUPT-Bachelor:resource",
+      "github:gzr-lgtm/NJUPThesis-Bachelor:resource"
+    ],
+    "expected_route": "graduation_search",
+    "route_match": true
+  },
+  {
+    "query": "蓝桥杯",
+    "route_type": "competition_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [],
+    "top5_titles": [],
+    "top5_sources": [],
+    "top5_domains": [],
+    "top5_channel_ids": [],
+    "expected_route": "competition_search",
+    "route_match": true
+  },
+  {
+    "query": "挑战杯",
+    "route_type": "competition_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [],
+    "top5_titles": [],
+    "top5_sources": [],
+    "top5_domains": [],
+    "top5_channel_ids": [],
+    "expected_route": "competition_search",
+    "route_match": true
+  }
+]

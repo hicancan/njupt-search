@@ -32,6 +32,24 @@ def _norm(value: Any) -> str:
     return str(value or "").lower()
 
 
+def _collect_strings(value: Any) -> List[str]:
+    result: List[str] = []
+    stack = [value]
+    while stack and len(result) < 200:
+        item = stack.pop()
+        if item is None:
+            continue
+        if isinstance(item, (str, int, float, bool)):
+            text = str(item).strip()
+            if text:
+                result.append(text)
+        elif isinstance(item, dict):
+            stack.extend(item.values())
+        elif isinstance(item, (list, tuple)):
+            stack.extend(item)
+    return result
+
+
 def _doc_text(doc: Dict[str, Any]) -> str:
     parts: List[str] = [
         str(doc.get("title", "")),
@@ -46,6 +64,9 @@ def _doc_text(doc: Dict[str, Any]) -> str:
     ]
     parts.extend(str(item) for item in doc.get("tags", []) or [])
     parts.extend(str(item) for item in doc.get("evidence", []) or [])
+    parts.extend(_collect_strings(doc.get("typed_search_terms")))
+    parts.extend(_collect_strings(doc.get("synonyms")))
+    parts.extend(_collect_strings(doc.get("notice_card")))
     return " ".join(parts).lower()
 
 
