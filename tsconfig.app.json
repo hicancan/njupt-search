@@ -36,6 +36,8 @@
         }
     },
     "include": [
-        "src"
+        "src",
+        "packages/contracts/src",
+        "packages/search-core/src"
     ]
 }
