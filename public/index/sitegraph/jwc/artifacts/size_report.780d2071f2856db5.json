@@ -1,0 +1,27 @@
+{
+  "generated_at": "2026-05-27T09:33:14.908037+00:00",
+  "first_screen_files": [
+    {
+      "name": "doc_meta_light",
+      "path": "index/sitegraph/jwc/artifacts/doc_meta_light.f125bd0523915410.json",
+      "bytes": 2663639
+    },
+    {
+      "name": "light_inverted_index",
+      "path": "index/sitegraph/jwc/artifacts/light_inverted_index.495a62d787e930e7.json",
+      "bytes": 8920371
+    },
+    {
+      "name": "query_aliases",
+      "path": "index/sitegraph/jwc/artifacts/query_aliases.0bc0937336761225.json",
+      "bytes": 1573
+    }
+  ],
+  "first_screen_total_bytes": 11585583,
+  "body_index_bytes": 12655428,
+  "full_shard_count": 481,
+  "max_full_shard_bytes": 453198,
+  "avg_full_shard_bytes": 67412.28,
+  "max_full_shard_documents": 107,
+  "avg_full_shard_documents": 15.66
+}
