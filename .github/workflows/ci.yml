@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [ main, 'milestone/**' ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install -U pip
+          python -m pip install -e .[test]
+          npm ci
+
+      - name: Python tests
+        run: python -m pytest
+
+      - name: Generated artifact gates
+        run: |
+          python tools/quality-gates/scripts/validate_search_index.py
+          python tools/quality-gates/scripts/check_no_obsolete_fields.py
+          python tools/quality-gates/scripts/check_public_artifact_sizes.py
+          python -m njupt_search_eval run-smoke-queries
+
+      - name: Frontend checks
+        run: |
+          npm test
+          npm run typecheck
+          npm run lint
+          npm run build

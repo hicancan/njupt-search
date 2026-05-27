@@ -9,19 +9,19 @@
 生产数据路径只有两条：
 
 1. JWC 公开搜索：只消费 `njupt-site-graph` 已审计的 JWC sitegraph 包，生成 hash-addressed 静态索引，由浏览器 Worker 执行纯代码搜索。
-2. 考试垂直频道：保留 `public/data/all_exams.json` 和 `public/data/data_summary.json`，支持班级考试查询、课程选择和 `.ics` 日历导出。
+2. 考试垂直频道：生成 `apps/web/public/generated/exam/all_exams.json` 和 `apps/web/public/generated/exam/data_summary.json`，支持班级考试查询、课程选择和 `.ics` 日历导出。
 
-非考试搜索不运行其他校园源、不调用模型、不保留任务框架或旧固定索引文件。
+非考试搜索不运行其他校园源、不调用模型、不保留任务框架或固定索引文件。
 
 ## Progressive Search
 
 ```text
 njupt-site-graph/data/sites/jwc/index
--> scripts/build_sitegraph_index.py
--> public/index/manifest.json
--> public/index/sitegraph/jwc/artifacts/*.json
--> public/index/sitegraph/jwc/shards/full.*.<hash>.json
--> src/workers/searchWorker.ts
+-> python -m njupt_search_indexer build
+-> apps/web/public/generated/collections/njupt-public/manifest.json
+-> apps/web/public/generated/collections/njupt-public/sitegraph/jwc/artifacts/*.json
+-> apps/web/public/generated/collections/njupt-public/sitegraph/jwc/shards/full.*.<hash>.json
+-> apps/web/src/features/collection-search/worker/collectionSearch.worker.ts
 -> React UI
 ```
 
@@ -62,14 +62,17 @@ npm run dev
 完整验证：
 
 ```powershell
-uv run python scripts\validate_sitegraph_index.py --sitegraph-index D:\code\github\hicancan\njupt-site-graph\data\sites\jwc\index --skip-output
-uv run python scripts\build_sitegraph_index.py --sitegraph-index D:\code\github\hicancan\njupt-site-graph\data\sites\jwc\index
-uv run python scripts\validate_sitegraph_index.py --sitegraph-index D:\code\github\hicancan\njupt-site-graph\data\sites\jwc\index
-uv run python scripts\utils\validate_search_index.py
-uv run python scripts\eval\sitegraph_query_smoke_test.py
+uv run python -m njupt_search_indexer validate --source-package D:\code\github\hicancan\njupt-site-graph\data\sites\jwc\index --skip-output
+uv run python -m njupt_search_indexer build --collection-id njupt-public --source-package D:\code\github\hicancan\njupt-site-graph\data\sites\jwc\index --out apps\web\public\generated\collections\njupt-public
+uv run python -m njupt_search_indexer validate --source-package D:\code\github\hicancan\njupt-site-graph\data\sites\jwc\index --collection apps\web\public\generated\collections\njupt-public
+uv run python tools\quality-gates\scripts\validate_search_index.py
+uv run python tools\quality-gates\scripts\check_no_obsolete_fields.py
+uv run python tools\quality-gates\scripts\check_public_artifact_sizes.py
+uv run python -m njupt_search_eval run-smoke-queries --collection apps\web\public\generated\collections\njupt-public
 uv run python -m pytest
 npm test
 npm run typecheck
+npm run lint
 npm run build
 ```
 
@@ -77,15 +80,15 @@ npm run build
 
 ## 自动更新
 
-`.github/workflows/auto-update.yml` 每 6 小时更新考试数据，然后消费 JWC sitegraph 包并生成 `public/index`。CI 校验上游质量、上下游数量一致、hash artifact 契约、coverage 契约、代表查询、Python 测试、前端测试、类型检查和构建。
+`.github/workflows/update-exam-data.yml` 更新考试数据，`.github/workflows/update-collection-index.yml` 消费 JWC sitegraph 包并生成 `apps/web/public/generated/collections/njupt-public`。`ci.yml`、`validate-generated-artifacts.yml` 和 `deploy-web.yml` 分别负责通用检查、生成物质量门和 GitHub Pages 部署。
 
 ## 目录
 
 ```text
-public/data/            # 考试垂直频道数据
-public/index/           # JWC progressive static search index
-scripts/                # 考试更新、sitegraph build/validate/eval
-src/                    # React/Vite/PWA 前端与 Worker
+apps/web/               # React/Vite/PWA 前端与 Worker
+apps/web/public/generated/exam/
+apps/web/public/generated/collections/njupt-public/
+tools/                  # collection indexer、exam pipeline、search eval、quality gates
 tests/                  # Python sitegraph contract tests
 ```
 

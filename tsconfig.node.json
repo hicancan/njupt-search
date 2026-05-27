@@ -11,6 +11,7 @@
         "noEmit": true
     },
     "include": [
-        "vite.config.ts"
+        "apps/web/vite.config.ts",
+        "vitest.config.ts"
     ]
 }

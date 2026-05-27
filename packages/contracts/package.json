@@ -1,0 +1,12 @@
+{
+  "name": "@njupt-search/contracts",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./exam": "./src/exam/index.ts",
+    "./source-sitegraph": "./src/source-sitegraph/index.ts",
+    "./search-index": "./src/search-index/index.ts"
+  }
+}

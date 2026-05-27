@@ -3,7 +3,7 @@
 Production non-exam search is evaluated as Progressive Verifiable Static Search over the JWC sitegraph package.
 
 ```powershell
-uv run python scripts\eval\sitegraph_query_smoke_test.py
+uv run python -m njupt_search_eval run-smoke-queries --collection apps\web\public\generated\collections\njupt-public
 ```
 
 The gate verifies:

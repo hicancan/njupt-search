@@ -1,16 +1,12 @@
 import json
-import sys
 from pathlib import Path
 
-SCRIPTS_DIR = Path(__file__).resolve().parents[1] / "scripts"
-if str(SCRIPTS_DIR) not in sys.path:
-    sys.path.insert(0, str(SCRIPTS_DIR))
-
-from sitegraph_search import recall_documents
+from njupt_search_eval.sitegraph_search import recall_documents
 
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
-PUBLIC_INDEX_DIR = ROOT_DIR / "public" / "index"
+PUBLIC_ROOT = ROOT_DIR / "apps" / "web" / "public"
+PUBLIC_INDEX_DIR = PUBLIC_ROOT / "generated" / "collections" / "njupt-public"
 MODEL_FIELD_PREFIX = "".join(["l", "l", "m"])
 TASK_FIELD_PREFIX = "".join(["hy", "task"])
 BANNED_KEYS = {
@@ -60,7 +56,8 @@ def test_public_index_is_pure_sitegraph_contract():
     assert manifest["strategy"] == "progressive-verifiable-static-search"
     assert manifest["producer_repo"] == "hicancan/njupt-search"
     assert manifest["site_id"] == "jwc"
-    assert manifest["artifact_path"] == "index"
+    assert manifest["collection_id"] == "njupt-public"
+    assert manifest["artifact_path"] == "generated/collections/njupt-public"
     assert manifest["upstream_generated_at"]
     assert "D:\\" not in json.dumps(manifest, ensure_ascii=False)
     assert "D:/" not in json.dumps(manifest, ensure_ascii=False)
@@ -100,11 +97,11 @@ def test_public_index_is_pure_sitegraph_contract():
 
     assert not (BANNED_KEYS & set(walk_keys(manifest)))
     for name, artifact in manifest["artifacts"].items():
-        assert artifact["path"].startswith("index/sitegraph/jwc/")
+        assert artifact["path"].startswith("generated/collections/njupt-public/sitegraph/jwc/")
         assert artifact["path"].endswith(".json")
         assert artifact["path"].rsplit(".", 2)[-2]
         assert "\\" not in artifact["path"]
-        assert (ROOT_DIR / "public" / artifact["path"]).exists(), name
+        assert (PUBLIC_ROOT / artifact["path"]).exists(), name
 
 
 def test_jwc_truth_counts_are_preserved():
@@ -123,22 +120,22 @@ def test_jwc_truth_counts_are_preserved():
     assert manifest["sitegraph"]["quality"]["external_link_policy"] == "record_only"
 
 
-def test_light_index_and_shards_have_no_legacy_fields():
+def test_light_index_and_shards_have_no_obsolete_fields():
     manifest = read_json(PUBLIC_INDEX_DIR / "manifest.json")
-    doc_meta = read_json(ROOT_DIR / "public" / manifest["artifacts"]["doc_meta_light"]["path"])
+    doc_meta = read_json(PUBLIC_ROOT / manifest["artifacts"]["doc_meta_light"]["path"])
     assert not (BANNED_KEYS & set(walk_keys(doc_meta)))
     assert all("content" not in item for item in doc_meta)
     assert all("summary" not in item for item in doc_meta)
     assert all("attachments" not in item for item in doc_meta)
     assert all("provenance" not in item for item in doc_meta)
 
-    light_index = read_json(ROOT_DIR / "public" / manifest["artifacts"]["light_inverted_index"]["path"])
-    body_index = read_json(ROOT_DIR / "public" / manifest["artifacts"]["body_inverted_index"]["path"])
+    light_index = read_json(PUBLIC_ROOT / manifest["artifacts"]["light_inverted_index"]["path"])
+    body_index = read_json(PUBLIC_ROOT / manifest["artifacts"]["body_inverted_index"]["path"])
     assert set(light_index["field_codes"].values()) <= {"t", "s", "n", "g", "a", "e", "y"}
     assert set(body_index["field_codes"].values()) == {"m", "c"}
 
     for shard in manifest["sitegraph"]["full_shards"]:
-        documents = read_json(ROOT_DIR / "public" / shard["path"])
+        documents = read_json(PUBLIC_ROOT / shard["path"])
         assert len(documents) == shard["count"]
         assert not (BANNED_KEYS & set(walk_keys(documents)))
         assert ".000." not in shard["path"]

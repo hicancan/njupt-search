@@ -1,0 +1,87 @@
+name: Update Collection Index
+
+on:
+  schedule:
+    - cron: '30 */6 * * *'
+  workflow_dispatch:
+    inputs:
+      sitegraph_ref:
+        description: 'njupt-site-graph ref to consume'
+        required: false
+        type: string
+        default: 'main'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-collection-index-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  update-collection-index:
+    runs-on: ubuntu-latest
+    env:
+      SITEGRAPH_INDEX: _sitegraph/njupt-site-graph/data/sites/jwc/index
+      COLLECTION_DIR: apps/web/public/generated/collections/njupt-public
+
+    steps:
+      - name: Checkout njupt-search
+        uses: actions/checkout@v4
+
+      - name: Checkout JWC sitegraph package
+        uses: actions/checkout@v4
+        with:
+          repository: hicancan/njupt-site-graph
+          ref: ${{ github.event.inputs.sitegraph_ref || 'main' }}
+          path: _sitegraph/njupt-site-graph
+          token: ${{ secrets.NJUPT_SITEGRAPH_TOKEN || github.token }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install -U pip
+          python -m pip install -e .[test]
+          npm ci
+
+      - name: Build collection artifacts
+        run: |
+          python -m njupt_search_indexer validate --source-package "$SITEGRAPH_INDEX" --skip-output
+          python -m njupt_search_indexer build --collection-id njupt-public --source-package "$SITEGRAPH_INDEX" --out "$COLLECTION_DIR"
+          python -m njupt_search_indexer validate --source-package "$SITEGRAPH_INDEX" --collection "$COLLECTION_DIR"
+
+      - name: Validate generated collection artifacts
+        run: |
+          python tools/quality-gates/scripts/validate_search_index.py
+          python tools/quality-gates/scripts/check_no_obsolete_fields.py
+          python tools/quality-gates/scripts/check_public_artifact_sizes.py
+          python -m njupt_search_eval run-smoke-queries --collection "$COLLECTION_DIR"
+
+      - name: Frontend checks
+        run: |
+          npm test
+          npm run typecheck
+          npm run build
+
+      - name: Commit collection artifact changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add apps/web/public/generated/collections/njupt-public/
+          if git diff --staged --quiet; then
+            echo "No collection changes."
+          else
+            git commit -m "Auto-update collection index"
+            git push
+          fi

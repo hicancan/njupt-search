@@ -1,0 +1,12 @@
+{
+  "name": "@njupt-search/exam-core",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./contract": "./src/contract/index.ts",
+    "./search": "./src/search/index.ts",
+    "./calendar": "./src/calendar/index.ts"
+  }
+}

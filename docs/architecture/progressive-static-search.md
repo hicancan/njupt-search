@@ -6,8 +6,9 @@ The browser search path has one non-exam source: the audited JWC sitegraph packa
 
 ```text
 JWC sitegraph package
--> scripts/build_sitegraph_index.py
--> manifest + hash artifacts
+-> tools/collection-indexer
+-> apps/web/public/generated/collections/njupt-public/manifest.json
+-> hash artifacts
 -> Search Worker event stream
 -> React display
 ```

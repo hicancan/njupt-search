@@ -31,11 +31,14 @@
         "baseUrl": ".",
         "paths": {
             "@/*": [
-                "./src/*"
+                "./apps/web/src/*"
             ]
         }
     },
     "include": [
-        "src"
+        "apps/web/src",
+        "packages/contracts/src",
+        "packages/search-core/src",
+        "packages/exam-core/src"
     ]
 }

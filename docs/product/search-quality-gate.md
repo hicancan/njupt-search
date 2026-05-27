@@ -5,11 +5,13 @@ The product gate protects the JWC progressive static search path and the separat
 ## Required Commands
 
 ```powershell
-uv run python scripts\validate_sitegraph_index.py --sitegraph-index D:\code\github\hicancan\njupt-site-graph\data\sites\jwc\index --skip-output
-uv run python scripts\build_sitegraph_index.py --sitegraph-index D:\code\github\hicancan\njupt-site-graph\data\sites\jwc\index
-uv run python scripts\validate_sitegraph_index.py --sitegraph-index D:\code\github\hicancan\njupt-site-graph\data\sites\jwc\index
-uv run python scripts\utils\validate_search_index.py
-uv run python scripts\eval\sitegraph_query_smoke_test.py
+uv run python -m njupt_search_indexer validate --source-package D:\code\github\hicancan\njupt-site-graph\data\sites\jwc\index --skip-output
+uv run python -m njupt_search_indexer build --collection-id njupt-public --source-package D:\code\github\hicancan\njupt-site-graph\data\sites\jwc\index --out apps\web\public\generated\collections\njupt-public
+uv run python -m njupt_search_indexer validate --source-package D:\code\github\hicancan\njupt-site-graph\data\sites\jwc\index --collection apps\web\public\generated\collections\njupt-public
+uv run python tools\quality-gates\scripts\validate_search_index.py
+uv run python tools\quality-gates\scripts\check_no_obsolete_fields.py
+uv run python tools\quality-gates\scripts\check_public_artifact_sizes.py
+uv run python -m njupt_search_eval run-smoke-queries --collection apps\web\public\generated\collections\njupt-public
 uv run python -m pytest
 npm test
 npm run typecheck
@@ -24,7 +26,7 @@ npm run build
 - generated detail, attachment, external link, and edge counts match upstream truth counts;
 - manifest declares `progressive_search`, `coverage_contract`, and `verification_contract`;
 - manifest provides `shard_catalog` plus `shard_filter` proof metadata;
-- large artifacts are hash-addressed under `public/index/sitegraph/jwc/`;
+- large artifacts are hash-addressed under `apps/web/public/generated/collections/njupt-public/sitegraph/jwc/`;
 - stale fixed-name public index artifacts are absent;
 - Worker emits progressive events and final exhaustive coverage;
 - representative queries have quick results and complete exhaustive verification;

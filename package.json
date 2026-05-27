@@ -4,11 +4,11 @@
   "version": "2.2.0",
   "type": "module",
   "scripts": {
-    "dev": "node ./node_modules/vite/bin/vite.js",
-    "build": "node ./node_modules/typescript/bin/tsc -b && node ./node_modules/vite/bin/vite.js build",
+    "dev": "node ./node_modules/vite/bin/vite.js --config apps/web/vite.config.ts",
+    "build": "node ./node_modules/typescript/bin/tsc -b && node ./node_modules/vite/bin/vite.js build --config apps/web/vite.config.ts",
     "lint": "node ./node_modules/eslint/bin/eslint.js .",
-    "preview": "node ./node_modules/vite/bin/vite.js preview",
-    "test": "node ./node_modules/vitest/vitest.mjs run",
+    "preview": "node ./node_modules/vite/bin/vite.js preview --config apps/web/vite.config.ts",
+    "test": "node ./node_modules/vitest/vitest.mjs run --config vitest.config.ts",
     "typecheck": "node ./node_modules/typescript/bin/tsc -b --noEmit"
   },
   "dependencies": {
