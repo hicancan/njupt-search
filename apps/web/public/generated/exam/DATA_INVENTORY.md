@@ -1,6 +1,6 @@
 # 📊 Data Inventory & Quality Report
 
-> **Generated on:** 2026-05-28 09:16:49 (Beijing Time)
+> **Generated on:** 2026-05-28 11:52:03 (Beijing Time)
 >
 > This report provides complete visibility into raw Excel data and processing results.
 > You do NOT need to open the original Excel files - all information is captured here.
@@ -16,81 +16,6 @@
 | Unique Classes | ~1,505 |
 | Unique Courses | ~295 |
 | Campus Distribution | 仙林 (7,253), 三牌楼 (423), 锁金 (86) |
-
----
-
-## ✅ File: `2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx`
-
-**Rows:** 5,770 | **Columns:** 12 | **Parse Success:** 5770/5770 | **Date Range:** 2026-06-24 ~ 2026-07-03
-
-### 🔹 Part A: Raw Excel Analysis
-
-#### Original Column Names (as in Excel)
-
-| # | Excel Column Name | Data Type | Non-Null % | Unique Values | Sample Values |
-|---|-------------------|-----------|------------|---------------|---------------|
-| 1 | `校区` | object | 100.0% | 3 | 仙林, 三牌楼, 锁金 |
-| 2 | `开课学院` | object | 100.0% | 12 | 电子与光学工程学院, 管理学院, 集成电路科学与工程学院 |
-| 3 | `课程代码` | object | 100.0% | 183 | DG1003F4S, DG1003TXS, DG1004F4S |
-| 4 | `课程名称` | object | 100.0% | 117 | 电路分析基础A, 电路分析基础A（混合式）, 电路分析基础B |
-| 5 | `班级名称` | object | 100.0% | 809 | B220207, B220306, B230200 |
-| 6 | `任课教师` | object | 100.0% | 455 | 李娟/孙蔚, 屈科/李若舟, 王秀梅 |
-| 7 | `人数` | int64 | 100.0% | 39 | 1, 2, 3 |
-| 8 | `考试时间` | object | 100.0% | 25 | 2026年07月01日(13:30-15:20), 2026年07月03日(18:30-20:20) |
-| 9 | `教室名称` | object | 100.0% | 91 | 教2－201, 教2－300, 教2－211 |
-| 10 | `学生所在学院` | object | 100.0% | 21 | 电子与光学工程学院, 集成电路科学与工程学院, 理学院 |
-| 11 | `年级` | int64 | 100.0% | 6 | 2022, 2023, 2024 |
-| 12 | `专业名称` | object | 100.0% | 86 | 电子科学与技术, 集成电路设计与集成系统, 电子科学与技术(创新班) |
-
-#### Column Mapping (Excel → Standard Field)
-
-| Standard Field | Excel Column | Status |
-|----------------|--------------|--------|
-| `campus` | `校区` | ✅ Mapped |
-| `course_name` | `课程名称` | ✅ Mapped |
-| `course_code` | `课程代码` | ✅ Mapped |
-| `class_name` | `班级名称` | ✅ Mapped |
-| `teacher` | `任课教师` | ✅ Mapped |
-| `location` | `教室名称` | ✅ Mapped |
-| `raw_time` | `考试时间` | ✅ Mapped |
-| `count` | `人数` | ✅ Mapped |
-| `school` | `开课学院` | ✅ Mapped |
-| `student_school` | `学生所在学院` | ✅ Mapped |
-| `major` | `专业名称` | ✅ Mapped |
-| `grade` | `年级` | ✅ Mapped |
-| `notes` | _(tried: 备注)_ | ❌ Not Found |
-
-#### Raw Data Sample (First 3 Rows, Unprocessed)
-
-| 校区 | 开课学院 | 课程代码 | 课程名称 | 班级名称 | 任课教师 | 人数 | 考试时间 | 教室名称 | 学生所在学院 | 年级 | 专业名称 |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 仙林 | 电子与光学工程学院 | DG1003F4S | 电路分析基础A | B220207 | 李娟/孙蔚 | 1 | 2026年07月01日(13:30-15 | 教2－201 | 电子与光学工程学院 | 2022 | 电子科学与技术 |
-| 仙林 | 电子与光学工程学院 | DG1003F4S | 电路分析基础A | B220306 | 李娟/孙蔚 | 2 | 2026年07月01日(13:30-15 | 教2－201 | 集成电路科学与工程学院 | 2022 | 集成电路设计与集成系统 |
-| 仙林 | 电子与光学工程学院 | DG1003F4S | 电路分析基础A | B230200 | 李娟/孙蔚 | 1 | 2026年07月01日(13:30-15 | 教2－201 | 电子与光学工程学院 | 2023 | 电子科学与技术(创新班) |
-
-### 🔹 Part B: Processing Results
-
-#### Processing Statistics
-
-| Metric | Value |
-|--------|-------|
-| Records Processed | 5,770 |
-| Time Parse Success | 5,770 |
-| Time Parse Failed | 0 |
-| Unique Classes | 809 |
-| Unique Courses | 117 |
-| Avg Exam Duration | 110.0 min |
-| Campus Distribution | 仙林 (5358), 三牌楼 (336), 锁金 (76) |
-
-#### ✅ Validation: All Passed
-
-#### Processed Data Sample (First 3 Rows)
-
-| class_name | course_name | campus | start_timestamp | location | teacher | count |
-| --- | --- | --- | --- | --- | --- | --- |
-| B220207 | 电路分析基础A | 仙林 | 2026-07-01T13:30:00+08:00 | 教2－201 | 李娟/孙蔚 | 1 |
-| B220306 | 电路分析基础A | 仙林 | 2026-07-01T13:30:00+08:00 | 教2－201 | 李娟/孙蔚 | 2 |
-| B230200 | 电路分析基础A | 仙林 | 2026-07-01T13:30:00+08:00 | 教2－201 | 李娟/孙蔚 | 1 |
 
 ---
 
@@ -238,6 +163,81 @@
 | B221803 | 模式识别基础 | 锁金 | 2026-05-06T13:30:00+08:00 | 锁金－604 | 谭智一/傅杰 | 1 |
 | B221805 | 模式识别基础 | 锁金 | 2026-05-06T13:30:00+08:00 | 锁金－604 | 谭智一/傅杰 | 2 |
 | B221807 | 模式识别基础 | 锁金 | 2026-05-06T13:30:00+08:00 | 锁金－604 | 谭智一/傅杰 | 1 |
+
+---
+
+## ✅ File: `2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx`
+
+**Rows:** 5,770 | **Columns:** 12 | **Parse Success:** 5770/5770 | **Date Range:** 2026-06-24 ~ 2026-07-03
+
+### 🔹 Part A: Raw Excel Analysis
+
+#### Original Column Names (as in Excel)
+
+| # | Excel Column Name | Data Type | Non-Null % | Unique Values | Sample Values |
+|---|-------------------|-----------|------------|---------------|---------------|
+| 1 | `校区` | object | 100.0% | 3 | 仙林, 三牌楼, 锁金 |
+| 2 | `开课学院` | object | 100.0% | 12 | 电子与光学工程学院, 管理学院, 集成电路科学与工程学院 |
+| 3 | `课程代码` | object | 100.0% | 183 | DG1003F4S, DG1003TXS, DG1004F4S |
+| 4 | `课程名称` | object | 100.0% | 117 | 电路分析基础A, 电路分析基础A（混合式）, 电路分析基础B |
+| 5 | `班级名称` | object | 100.0% | 809 | B220207, B220306, B230200 |
+| 6 | `任课教师` | object | 100.0% | 455 | 李娟/孙蔚, 屈科/李若舟, 王秀梅 |
+| 7 | `人数` | int64 | 100.0% | 39 | 1, 2, 3 |
+| 8 | `考试时间` | object | 100.0% | 25 | 2026年07月01日(13:30-15:20), 2026年07月03日(18:30-20:20) |
+| 9 | `教室名称` | object | 100.0% | 91 | 教2－201, 教2－300, 教2－211 |
+| 10 | `学生所在学院` | object | 100.0% | 21 | 电子与光学工程学院, 集成电路科学与工程学院, 理学院 |
+| 11 | `年级` | int64 | 100.0% | 6 | 2022, 2023, 2024 |
+| 12 | `专业名称` | object | 100.0% | 86 | 电子科学与技术, 集成电路设计与集成系统, 电子科学与技术(创新班) |
+
+#### Column Mapping (Excel → Standard Field)
+
+| Standard Field | Excel Column | Status |
+|----------------|--------------|--------|
+| `campus` | `校区` | ✅ Mapped |
+| `course_name` | `课程名称` | ✅ Mapped |
+| `course_code` | `课程代码` | ✅ Mapped |
+| `class_name` | `班级名称` | ✅ Mapped |
+| `teacher` | `任课教师` | ✅ Mapped |
+| `location` | `教室名称` | ✅ Mapped |
+| `raw_time` | `考试时间` | ✅ Mapped |
+| `count` | `人数` | ✅ Mapped |
+| `school` | `开课学院` | ✅ Mapped |
+| `student_school` | `学生所在学院` | ✅ Mapped |
+| `major` | `专业名称` | ✅ Mapped |
+| `grade` | `年级` | ✅ Mapped |
+| `notes` | _(tried: 备注)_ | ❌ Not Found |
+
+#### Raw Data Sample (First 3 Rows, Unprocessed)
+
+| 校区 | 开课学院 | 课程代码 | 课程名称 | 班级名称 | 任课教师 | 人数 | 考试时间 | 教室名称 | 学生所在学院 | 年级 | 专业名称 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 仙林 | 电子与光学工程学院 | DG1003F4S | 电路分析基础A | B220207 | 李娟/孙蔚 | 1 | 2026年07月01日(13:30-15 | 教2－201 | 电子与光学工程学院 | 2022 | 电子科学与技术 |
+| 仙林 | 电子与光学工程学院 | DG1003F4S | 电路分析基础A | B220306 | 李娟/孙蔚 | 2 | 2026年07月01日(13:30-15 | 教2－201 | 集成电路科学与工程学院 | 2022 | 集成电路设计与集成系统 |
+| 仙林 | 电子与光学工程学院 | DG1003F4S | 电路分析基础A | B230200 | 李娟/孙蔚 | 1 | 2026年07月01日(13:30-15 | 教2－201 | 电子与光学工程学院 | 2023 | 电子科学与技术(创新班) |
+
+### 🔹 Part B: Processing Results
+
+#### Processing Statistics
+
+| Metric | Value |
+|--------|-------|
+| Records Processed | 5,770 |
+| Time Parse Success | 5,770 |
+| Time Parse Failed | 0 |
+| Unique Classes | 809 |
+| Unique Courses | 117 |
+| Avg Exam Duration | 110.0 min |
+| Campus Distribution | 仙林 (5358), 三牌楼 (336), 锁金 (76) |
+
+#### ✅ Validation: All Passed
+
+#### Processed Data Sample (First 3 Rows)
+
+| class_name | course_name | campus | start_timestamp | location | teacher | count |
+| --- | --- | --- | --- | --- | --- | --- |
+| B220207 | 电路分析基础A | 仙林 | 2026-07-01T13:30:00+08:00 | 教2－201 | 李娟/孙蔚 | 1 |
+| B220306 | 电路分析基础A | 仙林 | 2026-07-01T13:30:00+08:00 | 教2－201 | 李娟/孙蔚 | 2 |
+| B230200 | 电路分析基础A | 仙林 | 2026-07-01T13:30:00+08:00 | 教2－201 | 李娟/孙蔚 | 1 |
 
 ---
 
