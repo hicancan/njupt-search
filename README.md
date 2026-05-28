@@ -1,96 +1,132 @@
-# njupt-search
+<div align="center">
 
-`njupt-search` 是南邮本科生教务搜索和考试查询静态应用。当前生产架构是 Progressive Verifiable Static Search：快速结果先返回，后台继续扩大覆盖，最终证明 collection 中已声明的公开 source package 已核查完成。
+# 🔍 njupt-search
 
-[在线使用](https://njupt.hicancan.top)
+**Progressive Verifiable Static Search**
 
-## 项目定位
+[![License](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](LICENSE)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-19.2-61DAFB.svg)](https://react.dev/)
+[![Python](https://img.shields.io/badge/Python-3.10+-FFD43B.svg)](https://www.python.org/)
 
-生产数据路径只有两条：
+南邮本科生教务信息与考试查询的 Serverless 静态搜索引擎。<br>
+彻底摒弃传统后端数据库，将检索算力下放至浏览器端，实现 **0成本、免运维、毫秒级响应、全离线可用** 的极致搜索体验。
 
-1. Collection 公开搜索：当前只消费 `njupt-site-graph` 已审计的 JWC sitegraph source package，生成 hash-addressed 静态索引，由浏览器 Worker 执行纯代码搜索。`collection_id` 是 `njupt-public`，`jwc` 只是当前 source id。
-2. 考试垂直频道：生成 `apps/web/public/generated/exam/all_exams.json` 和 `apps/web/public/generated/exam/data_summary.json`，支持班级考试查询、课程选择和 `.ics` 日历导出。
+🌍 **[在线体验 (njupt.hicancan.top)](https://njupt.hicancan.top)**
 
-非考试搜索不运行未审计源、不调用模型、不保留任务框架或固定索引文件。Python 依赖以 `pyproject.toml` 和 `uv.lock` 为准，不维护并行 `requirements.txt`。
+</div>
 
-## Progressive Search
+---
+
+## ✨ 核心特性
+
+- ⚡️ **Progressive Search (渐进式搜索引擎)**
+  首屏仅下载极轻量的局部倒排索引 (`light_inverted_index`) 瞬间命中标题；后台 Web Worker 静默加载完整哈希分片 (Full Shards) 补全正文深度扫描。快与深，二者兼得。
+- 📱 **Offline-First & PWA**
+  深度集成的 Progressive Web App。核心索引一旦被浏览器缓存，即便是**断网/弱网环境**下，依然可以快速查考表、查文件。
+- 🛡️ **Zero-Cost Serverless (零成本与免运维)**
+  全量数据通过 CI 构建为高度优化的静态 JSON 树，直接托管于静态 CDN。没有 MySQL，没有 ElasticSearch，将服务器成本永远降至 0。
+- 🧩 **Web Worker 计算隔离**
+  前端基于 React 19 + Vite 7 构建，所有高负荷的文本扫描、分词合并与相关性重排均在独立 Worker 线程执行，保障主线程 UI (60 FPS) 丝滑流畅。
+- 🔐 **Strict Index Contract (严格的索引契约)**
+  依托 Python 工具链提供强大的静态检查：从源头数据审计到哈希校验，再加上 `quality-gates`（质量门禁）和端到端搜索评估 (`search-eval`)，确保呈现给学生的每一条结果都准确无误。
+
+## 🏗️ 架构与数据流 (Architecture)
+
+项目作为 `njupt-site-graph` (上游爬虫与真相源) 的下游应用，形成了极度克制的单向数据流：
 
 ```text
-audited njupt-site-graph source package
--> python -m njupt_search_indexer build
--> apps/web/public/generated/collections/njupt-public/manifest.json
--> apps/web/public/generated/collections/njupt-public/sitegraph/jwc/artifacts/*.json
--> apps/web/public/generated/collections/njupt-public/sitegraph/jwc/shards/full.*.<hash>.json
--> apps/web/src/features/collection-search/worker/collectionSearch.worker.ts
--> React UI
+[上游: njupt-site-graph] (提供已审计的源数据包)
+         │
+         ▼
+[Python Indexer] (离线编译)
+ uv run python -m njupt_search_indexer build
+         │
+         ├──> manifest.json (稳定入口声明)
+         ├──> light_inverted_index.json (首屏极速召回)
+         └──> full.*.<hash>.json (静态全文分片)
+         │
+         ▼
+[CDN / Github Pages] (静态资源分发)
+         │
+         ▼
+[浏览器 React + Web Worker] (渐进式加载与计算)
+ 执行阶段: quick_results -> body_results -> hydrate_results -> verify -> exhaustive_complete
 ```
 
-`manifest.json` 是唯一稳定入口。大 JSON 均使用内容 hash 命名；首屏只加载 `doc_meta_light`、`light_inverted_index` 和 `query_aliases`。搜索阶段：
+## 📦 项目目录结构 (Monorepo)
 
-1. `quick_started` / `quick_results`：用 `light_inverted_index` 召回并返回快速结果。
-2. `body_started` / `body_results`：加载 `body_inverted_index` 补充摘要和正文召回。
-3. `hydrate_started` / `hydrate_results`：加载候选 full shards 精排。
-4. `verify_started` / `verify_progress` / `verify_results` / `exhaustive_complete`：用 shard filter 证明无命中的分片并跳过；不能证明的 full shards 扫描 `title`、`section`、`nav_path`、`summary`、`content`、`attachments`、`url`，增量合并并稳定重排。
+本项目采用 NPM Workspaces + Python `uv` 混合 Monorepo 管理，边界清晰：
 
-每个事件都带 coverage：`phase`、`searched_fields`、`proved_no_match_shards`、`scanned_shards`、`total_shards`、`searched_documents`、`total_documents`、`loaded_bytes`、`used_body_index`、`exhaustive_complete`。只有全部 full shards 被证明跳过或实际扫描后才允许 `exhaustive_complete=true`。
+```text
+njupt-search/
+├── apps/web/               # React 19 / Vite / Tailwind 纯前端应用与 Web Worker
+├── packages/               # TypeScript 公共逻辑库
+│   ├── contracts/          # 静态资源的 Schema 与接口契约
+│   ├── exam-core/          # 考试日历、结构解析核心逻辑
+│   └── search-core/        # 浏览器端搜索执行引擎
+├── tools/                  # Python 离线数据管道 (uv 管理)
+│   ├── collection-indexer/ # 将源数据编译为浏览器可用的 Hash Shards
+│   ├── exam-pipeline/      # 考试数据构建流水线
+│   ├── quality-gates/      # 索引体积与结构质量门禁
+│   └── search-eval/        # 搜索结果评估与回归测试
+├── android/                # 基于 Trusted Web Activity (TWA) 封装的原生安卓客户端
+└── tests/                  # Python 核心逻辑测试
+```
 
-## Index Contract
+## 🚀 本地开发指南
 
-manifest 声明：
+### 1. 启动前端 UI
 
-- `progressive_search.full_scan_supported=true`
-- `progressive_search.progressive_events=true`
-- `progressive_search.total_shards`
-- `progressive_search.total_documents`
-- `progressive_search.artifact_roles`
-- `coverage_contract.coverage_fields`
-- `verification_contract.shard_filter_supported=true`
-
-必需 artifacts：`doc_meta_light`、`light_inverted_index`、`body_inverted_index`、`shard_catalog`、`shard_filter`、`outcomes`、`size_report`，以及 `sitegraph.full_shards` 下的 hash-addressed full shard 列表。
-
-full shards 必须包含全量核查字段：`title`、`url`、`section`、`nav_path`、`summary`、`content`、`attachments`、`record_type`、`facet`、`published_at`、`provenance`。
-
-`size_report` 记录 `first_screen_bytes`、`body_index_bytes`、`full_scan_total_bytes`、`shard_count`、`max_shard_bytes`、`avg_shard_bytes` 和 `representative_query_phase_timings`。
-
-## 本地开发
+确保本地已安装 Node.js (>=20) 并启用 NPM Workspaces。
 
 ```powershell
 npm ci
 npm run dev
 ```
 
-完整验证：
+### 2. 完整的数据构建与校验流程
+
+本项目使用 `uv` 管理 Python 依赖 (`pyproject.toml` + `uv.lock`)，不使用传统的 `requirements.txt`。请在根目录执行以下 PowerShell 指令进行完整的数据校验：
 
 ```powershell
+# 1. 验证上游数据源
 uv run python -m njupt_search_indexer validate --source-package D:\code\github\hicancan\njupt-site-graph\data\sites\jwc\index --skip-output
+
+# 2. 编译并生成前端静态索引 (Collection)
 uv run python -m njupt_search_indexer build --collection-id njupt-public --source-package D:\code\github\hicancan\njupt-site-graph\data\sites\jwc\index --out apps\web\public\generated\collections\njupt-public
+
+# 3. 验证生成的产物
 uv run python -m njupt_search_indexer validate --source-package D:\code\github\hicancan\njupt-site-graph\data\sites\jwc\index --collection apps\web\public\generated\collections\njupt-public
+
+# 4. 质量门禁检查 (索引体积与结构规范)
 uv run python tools\quality-gates\scripts\validate_search_index.py
 uv run python tools\quality-gates\scripts\check_public_artifact_sizes.py
+
+# 5. 回归与评估测试 (Smoke Queries)
 uv run python -m njupt_search_eval run-smoke-queries --collection apps\web\public\generated\collections\njupt-public
-uv run python -m pytest
-npm test
-npm run typecheck
-npm run lint
-npm run build
+```
+> **Smoke Queries 代表性测试词：**
+> 校历、慕课考试、期末考试、转专业、规章制度、办事流程、学生相关文件及表格、教务管理系统、大创、推免、成绩、附件1、xlsx。
+
+### 3. 代码质量与格式化
+
+```powershell
+uv run python -m pytest   # Python 单元测试
+npm test                  # TS/JS 单元测试 (Vitest)
+npm run typecheck         # TS 类型检查
+npm run lint              # ESLint 代码规范
+npm run build             # 前端生产环境构建
 ```
 
-代表查询覆盖：校历、慕课考试、期末考试、转专业、规章制度、办事流程、学生相关文件及表格、教务管理系统、大创、推免、成绩、附件1、xlsx。
+## 🤖 自动化工作流 (CI/CD)
 
-## 自动更新
+通过 GitHub Actions 实现全自动化更新：
+- `.github/workflows/update-exam-data.yml`: 考试数据更新流。
+- `.github/workflows/update-collection-index.yml`: 消费 `njupt-site-graph` 源数据，生成最新静态索引。
+- `.github/workflows/validate-generated-artifacts.yml`: 执行 Quality Gates。
+- `.github/workflows/deploy-web.yml`: 构建并发布至 GitHub Pages。
 
-`.github/workflows/update-exam-data.yml` 更新考试数据，`.github/workflows/update-collection-index.yml` 消费已审计 source package 并生成 `apps/web/public/generated/collections/njupt-public`。`ci.yml`、`validate-generated-artifacts.yml` 和 `deploy-web.yml` 分别负责通用检查、生成物质量门和 GitHub Pages 部署。
+## 📄 License
 
-## 目录
-
-```text
-apps/web/               # React/Vite/PWA 前端与 Worker
-apps/web/public/generated/exam/
-apps/web/public/generated/collections/njupt-public/
-tools/                  # collection indexer、exam pipeline、search eval、quality gates
-tests/                  # Python sitegraph contract tests
-```
-
-## License
-
-[AGPL-3.0](LICENSE)
+本项目基于 [AGPL-3.0 License](LICENSE) 协议开源。
