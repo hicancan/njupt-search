@@ -9,11 +9,13 @@ from typing import Any
 
 from .build_sitegraph_index import (
     BASE_DIR,
+    DEFAULT_SITEGRAPH_INDEXES,
     DEFAULT_SITEGRAPH_INDEX,
     OBSOLETE_INDEX_DIR,
     PUBLIC_INDEX_DIR,
     PUBLIC_ROOT,
-    PUBLIC_SITEGRAPH_DIR,
+    aggregate_counts,
+    package_source_id,
     validate_sitegraph_package,
 )
 
@@ -32,6 +34,10 @@ REQUIRED_QUERIES = (
     "成绩",
     "附件1",
     "xlsx",
+    "奖学金",
+    "辅导员",
+    "双创",
+    "互联网+",
 )
 
 
@@ -113,7 +119,16 @@ def ensure_no_obsolete_fields(payload: Any, path: str = "$") -> None:
             ensure_no_obsolete_fields(item, f"{path}[{index}]")
 
 
-def validate_generated_index(package: dict[str, Any]) -> dict[str, Any]:
+def validate_generated_index(packages: list[dict[str, Any]] | dict[str, Any]) -> dict[str, Any]:
+    if isinstance(packages, dict):
+        packages = [packages]
+    aggregate_truth_counts = aggregate_counts(packages)
+    expected_source_ids = {package_source_id(package) for package in packages}
+    detail_urls = {
+        str(item.get("url"))
+        for package in packages
+        for item in package["detail_pages"]
+    }
     manifest_path = PUBLIC_INDEX_DIR / "manifest.json"
     if not manifest_path.exists():
         fail(f"required generated artifact missing: manifest: {manifest_path}")
@@ -149,15 +164,17 @@ def validate_generated_index(package: dict[str, Any]) -> dict[str, Any]:
     if not isinstance(sources, list) or not sources:
         fail("manifest.sources must declare at least one source package")
     source_ids = {str(item.get("source_id")) for item in sources if isinstance(item, dict)}
-    if manifest.get("site_id") not in source_ids:
-        fail("manifest.site_id must be represented in manifest.sources")
+    if expected_source_ids and source_ids != expected_source_ids:
+        fail(f"manifest.sources must match source packages: manifest={sorted(source_ids)} expected={sorted(expected_source_ids)}")
+    if manifest.get("site_id") != manifest.get("collection_id"):
+        fail("manifest.site_id is a legacy collection field and must equal manifest.collection_id")
     for item in sources:
         if not isinstance(item, dict):
             fail("manifest.sources entries must be objects")
         if item.get("source_kind") != "sitegraph":
             fail(f"manifest.sources.source_kind must be sitegraph, got {item.get('source_kind')!r}")
         root = item.get("artifact_root")
-        if not isinstance(root, str) or not root.startswith("generated/collections/njupt-public/sitegraph/"):
+        if not isinstance(root, str) or not root.startswith("generated/collections/njupt-public/sitegraph"):
             fail(f"manifest.sources.artifact_root must be public collection-relative, got {root!r}")
     if manifest.get("collection_id") != "njupt-public":
         fail(f"manifest.collection_id must be njupt-public, got {manifest.get('collection_id')!r}")
@@ -228,9 +245,17 @@ def validate_generated_index(package: dict[str, Any]) -> dict[str, Any]:
 
     sitegraph = manifest.get("sitegraph") if isinstance(manifest.get("sitegraph"), dict) else {}
     truth_counts = sitegraph.get("truth_counts") if isinstance(sitegraph.get("truth_counts"), dict) else {}
-    for field, actual in package["actual_counts"].items():
+    for field, actual in aggregate_truth_counts.items():
         if int(truth_counts.get(field, -1) or 0) != int(actual):
             fail(f"manifest.sitegraph.truth_counts.{field} mismatch: manifest={truth_counts.get(field)} actual={actual}")
+    source_counts = sitegraph.get("source_truth_counts") if isinstance(sitegraph.get("source_truth_counts"), dict) else {}
+    for package in packages:
+        source_id = package_source_id(package)
+        if source_id not in source_counts:
+            fail(f"manifest.sitegraph.source_truth_counts missing {source_id}")
+        for field, actual in package["actual_counts"].items():
+            if int(source_counts[source_id].get(field, -1) or 0) != int(actual):
+                fail(f"manifest.sitegraph.source_truth_counts.{source_id}.{field} mismatch")
 
     shard_strategy = sitegraph.get("shard_strategy") if isinstance(sitegraph.get("shard_strategy"), dict) else {}
     if shard_strategy.get("sequential_fixed_size_shards") is not False:
@@ -260,18 +285,17 @@ def validate_generated_index(package: dict[str, Any]) -> dict[str, Any]:
         fail("full documents contain non-object or missing-id entries")
 
     detail_docs = {str(item.get("url")): item for item in full_documents if item.get("record_type") == "detail"}
-    detail_urls = {str(item.get("url")) for item in package["detail_pages"]}
     missing_detail_urls = sorted(detail_urls.difference(detail_docs))
     if missing_detail_urls:
         fail(f"detail pages missing search records: {missing_detail_urls[:10]}")
-    if len(detail_docs) != package["actual_counts"]["detail_pages"]:
-        fail(f"detail document count mismatch: {len(detail_docs)} != {package['actual_counts']['detail_pages']}")
+    if len(detail_docs) != aggregate_truth_counts["detail_pages"]:
+        fail(f"detail document count mismatch: {len(detail_docs)} != {aggregate_truth_counts['detail_pages']}")
 
     attachment_index = read_json(artifact_path(manifest, "attachment_index"))
     if not isinstance(attachment_index, list):
         fail("attachment_index.json must be a list")
-    if len(attachment_index) != package["actual_counts"]["attachments"]:
-        fail(f"attachment index count mismatch: {len(attachment_index)} != {package['actual_counts']['attachments']}")
+    if len(attachment_index) != aggregate_truth_counts["attachments"]:
+        fail(f"attachment index count mismatch: {len(attachment_index)} != {aggregate_truth_counts['attachments']}")
     for item in attachment_index:
         if item.get("metadata_only") is not True:
             fail("attachment_index contains non metadata_only record")
@@ -282,17 +306,17 @@ def validate_generated_index(package: dict[str, Any]) -> dict[str, Any]:
     external_index = read_json(artifact_path(manifest, "external_index"))
     if not isinstance(external_index, list):
         fail("external_index.json must be a list")
-    if len(external_index) != package["actual_counts"]["external_links"]:
-        fail(f"external index count mismatch: {len(external_index)} != {package['actual_counts']['external_links']}")
+    if len(external_index) != aggregate_truth_counts["external_links"]:
+        fail(f"external index count mismatch: {len(external_index)} != {aggregate_truth_counts['external_links']}")
 
     outcomes = read_json(artifact_path(manifest, "outcomes"))
     if not isinstance(outcomes, dict):
         fail("outcomes must be an object")
-    if len(outcomes.get("detail_page_records") or []) != package["actual_counts"]["detail_pages"]:
+    if len(outcomes.get("detail_page_records") or []) != aggregate_truth_counts["detail_pages"]:
         fail("outcomes.detail_page_records must cover every detail page")
-    if len(outcomes.get("attachment_metadata_records") or []) != package["actual_counts"]["attachments"]:
+    if len(outcomes.get("attachment_metadata_records") or []) != aggregate_truth_counts["attachments"]:
         fail("outcomes.attachment_metadata_records must cover every attachment")
-    if len(outcomes.get("external_link_records") or []) != package["actual_counts"]["external_links"]:
+    if len(outcomes.get("external_link_records") or []) != aggregate_truth_counts["external_links"]:
         fail("outcomes.external_link_records must cover every external link")
 
     light_index = read_json(artifact_path(manifest, "light_inverted_index"))
@@ -307,6 +331,11 @@ def validate_generated_index(package: dict[str, Any]) -> dict[str, Any]:
         fail(f"body index must only contain summary/content field codes, got {sorted(body_codes)}")
 
     full_text = json.dumps([doc_meta, attachment_index, external_index], ensure_ascii=False)
+    document_domains = {str(item.get("source_domain") or "") for item in full_documents if isinstance(item, dict)}
+    for package in packages:
+        expected_domain = str(package.get("site", {}).get("domain") or "")
+        if expected_domain and expected_domain not in document_domains:
+            fail(f"generated documents are missing source domain: {expected_domain}")
     for required in ("教务管理系统", "自主学分系统", "创新管理系统", "毕业设计系统", "考试信息查询"):
         if required not in full_text:
             fail(f"required system or utility entry is not searchable: {required}")
@@ -321,29 +350,40 @@ def validate_generated_index(package: dict[str, Any]) -> dict[str, Any]:
         "detail_page_records": len(detail_docs),
         "attachment_metadata_records": len(attachment_index),
         "external_link_records": len(external_index),
-        "truth_counts": package["actual_counts"],
+        "truth_counts": aggregate_truth_counts,
+        "source_ids": sorted(source_ids),
     }
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Validate source package and generated collection search artifacts.")
-    parser.add_argument("--source-package", type=Path, default=DEFAULT_SITEGRAPH_INDEX, help="Path to an audited njupt-site-graph source package index")
+    parser.add_argument(
+        "--source-package",
+        dest="source_packages",
+        action="append",
+        type=Path,
+        default=None,
+        help="Path to an audited njupt-site-graph source package index. Repeat for multiple source packages.",
+    )
     parser.add_argument("--collection", type=Path, default=None, help="Generated collection directory to validate")
-    parser.add_argument("--skip-output", action="store_true", help="Only validate the upstream JWC sitegraph package")
+    parser.add_argument("--skip-output", action="store_true", help="Only validate upstream sitegraph source packages")
     args = parser.parse_args()
 
     from .build_sitegraph_index import configure_collection_output
 
     configure_collection_output(output_dir=args.collection)
-    package = validate_sitegraph_package(args.source_package.resolve())
+    source_packages = args.source_packages or list(DEFAULT_SITEGRAPH_INDEXES)
+    resolved_packages = [path.resolve() for path in source_packages]
+    packages = [validate_sitegraph_package(path) for path in resolved_packages]
     summary: dict[str, Any] = {
-        "sitegraph_index": str(args.source_package.resolve()),
+        "sitegraph_indexes": [str(path) for path in resolved_packages],
+        "source_ids": [package_source_id(package) for package in packages],
         "package_valid": True,
-        "truth_counts": package["actual_counts"],
-        "quality": package["manifest"].get("quality"),
+        "truth_counts": aggregate_counts(packages),
+        "quality": {package_source_id(package): package["manifest"].get("quality") for package in packages},
     }
     if not args.skip_output:
-        summary["generated_index"] = validate_generated_index(package)
+        summary["generated_index"] = validate_generated_index(packages)
     print(json.dumps(summary, ensure_ascii=False, indent=2))
 
 

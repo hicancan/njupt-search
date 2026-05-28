@@ -34,7 +34,32 @@ REQUIRED_QUERIES = [
     "成绩",
     "附件1",
     "xlsx",
+    "奖学金",
+    "辅导员",
+    "双创",
+    "互联网+",
 ]
+
+EXPECTED_SOURCE_COUNTS = {
+    "jwc": {
+        "detail_pages": 6884,
+        "attachments": 7905,
+        "external_links": 426,
+        "edges": 16311,
+    },
+    "xsc": {
+        "detail_pages": 1589,
+        "attachments": 17,
+        "external_links": 75,
+        "edges": 1878,
+    },
+    "cxcy": {
+        "detail_pages": 612,
+        "attachments": 205,
+        "external_links": 60,
+        "edges": 1101,
+    },
+}
 
 
 def read_json(path: Path):
@@ -55,8 +80,9 @@ def test_public_index_is_pure_sitegraph_contract():
     manifest = read_json(PUBLIC_INDEX_DIR / "manifest.json")
     assert manifest["strategy"] == "progressive-verifiable-static-search"
     assert manifest["producer_repo"] == "hicancan/njupt-search"
-    assert manifest["site_id"] == "jwc"
+    assert manifest["site_id"] == "njupt-public"
     assert manifest["collection_id"] == "njupt-public"
+    assert {item["source_id"] for item in manifest["sources"]} == {"jwc", "xsc", "cxcy"}
     assert manifest["artifact_path"] == "generated/collections/njupt-public"
     assert manifest["upstream_generated_at"]
     assert "D:\\" not in json.dumps(manifest, ensure_ascii=False)
@@ -97,20 +123,26 @@ def test_public_index_is_pure_sitegraph_contract():
 
     assert not (BANNED_KEYS & set(walk_keys(manifest)))
     for name, artifact in manifest["artifacts"].items():
-        assert artifact["path"].startswith("generated/collections/njupt-public/sitegraph/jwc/")
+        assert artifact["path"].startswith("generated/collections/njupt-public/sitegraph/")
         assert artifact["path"].endswith(".json")
         assert artifact["path"].rsplit(".", 2)[-2]
         assert "\\" not in artifact["path"]
         assert (PUBLIC_ROOT / artifact["path"]).exists(), name
 
 
-def test_jwc_truth_counts_are_preserved():
+def test_source_truth_counts_are_preserved():
     manifest = read_json(PUBLIC_INDEX_DIR / "manifest.json")
     truth_counts = manifest["sitegraph"]["truth_counts"]
-    assert truth_counts["detail_pages"] == 6884
-    assert truth_counts["attachments"] == 7905
-    assert truth_counts["external_links"] == 426
-    assert truth_counts["edges"] == 16311
+    expected_totals = {
+        field: sum(source_counts[field] for source_counts in EXPECTED_SOURCE_COUNTS.values())
+        for field in ("detail_pages", "attachments", "external_links", "edges")
+    }
+    assert {item["source_id"] for item in manifest["sources"]} == set(EXPECTED_SOURCE_COUNTS)
+    for source_id, expected in EXPECTED_SOURCE_COUNTS.items():
+        for field, value in expected.items():
+            assert manifest["sitegraph"]["source_truth_counts"][source_id][field] == value
+    for field, value in expected_totals.items():
+        assert truth_counts[field] == value
     assert manifest["sitegraph"]["detail_page_records"] == truth_counts["detail_pages"]
     assert manifest["sitegraph"]["attachment_metadata_records"] == truth_counts["attachments"]
     assert manifest["sitegraph"]["external_link_records"] == truth_counts["external_links"]

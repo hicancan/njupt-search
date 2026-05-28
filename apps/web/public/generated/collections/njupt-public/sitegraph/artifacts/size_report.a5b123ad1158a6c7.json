@@ -1,0 +1,47 @@
+{
+  "generated_at": "2026-05-28T07:56:14.134886+00:00",
+  "first_screen_files": [
+    {
+      "name": "doc_meta_light",
+      "path": "generated/collections/njupt-public/sitegraph/artifacts/doc_meta_light.8bfa416d81a39992.json",
+      "bytes": 3490757
+    },
+    {
+      "name": "light_inverted_index",
+      "path": "generated/collections/njupt-public/sitegraph/artifacts/light_inverted_index.e1deb43f504e666c.json",
+      "bytes": 10526057
+    },
+    {
+      "name": "query_aliases",
+      "path": "generated/collections/njupt-public/sitegraph/artifacts/query_aliases.34710ea43b0e321d.json",
+      "bytes": 2116
+    }
+  ],
+  "first_screen_bytes": 14018930,
+  "first_screen_total_bytes": 14018930,
+  "body_index_bytes": 17246454,
+  "full_scan_total_bytes": 40260767,
+  "shard_count": 501,
+  "max_shard_bytes": 453198,
+  "avg_shard_bytes": 80360.81,
+  "full_shard_count": 501,
+  "max_full_shard_bytes": 453198,
+  "avg_full_shard_bytes": 80360.81,
+  "max_full_shard_documents": 141,
+  "avg_full_shard_documents": 19.74,
+  "representative_query_phase_timings": {
+    "query": "校历",
+    "quick_ms": 0,
+    "body_ms": 0,
+    "hydrate_ms": 0,
+    "verify_scan_ms": 1086.152
+  },
+  "exhaustive_scan": {
+    "shard_count": 501,
+    "max_shard_bytes": 453198,
+    "avg_shard_bytes": 80360.81,
+    "estimated_full_scan_bytes": 40260767,
+    "representative_query": "校历",
+    "representative_query_full_scan_time_ms": 1086.152
+  }
+}

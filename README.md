@@ -87,13 +87,25 @@ npm run dev
 
 ```powershell
 # 1. 验证上游数据源
-uv run python -m njupt_search_indexer validate --source-package D:\code\github\hicancan\njupt-site-graph\data\sites\jwc\index --skip-output
+uv run python -m njupt_search_indexer validate `
+  --source-package D:\code\github\hicancan\njupt-site-graph\data\sites\jwc\index `
+  --source-package D:\code\github\hicancan\njupt-site-graph\data\sites\xsc\index `
+  --source-package D:\code\github\hicancan\njupt-site-graph\data\sites\cxcy\index `
+  --skip-output
 
 # 2. 编译并生成前端静态索引 (Collection)
-uv run python -m njupt_search_indexer build --collection-id njupt-public --source-package D:\code\github\hicancan\njupt-site-graph\data\sites\jwc\index --out apps\web\public\generated\collections\njupt-public
+uv run python -m njupt_search_indexer build --collection-id njupt-public `
+  --source-package D:\code\github\hicancan\njupt-site-graph\data\sites\jwc\index `
+  --source-package D:\code\github\hicancan\njupt-site-graph\data\sites\xsc\index `
+  --source-package D:\code\github\hicancan\njupt-site-graph\data\sites\cxcy\index `
+  --out apps\web\public\generated\collections\njupt-public
 
 # 3. 验证生成的产物契约
-uv run python -m njupt_search_indexer validate --source-package D:\code\github\hicancan\njupt-site-graph\data\sites\jwc\index --collection apps\web\public\generated\collections\njupt-public
+uv run python -m njupt_search_indexer validate `
+  --source-package D:\code\github\hicancan\njupt-site-graph\data\sites\jwc\index `
+  --source-package D:\code\github\hicancan\njupt-site-graph\data\sites\xsc\index `
+  --source-package D:\code\github\hicancan\njupt-site-graph\data\sites\cxcy\index `
+  --collection apps\web\public\generated\collections\njupt-public
 
 # 4. 质量门禁检查 (索引体积与结构规范)
 uv run python tools\quality-gates\scripts\validate_search_index.py
@@ -104,7 +116,7 @@ uv run python -m njupt_search_eval run-smoke-queries --collection apps\web\publi
 ```
 
 > **代表性评测词 (Smoke Queries)：**
-> 校历、慕课考试、期末考试、转专业、规章制度、办事流程、学生相关文件及表格、教务管理系统、大创、推免、成绩、附件1、xlsx。
+> 校历、慕课考试、期末考试、转专业、规章制度、办事流程、学生相关文件及表格、教务管理系统、大创、推免、成绩、附件1、xlsx、奖学金、辅导员、双创、互联网+。
 
 ### 3. 代码质量与格式化
 

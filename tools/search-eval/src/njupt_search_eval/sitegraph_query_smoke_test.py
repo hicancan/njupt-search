@@ -40,11 +40,15 @@ QUERY_EXPECTATIONS = (
     QueryExpectation("成绩", "成绩复核", "exam", "通知公告", r"jwc\.njupt\.edu\.cn/.+/page\.htm$", "标题"),
     QueryExpectation("附件1", "考试通知", "exam", "通知公告", r"jwc\.njupt\.edu\.cn/.+/page\.htm$", "附件名命中"),
     QueryExpectation("xlsx", "xlsx", "external", "综合信息服务", r"^http://dag\.njupt\.edu\.cn/main\.htm$", "xlsx"),
+    QueryExpectation("奖学金", "奖学金", "notice_article", "通知公告", r"xsc\.njupt\.edu\.cn/.+/page\.htm$", "标题包含"),
+    QueryExpectation("辅导员", "辅导员", "notice_article", "辅导员队伍建设", r"xsc\.njupt\.edu\.cn/.+/page\.htm$", "标题包含"),
+    QueryExpectation("双创", "双创信息管理系统", "system", "双创信息管理系统", r"^http://njupt\.cxcyedu\.com/tyds/index\.html$", "标题包含"),
+    QueryExpectation("互联网+", "互联网+", "notice_article", "通知公告", r"cxcy\.njupt\.edu\.cn/.+/page\.htm$", "标题包含"),
 )
 
 SIZE_BUDGETS = {
-    "first_screen_total_bytes": 13_000_000,
-    "body_index_bytes": 14_000_000,
+    "first_screen_total_bytes": 16_000_000,
+    "body_index_bytes": 19_000_000,
     "full_shard_count": 650,
     "max_full_shard_bytes": 512 * 1024,
     "avg_full_shard_bytes": 96 * 1024,

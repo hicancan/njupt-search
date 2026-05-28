@@ -20,10 +20,14 @@ from urllib.parse import urlparse
 BASE_DIR = Path(__file__).resolve().parents[4]
 PUBLIC_ROOT = BASE_DIR / "apps" / "web" / "public"
 COLLECTION_ID = "njupt-public"
-SOURCE_ID = "jwc"
-DEFAULT_SITEGRAPH_INDEX = BASE_DIR.parent / "njupt-site-graph" / "data" / "sites" / "jwc" / "index"
+SOURCE_IDS = ("jwc", "xsc", "cxcy")
+DEFAULT_SITEGRAPH_INDEXES = tuple(
+    BASE_DIR.parent / "njupt-site-graph" / "data" / "sites" / source_id / "index"
+    for source_id in SOURCE_IDS
+)
+DEFAULT_SITEGRAPH_INDEX = DEFAULT_SITEGRAPH_INDEXES[0]
 PUBLIC_INDEX_DIR = PUBLIC_ROOT / "generated" / "collections" / COLLECTION_ID
-PUBLIC_SITEGRAPH_DIR = PUBLIC_INDEX_DIR / "sitegraph" / SOURCE_ID
+PUBLIC_SITEGRAPH_DIR = PUBLIC_INDEX_DIR / "sitegraph"
 PUBLIC_ARTIFACT_DIR = PUBLIC_SITEGRAPH_DIR / "artifacts"
 PUBLIC_SHARD_DIR = PUBLIC_SITEGRAPH_DIR / "shards"
 OBSOLETE_INDEX_DIR = PUBLIC_ROOT / "index"
@@ -42,7 +46,7 @@ def configure_collection_output(collection_id: str = COLLECTION_ID, output_dir: 
 
     COLLECTION_ID = collection_id
     PUBLIC_INDEX_DIR = target
-    PUBLIC_SITEGRAPH_DIR = PUBLIC_INDEX_DIR / "sitegraph" / SOURCE_ID
+    PUBLIC_SITEGRAPH_DIR = PUBLIC_INDEX_DIR / "sitegraph"
     PUBLIC_ARTIFACT_DIR = PUBLIC_SITEGRAPH_DIR / "artifacts"
     PUBLIC_SHARD_DIR = PUBLIC_SITEGRAPH_DIR / "shards"
 
@@ -84,6 +88,12 @@ QUERY_SYNONYMS: dict[str, list[str]] = {
     "成绩": ["成绩查询", "成绩单", "绩点", "成绩复核"],
     "附件1": ["附件 1", "附件一", "附件"],
     "xlsx": ["xls", "Excel", "表格"],
+    "学工": ["学生工作", "学生工作部", "学工要闻"],
+    "奖学金": ["助学金", "资助", "评奖评优"],
+    "辅导员": ["辅导员队伍建设", "辅导员宣讲团"],
+    "心理健康": ["心理咨询", "心理中心"],
+    "双创": ["双创信息管理系统", "双创基地"],
+    "互联网+": [],
 }
 
 FIELD_CODES = {
@@ -280,20 +290,21 @@ def query_alias_payload() -> dict[str, dict[str, list[str]]]:
 def validate_sitegraph_package(index_dir: Path) -> dict[str, Any]:
     missing = sorted(name for name in REQUIRED_SITEGRAPH_FILES if not (index_dir / name).exists())
     if missing:
-        raise ValueError(f"JWC sitegraph package missing required files: {', '.join(missing)}")
+        raise ValueError(f"sitegraph package missing required files: {', '.join(missing)}")
 
     manifest = read_json(index_dir / "manifest.json")
     if not isinstance(manifest, dict):
         raise ValueError("manifest.json must be a JSON object")
+    source_id = clean_text(manifest.get("site_id")) or index_dir.parent.name or "sitegraph"
     quality = manifest.get("quality") if isinstance(manifest.get("quality"), dict) else {}
     if int(quality.get("errors", -1)) != 0:
-        raise ValueError(f"JWC manifest quality.errors must be 0, got {quality.get('errors')}")
+        raise ValueError(f"{source_id} manifest quality.errors must be 0, got {quality.get('errors')}")
     if quality.get("all_discovered_urls_have_outcomes") is not True:
-        raise ValueError("JWC manifest all_discovered_urls_have_outcomes must be true")
+        raise ValueError(f"{source_id} manifest all_discovered_urls_have_outcomes must be true")
     if quality.get("attachment_policy") != "metadata_only":
-        raise ValueError(f"JWC attachment_policy must be metadata_only, got {quality.get('attachment_policy')!r}")
+        raise ValueError(f"{source_id} attachment_policy must be metadata_only, got {quality.get('attachment_policy')!r}")
     if quality.get("external_link_policy") != "record_only":
-        raise ValueError(f"JWC external_link_policy must be record_only, got {quality.get('external_link_policy')!r}")
+        raise ValueError(f"{source_id} external_link_policy must be record_only, got {quality.get('external_link_policy')!r}")
 
     site = read_json(index_dir / "site.json")
     sections = read_json(index_dir / "sections.json")
@@ -332,7 +343,7 @@ def validate_sitegraph_package(index_dir: Path) -> dict[str, Any]:
         if int(manifest_totals.get(field, -1) or 0) != actual_counts[field]
     }
     if mismatches:
-        raise ValueError(f"JWC sitegraph package count mismatch: {json.dumps(mismatches, ensure_ascii=False)}")
+        raise ValueError(f"{source_id} sitegraph package count mismatch: {json.dumps(mismatches, ensure_ascii=False)}")
 
     return {
         "source_index_dir": index_dir,
@@ -410,6 +421,18 @@ def doc_host(url: str) -> str:
     return parsed.netloc
 
 
+def package_source_id(package: dict[str, Any]) -> str:
+    return clean_text(package.get("site", {}).get("site_id")) or clean_text(package.get("manifest", {}).get("site_id")) or "sitegraph"
+
+
+def site_source_id(site: dict[str, Any]) -> str:
+    return clean_text(site.get("site_id")) or stable_slug(site.get("domain") or site.get("name"), fallback="site")
+
+
+def site_display_name(site: dict[str, Any]) -> str:
+    return clean_text(site.get("name")) or site_source_id(site)
+
+
 def make_doc_meta(
     *,
     doc_index: int,
@@ -433,6 +456,7 @@ def make_doc_meta(
 ) -> dict[str, Any]:
     section_name, nav_path, section_tags = section_label(section)
     source_domain = clean_text(site.get("domain")) or doc_host(clean_text(site.get("base_url")))
+    source_id = site_source_id(site)
     return {
         "doc_index": doc_index,
         "id": doc_id,
@@ -441,7 +465,7 @@ def make_doc_meta(
         "facet": facet,
         "title": clean_text(title) or clean_text(url),
         "url": clean_text(url),
-        "source": clean_text(site.get("name")) or "本科生院 / 教务处",
+        "source": site_display_name(site),
         "source_domain": source_domain,
         "section_id": clean_text(section.get("section_id")) if section else None,
         "section": section_name,
@@ -455,7 +479,7 @@ def make_doc_meta(
         "tags": unique_strings([*(tags or []), *section_tags, facet, record_type], limit=16),
         "collection_method": outcome,
         "provenance": {
-            "site_id": clean_text(site.get("site_id")) or "jwc",
+            "site_id": source_id,
             "section_id": clean_text(section.get("section_id")) if section else None,
             "nav_path": nav_path,
             "source_url": source_url,
@@ -467,6 +491,8 @@ def make_doc_meta(
 
 def build_documents(package: dict[str, Any]) -> dict[str, Any]:
     site = package["site"]
+    source_id = site_source_id(site)
+    source_name = site_display_name(site)
     sections_by_id = {clean_text(item.get("section_id")): item for item in package["sections"]}
     list_pages_by_url = {clean_text(item.get("url")): item for item in package["list_pages"]}
     detail_urls = {clean_text(item.get("url")) for item in package["detail_pages"]}
@@ -491,7 +517,7 @@ def build_documents(package: dict[str, Any]) -> dict[str, Any]:
         section = sections_by_id.get(clean_text(page.get("section_id")))
         title = clean_text(page.get("title")) or url
         content = clean_text(page.get("content_text"))
-        doc_id = f"jwc-detail-{clean_text(page.get('page_id')) or sha1_text(url)}"
+        doc_id = f"{source_id}-detail-{clean_text(page.get('page_id')) or sha1_text(url)}"
         detail_id_by_url[url] = doc_id
         attachments = [
             attachment_metadata(item, parent_doc_id=doc_id, section=section)
@@ -542,7 +568,7 @@ def build_documents(package: dict[str, Any]) -> dict[str, Any]:
             }
         )
         if parent_doc_id is None:
-            doc_id = f"jwc-attachment-{metadata['attachment_id']}"
+            doc_id = f"{source_id}-attachment-{metadata['attachment_id']}"
             metadata["parent_doc_id"] = doc_id
             title = metadata["name"]
             facet = "download"
@@ -575,7 +601,7 @@ def build_documents(package: dict[str, Any]) -> dict[str, Any]:
         url = clean_text(link.get("url"))
         section = sections_by_id.get(clean_text(link.get("source_section_id")))
         category = clean_text(link.get("category")) or "external_link"
-        doc_id = f"jwc-external-{clean_text(link.get('external_id')) or sha1_text(url + label)}"
+        doc_id = f"{source_id}-external-{clean_text(link.get('external_id')) or sha1_text(url + label)}"
         facet = infer_facet(record_type="external", section=section, title=label, content=url, external_category=category)
         meta = make_doc_meta(
             doc_index=len(docs),
@@ -588,7 +614,7 @@ def build_documents(package: dict[str, Any]) -> dict[str, Any]:
             page_type="external_link_record",
             published_at=clean_text(link.get("recorded_at")) or None,
             publisher=None,
-            summary=f"JWC 记录的外链：{label}。该链接只记录入口，不递归抓取内容。",
+            summary=f"{source_name}记录的外链：{label}。该链接只记录入口，不递归抓取内容。",
             content_hash=sha1_text(url + label),
             attachment_count=0,
             facet=facet,
@@ -621,7 +647,7 @@ def build_documents(package: dict[str, Any]) -> dict[str, Any]:
         target_list = list_pages_by_url.get(target_url)
         if target_list:
             section = sections_by_id.get(clean_text(target_list.get("section_id")))
-        doc_id = f"jwc-utility-{clean_text(edge.get('edge_id')) or sha1_text(target_url + label)}"
+        doc_id = f"{source_id}-utility-{clean_text(edge.get('edge_id')) or sha1_text(target_url + label)}"
         meta = make_doc_meta(
             doc_index=len(docs),
             doc_id=doc_id,
@@ -633,7 +659,7 @@ def build_documents(package: dict[str, Any]) -> dict[str, Any]:
             page_type="utility_link_record",
             published_at=None,
             publisher=None,
-            summary="JWC 首页记录的考试信息查询入口。",
+            summary=f"{source_name}首页记录的考试信息查询入口。",
             content_hash=sha1_text(target_url + label),
             attachment_count=0,
             facet="exam",
@@ -845,7 +871,90 @@ def artifact_entry(artifact: dict[str, Any], *, role: str, count: int | None = N
     return entry
 
 
-def write_public_index(package: dict[str, Any], built: dict[str, Any], *, shard_size: int) -> dict[str, Any]:
+def aggregate_counts(packages: list[dict[str, Any]]) -> dict[str, int]:
+    counts: Counter[str] = Counter()
+    for package in packages:
+        counts.update({field: int(package["actual_counts"].get(field, 0) or 0) for field in COUNT_FIELDS})
+    return {field: int(counts.get(field, 0)) for field in COUNT_FIELDS}
+
+
+def source_truth_counts(packages: list[dict[str, Any]]) -> dict[str, dict[str, int]]:
+    return {package_source_id(package): dict(package["actual_counts"]) for package in packages}
+
+
+def aggregate_quality(packages: list[dict[str, Any]]) -> dict[str, Any]:
+    qualities = [
+        package.get("manifest", {}).get("quality")
+        for package in packages
+        if isinstance(package.get("manifest", {}).get("quality"), dict)
+    ]
+    return {
+        "all_discovered_urls_have_outcomes": all(item.get("all_discovered_urls_have_outcomes") is True for item in qualities),
+        "errors": sum(int(item.get("errors", 0) or 0) for item in qualities),
+        "attachment_policy": "metadata_only" if all(item.get("attachment_policy") == "metadata_only" for item in qualities) else "mixed",
+        "external_link_policy": "record_only" if all(item.get("external_link_policy") == "record_only" for item in qualities) else "mixed",
+        "sources": {
+            package_source_id(package): package.get("manifest", {}).get("quality")
+            for package in packages
+        },
+    }
+
+
+def latest_upstream_generated_at(packages: list[dict[str, Any]]) -> str | None:
+    values = [
+        clean_text(package.get("manifest", {}).get("generated_at"))
+        for package in packages
+        if clean_text(package.get("manifest", {}).get("generated_at"))
+    ]
+    return max(values) if values else None
+
+
+def source_entries(packages: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    entries: list[dict[str, Any]] = []
+    for package in packages:
+        source_id = package_source_id(package)
+        entries.append(
+            {
+                "source_id": source_id,
+                "source_kind": "sitegraph",
+                "artifact_root": f"generated/collections/{COLLECTION_ID}/sitegraph",
+                "upstream_generated_at": clean_text(package["manifest"].get("generated_at")) or None,
+                "display_name": site_display_name(package["site"]),
+                "truth_counts": dict(package["actual_counts"]),
+                "quality": package["manifest"].get("quality"),
+            }
+        )
+    return entries
+
+
+def merge_built_packages(built_packages: list[dict[str, Any]]) -> dict[str, Any]:
+    documents: list[dict[str, Any]] = []
+    attachment_index: list[dict[str, Any]] = []
+    external_index: list[dict[str, Any]] = []
+    outcomes: dict[str, list[dict[str, Any]]] = {
+        "detail_page_records": [],
+        "attachment_metadata_records": [],
+        "direct_attachment_records": [],
+        "external_link_records": [],
+        "utility_link_records": [],
+    }
+    for built in built_packages:
+        for document in built["documents"]:
+            document["doc_index"] = len(documents)
+            documents.append(document)
+        attachment_index.extend(built["attachment_index"])
+        external_index.extend(built["external_index"])
+        for key in outcomes:
+            outcomes[key].extend(built["outcomes"].get(key) or [])
+    return {
+        "documents": documents,
+        "attachment_index": attachment_index,
+        "external_index": external_index,
+        "outcomes": outcomes,
+    }
+
+
+def write_public_index(packages: list[dict[str, Any]], built: dict[str, Any], *, shard_size: int) -> dict[str, Any]:
     # Removing the directories prevents stale fixed-name or obsolete indexes from being deployed.
     for directory in (PUBLIC_INDEX_DIR, OBSOLETE_INDEX_DIR):
         if directory.exists():
@@ -876,20 +985,25 @@ def write_public_index(package: dict[str, Any], built: dict[str, Any], *, shard_
 
     section_counts = Counter(clean_text(document.get("section_id")) or "unknown" for document in documents)
     section_index = []
-    for section in package["sections"]:
-        section_id = clean_text(section.get("section_id"))
-        section_name, nav_path, tags = section_label(section)
-        section_index.append(
-            {
-                "section_id": section_id,
-                "name": section_name,
-                "url": clean_text(section.get("url")),
-                "section_type": clean_text(section.get("section_type")),
-                "nav_path": nav_path,
-                "business_tags": tags,
-                "document_count": section_counts.get(section_id, 0),
-            }
-        )
+    for package in packages:
+        source_id = package_source_id(package)
+        source = site_display_name(package["site"])
+        for section in package["sections"]:
+            section_id = clean_text(section.get("section_id"))
+            section_name, nav_path, tags = section_label(section)
+            section_index.append(
+                {
+                    "source_id": source_id,
+                    "source": source,
+                    "section_id": section_id,
+                    "name": section_name,
+                    "url": clean_text(section.get("url")),
+                    "section_type": clean_text(section.get("section_type")),
+                    "nav_path": nav_path,
+                    "business_tags": tags,
+                    "document_count": section_counts.get(section_id, 0),
+                }
+            )
 
     query_aliases = query_alias_payload()
     artifacts: dict[str, dict[str, Any]] = {}
@@ -915,7 +1029,9 @@ def write_public_index(package: dict[str, Any], built: dict[str, Any], *, shard_
     artifacts["shard_filter"] = artifact_entry(shard_filter_artifact, role="shard_filter", count=len(shard_filter), load="verify")
     artifacts["outcomes"] = artifact_entry(outcomes_artifact, role="outcomes", load="audit")
 
-    upstream_counts = dict(package["actual_counts"])
+    upstream_counts = aggregate_counts(packages)
+    per_source_truth_counts = source_truth_counts(packages)
+    upstream_quality = aggregate_quality(packages)
     record_counts = Counter(document["record_type"] for document in documents)
     facet_counts = Counter(document["facet"] for document in documents)
     first_screen_artifacts = ["doc_meta_light", "light_inverted_index", "query_aliases"]
@@ -962,25 +1078,15 @@ def write_public_index(package: dict[str, Any], built: dict[str, Any], *, shard_
     artifacts["size_report"] = artifact_entry(size_artifact, role="size_report", load="audit")
 
     generated_at = now_iso()
-    upstream_generated_at = clean_text(package["manifest"].get("generated_at")) or None
-    source_id = clean_text(package["site"].get("site_id")) or SOURCE_ID
-    source_artifact_root = f"generated/collections/{COLLECTION_ID}/sitegraph/{source_id}"
+    upstream_generated_at = latest_upstream_generated_at(packages) or generated_at
     manifest = {
         "generated_at": generated_at,
         "strategy": "progressive-verifiable-static-search",
         "producer_repo": os.environ.get("GITHUB_REPOSITORY") or "hicancan/njupt-search",
         "producer_ref": producer_ref(),
-        "site_id": source_id,
+        "site_id": COLLECTION_ID,
         "collection_id": COLLECTION_ID,
-        "sources": [
-            {
-                "source_id": source_id,
-                "source_kind": "sitegraph",
-                "artifact_root": source_artifact_root,
-                "upstream_generated_at": upstream_generated_at,
-                "display_name": clean_text(package["site"].get("name")) or source_id,
-            }
-        ],
+        "sources": source_entries(packages),
         "artifact_path": f"generated/collections/{COLLECTION_ID}",
         "upstream_generated_at": upstream_generated_at,
         "truth_counts": upstream_counts,
@@ -1034,7 +1140,8 @@ def write_public_index(package: dict[str, Any], built: dict[str, Any], *, shard_
         "artifacts": artifacts,
         "sitegraph": {
             "truth_counts": upstream_counts,
-            "quality": package["manifest"].get("quality"),
+            "source_truth_counts": per_source_truth_counts,
+            "quality": upstream_quality,
             "upstream_generated_at": upstream_generated_at,
             "detail_page_records": record_counts.get("detail", 0),
             "attachment_metadata_records": len(built["attachment_index"]),
@@ -1058,12 +1165,13 @@ def write_public_index(package: dict[str, Any], built: dict[str, Any], *, shard_
     return manifest
 
 
-def build_sitegraph_index(index_dir: Path, *, shard_size: int = 1000) -> dict[str, Any]:
-    package = validate_sitegraph_package(index_dir)
-    built = build_documents(package)
-    manifest = write_public_index(package, built, shard_size=shard_size)
+def build_sitegraph_indexes(index_dirs: list[Path] | tuple[Path, ...], *, shard_size: int = 1000) -> dict[str, Any]:
+    packages = [validate_sitegraph_package(index_dir) for index_dir in index_dirs]
+    built = merge_built_packages([build_documents(package) for package in packages])
+    manifest = write_public_index(packages, built, shard_size=shard_size)
     return {
-        "sitegraph_index": str(index_dir),
+        "sitegraph_indexes": [str(index_dir) for index_dir in index_dirs],
+        "source_ids": [package_source_id(package) for package in packages],
         "generated_documents": manifest["total_documents"],
         "detail_page_records": manifest["sitegraph"]["detail_page_records"],
         "attachment_metadata_records": manifest["sitegraph"]["attachment_metadata_records"],
@@ -1076,15 +1184,27 @@ def build_sitegraph_index(index_dir: Path, *, shard_size: int = 1000) -> dict[st
     }
 
 
+def build_sitegraph_index(index_dir: Path, *, shard_size: int = 1000) -> dict[str, Any]:
+    return build_sitegraph_indexes([index_dir], shard_size=shard_size)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Build generated collection search artifacts for njupt-search.")
-    parser.add_argument("--source-package", type=Path, default=DEFAULT_SITEGRAPH_INDEX, help="Path to an audited njupt-site-graph source package index")
+    parser.add_argument(
+        "--source-package",
+        dest="source_packages",
+        action="append",
+        type=Path,
+        default=None,
+        help="Path to an audited njupt-site-graph source package index. Repeat for multiple source packages.",
+    )
     parser.add_argument("--collection-id", default=COLLECTION_ID)
     parser.add_argument("--out", type=Path, default=None)
     parser.add_argument("--shard-size", type=int, default=1000, help="Number of full documents per shard")
     args = parser.parse_args()
     configure_collection_output(args.collection_id, args.out)
-    summary = build_sitegraph_index(args.source_package.resolve(), shard_size=args.shard_size)
+    source_packages = args.source_packages or list(DEFAULT_SITEGRAPH_INDEXES)
+    summary = build_sitegraph_indexes([path.resolve() for path in source_packages], shard_size=args.shard_size)
     print(json.dumps(summary, ensure_ascii=False, indent=2))
 
 

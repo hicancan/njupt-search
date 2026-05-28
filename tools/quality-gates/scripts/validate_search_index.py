@@ -12,10 +12,11 @@ if str(COLLECTION_INDEXER_SRC) not in sys.path:
     sys.path.insert(0, str(COLLECTION_INDEXER_SRC))
 
 from njupt_search_indexer.build_sitegraph_index import (  # noqa: E402
-    DEFAULT_SITEGRAPH_INDEX,
+    DEFAULT_SITEGRAPH_INDEXES,
     OBSOLETE_INDEX_DIR,
     PUBLIC_INDEX_DIR,
     PUBLIC_ROOT,
+    package_source_id,
     validate_sitegraph_package,
 )
 from njupt_search_indexer.validate_sitegraph_index import validate_generated_index  # noqa: E402
@@ -85,15 +86,22 @@ def main() -> None:
     if not isinstance(sources, list) or not sources:
         fail("manifest.sources must declare at least one audited source package")
     source_ids = {str(item.get("source_id")) for item in sources if isinstance(item, dict)}
-    if manifest.get("site_id") not in source_ids:
-        fail("manifest.site_id must be represented in manifest.sources")
+    expected_source_ids = {
+        package_source_id(validate_sitegraph_package(path))
+        for path in DEFAULT_SITEGRAPH_INDEXES
+        if path.exists()
+    }
+    if expected_source_ids and source_ids != expected_source_ids:
+        fail(f"manifest.sources must match audited packages: manifest={sorted(source_ids)} expected={sorted(expected_source_ids)}")
+    if manifest.get("site_id") != manifest.get("collection_id"):
+        fail("manifest.site_id is a legacy collection field and must equal manifest.collection_id")
     for item in sources:
         if not isinstance(item, dict):
             fail("manifest.sources entries must be objects")
         if item.get("source_kind") != "sitegraph":
             fail(f"manifest.sources.source_kind must be sitegraph, got {item.get('source_kind')!r}")
         root = item.get("artifact_root")
-        if not isinstance(root, str) or not root.startswith("generated/collections/njupt-public/sitegraph/"):
+        if not isinstance(root, str) or not root.startswith("generated/collections/njupt-public/sitegraph"):
             fail(f"manifest.sources.artifact_root must be public collection-relative, got {root!r}")
     if manifest.get("collection_id") != "njupt-public":
         fail(f"unexpected collection_id: {manifest.get('collection_id')!r}")
@@ -171,8 +179,9 @@ def main() -> None:
         if (PUBLIC_INDEX_DIR / stale).exists():
             fail(f"stale old search artifact still exists: {stale}")
 
-    if DEFAULT_SITEGRAPH_INDEX.exists():
-        validate_generated_index(validate_sitegraph_package(DEFAULT_SITEGRAPH_INDEX))
+    packages = [validate_sitegraph_package(path) for path in DEFAULT_SITEGRAPH_INDEXES if path.exists()]
+    if packages:
+        validate_generated_index(packages)
     print("[validate_search_index] ok")
 
 

@@ -10,8 +10,8 @@ PUBLIC_ROOT = ROOT / "apps" / "web" / "public"
 COLLECTION_DIR = PUBLIC_ROOT / "generated" / "collections" / "njupt-public"
 
 SIZE_BUDGETS = {
-    "first_screen_total_bytes": 13_000_000,
-    "body_index_bytes": 14_000_000,
+    "first_screen_total_bytes": 16_000_000,
+    "body_index_bytes": 19_000_000,
     "full_shard_count": 650,
     "max_full_shard_bytes": 512 * 1024,
     "avg_full_shard_bytes": 96 * 1024,
