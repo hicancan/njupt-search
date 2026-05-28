@@ -13,8 +13,8 @@
     "raw_source_records": {
       "jwc": {
         "detail_pages": 6941,
-        "attachments": 7908,
-        "external_links": 739,
+        "attachments": 7870,
+        "external_links": 740,
         "dominant_student_intents": ["exam_schedule", "form_download", "course_grade_credit", "academic_policy"]
       },
       "xsc": {
@@ -31,8 +31,8 @@
       }
     },
     "runtime_collection": {
-      "documents": 10258,
-      "shards": 603
+      "documents": 10259,
+      "shards": 606
     },
     "ranking_implications": [
       "JWC volume and attachments can dominate generic lexical scoring, so XSC/CXCY task authority must be explicit.",

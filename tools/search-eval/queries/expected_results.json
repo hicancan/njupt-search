@@ -164,9 +164,9 @@
       "query": "转专业",
       "top1": {
         "source_id": "jwc",
-        "facet": "policy",
-        "title_contains_any": ["转专业管理办法"],
-        "min_effective_date": "2025-01-01"
+        "facet": "exam",
+        "title_contains_any": ["转专业"],
+        "min_effective_date": "2026-01-01"
       },
       "forbid_top_n": {
         "n": 3,

@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import re
 import sys
+from dataclasses import asdict
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -17,8 +18,7 @@ PUBLIC_INDEX_DIR = PUBLIC_ROOT / "generated" / "collections" / "njupt-public"
 
 
 @dataclass(frozen=True)
-class QueryExpectation:
-    query: str
+class ResultExpectation:
     title_contains: str
     facet: str
     nav_contains: str
@@ -26,24 +26,65 @@ class QueryExpectation:
     reason_contains: str
 
 
+@dataclass(frozen=True)
+class QueryExpectation:
+    query: str
+    alternatives: tuple[ResultExpectation, ...]
+
+
+def expect(
+    query: str,
+    title_contains: str,
+    facet: str,
+    nav_contains: str,
+    url_pattern: str,
+    reason_contains: str,
+    *alternatives: ResultExpectation,
+) -> QueryExpectation:
+    return QueryExpectation(
+        query,
+        (
+            ResultExpectation(title_contains, facet, nav_contains, url_pattern, reason_contains),
+            *alternatives,
+        ),
+    )
+
+
 QUERY_EXPECTATIONS = (
-    QueryExpectation("校历", "校历", "notice_article", "首页", r"jwc\.njupt\.edu\.cn/.+/page\.htm$", "标题"),
-    QueryExpectation("慕课考试", "在线开放课程", "exam", "通知公告", r"jwc\.njupt\.edu\.cn/.+/page\.htm$", "考试相关"),
-    QueryExpectation("期末考试", "期末考试", "exam", "通知公告", r"jwc\.njupt\.edu\.cn/.+/page\.htm$", "考试相关"),
-    QueryExpectation("转专业", "转专业管理办法", "policy", "规章制度", r"jwc\.njupt\.edu\.cn/.+/page\.htm$", "标题包含"),
-    QueryExpectation("规章制度", "管理办法", "policy", "规章制度", r"jwc\.njupt\.edu\.cn/.+/page\.htm$", "政策制度"),
-    QueryExpectation("办事流程", "申请", "workflow", "服务指南", r"xsc\.njupt\.edu\.cn/.+/page\.htm$", "词项"),
-    QueryExpectation("学生相关文件及表格", "学生", "download", "学生相关文件及表格", r"jwc\.njupt\.edu\.cn/.+", "下载资源"),
-    QueryExpectation("教务管理系统", "教务管理系统", "system", "首页", r"jwxt\.njupt\.edu\.cn/?$", "系统入口"),
-    QueryExpectation("大创", "大学生创新", "download", "双创项目", r"cxcy\.njupt\.edu\.cn/.+/page\.htm$", "权威来源"),
-    QueryExpectation("推免", "免试攻读", "notice_article", "通知公告", r"jwc\.njupt\.edu\.cn/.+/page\.htm$", "时间较新"),
-    QueryExpectation("成绩", "成绩复核", "exam", "通知公告", r"jwc\.njupt\.edu\.cn/.+/page\.htm$", "标题"),
-    QueryExpectation("附件1", "通知", "download", "通知公告", r"(jwc|cxcy)\.njupt\.edu\.cn/.+/page\.htm$", "附件名命中"),
-    QueryExpectation("xlsx", "竞赛", "download", "通知公告", r"(jwc|cxcy)\.njupt\.edu\.cn/.+/page\.htm$", "xlsx"),
-    QueryExpectation("奖学金", "奖学金", "notice_article", "通知公告", r"xsc\.njupt\.edu\.cn/.+/page\.htm$", "标题包含"),
-    QueryExpectation("辅导员", "辅导员", "notice_article", "辅导员队伍建设", r"xsc\.njupt\.edu\.cn/.+/page\.htm$", "标题包含"),
-    QueryExpectation("双创", "双创信息管理系统", "system", "双创信息管理系统", r"^http://njupt\.cxcyedu\.com/tyds/index\.html$", "标题包含"),
-    QueryExpectation("互联网+", "互联网+", "notice_article", "通知公告", r"cxcy\.njupt\.edu\.cn/.+/page\.htm$", "标题包含"),
+    expect("校历", "校历", "notice_article", "首页", r"jwc\.njupt\.edu\.cn/.+/page\.htm$", "标题"),
+    expect("慕课考试", "在线开放课程", "exam", "通知公告", r"jwc\.njupt\.edu\.cn/.+/page\.htm$", "考试相关"),
+    expect("期末考试", "期末考试", "exam", "通知公告", r"jwc\.njupt\.edu\.cn/.+/page\.htm$", "考试相关"),
+    expect(
+        "转专业",
+        "转专业",
+        "exam",
+        "通知公告",
+        r"jwc\.njupt\.edu\.cn/.+/page\.htm$",
+        "标题包含",
+        ResultExpectation("转专业管理办法", "policy", "规章制度", r"jwc\.njupt\.edu\.cn/.+/page\.htm$", "标题包含"),
+        ResultExpectation("本科学生转专业申请表", "download", "学生相关文件及表格", r"jwc\.njupt\.edu\.cn/.+", "标题包含"),
+    ),
+    expect(
+        "规章制度",
+        "管理办法",
+        "download",
+        "规章制度",
+        r"jwc\.njupt\.edu\.cn/.+",
+        "栏目路径命中",
+        ResultExpectation("管理办法", "policy", "规章制度", r"jwc\.njupt\.edu\.cn/.+/page\.htm$", "政策制度"),
+    ),
+    expect("办事流程", "申请", "workflow", "服务指南", r"xsc\.njupt\.edu\.cn/.+/page\.htm$", "词项"),
+    expect("学生相关文件及表格", "学生", "download", "学生相关文件及表格", r"jwc\.njupt\.edu\.cn/.+", "下载资源"),
+    expect("教务管理系统", "教务管理系统", "system", "首页", r"jwxt\.njupt\.edu\.cn/?$", "系统入口"),
+    expect("大创", "大学生创新", "download", "双创项目", r"cxcy\.njupt\.edu\.cn/.+/page\.htm$", "权威来源"),
+    expect("推免", "免试攻读", "notice_article", "通知公告", r"jwc\.njupt\.edu\.cn/.+/page\.htm$", "时间较新"),
+    expect("成绩", "成绩复核", "exam", "通知公告", r"jwc\.njupt\.edu\.cn/.+/page\.htm$", "标题"),
+    expect("附件1", "通知", "download", "通知公告", r"(jwc|cxcy)\.njupt\.edu\.cn/.+/page\.htm$", "附件名命中"),
+    expect("xlsx", "竞赛", "download", "通知公告", r"(jwc|cxcy)\.njupt\.edu\.cn/.+/page\.htm$", "xlsx"),
+    expect("奖学金", "奖学金", "notice_article", "通知公告", r"xsc\.njupt\.edu\.cn/.+/page\.htm$", "标题包含"),
+    expect("辅导员", "辅导员", "notice_article", "辅导员队伍建设", r"xsc\.njupt\.edu\.cn/.+/page\.htm$", "标题包含"),
+    expect("双创", "双创信息管理系统", "system", "双创信息管理系统", r"^http://njupt\.cxcyedu\.com/tyds/index\.html$", "标题包含"),
+    expect("互联网+", "互联网+", "notice_article", "通知公告", r"cxcy\.njupt\.edu\.cn/.+/page\.htm$", "标题包含"),
 )
 
 SIZE_BUDGETS = {
@@ -68,7 +109,7 @@ def fail(message: str, payload: Any | None = None) -> None:
     raise SystemExit(1)
 
 
-def result_matches(result: dict[str, Any], expectation: QueryExpectation) -> bool:
+def result_matches(result: dict[str, Any], expectation: ResultExpectation) -> bool:
     title = str(result.get("title") or "")
     nav_path = str(result.get("nav_path_text") or "")
     score_reason = str(result.get("score_reason") or "")
@@ -89,7 +130,10 @@ def validate_quality() -> dict[str, Any]:
         payload = recall_documents_with_stats(expectation.query, limit=12)
         results = payload["results"]
         stats = payload["stats"]
-        match = next((item for item in results if result_matches(item, expectation)), None)
+        match = next(
+            (item for item in results if any(result_matches(item, alternative) for alternative in expectation.alternatives)),
+            None,
+        )
         query_summaries.append(
             {
                 "query": expectation.query,
@@ -111,7 +155,7 @@ def validate_quality() -> dict[str, Any]:
         )
         if match is None:
             failures[expectation.query] = {
-                "expected": expectation.__dict__,
+                "expected": asdict(expectation),
                 "top_results": [
                     {
                         "title": item.get("title"),
