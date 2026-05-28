@@ -10,3 +10,9 @@ Near-term migration purpose:
 ```powershell
 uv run python -m njupt_search_eval run-smoke-queries --collection apps\web\public\generated\collections\njupt-public
 ```
+
+```powershell
+uv run python -m njupt_search_eval run-task-queries --collection apps\web\public\generated\collections\njupt-public
+```
+
+`run-task-queries` validates the data-backed student task matrix in `queries/expected_results.json`, including routed exam-vertical class queries such as `B250403`.

@@ -1,5 +1,6 @@
 import type { SitegraphFullDocument } from '@njupt-search/contracts';
 import { normalizeSearchText as normalize } from '../tokenizer';
+import searchIntentConfig from './queryIntentProfiles.json';
 
 export type CampusSearchIntent =
     | 'exam_schedule'
@@ -21,44 +22,125 @@ export interface QueryIntentProfile {
     freshnessMode: FreshnessMode;
 }
 
+type AuthoritySourcesConfig = string[] | 'dynamic_system';
+
+interface QueryIntentRuleConfig {
+    intent: CampusSearchIntent;
+    authority_sources: AuthoritySourcesConfig;
+    freshness_mode: FreshnessMode;
+    match_any: string[];
+}
+
+interface TextMatchWeights {
+    title_exact: number;
+    system_title_exact: number;
+    title_contains: number;
+    long_query_min_length: number;
+    long_query_title_contains_extra: number;
+    attachment_contains: number;
+    external_contains: number;
+    url_contains: number;
+    section_contains: number;
+    content_contains: number;
+    tags_contains: number;
+}
+
+interface TermMatchWeights {
+    title: number;
+    attachment: number;
+    external: number;
+    url: number;
+    section: number;
+    summary_or_content: number;
+}
+
+interface AuthorityWeights {
+    focused_source_boost: number;
+    broad_source_boost: number;
+    single_source_miss_penalty: number;
+}
+
+interface FreshnessWeightConfig {
+    system_facet_score?: number;
+    max_score?: number;
+    horizon_days?: number;
+    reason: string;
+}
+
+interface SearchIntentConfig {
+    field_weights: Record<string, number>;
+    intent_detection: {
+        default_authority_sources: string[];
+        system_authority_rules: Array<{
+            source_id: string;
+            match_any: string[];
+        }>;
+        system_default_authority_sources: string[];
+        profiles: QueryIntentRuleConfig[];
+        fallback_profile: {
+            intent: CampusSearchIntent;
+            authority_sources: string[];
+            freshness_mode: FreshnessMode;
+        };
+    };
+    ranking: {
+        text_match: TextMatchWeights;
+        term_match: TermMatchWeights;
+        authority: AuthorityWeights;
+        facet_boosts: Array<{
+            facet: string;
+            intents: CampusSearchIntent[];
+            score: number;
+            reason: string;
+        }>;
+        task_kind_match: number;
+        freshness: Record<FreshnessMode, FreshnessWeightConfig>;
+        stale_penalty: {
+            modes: FreshnessMode[];
+            thresholds: Array<{
+                older_than_days: number;
+                score: number;
+            }>;
+        };
+        short_landing_page_penalty: number;
+        scholarship_non_financial_hardship_penalty: number;
+    };
+}
+
+export const SEARCH_INTENT_CONFIG = searchIntentConfig as SearchIntentConfig;
+
 const includesAny = (text: string, terms: string[]): boolean => terms.some(term => text.includes(normalize(term)));
+
+const dynamicSystemAuthoritySources = (text: string): string[] => {
+    for (const rule of SEARCH_INTENT_CONFIG.intent_detection.system_authority_rules) {
+        if (includesAny(text, rule.match_any)) {
+            return [rule.source_id];
+        }
+    }
+    return [...SEARCH_INTENT_CONFIG.intent_detection.system_default_authority_sources];
+};
 
 export const detectQueryIntent = (query: string): QueryIntentProfile => {
     const text = normalize(query);
-    const systemAuthority = includesAny(text, ['双创', '创新创业', '大创'])
-        ? ['cxcy']
-        : includesAny(text, ['心理', '学工', '资助', '就业', '征兵'])
-            ? ['xsc']
-            : ['jwc'];
 
-    if (includesAny(text, ['教务管理系统', '正方教务', 'jwxt', '双创信息管理系统', '心理健康', '心理咨询', '信息门户', '系统', '门户'])) {
-        return { intent: 'system_entry', authoritySources: systemAuthority, freshnessMode: 'official_entry' };
+    for (const rule of SEARCH_INTENT_CONFIG.intent_detection.profiles) {
+        if (!includesAny(text, rule.match_any)) continue;
+        const authoritySources = rule.authority_sources === 'dynamic_system'
+            ? dynamicSystemAuthoritySources(text)
+            : [...rule.authority_sources];
+        return {
+            intent: rule.intent,
+            authoritySources,
+            freshnessMode: rule.freshness_mode,
+        };
     }
-    if (includesAny(text, ['期末考试', '考试安排', '补考', '重修考试', '慕课考试', '考场', '考试周'])) {
-        return { intent: 'exam_schedule', authoritySources: ['jwc'], freshnessMode: 'current_term' };
-    }
-    if (includesAny(text, ['校历', '教学周历', '教学日历', '放假安排'])) {
-        return { intent: 'academic_calendar', authoritySources: ['jwc'], freshnessMode: 'current_term' };
-    }
-    if (includesAny(text, ['申请表', '表格', 'xlsx', 'xls', '下载', '附件'])) {
-        return { intent: 'form_download', authoritySources: ['jwc', 'xsc', 'cxcy'], freshnessMode: 'form_version' };
-    }
-    if (includesAny(text, ['转专业', '推免', '免试攻读', '培养方案', '学籍', '管理办法', '规章制度', '政策文件'])) {
-        return { intent: 'academic_policy', authoritySources: ['jwc'], freshnessMode: 'current_policy' };
-    }
-    if (includesAny(text, ['选课', '成绩', '绩点', '学分', '课程'])) {
-        return { intent: 'course_grade_credit', authoritySources: ['jwc'], freshnessMode: 'current_notice' };
-    }
-    if (includesAny(text, ['奖学金', '助学金', '资助', '困难认定', '家庭经济困难', '评奖评优'])) {
-        return { intent: 'scholarship_aid', authoritySources: ['xsc'], freshnessMode: 'current_notice' };
-    }
-    if (includesAny(text, ['辅导员', '心理', '宿舍', '征兵', '就业', '学工', '一站式'])) {
-        return { intent: 'student_affairs', authoritySources: ['xsc'], freshnessMode: 'balanced' };
-    }
-    if (includesAny(text, ['大创', '创新创业', '双创', '互联网+', '挑战杯', '竞赛报名', '竞赛', '创业'])) {
-        return { intent: 'innovation_entrepreneurship', authoritySources: ['cxcy'], freshnessMode: 'current_notice' };
-    }
-    return { intent: 'broad_exploratory', authoritySources: ['jwc', 'xsc', 'cxcy'], freshnessMode: 'balanced' };
+
+    const fallback = SEARCH_INTENT_CONFIG.intent_detection.fallback_profile;
+    return {
+        intent: fallback.intent,
+        authoritySources: [...fallback.authority_sources],
+        freshnessMode: fallback.freshness_mode,
+    };
 };
 
 export const sourceIdForDocument = (document: SitegraphFullDocument): string => {

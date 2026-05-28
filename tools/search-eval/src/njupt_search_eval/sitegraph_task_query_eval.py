@@ -12,6 +12,9 @@ from .sitegraph_search import BASE_DIR, recall_documents_with_stats
 
 QUERY_DIR = BASE_DIR / "tools" / "search-eval" / "queries"
 EXPECTED_RESULTS_PATH = QUERY_DIR / "expected_results.json"
+EXAM_DATA_PATH = BASE_DIR / "apps" / "web" / "public" / "generated" / "exam" / "all_exams.json"
+CLASS_LOOKUP_PATTERN = re.compile(r"^[BFPQY]\d{2,}(?:\([A-Z0-9]+\))?$", re.IGNORECASE)
+COMPLETE_CLASS_PATTERN = re.compile(r"^[BFPQY]\d{6}(?:\([A-Z0-9]+\))?$", re.IGNORECASE)
 
 
 def read_json(path: Path) -> Any:
@@ -70,6 +73,50 @@ def item_matches(item: dict[str, Any], check: dict[str, Any]) -> bool:
     return True
 
 
+def class_search_result(exams: list[dict[str, Any]], query: str) -> dict[str, Any]:
+    normalized = query.strip().upper()
+    if len(normalized) < 2 or CLASS_LOOKUP_PATTERN.match(normalized) is None:
+        return {"mode": "EMPTY", "classes": [], "exams": []}
+    matched_exams = [
+        item for item in exams
+        if normalized in str(item.get("class_name") or "").upper()
+    ]
+    classes = sorted({str(item.get("class_name") or "") for item in matched_exams if item.get("class_name")})
+    if not classes:
+        return {"mode": "NOT_FOUND", "classes": [], "exams": []}
+    if len(classes) == 1 and COMPLETE_CLASS_PATTERN.match(normalized) is not None:
+        return {"mode": "DETAIL", "classes": classes, "exams": matched_exams}
+    return {"mode": "LIST", "classes": classes, "exams": []}
+
+
+def validate_exam_vertical_expectation(expectation: dict[str, Any]) -> dict[str, Any]:
+    query = str(expectation.get("query") or "")
+    exams = read_json(EXAM_DATA_PATH)
+    if not isinstance(exams, list):
+        fail("exam all_exams.json must contain a list")
+    result = class_search_result(exams, query)
+    expected_mode = str(expectation.get("exam_mode") or "DETAIL")
+    failures: dict[str, Any] = {}
+    if result["mode"] != expected_mode:
+        failures["mode"] = {"expected": expected_mode, "actual": result["mode"]}
+    class_contains = expectation.get("class_contains")
+    if class_contains and not any(str(class_contains).upper() in item.upper() for item in result["classes"]):
+        failures["class_contains"] = {"expected": class_contains, "actual": result["classes"][:12]}
+    min_exam_count = int(expectation.get("min_exam_count") or 1)
+    if expected_mode == "DETAIL" and len(result["exams"]) < min_exam_count:
+        failures["min_exam_count"] = {"expected": min_exam_count, "actual": len(result["exams"])}
+    if failures:
+        fail(f"{query}: exam vertical expectation failed", failures)
+    return {
+        "query": query,
+        "status": "passed_exam_vertical",
+        "mode": result["mode"],
+        "class_count": len(result["classes"]),
+        "exam_count": len(result["exams"]),
+        "first_class": result["classes"][0] if result["classes"] else None,
+    }
+
+
 def summarize_result(item: dict[str, Any]) -> dict[str, Any]:
     return {
         "title": item.get("title"),
@@ -90,6 +137,8 @@ def validate_expectation(expectation: dict[str, Any], *, default_limit: int) -> 
     query = str(expectation.get("query") or "")
     if not query:
         fail("expected_results entry missing query", expectation)
+    if expectation.get("expected_vertical") == "exam":
+        return validate_exam_vertical_expectation(expectation)
     payload = recall_documents_with_stats(query, limit=int(expectation.get("limit") or default_limit))
     results = payload["results"]
     stats = payload["stats"]

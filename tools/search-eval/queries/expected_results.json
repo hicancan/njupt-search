@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "purpose": "Deterministic expectations for high-value NJUPT student task queries. These assertions are intentionally data-driven and should be updated only when audited source-package truth changes.",
+  "purpose": "Deterministic expectations for high-value NJUPT student task queries across the collection and exam verticals. These assertions are intentionally data-driven and should be updated only when audited source-package truth changes.",
   "defaults": {
     "limit": 12
   },
@@ -70,6 +70,22 @@
       }
     },
     {
+      "query": "学科竞赛",
+      "top1": {
+        "source_id": "cxcy",
+        "title_contains_any": ["竞赛"],
+        "min_effective_date": "2025-01-01"
+      }
+    },
+    {
+      "query": "挑战杯",
+      "top1": {
+        "source_id": "cxcy",
+        "title_contains_any": ["挑战杯"],
+        "min_effective_date": "2024-01-01"
+      }
+    },
+    {
       "query": "双创信息管理系统",
       "top1": {
         "source_id": "cxcy",
@@ -83,6 +99,14 @@
         "source_id": "xsc",
         "title_contains_any": ["奖学金"],
         "min_effective_date": "2025-01-01"
+      }
+    },
+    {
+      "query": "国家奖学金",
+      "top1": {
+        "source_id": "xsc",
+        "title_contains_any": ["国家奖学金"],
+        "min_effective_date": "2024-01-01"
       }
     },
     {
@@ -120,6 +144,14 @@
       }
     },
     {
+      "query": "心理咨询",
+      "top_n": {
+        "n": 3,
+        "source_id": "xsc",
+        "title_contains_any": ["心理健康", "心理咨询"]
+      }
+    },
+    {
       "query": "转专业",
       "top1": {
         "source_id": "jwc",
@@ -139,6 +171,19 @@
         "source_id": "jwc",
         "title_contains_any": ["2026年各学院", "管理办法（修订）"],
         "min_effective_date": "2025-01-01"
+      }
+    },
+    {
+      "query": "推荐免试",
+      "top_n": {
+        "n": 3,
+        "source_id": "jwc",
+        "title_contains_any": ["管理办法（修订）", "2026年各学院"],
+        "min_effective_date": "2025-01-01"
+      },
+      "forbid_top_n": {
+        "n": 3,
+        "title_contains_any": ["做好2022年推荐", "做好2021年推荐"]
       }
     },
     {
@@ -177,6 +222,14 @@
       }
     },
     {
+      "query": "选课",
+      "top1": {
+        "source_id": "jwc",
+        "title_contains_any": ["选课"],
+        "min_effective_date": "2025-01-01"
+      }
+    },
+    {
       "query": "信息门户",
       "top1": {
         "source_id": "jwc",
@@ -204,8 +257,10 @@
     },
     {
       "query": "B250403",
-      "allow_empty": true,
-      "note": "This is an exam vertical query; the sitegraph evaluator accepts an empty collection result."
+      "expected_vertical": "exam",
+      "exam_mode": "DETAIL",
+      "class_contains": "B250403",
+      "min_exam_count": 1
     }
   ]
 }

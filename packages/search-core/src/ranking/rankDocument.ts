@@ -1,18 +1,8 @@
 import type { RankedSitegraphDocument, SitegraphFullDocument } from '@njupt-search/contracts';
-import { detectQueryIntent, sourceIdForDocument } from '../intent/queryIntent';
+import { detectQueryIntent, SEARCH_INTENT_CONFIG, sourceIdForDocument } from '../intent/queryIntent';
 import { normalizeSearchText as normalize } from '../tokenizer';
 
-export const SITEGRAPH_FIELD_WEIGHTS: Record<string, number> = {
-    t: 120,
-    a: 95,
-    e: 95,
-    y: 95,
-    s: 60,
-    n: 55,
-    g: 45,
-    m: 16,
-    c: 10
-};
+export const SITEGRAPH_FIELD_WEIGHTS: Record<string, number> = SEARCH_INTENT_CONFIG.field_weights;
 
 const textBlob = (document: SitegraphFullDocument, fields: Array<keyof SitegraphFullDocument>): string => {
     const values: string[] = [];
@@ -48,30 +38,30 @@ const decayedFreshness = (timestamp: number, maxScore: number, horizonDays: numb
 };
 
 const freshnessScore = (document: SitegraphFullDocument, freshnessMode: ReturnType<typeof detectQueryIntent>['freshnessMode']): number => {
-    if (freshnessMode === 'official_entry') return document.facet === 'system' ? 220 : 0;
-    if (freshnessMode === 'form_version') {
-        return decayedFreshness(dateSortValue(document.version_date) || dateSortValue(document.published_at), 2800, 3650);
+    const config = SEARCH_INTENT_CONFIG.ranking.freshness[freshnessMode];
+    if (!config) return 0;
+    if (freshnessMode === 'official_entry') {
+        return document.facet === 'system' ? Number(config.system_facet_score || 0) : 0;
     }
-    if (freshnessMode === 'current_policy') {
-        return decayedFreshness(dateSortValue(document.published_at) || dateSortValue(document.version_date), 4200, 2920);
-    }
-    if (freshnessMode === 'current_term') {
-        return decayedFreshness(dateSortValue(document.published_at) || dateSortValue(document.version_date), 7200, 1460);
-    }
-    if (freshnessMode === 'current_notice') {
-        return decayedFreshness(dateSortValue(document.published_at) || dateSortValue(document.version_date), 5200, 1825);
-    }
-    return decayedFreshness(dateSortValue(document.published_at) || dateSortValue(document.version_date), 900, 3650);
+    const timestamp = freshnessMode === 'form_version'
+        ? dateSortValue(document.version_date) || dateSortValue(document.published_at)
+        : dateSortValue(document.published_at) || dateSortValue(document.version_date);
+    return decayedFreshness(
+        timestamp,
+        Number(config.max_score || 0),
+        Number(config.horizon_days || 3650)
+    );
 };
 
 const stalePenalty = (document: SitegraphFullDocument, freshnessMode: ReturnType<typeof detectQueryIntent>['freshnessMode']): number => {
-    if (!['current_notice', 'current_term', 'current_policy'].includes(freshnessMode)) return 0;
+    const penaltyConfig = SEARCH_INTENT_CONFIG.ranking.stale_penalty;
+    if (!penaltyConfig.modes.includes(freshnessMode)) return 0;
     const value = dateSortValue(document.published_at) || dateSortValue(document.version_date);
     if (!value) return 0;
     const days = ageDays(value);
-    if (days > 3650) return 4200;
-    if (days > 2190) return 3000;
-    if (days > 1460) return 1800;
+    for (const threshold of penaltyConfig.thresholds) {
+        if (days > threshold.older_than_days) return threshold.score;
+    }
     return 0;
 };
 
@@ -101,60 +91,69 @@ export const rankSitegraphDocument = (
     const external = document.record_type === 'external' ? normalize(`${document.title} ${document.url} ${document.summary}`) : '';
     const sourceId = sourceIdForDocument(document);
     const taskKind = normalize(document.task_kind || '');
+    const textWeights = SEARCH_INTENT_CONFIG.ranking.text_match;
+    const termWeights = SEARCH_INTENT_CONFIG.ranking.term_match;
+    const authorityWeights = SEARCH_INTENT_CONFIG.ranking.authority;
     let score = lightScore;
     const reasons: string[] = [];
 
     if (normalizedQuery && (title === normalizedQuery || canonicalTitle === normalizedQuery)) {
-        score += document.facet === 'system' ? 5200 : 2400;
+        score += document.facet === 'system'
+            ? textWeights.system_title_exact
+            : textWeights.title_exact;
         reasons.push('标题精确');
     } else if (normalizedQuery && (title.includes(normalizedQuery) || canonicalTitle.includes(normalizedQuery))) {
-        score += 1000;
+        score += textWeights.title_contains;
         reasons.push('标题包含');
+        if (normalizedQuery.length >= textWeights.long_query_min_length) {
+            score += textWeights.long_query_title_contains_extra;
+            reasons.push('标题短语命中');
+        }
     }
     if (normalizedQuery && attachment.includes(normalizedQuery)) {
-        score += 520;
+        score += textWeights.attachment_contains;
         reasons.push('附件名命中');
     }
     if (normalizedQuery && external.includes(normalizedQuery)) {
-        score += 440;
+        score += textWeights.external_contains;
         reasons.push('外部入口命中');
     }
     if (normalizedQuery && url.includes(normalizedQuery)) {
-        score += 220;
+        score += textWeights.url_contains;
         reasons.push('URL 命中');
     }
     if (normalizedQuery && section.includes(normalizedQuery)) {
-        score += 260;
+        score += textWeights.section_contains;
         reasons.push('栏目路径命中');
     }
     if (normalizedQuery && content.includes(normalizedQuery)) {
-        score += 120;
+        score += textWeights.content_contains;
         reasons.push('正文命中');
     }
     if (normalizedQuery && tags.includes(normalizedQuery)) {
-        score += 120;
+        score += textWeights.tags_contains;
         reasons.push('标签命中');
     }
 
     const matchedTerms: string[] = [];
     for (const term of terms.slice(0, 12)) {
         if (title.includes(term) || canonicalTitle.includes(term)) {
-            score += 92;
+            score += termWeights.title;
             matchedTerms.push(term);
         } else if (attachment.includes(term)) {
-            score += 78;
+            score += termWeights.attachment;
             matchedTerms.push(term);
         } else if (external.includes(term)) {
-            score += 68;
+            score += termWeights.external;
             matchedTerms.push(term);
         } else if (url.includes(term)) {
-            score += 55;
+            score += termWeights.url;
             matchedTerms.push(term);
         } else if (section.includes(term)) {
-            score += 48;
+            score += termWeights.section;
             matchedTerms.push(term);
         } else if (summary.includes(term) || content.includes(term)) {
-            score += 12;
+            score += termWeights.summary_or_content;
             matchedTerms.push(term);
         }
     }
@@ -163,40 +162,29 @@ export const rankSitegraphDocument = (
     }
 
     if (profile.authoritySources.includes(sourceId)) {
-        score += profile.intent === 'broad_exploratory' ? 260 : 1900;
+        score += profile.intent === 'broad_exploratory'
+            ? authorityWeights.broad_source_boost
+            : authorityWeights.focused_source_boost;
         reasons.push('权威来源');
     } else if (profile.authoritySources.length === 1 && profile.intent !== 'broad_exploratory') {
-        score -= 650;
+        score -= authorityWeights.single_source_miss_penalty;
     }
-    if (document.facet === 'system' && profile.intent === 'system_entry') {
-        score += 2100;
-        reasons.push('系统入口');
-    }
-    if (document.facet === 'download' && profile.intent === 'form_download') {
-        score += 1150;
-        reasons.push('下载资源');
-    }
-    if (document.facet === 'policy' && ['academic_policy', 'scholarship_aid'].includes(profile.intent)) {
-        score += 1050;
-        reasons.push('政策制度');
-    }
-    if (document.facet === 'workflow' && ['form_download', 'course_grade_credit'].includes(profile.intent)) {
-        score += 520;
-        reasons.push('办事流程');
-    }
-    if (document.facet === 'exam' && profile.intent === 'exam_schedule') {
-        score += 1250;
-        reasons.push('考试相关');
+    for (const boost of SEARCH_INTENT_CONFIG.ranking.facet_boosts) {
+        if (document.facet === boost.facet && boost.intents.includes(profile.intent)) {
+            score += boost.score;
+            reasons.push(boost.reason);
+        }
     }
     if (taskKind === normalize(profile.intent)) {
-        score += 900;
+        score += SEARCH_INTENT_CONFIG.ranking.task_kind_match;
         reasons.push('任务匹配');
     }
 
     const freshness = freshnessScore(document, profile.freshnessMode);
     if (freshness > 0) {
         score += freshness;
-        reasons.push(profile.freshnessMode === 'official_entry' ? '官方入口' : profile.freshnessMode === 'form_version' ? '版本较新' : '时间较新');
+        const freshnessConfig = SEARCH_INTENT_CONFIG.ranking.freshness[profile.freshnessMode];
+        reasons.push(String(freshnessConfig?.reason || '时间较新'));
     }
     const penalty = stalePenalty(document, profile.freshnessMode);
     if (penalty > 0) {
@@ -204,11 +192,11 @@ export const rankSitegraphDocument = (
         reasons.push('历史内容降权');
     }
     if (profile.intent === 'academic_policy' && isShortLandingPage(document, normalizedQuery, title)) {
-        score -= 2600;
+        score -= SEARCH_INTENT_CONFIG.ranking.short_landing_page_penalty;
         reasons.push('短入口降权');
     }
     if (profile.intent === 'scholarship_aid' && title.includes(normalize('学业困难')) && !title.includes(normalize('家庭经济困难'))) {
-        score -= 1800;
+        score -= SEARCH_INTENT_CONFIG.ranking.scholarship_non_financial_hardship_penalty;
         reasons.push('非资助困难降权');
     }
 

@@ -8,6 +8,38 @@
     "maintenance_rule": "Add queries when source-package data distribution, failed result audits, user feedback, or campus calendar seasonality exposes a new search intent or wording variant.",
     "non_goal": "This file is not an exhaustive dictionary of every possible phrase. It is a living, high-coverage task corpus used to drive evaluation and ranking design."
   },
+  "last_source_distribution_audit": {
+    "audited_at": "2026-05-28",
+    "raw_source_records": {
+      "jwc": {
+        "detail_pages": 6884,
+        "attachments": 7905,
+        "external_links": 426,
+        "dominant_student_intents": ["exam_schedule", "form_download", "course_grade_credit", "academic_policy"]
+      },
+      "xsc": {
+        "detail_pages": 1589,
+        "attachments": 17,
+        "external_links": 75,
+        "dominant_student_intents": ["student_affairs", "scholarship_aid", "mental_health", "employment"]
+      },
+      "cxcy": {
+        "detail_pages": 612,
+        "attachments": 205,
+        "external_links": 60,
+        "dominant_student_intents": ["innovation_entrepreneurship", "competition_registration", "innovation_project", "cxcy_system"]
+      }
+    },
+    "runtime_collection": {
+      "documents": 9888,
+      "shards": 598
+    },
+    "ranking_implications": [
+      "JWC volume and attachments can dominate generic lexical scoring, so XSC/CXCY task authority must be explicit.",
+      "Title and effective date should dominate high-urgency campus queries; body matches are recall evidence, not the primary ranking signal.",
+      "Broad file-type queries need download/file freshness, while concrete form queries need exact title or attachment-name precision."
+    ]
+  },
   "priority_levels": {
     "p0": "High-frequency, high-urgency, or high-consequence student task.",
     "p1": "Common task or important seasonal task.",
@@ -67,7 +99,7 @@
         {
           "query": "期末考试",
           "priority": "p0",
-          "notes": "Current audit failure: old 2013-2014 exam notice can outrank newer notices."
+          "notes": "Regression guard: current-term exam notices must outrank legacy semester notices."
         },
         {
           "query": "考试安排",
@@ -238,7 +270,7 @@
         {
           "query": "信息门户",
           "priority": "p0",
-          "notes": "Current audit failure: phrase can be diluted to the broad token 信息."
+          "notes": "Regression guard: phrase intent should stay on official portals or system-entry instructions, not unrelated information notices."
         },
         {
           "query": "选课系统",
@@ -423,7 +455,8 @@
       "queries": [
         {
           "query": "规章制度",
-          "priority": "p0"
+          "priority": "p1",
+          "notes": "Useful as a site taxonomy query, but not a homepage quick-search candidate because students usually search concrete tasks or forms."
         },
         {
           "query": "转专业",
@@ -607,7 +640,7 @@
         {
           "query": "困难认定",
           "priority": "p0",
-          "notes": "Current audit risk: can drift to 学业困难 news instead of financial-aid hardship recognition."
+          "notes": "Regression guard: financial-aid hardship recognition must not drift to 学业困难 academic-warning content."
         },
         {
           "query": "家庭经济困难学生认定",
@@ -739,7 +772,7 @@
         {
           "query": "大创",
           "priority": "p0",
-          "notes": "Current audit failure: old JWC 2013 forms can dominate CXCY authority."
+          "notes": "Regression guard: CXCY authority and recent innovation-training records must outrank old JWC forms."
         },
         {
           "query": "大学生创新创业训练计划",
@@ -777,7 +810,7 @@
         {
           "query": "竞赛报名",
           "priority": "p0",
-          "notes": "Current audit failure: 2010 registration notice can outrank current competition notices."
+          "notes": "Regression guard: current CXCY competition notices must outrank legacy registration notices."
         },
         {
           "query": "学科竞赛",

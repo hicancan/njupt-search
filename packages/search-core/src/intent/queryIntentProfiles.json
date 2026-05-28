@@ -1,0 +1,200 @@
+{
+  "version": 1,
+  "field_weights": {
+    "t": 120,
+    "a": 95,
+    "e": 95,
+    "y": 95,
+    "s": 60,
+    "n": 55,
+    "g": 45,
+    "m": 16,
+    "c": 10
+  },
+  "intent_detection": {
+    "default_authority_sources": ["jwc", "xsc", "cxcy"],
+    "system_authority_rules": [
+      {
+        "source_id": "cxcy",
+        "match_any": ["双创", "创新创业", "大创", "竞赛", "挑战杯", "互联网+", "创业"]
+      },
+      {
+        "source_id": "xsc",
+        "match_any": ["心理", "学工", "资助", "就业", "征兵", "奖学金", "助学金", "困难认定", "辅导员", "宿舍"]
+      }
+    ],
+    "system_default_authority_sources": ["jwc"],
+    "profiles": [
+      {
+        "intent": "system_entry",
+        "authority_sources": "dynamic_system",
+        "freshness_mode": "official_entry",
+        "match_any": ["教务管理系统", "正方教务", "jwxt", "双创信息管理系统", "心理健康", "心理咨询", "信息门户", "系统", "门户"]
+      },
+      {
+        "intent": "exam_schedule",
+        "authority_sources": ["jwc"],
+        "freshness_mode": "current_term",
+        "match_any": ["期末考试", "考试安排", "补考", "缓考", "重修考试", "慕课考试", "考场", "考试周", "四六级"]
+      },
+      {
+        "intent": "academic_calendar",
+        "authority_sources": ["jwc"],
+        "freshness_mode": "current_term",
+        "match_any": ["校历", "教学周历", "教学日历", "放假安排", "开学时间", "寒假", "暑假"]
+      },
+      {
+        "intent": "form_download",
+        "authority_sources": ["jwc", "xsc", "cxcy"],
+        "freshness_mode": "form_version",
+        "match_any": ["申请表", "表格", "xlsx", "xls", "下载", "附件"]
+      },
+      {
+        "intent": "academic_policy",
+        "authority_sources": ["jwc"],
+        "freshness_mode": "current_policy",
+        "match_any": ["转专业", "推免", "推荐免试", "免试攻读", "培养方案", "学籍", "管理办法", "规章制度", "政策文件"]
+      },
+      {
+        "intent": "course_grade_credit",
+        "authority_sources": ["jwc"],
+        "freshness_mode": "current_notice",
+        "match_any": ["选课", "成绩", "绩点", "学分", "课程", "教材"]
+      },
+      {
+        "intent": "scholarship_aid",
+        "authority_sources": ["xsc"],
+        "freshness_mode": "current_notice",
+        "match_any": ["奖学金", "助学金", "资助", "困难认定", "家庭经济困难", "评奖评优", "勤工助学", "助学贷款"]
+      },
+      {
+        "intent": "student_affairs",
+        "authority_sources": ["xsc"],
+        "freshness_mode": "balanced",
+        "match_any": ["辅导员", "心理", "宿舍", "征兵", "就业", "学工", "一站式", "防诈骗", "消防"]
+      },
+      {
+        "intent": "innovation_entrepreneurship",
+        "authority_sources": ["cxcy"],
+        "freshness_mode": "current_notice",
+        "match_any": ["大创", "创新创业", "双创", "互联网+", "挑战杯", "竞赛报名", "竞赛", "创业", "学科竞赛"]
+      }
+    ],
+    "fallback_profile": {
+      "intent": "broad_exploratory",
+      "authority_sources": ["jwc", "xsc", "cxcy"],
+      "freshness_mode": "balanced"
+    }
+  },
+  "ranking": {
+    "text_match": {
+      "title_exact": 2400,
+      "system_title_exact": 5200,
+      "title_contains": 1000,
+      "long_query_min_length": 4,
+      "long_query_title_contains_extra": 1400,
+      "attachment_contains": 520,
+      "external_contains": 440,
+      "url_contains": 220,
+      "section_contains": 260,
+      "content_contains": 120,
+      "tags_contains": 120
+    },
+    "term_match": {
+      "title": 92,
+      "attachment": 78,
+      "external": 68,
+      "url": 55,
+      "section": 48,
+      "summary_or_content": 12
+    },
+    "authority": {
+      "focused_source_boost": 1900,
+      "broad_source_boost": 260,
+      "single_source_miss_penalty": 650
+    },
+    "facet_boosts": [
+      {
+        "facet": "system",
+        "intents": ["system_entry"],
+        "score": 2100,
+        "reason": "系统入口"
+      },
+      {
+        "facet": "download",
+        "intents": ["form_download"],
+        "score": 1150,
+        "reason": "下载资源"
+      },
+      {
+        "facet": "policy",
+        "intents": ["academic_policy", "scholarship_aid"],
+        "score": 1050,
+        "reason": "政策制度"
+      },
+      {
+        "facet": "workflow",
+        "intents": ["form_download", "course_grade_credit"],
+        "score": 520,
+        "reason": "办事流程"
+      },
+      {
+        "facet": "exam",
+        "intents": ["exam_schedule"],
+        "score": 1250,
+        "reason": "考试相关"
+      }
+    ],
+    "task_kind_match": 900,
+    "freshness": {
+      "official_entry": {
+        "system_facet_score": 220,
+        "reason": "官方入口"
+      },
+      "form_version": {
+        "max_score": 2800,
+        "horizon_days": 3650,
+        "reason": "版本较新"
+      },
+      "current_policy": {
+        "max_score": 5200,
+        "horizon_days": 1825,
+        "reason": "时间较新"
+      },
+      "current_term": {
+        "max_score": 7200,
+        "horizon_days": 1460,
+        "reason": "时间较新"
+      },
+      "current_notice": {
+        "max_score": 5600,
+        "horizon_days": 1825,
+        "reason": "时间较新"
+      },
+      "balanced": {
+        "max_score": 900,
+        "horizon_days": 3650,
+        "reason": "时间较新"
+      }
+    },
+    "stale_penalty": {
+      "modes": ["current_notice", "current_term", "current_policy"],
+      "thresholds": [
+        {
+          "older_than_days": 3650,
+          "score": 6600
+        },
+        {
+          "older_than_days": 2190,
+          "score": 4800
+        },
+        {
+          "older_than_days": 1460,
+          "score": 3000
+        }
+      ]
+    },
+    "short_landing_page_penalty": 2600,
+    "scholarship_non_financial_hardship_penalty": 1800
+  }
+}

@@ -9,6 +9,7 @@ import {
     SitegraphSearchPhase,
 } from '@/shared/lib/contracts';
 import { formatSearchDate } from '@njupt-search/search-core';
+import { getSearchCoverageProgress } from './searchCoverageProgress';
 
 type FacetFilter = SitegraphFacet | 'all';
 
@@ -214,6 +215,7 @@ export function CollectionSearchSection({
     const visibleResults = filteredResults.slice(0, visibleCount);
     const coverage = queryCoverage || queryStats?.coverage || null;
     const totalResultCount = queryStats?.resultCount ?? results.length;
+    const coverageProgress = coverage ? getSearchCoverageProgress(coverage) : null;
     const summary = resultSummary(
         activeFacet,
         filteredResults.length,
@@ -237,11 +239,31 @@ export function CollectionSearchSection({
                         </button>
                     ))}
                 </div>
-                <p className="mt-1 text-sm text-[#70757a] dark:text-[#9aa0a6]">
-                    {trimmedQuery.length >= 2
-                        ? `${summary}${phaseLabel(searchPhase, searching)}。`
-                        : '输入至少两个字符搜索公开教务合集。'}
-                </p>
+                <div className="mt-1 flex max-w-[760px] flex-col gap-2 text-sm text-[#70757a] dark:text-[#9aa0a6] sm:flex-row sm:items-center sm:justify-between">
+                    <p>
+                        {trimmedQuery.length >= 2
+                            ? `${summary}${phaseLabel(searchPhase, searching)}。`
+                            : '输入至少两个字符搜索公开教务合集。'}
+                    </p>
+                    {coverageProgress ? (
+                        <div className="flex shrink-0 items-center gap-2 text-[12px] text-[#5f6368] dark:text-[#9aa0a6]">
+                            <span>{coverageProgress.label}</span>
+                            <div
+                                className="h-1.5 w-28 overflow-hidden rounded-full bg-[#e8eaed] dark:bg-[#3c4043]"
+                                aria-label={`公开合集核查进度 ${coverageProgress.percent}%`}
+                                role="progressbar"
+                                aria-valuemin={0}
+                                aria-valuemax={100}
+                                aria-valuenow={coverageProgress.percent}
+                            >
+                                <div
+                                    className="h-full rounded-full bg-[#1a73e8] transition-[width] duration-300 ease-out dark:bg-[#8ab4f8]"
+                                    style={{ width: `${coverageProgress.percent}%` }}
+                                />
+                            </div>
+                        </div>
+                    ) : null}
+                </div>
                 {coverage ? (
                     <div className="mt-3 rounded-md border border-[#dadce0] dark:border-[#3c4043] bg-[#f8fafc] dark:bg-[#2d2e30] px-3 py-2 text-sm text-[#4d5156] dark:text-[#bdc1c6]">
                         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
@@ -272,9 +294,6 @@ export function CollectionSearchSection({
                                     <span>阶段：{coverage.phase}</span>
                                     <span>字段：{fieldLabel(coverage.searched_fields)}</span>
                                 </div>
-                                <div className="mt-1 text-[#70757a] dark:text-[#9aa0a6]">
-                                    加载更多只展开当前已返回结果；若总匹配数更大，可继续细化关键词缩小范围。
-                                </div>
                             </div>
                         ) : null}
                     </div>
@@ -300,7 +319,7 @@ export function CollectionSearchSection({
             ) : (
                 <div className="border border-[#dadce0] dark:border-[#3c4043] rounded-md bg-white dark:bg-[#202124] p-6 text-[#4d5156] dark:text-[#bdc1c6] max-w-[692px]">
                     <p>没有找到匹配的公开教务合集记录。</p>
-                    <p className="mt-2 text-sm">可以尝试“校历”“期末考试”“学生相关文件及表格”“教务管理系统”这类官网栏目或标题关键词。</p>
+                    <p className="mt-2 text-sm">可以尝试“校历”“缓考申请表”“奖学金”“教务管理系统”这类学生任务关键词。</p>
                 </div>
             )}
         </section>

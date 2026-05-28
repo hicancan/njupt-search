@@ -12,18 +12,11 @@ from typing import Any
 BASE_DIR = Path(__file__).resolve().parents[4]
 PUBLIC_ROOT = BASE_DIR / "apps" / "web" / "public"
 PUBLIC_INDEX_DIR = PUBLIC_ROOT / "generated" / "collections" / "njupt-public"
+SEARCH_INTENT_CONFIG = json.loads(
+    (BASE_DIR / "packages" / "search-core" / "src" / "intent" / "queryIntentProfiles.json").read_text(encoding="utf-8")
+)
 
-FIELD_WEIGHTS = {
-    "t": 120.0,
-    "a": 95.0,
-    "e": 95.0,
-    "y": 95.0,
-    "s": 60.0,
-    "n": 55.0,
-    "g": 45.0,
-    "m": 16.0,
-    "c": 10.0,
-}
+FIELD_WEIGHTS = {key: float(value) for key, value in SEARCH_INTENT_CONFIG["field_weights"].items()}
 
 DEFAULT_MAX_SHARD_LOADS = 32
 FULL_SCAN_FIELDS = ["title", "section", "nav_path", "summary", "content", "attachments", "url"]
@@ -203,34 +196,37 @@ def includes_any(text: str, terms: tuple[str, ...]) -> bool:
     return any(normalize_text(term) in text for term in terms)
 
 
+def dynamic_system_authority_sources(text: str) -> list[str]:
+    detection_config = SEARCH_INTENT_CONFIG["intent_detection"]
+    for rule in detection_config["system_authority_rules"]:
+        if includes_any(text, tuple(str(term) for term in rule["match_any"])):
+            return [str(rule["source_id"])]
+    return [str(source_id) for source_id in detection_config["system_default_authority_sources"]]
+
+
 def detect_query_intent(query: str) -> dict[str, Any]:
     text = normalize_text(query)
-    if includes_any(text, ("双创", "创新创业", "大创")):
-        system_authority = ["cxcy"]
-    elif includes_any(text, ("心理", "学工", "资助", "就业", "征兵")):
-        system_authority = ["xsc"]
-    else:
-        system_authority = ["jwc"]
-
-    if includes_any(text, ("教务管理系统", "正方教务", "jwxt", "双创信息管理系统", "心理健康", "心理咨询", "信息门户", "系统", "门户")):
-        return {"intent": "system_entry", "authority_sources": system_authority, "freshness_mode": "official_entry"}
-    if includes_any(text, ("期末考试", "考试安排", "补考", "重修考试", "慕课考试", "考场", "考试周")):
-        return {"intent": "exam_schedule", "authority_sources": ["jwc"], "freshness_mode": "current_term"}
-    if includes_any(text, ("校历", "教学周历", "教学日历", "放假安排")):
-        return {"intent": "academic_calendar", "authority_sources": ["jwc"], "freshness_mode": "current_term"}
-    if includes_any(text, ("申请表", "表格", "xlsx", "xls", "下载", "附件")):
-        return {"intent": "form_download", "authority_sources": ["jwc", "xsc", "cxcy"], "freshness_mode": "form_version"}
-    if includes_any(text, ("转专业", "推免", "免试攻读", "培养方案", "学籍", "管理办法", "规章制度", "政策文件")):
-        return {"intent": "academic_policy", "authority_sources": ["jwc"], "freshness_mode": "current_policy"}
-    if includes_any(text, ("选课", "成绩", "绩点", "学分", "课程")):
-        return {"intent": "course_grade_credit", "authority_sources": ["jwc"], "freshness_mode": "current_notice"}
-    if includes_any(text, ("奖学金", "助学金", "资助", "困难认定", "家庭经济困难", "评奖评优")):
-        return {"intent": "scholarship_aid", "authority_sources": ["xsc"], "freshness_mode": "current_notice"}
-    if includes_any(text, ("辅导员", "心理", "宿舍", "征兵", "就业", "学工", "一站式")):
-        return {"intent": "student_affairs", "authority_sources": ["xsc"], "freshness_mode": "balanced"}
-    if includes_any(text, ("大创", "创新创业", "双创", "互联网+", "挑战杯", "竞赛报名", "竞赛", "创业")):
-        return {"intent": "innovation_entrepreneurship", "authority_sources": ["cxcy"], "freshness_mode": "current_notice"}
-    return {"intent": "broad_exploratory", "authority_sources": ["jwc", "xsc", "cxcy"], "freshness_mode": "balanced"}
+    detection_config = SEARCH_INTENT_CONFIG["intent_detection"]
+    for rule in detection_config["profiles"]:
+        if not includes_any(text, tuple(str(term) for term in rule["match_any"])):
+            continue
+        raw_sources = rule["authority_sources"]
+        authority_sources = (
+            dynamic_system_authority_sources(text)
+            if raw_sources == "dynamic_system"
+            else [str(source_id) for source_id in raw_sources]
+        )
+        return {
+            "intent": str(rule["intent"]),
+            "authority_sources": authority_sources,
+            "freshness_mode": str(rule["freshness_mode"]),
+        }
+    fallback = detection_config["fallback_profile"]
+    return {
+        "intent": str(fallback["intent"]),
+        "authority_sources": [str(source_id) for source_id in fallback["authority_sources"]],
+        "freshness_mode": str(fallback["freshness_mode"]),
+    }
 
 
 def age_days(timestamp: float) -> float:
@@ -244,32 +240,34 @@ def decayed_freshness(timestamp: float, max_score: float, horizon_days: float) -
 
 
 def intent_freshness_score(document: dict[str, Any], mode: str) -> float:
+    config = SEARCH_INTENT_CONFIG["ranking"]["freshness"].get(mode)
+    if not isinstance(config, dict):
+        return 0.0
     if mode == "official_entry":
-        return 220.0 if document.get("facet") == "system" else 0.0
-    if mode == "form_version":
-        return decayed_freshness(date_sort_value(document.get("version_date")) or date_sort_value(document.get("published_at")), 2800.0, 3650.0)
-    if mode == "current_policy":
-        return decayed_freshness(date_sort_value(document.get("published_at")) or date_sort_value(document.get("version_date")), 4200.0, 2920.0)
-    if mode == "current_term":
-        return decayed_freshness(date_sort_value(document.get("published_at")) or date_sort_value(document.get("version_date")), 7200.0, 1460.0)
-    if mode == "current_notice":
-        return decayed_freshness(date_sort_value(document.get("published_at")) or date_sort_value(document.get("version_date")), 5200.0, 1825.0)
-    return decayed_freshness(date_sort_value(document.get("published_at")) or date_sort_value(document.get("version_date")), 900.0, 3650.0)
+        return float(config.get("system_facet_score") or 0.0) if document.get("facet") == "system" else 0.0
+    timestamp = (
+        date_sort_value(document.get("version_date")) or date_sort_value(document.get("published_at"))
+        if mode == "form_version"
+        else date_sort_value(document.get("published_at")) or date_sort_value(document.get("version_date"))
+    )
+    return decayed_freshness(
+        timestamp,
+        float(config.get("max_score") or 0.0),
+        float(config.get("horizon_days") or 3650.0),
+    )
 
 
 def stale_penalty(document: dict[str, Any], mode: str) -> float:
-    if mode not in {"current_notice", "current_term", "current_policy"}:
+    config = SEARCH_INTENT_CONFIG["ranking"]["stale_penalty"]
+    if mode not in set(str(item) for item in config["modes"]):
         return 0.0
     value = date_sort_value(document.get("published_at")) or date_sort_value(document.get("version_date"))
     if not value:
         return 0.0
     days = age_days(value)
-    if days > 3650:
-        return 4200.0
-    if days > 2190:
-        return 3000.0
-    if days > 1460:
-        return 1800.0
+    for threshold in config["thresholds"]:
+        if days > float(threshold["older_than_days"]):
+            return float(threshold["score"])
     return 0.0
 
 
@@ -298,100 +296,91 @@ def rank_document(document: dict[str, Any], query: str, terms: list[str], light_
         for attachment in document.get("attachments") or []
     ))
 
+    text_weights = SEARCH_INTENT_CONFIG["ranking"]["text_match"]
+    term_weights = SEARCH_INTENT_CONFIG["ranking"]["term_match"]
+    authority_weights = SEARCH_INTENT_CONFIG["ranking"]["authority"]
     score = light_score
     reasons: list[str] = []
     if normalized_query and (title == normalized_query or canonical_title == normalized_query):
-        score += 5200 if document.get("facet") == "system" else 2400
+        score += float(text_weights["system_title_exact"] if document.get("facet") == "system" else text_weights["title_exact"])
         reasons.append("标题精确")
     elif normalized_query and (normalized_query in title or normalized_query in canonical_title):
-        score += 1000
+        score += float(text_weights["title_contains"])
         reasons.append("标题包含")
+        if len(normalized_query) >= int(text_weights["long_query_min_length"]):
+            score += float(text_weights["long_query_title_contains_extra"])
+            reasons.append("标题短语命中")
     if normalized_query and normalized_query in attachment:
-        score += 520
+        score += float(text_weights["attachment_contains"])
         reasons.append("附件名命中")
     if normalized_query and normalized_query in external:
-        score += 440
+        score += float(text_weights["external_contains"])
         reasons.append("外部系统/外链命中")
     if normalized_query and normalized_query in url:
-        score += 220
+        score += float(text_weights["url_contains"])
         reasons.append("URL 命中")
     if normalized_query and normalized_query in section:
-        score += 260
+        score += float(text_weights["section_contains"])
         reasons.append("栏目路径命中")
     if normalized_query and normalized_query in content:
-        score += 120
+        score += float(text_weights["content_contains"])
         reasons.append("正文命中")
     if normalized_query and normalized_query in tags:
-        score += 120
+        score += float(text_weights["tags_contains"])
         reasons.append("标签命中")
 
     matched_terms = []
     for term in terms[:12]:
         if term in title or term in canonical_title:
-            score += 92
+            score += float(term_weights["title"])
             matched_terms.append(term)
         elif term in attachment:
-            score += 78
+            score += float(term_weights["attachment"])
             matched_terms.append(term)
         elif term in external:
-            score += 68
+            score += float(term_weights["external"])
             matched_terms.append(term)
         elif term in url:
-            score += 55
+            score += float(term_weights["url"])
             matched_terms.append(term)
         elif term in section:
-            score += 48
+            score += float(term_weights["section"])
             matched_terms.append(term)
         elif term in summary or term in content:
-            score += 12
+            score += float(term_weights["summary_or_content"])
             matched_terms.append(term)
     if matched_terms:
         reasons.append("词项: " + "、".join(sorted(set(matched_terms), key=len, reverse=True)[:6]))
 
     source_id = source_id_for(document)
     if source_id in profile["authority_sources"]:
-        score += 260 if profile["intent"] == "broad_exploratory" else 1900
+        score += float(authority_weights["broad_source_boost"] if profile["intent"] == "broad_exploratory" else authority_weights["focused_source_boost"])
         reasons.append("权威来源")
     elif len(profile["authority_sources"]) == 1 and profile["intent"] != "broad_exploratory":
-        score -= 650
+        score -= float(authority_weights["single_source_miss_penalty"])
 
-    if document.get("facet") == "system" and profile["intent"] == "system_entry":
-        score += 2100
-        reasons.append("系统入口")
-    if document.get("facet") == "download" and profile["intent"] == "form_download":
-        score += 1150
-        reasons.append("下载资源")
-    if document.get("facet") == "policy" and profile["intent"] in {"academic_policy", "scholarship_aid"}:
-        score += 1050
-        reasons.append("政策制度")
-    if document.get("facet") == "workflow" and profile["intent"] in {"form_download", "course_grade_credit"}:
-        score += 520
-        reasons.append("办事流程")
-    if document.get("facet") == "exam" and profile["intent"] == "exam_schedule":
-        score += 1250
-        reasons.append("考试相关")
+    for boost in SEARCH_INTENT_CONFIG["ranking"]["facet_boosts"]:
+        if document.get("facet") == boost["facet"] and profile["intent"] in set(str(item) for item in boost["intents"]):
+            score += float(boost["score"])
+            reasons.append(str(boost["reason"]))
     if normalize_text(document.get("task_kind")) == normalize_text(profile["intent"]):
-        score += 900
+        score += float(SEARCH_INTENT_CONFIG["ranking"]["task_kind_match"])
         reasons.append("任务匹配")
 
     freshness = intent_freshness_score(document, str(profile["freshness_mode"]))
     if freshness > 0:
         score += freshness
-        if profile["freshness_mode"] == "official_entry":
-            reasons.append("官方入口")
-        elif profile["freshness_mode"] == "form_version":
-            reasons.append("版本较新")
-        else:
-            reasons.append("时间较新")
+        freshness_config = SEARCH_INTENT_CONFIG["ranking"]["freshness"].get(str(profile["freshness_mode"]), {})
+        reasons.append(str(freshness_config.get("reason") or "时间较新"))
     penalty = stale_penalty(document, str(profile["freshness_mode"]))
     if penalty > 0:
         score -= penalty
         reasons.append("历史内容降权")
     if profile["intent"] == "academic_policy" and is_short_landing_page(document, normalized_query, title):
-        score -= 2600
+        score -= float(SEARCH_INTENT_CONFIG["ranking"]["short_landing_page_penalty"])
         reasons.append("短入口降权")
     if profile["intent"] == "scholarship_aid" and "学业困难" in title and "家庭经济困难" not in title:
-        score -= 1800
+        score -= float(SEARCH_INTENT_CONFIG["ranking"]["scholarship_non_financial_hardship_penalty"])
         reasons.append("非资助困难降权")
 
     ranked = dict(document)
