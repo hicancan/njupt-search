@@ -379,10 +379,10 @@ def main() -> None:
     parser.add_argument("--skip-output", action="store_true", help="Only validate upstream sitegraph source packages")
     args = parser.parse_args()
 
-    from .build_sitegraph_index import configure_collection_output
+    from .build_sitegraph_index import configure_collection_output, load_collection_source_packages
 
     configure_collection_output(output_dir=args.collection)
-    source_packages = args.source_packages or list(build_index.DEFAULT_SITEGRAPH_INDEXES)
+    source_packages = args.source_packages or load_collection_source_packages()
     resolved_packages = [path.resolve() for path in source_packages]
     packages = [validate_sitegraph_package(path) for path in resolved_packages]
     summary: dict[str, Any] = {

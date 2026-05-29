@@ -12,10 +12,10 @@ if str(COLLECTION_INDEXER_SRC) not in sys.path:
     sys.path.insert(0, str(COLLECTION_INDEXER_SRC))
 
 from njupt_search_indexer.build_sitegraph_index import (  # noqa: E402
-    DEFAULT_SITEGRAPH_INDEXES,
     OBSOLETE_INDEX_DIR,
     PUBLIC_INDEX_DIR,
     PUBLIC_ROOT,
+    load_collection_source_packages,
     package_source_id,
     validate_sitegraph_package,
 )
@@ -88,7 +88,7 @@ def main() -> None:
     source_ids = {str(item.get("source_id")) for item in sources if isinstance(item, dict)}
     expected_source_ids = {
         package_source_id(validate_sitegraph_package(path))
-        for path in DEFAULT_SITEGRAPH_INDEXES
+        for path in load_collection_source_packages()
         if path.exists()
     }
     if expected_source_ids and source_ids != expected_source_ids:
@@ -179,7 +179,7 @@ def main() -> None:
         if (PUBLIC_INDEX_DIR / stale).exists():
             fail(f"stale old search artifact still exists: {stale}")
 
-    packages = [validate_sitegraph_package(path) for path in DEFAULT_SITEGRAPH_INDEXES if path.exists()]
+    packages = [validate_sitegraph_package(path) for path in load_collection_source_packages() if path.exists()]
     if packages:
         validate_generated_index(packages)
     print("[validate_search_index] ok")

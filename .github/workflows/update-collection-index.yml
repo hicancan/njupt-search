@@ -1,8 +1,8 @@
 name: Update Collection Index
 
 on:
-  schedule:
-    - cron: '30 */6 * * *'
+  repository_dispatch:
+    types: [ sitegraph-data-updated ]
   workflow_dispatch:
     inputs:
       sitegraph_ref:
@@ -22,9 +22,8 @@ jobs:
   update-collection-index:
     runs-on: ubuntu-latest
     env:
-      SITEGRAPH_JWC_INDEX: _sitegraph/njupt-site-graph/data/sites/jwc/index
-      SITEGRAPH_XSC_INDEX: _sitegraph/njupt-site-graph/data/sites/xsc/index
-      SITEGRAPH_CXCY_INDEX: _sitegraph/njupt-site-graph/data/sites/cxcy/index
+      SITEGRAPH_REF: ${{ github.event.client_payload.sitegraph_ref || github.event.inputs.sitegraph_ref || 'main' }}
+      NJUPT_SITEGRAPH_REPO: _sitegraph/njupt-site-graph
       COLLECTION_DIR: apps/web/public/generated/collections/njupt-public
 
     steps:
@@ -35,7 +34,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: hicancan/njupt-site-graph
-          ref: ${{ github.event.inputs.sitegraph_ref || 'main' }}
+          ref: ${{ env.SITEGRAPH_REF }}
           path: _sitegraph/njupt-site-graph
           token: ${{ secrets.NJUPT_SITEGRAPH_TOKEN || github.token }}
 
@@ -59,9 +58,9 @@ jobs:
 
       - name: Build collection artifacts
         run: |
-          python -m njupt_search_indexer validate --source-package "$SITEGRAPH_JWC_INDEX" --source-package "$SITEGRAPH_XSC_INDEX" --source-package "$SITEGRAPH_CXCY_INDEX" --skip-output
-          python -m njupt_search_indexer build --collection-id njupt-public --source-package "$SITEGRAPH_JWC_INDEX" --source-package "$SITEGRAPH_XSC_INDEX" --source-package "$SITEGRAPH_CXCY_INDEX" --out "$COLLECTION_DIR"
-          python -m njupt_search_indexer validate --source-package "$SITEGRAPH_JWC_INDEX" --source-package "$SITEGRAPH_XSC_INDEX" --source-package "$SITEGRAPH_CXCY_INDEX" --collection "$COLLECTION_DIR"
+          python -m njupt_search_indexer validate --skip-output
+          python -m njupt_search_indexer build --collection-id njupt-public --out "$COLLECTION_DIR"
+          python -m njupt_search_indexer validate --collection "$COLLECTION_DIR"
 
       - name: Validate generated collection artifacts
         run: |

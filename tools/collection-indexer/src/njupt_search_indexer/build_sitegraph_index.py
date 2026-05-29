@@ -20,11 +20,47 @@ from urllib.parse import urlparse
 BASE_DIR = Path(__file__).resolve().parents[4]
 PUBLIC_ROOT = BASE_DIR / "apps" / "web" / "public"
 COLLECTION_ID = "njupt-public"
-SOURCE_IDS = ("jwc", "xsc", "cxcy")
-DEFAULT_SITEGRAPH_INDEXES = tuple(
-    BASE_DIR.parent / "njupt-site-graph" / "data" / "sites" / source_id / "index"
-    for source_id in SOURCE_IDS
-)
+DEFAULT_COLLECTION_CONFIG = BASE_DIR / "config" / "collections" / "njupt-public.sitegraph.json"
+DEFAULT_SITEGRAPH_REPO = BASE_DIR.parent / "njupt-site-graph"
+DEFAULT_SOURCE_PACKAGE_PATHS = ("data/sites/jwc/index", "data/sites/xsc/index", "data/sites/cxcy/index")
+UNKNOWN_ALLOWLIST_FILE = "unknown_url_allowlist.json"
+
+
+def _resolve_path(value: str, base_dir: Path) -> Path:
+    path = Path(value)
+    if not path.is_absolute():
+        path = base_dir / path
+    return path.resolve()
+
+
+def load_collection_source_packages(config_path: Path | None = None) -> list[Path]:
+    path = config_path or DEFAULT_COLLECTION_CONFIG
+    if not path.exists():
+        return [(DEFAULT_SITEGRAPH_REPO / source_path).resolve() for source_path in DEFAULT_SOURCE_PACKAGE_PATHS]
+
+    with path.open("r", encoding="utf-8") as handle:
+        config = json.load(handle)
+    if not isinstance(config, dict):
+        raise ValueError(f"{path} must be a JSON object")
+    if config.get("collection_id") != COLLECTION_ID:
+        raise ValueError(f"{path} collection_id must be {COLLECTION_ID!r}")
+
+    env_name = str(config.get("sitegraph_repo_env") or "NJUPT_SITEGRAPH_REPO")
+    sitegraph_repo_value = os.environ.get(env_name) or str(config.get("sitegraph_repo") or "../njupt-site-graph")
+    sitegraph_repo = _resolve_path(sitegraph_repo_value, BASE_DIR)
+    source_packages = config.get("source_packages")
+    if not isinstance(source_packages, list) or not source_packages:
+        raise ValueError(f"{path} source_packages must be a non-empty list")
+
+    resolved: list[Path] = []
+    for source_package in source_packages:
+        if not isinstance(source_package, str) or not source_package:
+            raise ValueError(f"{path} source_packages entries must be non-empty strings")
+        resolved.append(_resolve_path(source_package, sitegraph_repo))
+    return resolved
+
+
+DEFAULT_SITEGRAPH_INDEXES = tuple(load_collection_source_packages())
 DEFAULT_SITEGRAPH_INDEX = DEFAULT_SITEGRAPH_INDEXES[0]
 PUBLIC_INDEX_DIR = PUBLIC_ROOT / "generated" / "collections" / COLLECTION_ID
 PUBLIC_SITEGRAPH_DIR = PUBLIC_INDEX_DIR / "sitegraph"
@@ -370,6 +406,79 @@ def count_nav_nodes(nav_tree: dict[str, Any]) -> int:
     return len(nodes) if isinstance(nodes, list) else 0
 
 
+def unknown_url_outcomes(manifest: dict[str, Any]) -> list[tuple[str, dict[str, Any]]]:
+    outcomes = manifest.get("url_outcomes")
+    if not isinstance(outcomes, dict):
+        return []
+    return [
+        (str(url), record)
+        for url, record in outcomes.items()
+        if isinstance(record, dict)
+        and ("unknown" in str(record.get("target_type") or "") or "unknown" in str(record.get("outcome") or ""))
+    ]
+
+
+def assert_unknown_url_outcomes_allowlisted(index_dir: Path, source_id: str, manifest: dict[str, Any]) -> None:
+    unknown = unknown_url_outcomes(manifest)
+    if not unknown:
+        return
+
+    allowlist_path = index_dir / UNKNOWN_ALLOWLIST_FILE
+    if not allowlist_path.exists():
+        raise ValueError(f"{source_id} manifest contains unknown URL outcomes but no {UNKNOWN_ALLOWLIST_FILE}")
+
+    allowlist = read_json(allowlist_path)
+    if not isinstance(allowlist, dict):
+        raise ValueError(f"{source_id} {UNKNOWN_ALLOWLIST_FILE} must be a JSON object")
+    if clean_text(allowlist.get("site_id")) != source_id:
+        raise ValueError(f"{source_id} {UNKNOWN_ALLOWLIST_FILE} site_id must match the package site_id")
+    rules = allowlist.get("allowed_unknowns")
+    if not isinstance(rules, list) or not rules:
+        raise ValueError(f"{source_id} {UNKNOWN_ALLOWLIST_FILE} allowed_unknowns must be a non-empty list")
+
+    compiled_rules: list[tuple[dict[str, Any], re.Pattern[str]]] = []
+    for index, rule in enumerate(rules, start=1):
+        if not isinstance(rule, dict):
+            raise ValueError(f"{source_id} {UNKNOWN_ALLOWLIST_FILE} rule {index} must be an object")
+        if not clean_text(rule.get("reason")):
+            raise ValueError(f"{source_id} {UNKNOWN_ALLOWLIST_FILE} rule {index} must include a reason")
+        pattern = clean_text(rule.get("url_pattern"))
+        if not pattern:
+            raise ValueError(f"{source_id} {UNKNOWN_ALLOWLIST_FILE} rule {index} must include url_pattern")
+        try:
+            compiled_rules.append((rule, re.compile(pattern)))
+        except re.error as exc:
+            raise ValueError(f"{source_id} {UNKNOWN_ALLOWLIST_FILE} rule {index} has invalid url_pattern: {exc}") from exc
+
+    unexpected: list[dict[str, Any]] = []
+    matched_rules: set[int] = set()
+    for url, record in unknown:
+        matched = False
+        for index, (rule, pattern) in enumerate(compiled_rules):
+            if not pattern.search(url):
+                continue
+            if rule.get("target_type") and rule["target_type"] != record.get("target_type"):
+                continue
+            if rule.get("outcome") and rule["outcome"] != record.get("outcome"):
+                continue
+            matched = True
+            matched_rules.add(index)
+            break
+        if not matched:
+            unexpected.append({"url": url, "target_type": record.get("target_type"), "outcome": record.get("outcome")})
+
+    if unexpected:
+        raise ValueError(f"{source_id} manifest has unallowlisted unknown URL outcomes: {json.dumps(unexpected[:10], ensure_ascii=False)}")
+
+    stale_rules = [
+        str(rule.get("url_pattern"))
+        for index, (rule, _pattern) in enumerate(compiled_rules)
+        if index not in matched_rules
+    ]
+    if stale_rules:
+        raise ValueError(f"{source_id} {UNKNOWN_ALLOWLIST_FILE} contains stale rules: {json.dumps(stale_rules, ensure_ascii=False)}")
+
+
 def sitegraph_tokens(value: Any, *, cjk_max_n: int = 3, cap: int | None = None) -> set[str]:
     text = normalize_text(value)
     tokens: set[str] = set()
@@ -419,6 +528,7 @@ def validate_sitegraph_package(index_dir: Path) -> dict[str, Any]:
         raise ValueError(f"{source_id} attachment_policy must be metadata_only, got {quality.get('attachment_policy')!r}")
     if quality.get("external_link_policy") != "record_only":
         raise ValueError(f"{source_id} external_link_policy must be record_only, got {quality.get('external_link_policy')!r}")
+    assert_unknown_url_outcomes_allowlisted(index_dir, source_id, manifest)
 
     site = read_json(index_dir / "site.json")
     sections = read_json(index_dir / "sections.json")
@@ -1376,7 +1486,7 @@ def main() -> None:
     parser.add_argument("--shard-size", type=int, default=1000, help="Number of full documents per shard")
     args = parser.parse_args()
     configure_collection_output(args.collection_id, args.out)
-    source_packages = args.source_packages or list(DEFAULT_SITEGRAPH_INDEXES)
+    source_packages = args.source_packages or load_collection_source_packages()
     summary = build_sitegraph_indexes([path.resolve() for path in source_packages], shard_size=args.shard_size)
     print(json.dumps(summary, ensure_ascii=False, indent=2))
 

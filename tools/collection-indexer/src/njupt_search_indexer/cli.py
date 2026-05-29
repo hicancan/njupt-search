@@ -6,10 +6,10 @@ from pathlib import Path
 from typing import Any
 
 from .build_sitegraph_index import (
-    DEFAULT_SITEGRAPH_INDEXES,
     aggregate_counts,
     build_sitegraph_indexes,
     configure_collection_output,
+    load_collection_source_packages,
     package_source_id,
 )
 from .validate_sitegraph_index import validate_generated_index, validate_sitegraph_package
@@ -52,7 +52,7 @@ def main() -> None:
     args = parser.parse_args()
     if args.command == "build":
         configure_collection_output(args.collection_id, args.out)
-        source_packages = args.source_packages or list(DEFAULT_SITEGRAPH_INDEXES)
+        source_packages = args.source_packages or load_collection_source_packages()
         summary = build_sitegraph_indexes([path.resolve() for path in source_packages], shard_size=args.shard_size)
         summary["collection_id"] = args.collection_id
         summary["source_kind"] = args.source_kind
@@ -60,7 +60,7 @@ def main() -> None:
         return
 
     configure_collection_output(output_dir=args.collection)
-    source_packages = args.source_packages or list(DEFAULT_SITEGRAPH_INDEXES)
+    source_packages = args.source_packages or load_collection_source_packages()
     resolved_packages = [path.resolve() for path in source_packages]
     packages = [validate_sitegraph_package(path) for path in resolved_packages]
     summary: dict[str, Any] = {

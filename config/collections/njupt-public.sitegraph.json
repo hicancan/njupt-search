@@ -1,0 +1,10 @@
+{
+  "collection_id": "njupt-public",
+  "sitegraph_repo_env": "NJUPT_SITEGRAPH_REPO",
+  "sitegraph_repo": "../njupt-site-graph",
+  "source_packages": [
+    "data/sites/jwc/index",
+    "data/sites/xsc/index",
+    "data/sites/cxcy/index"
+  ]
+}
