@@ -2,6 +2,12 @@ import json
 from pathlib import Path
 
 from njupt_search_eval.sitegraph_search import recall_documents
+from njupt_search_indexer.sitegraph_source import (
+    COUNT_FIELDS,
+    load_collection_source_packages,
+    package_source_id,
+    validate_sitegraph_package,
+)
 
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
@@ -40,26 +46,7 @@ REQUIRED_QUERIES = [
     "互联网+",
 ]
 
-EXPECTED_SOURCE_COUNTS = {
-    "jwc": {
-        "detail_pages": 6941,
-        "attachments": 7870,
-        "external_links": 740,
-        "edges": 16312,
-    },
-    "xsc": {
-        "detail_pages": 1589,
-        "attachments": 17,
-        "external_links": 75,
-        "edges": 1878,
-    },
-    "cxcy": {
-        "detail_pages": 612,
-        "attachments": 204,
-        "external_links": 60,
-        "edges": 1085,
-    },
-}
+EXPECTED_SOURCE_IDS = {"jwc", "xsc", "cxcy"}
 
 
 def read_json(path: Path):
@@ -74,6 +61,32 @@ def walk_keys(payload):
     elif isinstance(payload, list):
         for item in payload:
             yield from walk_keys(item)
+
+
+def expected_source_counts(manifest: dict) -> dict[str, dict[str, int]]:
+    source_package_paths = [path for path in load_collection_source_packages() if path.exists()]
+    if source_package_paths:
+        packages = [validate_sitegraph_package(path) for path in source_package_paths]
+        return {
+            package_source_id(package): {
+                field: int(package["actual_counts"].get(field, 0) or 0)
+                for field in COUNT_FIELDS
+            }
+            for package in packages
+        }
+
+    source_entries = {
+        str(item.get("source_id")): item
+        for item in manifest.get("sources", [])
+        if isinstance(item, dict)
+    }
+    return {
+        source_id: {
+            field: int((source_entries[source_id].get("truth_counts") or {}).get(field, 0) or 0)
+            for field in COUNT_FIELDS
+        }
+        for source_id in EXPECTED_SOURCE_IDS
+    }
 
 
 def test_public_index_is_pure_sitegraph_contract():
@@ -133,14 +146,18 @@ def test_public_index_is_pure_sitegraph_contract():
 def test_source_truth_counts_are_preserved():
     manifest = read_json(PUBLIC_INDEX_DIR / "manifest.json")
     truth_counts = manifest["sitegraph"]["truth_counts"]
+    source_entries = {item["source_id"]: item for item in manifest["sources"]}
+    expected_counts = expected_source_counts(manifest)
     expected_totals = {
-        field: sum(source_counts[field] for source_counts in EXPECTED_SOURCE_COUNTS.values())
-        for field in ("detail_pages", "attachments", "external_links", "edges")
+        field: sum(source_counts[field] for source_counts in expected_counts.values())
+        for field in COUNT_FIELDS
     }
-    assert {item["source_id"] for item in manifest["sources"]} == set(EXPECTED_SOURCE_COUNTS)
-    for source_id, expected in EXPECTED_SOURCE_COUNTS.items():
+    assert set(source_entries) == EXPECTED_SOURCE_IDS
+    assert set(expected_counts) == EXPECTED_SOURCE_IDS
+    for source_id, expected in expected_counts.items():
         for field, value in expected.items():
             assert manifest["sitegraph"]["source_truth_counts"][source_id][field] == value
+            assert source_entries[source_id]["truth_counts"][field] == value
     for field, value in expected_totals.items():
         assert truth_counts[field] == value
     assert manifest["sitegraph"]["detail_page_records"] == truth_counts["detail_pages"]

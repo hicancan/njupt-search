@@ -1,27 +1,31 @@
 from __future__ import annotations
 
-import base64
-import hashlib
 import os
-import re
 import shutil
 import subprocess
-from collections import Counter, defaultdict
+from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
-from time import perf_counter
 from typing import Any
 
 from .sitegraph_artifact_io import artifact_entry, write_hashed_json, write_json
 from .sitegraph_documents import section_label, site_display_name
-from .sitegraph_source import COUNT_FIELDS, package_source_id
-from .sitegraph_text import (
-    clean_text,
-    normalize_text,
-    sha256_text,
-    sitegraph_tokens,
-    stable_slug,
+from .sitegraph_index_postings import (
+    build_body_inverted_index,
+    build_light_inverted_index,
+    measure_representative_full_scan_ms,
+    query_alias_payload,
 )
+from .sitegraph_package_summary import (
+    aggregate_counts,
+    aggregate_quality,
+    latest_upstream_generated_at,
+    source_entries,
+    source_truth_counts,
+)
+from .sitegraph_shards import build_locality_shards
+from .sitegraph_source import package_source_id
+from .sitegraph_text import clean_text
 
 
 BASE_DIR = Path(__file__).resolve().parents[4]
@@ -52,69 +56,6 @@ def configure_collection_output(collection_id: str = COLLECTION_ID, output_dir: 
     PUBLIC_SHARD_DIR = PUBLIC_SITEGRAPH_DIR / "shards"
 
 
-QUERY_SYNONYMS: dict[str, list[str]] = {
-    "校历": ["教学日历", "教学周历", "2025-2026学年校历"],
-    "慕课考试": ["慕课", "MOOC", "SPOC", "在线开放课程", "线下考试"],
-    "期末考试": ["期末", "考试安排", "考场安排", "考试周"],
-    "转专业": ["专业变更", "转入转出", "转专业管理办法"],
-    "规章制度": ["规章", "制度", "管理办法", "政策文件"],
-    "办事流程": ["流程", "办理指南", "办事指南", "申请流程"],
-    "学生相关文件及表格": ["学生表格", "常用下载", "表格下载", "学生相关文件"],
-    "教务管理系统": ["正方教务", "教务系统", "jwxt"],
-    "信息门户": ["综合信息服务", "智慧校园", "统一身份认证"],
-    "大创": ["大学生创新创业", "创新创业", "创新训练", "创业训练"],
-    "推免": ["免试攻读研究生", "推荐免试", "推免生"],
-    "成绩": ["成绩查询", "成绩单", "绩点", "成绩复核"],
-    "附件1": ["附件 1", "附件一", "附件"],
-    "xlsx": ["xls", "Excel", "表格"],
-    "学工": ["学生工作", "学生工作部", "学工要闻"],
-    "奖学金": ["助学金", "资助", "评奖评优"],
-    "困难认定": ["家庭经济困难学生认定", "家庭经济困难", "困难学生认定", "资助认定"],
-    "助学金": ["资助", "奖助学金", "家庭经济困难"],
-    "辅导员": ["辅导员队伍建设", "辅导员宣讲团"],
-    "心理健康": ["心理咨询", "心理中心"],
-    "双创": ["双创信息管理系统", "双创基地"],
-    "互联网+": [],
-    "竞赛报名": ["创新创业竞赛报名", "学科竞赛报名", "大赛报名"],
-}
-
-FIELD_CODES = {
-    "title": "t",
-    "section": "s",
-    "nav_path": "n",
-    "attachment": "a",
-    "external": "e",
-    "system": "y",
-    "tag": "g",
-    "summary": "m",
-    "content": "c",
-}
-
-LIGHT_FIELD_CODES = {key: FIELD_CODES[key] for key in ("title", "section", "nav_path", "attachment", "external", "system", "tag")}
-BODY_FIELD_CODES = {key: FIELD_CODES[key] for key in ("summary", "content")}
-
-
-def filter_token_hash_int(text: str, seed: int) -> int:
-    value = (2166136261 ^ seed) & 0xFFFFFFFF
-    for byte in text.encode("utf-8"):
-        value ^= byte
-        value = (value * 16777619) & 0xFFFFFFFF
-    return value
-
-
-def build_filter_bitset(tokens: list[str], *, bit_count: int = 16384, hash_count: int = 3) -> dict[str, Any]:
-    data = bytearray(bit_count // 8)
-    for token in tokens:
-        for seed in range(hash_count):
-            bit = filter_token_hash_int(token, seed) % bit_count
-            data[bit // 8] |= 1 << (bit % 8)
-    return {
-        "bitset_base64": base64.b64encode(bytes(data)).decode("ascii"),
-        "bit_count": bit_count,
-        "hash_count": hash_count,
-    }
-
-
 def producer_ref() -> str:
     for env_name in ("GITHUB_SHA", "GITHUB_REF_NAME"):
         value = os.environ.get(env_name)
@@ -130,249 +71,6 @@ def now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
-def query_alias_payload() -> dict[str, dict[str, list[str]]]:
-    return {
-        key: {"aliases": aliases}
-        for key, aliases in sorted(QUERY_SYNONYMS.items())
-    }
-
-
-def add_postings(index: dict[str, dict[str, set[int]]], doc_index: int, field_code: str, tokens: set[str]) -> None:
-    for token in tokens:
-        if not token:
-            continue
-        index[token][field_code].add(doc_index)
-
-
-def compact_postings(raw_index: dict[str, dict[str, set[int]]]) -> dict[str, dict[str, list[int]]]:
-    tokens: dict[str, dict[str, list[int]]] = {}
-    for token, fields in raw_index.items():
-        compact_fields: dict[str, list[int]] = {}
-        for field, ids in fields.items():
-            compact_fields[field] = sorted(ids)
-        tokens[token] = compact_fields
-    return tokens
-
-
-def build_light_inverted_index(documents: list[dict[str, Any]]) -> dict[str, Any]:
-    raw_index: dict[str, dict[str, set[int]]] = defaultdict(lambda: defaultdict(set))
-    for document in documents:
-        doc_index = int(document["doc_index"])
-        add_postings(raw_index, doc_index, FIELD_CODES["title"], sitegraph_tokens(document.get("title"), cjk_max_n=4, cap=120))
-        add_postings(raw_index, doc_index, FIELD_CODES["section"], sitegraph_tokens([document.get("section"), document.get("nav_path_text")], cjk_max_n=4, cap=80))
-        add_postings(raw_index, doc_index, FIELD_CODES["nav_path"], sitegraph_tokens(" ".join(document.get("nav_path") or []), cjk_max_n=4, cap=80))
-        add_postings(raw_index, doc_index, FIELD_CODES["tag"], sitegraph_tokens(" ".join(document.get("tags") or []), cjk_max_n=4))
-        attachment_text = " ".join(
-            " ".join(clean_text(attachment.get(field)) for field in ("name", "extension", "section"))
-            for attachment in document.get("attachments") or []
-        )
-        add_postings(raw_index, doc_index, FIELD_CODES["attachment"], sitegraph_tokens(attachment_text, cjk_max_n=4, cap=80))
-        if document.get("record_type") == "external":
-            add_postings(raw_index, doc_index, FIELD_CODES["external"], sitegraph_tokens([document.get("title"), document.get("url")], cjk_max_n=5))
-        if document.get("record_type") == "utility" or document.get("facet") == "system":
-            add_postings(raw_index, doc_index, FIELD_CODES["system"], sitegraph_tokens([document.get("title"), document.get("url"), document.get("section")], cjk_max_n=5))
-
-    return {
-        "version": "sitegraph-light-inverted-progressive",
-        "tokenizer": "nfkc-lower-cjk-ngram-code",
-        "field_codes": LIGHT_FIELD_CODES,
-        "entry_fields": ["title", "section", "nav_path", "tag", "attachment", "external", "system"],
-        "tokens": compact_postings(raw_index),
-    }
-
-
-def build_body_inverted_index(documents: list[dict[str, Any]]) -> dict[str, Any]:
-    raw_index: dict[str, dict[str, set[int]]] = defaultdict(lambda: defaultdict(set))
-    for document in documents:
-        doc_index = int(document["doc_index"])
-        add_postings(raw_index, doc_index, FIELD_CODES["summary"], sitegraph_tokens(document.get("summary"), cjk_max_n=4, cap=80))
-        add_postings(raw_index, doc_index, FIELD_CODES["content"], sitegraph_tokens(document.get("content"), cjk_max_n=3, cap=180))
-    return {
-        "version": "sitegraph-body-inverted-progressive",
-        "tokenizer": "nfkc-lower-cjk-ngram-code",
-        "field_codes": BODY_FIELD_CODES,
-        "entry_fields": ["summary", "content"],
-        "tokens": compact_postings(raw_index),
-    }
-
-
-def exhaustive_scan_blob(document: dict[str, Any]) -> str:
-    attachment_text = " ".join(
-        " ".join(clean_text(attachment.get(field)) for field in ("name", "extension", "url", "section", "parent_url"))
-        for attachment in document.get("attachments") or []
-    )
-    return normalize_text(
-        " ".join(
-            [
-                clean_text(document.get("title")),
-                clean_text(document.get("section")),
-                " ".join(clean_text(item) for item in document.get("nav_path") or []),
-                clean_text(document.get("nav_path_text")),
-                clean_text(document.get("summary")),
-                clean_text(document.get("content")),
-                clean_text(document.get("url")),
-                attachment_text,
-            ]
-        )
-    )
-
-
-def measure_representative_full_scan_ms(documents: list[dict[str, Any]], query: str = "校历") -> float:
-    normalized_query = normalize_text(query)
-    terms = sitegraph_tokens(query, cjk_max_n=5)
-    started = perf_counter()
-    matches = 0
-    for document in documents:
-        blob = exhaustive_scan_blob(document)
-        if (normalized_query and normalized_query in blob) or any(term in blob for term in terms):
-            matches += 1
-    elapsed_ms = (perf_counter() - started) * 1000
-    # Touch the match count so the measurement cannot be optimized away by future rewrites.
-    return round(elapsed_ms + (matches * 0), 3)
-
-
-def shard_year(document: dict[str, Any]) -> str:
-    date_text = clean_text(document.get("published_at")) or clean_text(document.get("version_date"))
-    match = re.search(r"(20\d{2}|19\d{2})", date_text)
-    return match.group(1) if match else "undated"
-
-
-def shard_section(document: dict[str, Any]) -> str:
-    nav_path = document.get("nav_path") if isinstance(document.get("nav_path"), list) else []
-    section = nav_path[0] if nav_path else document.get("section_id") or document.get("section")
-    return stable_slug(section, fallback="root", max_length=32)
-
-
-def shard_bucket(document: dict[str, Any], bucket_count: int = 4) -> str:
-    digest = hashlib.sha1(str(document.get("id") or "").encode("utf-8")).hexdigest()
-    return f"b{int(digest[:2], 16) % bucket_count}"
-
-
-def shard_id_for_document(document: dict[str, Any]) -> str:
-    return "__".join(
-        [
-            stable_slug(document.get("facet"), fallback="facet"),
-            stable_slug(document.get("record_type"), fallback="record"),
-            shard_year(document),
-            shard_section(document),
-            shard_bucket(document),
-        ]
-    )
-
-
-def build_locality_shards(documents: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], dict[str, dict[str, Any]], dict[str, dict[str, Any]]]:
-    groups: dict[str, list[dict[str, Any]]] = defaultdict(list)
-    for document in documents:
-        groups[shard_id_for_document(document)].append(document)
-
-    shard_refs: list[dict[str, Any]] = []
-    shard_by_id: dict[str, dict[str, Any]] = {}
-    shard_filter: dict[str, dict[str, Any]] = {}
-    for shard_id in sorted(groups):
-        shard_docs = sorted(groups[shard_id], key=lambda item: int(item["doc_index"]))
-        facets = sorted({str(item.get("facet")) for item in shard_docs})
-        record_types = sorted({str(item.get("record_type")) for item in shard_docs})
-        sections = sorted({str(item.get("section_id") or "unknown") for item in shard_docs})
-        years = sorted({shard_year(item) for item in shard_docs})
-        payload_docs = [
-            {key: value for key, value in document.items() if key != "shard"}
-            for document in shard_docs
-        ]
-        filter_tokens = sorted({
-            token
-            for document in payload_docs
-            for token in sitegraph_tokens(exhaustive_scan_blob(document), cjk_max_n=5)
-        })
-        filter_bitset = build_filter_bitset(filter_tokens)
-        filter_hash = sha256_text(filter_bitset["bitset_base64"], length=32)
-        artifact = write_hashed_json(PUBLIC_ROOT, PUBLIC_SHARD_DIR, f"full.{shard_id}", payload_docs, compact=True)
-        shard_ref = {
-            "shard_id": shard_id,
-            "path": artifact["path"],
-            "sha256": artifact["sha256"],
-            "bytes": artifact["bytes"],
-            "count": len(shard_docs),
-            "contains": "full_documents",
-            "facet_range": facets,
-            "record_type_range": record_types,
-            "section_range": sections[:24],
-            "year_range": years,
-            "hash_bucket": shard_id.rsplit("__", 1)[-1],
-            "filter_token_count": len(filter_tokens),
-            "filter_sha256": filter_hash,
-        }
-        shard_filter[shard_id] = {
-            **filter_bitset,
-            "token_count": len(filter_tokens),
-            "sha256": filter_hash,
-            "hash_algorithm": "bloom-fnv1a32-utf8",
-            "coverage_fields": ["title", "section", "nav_path", "summary", "content", "attachments", "url"],
-        }
-        shard_refs.append(shard_ref)
-        shard_by_id[shard_id] = shard_ref
-        for document in shard_docs:
-            document["shard"] = {
-                "shard_id": shard_id,
-            }
-    return shard_refs, shard_by_id, shard_filter
-
-
-def aggregate_counts(packages: list[dict[str, Any]]) -> dict[str, int]:
-    counts: Counter[str] = Counter()
-    for package in packages:
-        counts.update({field: int(package["actual_counts"].get(field, 0) or 0) for field in COUNT_FIELDS})
-    return {field: int(counts.get(field, 0)) for field in COUNT_FIELDS}
-
-
-def source_truth_counts(packages: list[dict[str, Any]]) -> dict[str, dict[str, int]]:
-    return {package_source_id(package): dict(package["actual_counts"]) for package in packages}
-
-
-def aggregate_quality(packages: list[dict[str, Any]]) -> dict[str, Any]:
-    qualities = [
-        package.get("manifest", {}).get("quality")
-        for package in packages
-        if isinstance(package.get("manifest", {}).get("quality"), dict)
-    ]
-    return {
-        "all_discovered_urls_have_outcomes": all(item.get("all_discovered_urls_have_outcomes") is True for item in qualities),
-        "errors": sum(int(item.get("errors", 0) or 0) for item in qualities),
-        "attachment_policy": "metadata_only" if all(item.get("attachment_policy") == "metadata_only" for item in qualities) else "mixed",
-        "external_link_policy": "record_only" if all(item.get("external_link_policy") == "record_only" for item in qualities) else "mixed",
-        "sources": {
-            package_source_id(package): package.get("manifest", {}).get("quality")
-            for package in packages
-        },
-    }
-
-
-def latest_upstream_generated_at(packages: list[dict[str, Any]]) -> str | None:
-    values = [
-        clean_text(package.get("manifest", {}).get("generated_at"))
-        for package in packages
-        if clean_text(package.get("manifest", {}).get("generated_at"))
-    ]
-    return max(values) if values else None
-
-
-def source_entries(packages: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    entries: list[dict[str, Any]] = []
-    for package in packages:
-        source_id = package_source_id(package)
-        entries.append(
-            {
-                "source_id": source_id,
-                "source_kind": "sitegraph",
-                "artifact_root": f"generated/collections/{COLLECTION_ID}/sitegraph",
-                "upstream_generated_at": clean_text(package["manifest"].get("generated_at")) or None,
-                "display_name": site_display_name(package["site"]),
-                "truth_counts": dict(package["actual_counts"]),
-                "quality": package["manifest"].get("quality"),
-            }
-        )
-    return entries
-
-
 def write_public_index(packages: list[dict[str, Any]], built: dict[str, Any], *, shard_size: int) -> dict[str, Any]:
     # Preserved for CLI compatibility; locality shards no longer use fixed-size splitting.
     _ = shard_size
@@ -385,7 +83,11 @@ def write_public_index(packages: list[dict[str, Any]], built: dict[str, Any], *,
     PUBLIC_SHARD_DIR.mkdir(parents=True, exist_ok=True)
 
     documents = built["documents"]
-    full_shards, _, shard_filter = build_locality_shards(documents)
+    full_shards, _, shard_filter = build_locality_shards(
+        documents,
+        public_root=PUBLIC_ROOT,
+        shard_dir=PUBLIC_SHARD_DIR,
+    )
 
     doc_meta_light_fields = {
         "doc_index",
@@ -512,7 +214,7 @@ def write_public_index(packages: list[dict[str, Any]], built: dict[str, Any], *,
         "producer_ref": producer_ref(),
         "site_id": COLLECTION_ID,
         "collection_id": COLLECTION_ID,
-        "sources": source_entries(packages),
+        "sources": source_entries(packages, collection_id=COLLECTION_ID),
         "artifact_path": f"generated/collections/{COLLECTION_ID}",
         "upstream_generated_at": upstream_generated_at,
         "truth_counts": upstream_counts,
