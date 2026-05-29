@@ -16,6 +16,7 @@ from time import perf_counter
 from typing import Any
 from urllib.parse import urlparse
 
+from .sitegraph_artifact_io import artifact_entry, write_hashed_json, write_json
 from .sitegraph_source import (
     COUNT_FIELDS,
     load_collection_source_packages,
@@ -93,38 +94,6 @@ LIGHT_FIELD_CODES = {key: FIELD_CODES[key] for key in ("title", "section", "nav_
 BODY_FIELD_CODES = {key: FIELD_CODES[key] for key in ("summary", "content")}
 
 FACET_ORDER = ("notice_article", "policy", "workflow", "download", "system", "exam", "news", "external")
-
-
-def write_json(path: Path, payload: Any, *, compact: bool = False) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8", newline="\n") as handle:
-        if compact:
-            json.dump(payload, handle, ensure_ascii=False, separators=(",", ":"))
-        else:
-            json.dump(payload, handle, ensure_ascii=False, indent=2)
-            handle.write("\n")
-
-
-def json_bytes(payload: Any, *, compact: bool = True) -> bytes:
-    if compact:
-        text = json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
-    else:
-        text = json.dumps(payload, ensure_ascii=False, indent=2) + "\n"
-    return text.encode("utf-8")
-
-
-def write_hashed_json(directory: Path, logical_name: str, payload: Any, *, compact: bool = True) -> dict[str, Any]:
-    data = json_bytes(payload, compact=compact)
-    digest = hashlib.sha256(data).hexdigest()
-    filename = f"{logical_name}.{digest[:16]}.json"
-    path = directory / filename
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_bytes(data)
-    return {
-        "path": str(path.relative_to(PUBLIC_ROOT)).replace("\\", "/"),
-        "sha256": digest,
-        "bytes": len(data),
-    }
 
 
 def sha1_text(text: str, length: int = 20) -> str:
@@ -867,7 +836,7 @@ def build_locality_shards(documents: list[dict[str, Any]]) -> tuple[list[dict[st
         })
         filter_bitset = build_filter_bitset(filter_tokens)
         filter_hash = sha256_text(filter_bitset["bitset_base64"], length=32)
-        artifact = write_hashed_json(PUBLIC_SHARD_DIR, f"full.{shard_id}", payload_docs, compact=True)
+        artifact = write_hashed_json(PUBLIC_ROOT, PUBLIC_SHARD_DIR, f"full.{shard_id}", payload_docs, compact=True)
         shard_ref = {
             "shard_id": shard_id,
             "path": artifact["path"],
@@ -897,19 +866,6 @@ def build_locality_shards(documents: list[dict[str, Any]]) -> tuple[list[dict[st
                 "shard_id": shard_id,
             }
     return shard_refs, shard_by_id, shard_filter
-
-
-def artifact_entry(artifact: dict[str, Any], *, role: str, count: int | None = None, load: str = "on_demand") -> dict[str, Any]:
-    entry = {
-        "path": artifact["path"],
-        "sha256": artifact["sha256"],
-        "bytes": artifact["bytes"],
-        "role": role,
-        "load": load,
-    }
-    if count is not None:
-        entry["count"] = count
-    return entry
 
 
 def aggregate_counts(packages: list[dict[str, Any]]) -> dict[str, int]:
@@ -1052,16 +1008,16 @@ def write_public_index(packages: list[dict[str, Any]], built: dict[str, Any], *,
 
     query_aliases = query_alias_payload()
     artifacts: dict[str, dict[str, Any]] = {}
-    doc_meta_artifact = write_hashed_json(PUBLIC_ARTIFACT_DIR, "doc_meta_light", doc_meta_light, compact=True)
-    light_index_artifact = write_hashed_json(PUBLIC_ARTIFACT_DIR, "light_inverted_index", light_inverted_index, compact=True)
-    body_index_artifact = write_hashed_json(PUBLIC_ARTIFACT_DIR, "body_inverted_index", body_inverted_index, compact=True)
-    section_artifact = write_hashed_json(PUBLIC_ARTIFACT_DIR, "section_index", section_index, compact=True)
-    attachment_artifact = write_hashed_json(PUBLIC_ARTIFACT_DIR, "attachment_index", built["attachment_index"], compact=True)
-    external_artifact = write_hashed_json(PUBLIC_ARTIFACT_DIR, "external_index", built["external_index"], compact=True)
-    aliases_artifact = write_hashed_json(PUBLIC_ARTIFACT_DIR, "query_aliases", query_aliases, compact=False)
-    shard_catalog_artifact = write_hashed_json(PUBLIC_ARTIFACT_DIR, "shard_catalog", full_shards, compact=True)
-    shard_filter_artifact = write_hashed_json(PUBLIC_ARTIFACT_DIR, "shard_filter", shard_filter, compact=True)
-    outcomes_artifact = write_hashed_json(PUBLIC_ARTIFACT_DIR, "outcomes", built["outcomes"], compact=True)
+    doc_meta_artifact = write_hashed_json(PUBLIC_ROOT, PUBLIC_ARTIFACT_DIR, "doc_meta_light", doc_meta_light, compact=True)
+    light_index_artifact = write_hashed_json(PUBLIC_ROOT, PUBLIC_ARTIFACT_DIR, "light_inverted_index", light_inverted_index, compact=True)
+    body_index_artifact = write_hashed_json(PUBLIC_ROOT, PUBLIC_ARTIFACT_DIR, "body_inverted_index", body_inverted_index, compact=True)
+    section_artifact = write_hashed_json(PUBLIC_ROOT, PUBLIC_ARTIFACT_DIR, "section_index", section_index, compact=True)
+    attachment_artifact = write_hashed_json(PUBLIC_ROOT, PUBLIC_ARTIFACT_DIR, "attachment_index", built["attachment_index"], compact=True)
+    external_artifact = write_hashed_json(PUBLIC_ROOT, PUBLIC_ARTIFACT_DIR, "external_index", built["external_index"], compact=True)
+    aliases_artifact = write_hashed_json(PUBLIC_ROOT, PUBLIC_ARTIFACT_DIR, "query_aliases", query_aliases, compact=False)
+    shard_catalog_artifact = write_hashed_json(PUBLIC_ROOT, PUBLIC_ARTIFACT_DIR, "shard_catalog", full_shards, compact=True)
+    shard_filter_artifact = write_hashed_json(PUBLIC_ROOT, PUBLIC_ARTIFACT_DIR, "shard_filter", shard_filter, compact=True)
+    outcomes_artifact = write_hashed_json(PUBLIC_ROOT, PUBLIC_ARTIFACT_DIR, "outcomes", built["outcomes"], compact=True)
 
     artifacts["doc_meta_light"] = artifact_entry(doc_meta_artifact, role="doc_meta_light", count=len(doc_meta_light), load="initial")
     artifacts["light_inverted_index"] = artifact_entry(light_index_artifact, role="light_inverted_index", load="initial")
@@ -1119,7 +1075,7 @@ def write_public_index(packages: list[dict[str, Any]], built: dict[str, Any], *,
             "representative_query_full_scan_time_ms": representative_full_scan_ms,
         },
     }
-    size_artifact = write_hashed_json(PUBLIC_ARTIFACT_DIR, "size_report", size_report, compact=False)
+    size_artifact = write_hashed_json(PUBLIC_ROOT, PUBLIC_ARTIFACT_DIR, "size_report", size_report, compact=False)
     artifacts["size_report"] = artifact_entry(size_artifact, role="size_report", load="audit")
 
     generated_at = now_iso()
