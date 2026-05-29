@@ -1,8 +1,10 @@
 import { APP_CONFIG } from '@/app/config/constants';
 import {
     SitegraphIndexBundle,
+    SitegraphSearchFilters,
     SitegraphSearchCoverage,
     SitegraphSearchManifest,
+    SitegraphSortMode,
 } from '@/shared/lib/contracts';
 import { fetchJson } from '@/shared/lib/fetch';
 import {
@@ -10,10 +12,18 @@ import {
     parseSitegraphInvertedIndex,
     parseSitegraphManifest,
     searchSitegraphProgressively,
+    buildSitegraphFilterOptions,
 } from '@njupt-search/search-core';
 
 type InitMessage = { type: 'init'; requestId: number };
-type QueryMessage = { type: 'query'; requestId: number; query: string; limit?: number };
+type QueryMessage = {
+    type: 'query';
+    requestId: number;
+    query: string;
+    limit?: number;
+    sortMode?: SitegraphSortMode;
+    filters?: SitegraphSearchFilters;
+};
 type CancelMessage = { type: 'cancel'; requestId: number };
 type IncomingMessage = InitMessage | QueryMessage | CancelMessage;
 
@@ -56,11 +66,21 @@ const init = async (requestId: number) => {
         type: 'ready',
         requestId,
         manifest,
+        filterOptions: buildSitegraphFilterOptions(
+            bundle.docMeta,
+            Object.fromEntries(manifest.sources.map(source => [source.source_id, source.display_name || source.source_id]))
+        ),
         firstScreenBytes: artifacts.doc_meta_light.bytes + artifacts.light_inverted_index.bytes + artifacts.query_aliases.bytes,
     });
 };
 
-const query = async (requestId: number, queryText: string, limit = 30) => {
+const query = async (
+    requestId: number,
+    queryText: string,
+    limit = 30,
+    sortMode: SitegraphSortMode = 'relevance',
+    filters: SitegraphSearchFilters = {}
+) => {
     if (!bundle) {
         throw new Error('Search worker is not initialized');
     }
@@ -71,7 +91,7 @@ const query = async (requestId: number, queryText: string, limit = 30) => {
     await searchSitegraphProgressively(bundle, queryText, controller.signal, event => {
         lastCoverage = event.coverage;
         post({ ...event, requestId });
-    }, { limit });
+    }, { limit, sortMode, filters });
 };
 
 self.onmessage = (event: MessageEvent<IncomingMessage>) => {
@@ -92,7 +112,7 @@ self.onmessage = (event: MessageEvent<IncomingMessage>) => {
 
     const run = message.type === 'init'
         ? init(message.requestId)
-        : query(message.requestId, message.query, message.limit);
+        : query(message.requestId, message.query, message.limit, message.sortMode, message.filters);
 
     run.catch(error => {
         if (error instanceof DOMException && error.name === 'AbortError') return;

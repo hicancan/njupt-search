@@ -8,9 +8,12 @@ import { ExamList } from '@/features/exam-search/ui/ExamList';
 import {
     RankedSitegraphDocument,
     SearchResult,
+    SitegraphFilterOptions,
     SitegraphQueryStats,
+    SitegraphSearchFilters,
     SitegraphSearchCoverage,
     SitegraphSearchPhase,
+    SitegraphSortMode,
 } from '@/shared/lib/contracts';
 
 type ResultsLoadingKind = 'collection' | 'exam-list' | 'exam-detail';
@@ -24,6 +27,11 @@ interface ResultsPageProps {
     queryCoverage: SitegraphSearchCoverage | null;
     searchPhase: SitegraphSearchPhase | null;
     searching: boolean;
+    sortMode: SitegraphSortMode;
+    filters: SitegraphSearchFilters;
+    filterOptions: SitegraphFilterOptions | null;
+    onSortModeChange: (sortMode: SitegraphSortMode) => void;
+    onFiltersChange: (patch: SitegraphSearchFilters) => void;
     classMode: SearchResult;
     selectedIds: Set<string>;
     reminders: number[];
@@ -45,6 +53,11 @@ export function ResultsPage({
     queryCoverage,
     searchPhase,
     searching,
+    sortMode,
+    filters,
+    filterOptions,
+    onSortModeChange,
+    onFiltersChange,
     classMode,
     selectedIds,
     reminders,
@@ -120,6 +133,11 @@ export function ResultsPage({
                             queryCoverage={queryCoverage}
                             searchPhase={searchPhase}
                             searching={searching}
+                            sortMode={sortMode}
+                            filters={filters}
+                            filterOptions={filterOptions}
+                            onSortModeChange={onSortModeChange}
+                            onFiltersChange={onFiltersChange}
                         />
                     ) : null}
                 </div>

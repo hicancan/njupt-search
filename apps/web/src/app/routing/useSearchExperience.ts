@@ -12,6 +12,7 @@ import {
 } from '@/features/query-router/model/examQuery';
 import { useUrlState } from '@/features/query-router/model/useUrlState';
 import { useDataUpdateNotifier } from '@/widgets/update-notifier/model/useDataUpdateNotifier';
+import type { SitegraphSearchFilters, SitegraphSortMode } from '@/shared/lib/contracts';
 
 type ResultsLoadingKind = 'collection' | 'exam-list' | 'exam-detail';
 
@@ -33,7 +34,13 @@ export function useSearchExperience() {
     const { newDataAvailable, reloadToUpdate } = useDataUpdateNotifier();
     const [inputValue, setInputValue] = useState<string>(initialQuery);
     const [reminders, setReminders] = useState<number[]>([30, 60]);
-    const { worker: searchWorker, loading: searchLoading, error: searchIndexError } = useSearchIndexWorker(shouldSearchSitegraph);
+    const [collectionSortMode, setCollectionSortMode] = useState<SitegraphSortMode>('relevance');
+    const [collectionFilters, setCollectionFilters] = useState<SitegraphSearchFilters>({
+        sourceId: 'all',
+        facet: 'all',
+        dateRange: 'all',
+    });
+    const { worker: searchWorker, loading: searchLoading, error: searchIndexError, filterOptions } = useSearchIndexWorker(shouldSearchSitegraph);
 
     const {
         recalledResults,
@@ -42,7 +49,10 @@ export function useSearchExperience() {
         searchPhase,
         searching,
         searchError: sitegraphSearchError,
-    } = useProgressiveSearch(searchWorker, searchQuery, shouldSearchSitegraph);
+    } = useProgressiveSearch(searchWorker, searchQuery, shouldSearchSitegraph, {
+        sortMode: collectionSortMode,
+        filters: collectionFilters,
+    });
     const classSearchResult = useClassSearch(allExams, initialQuery, manualSelection);
     const currentClass = classSearchResult.mode === 'DETAIL' ? classSearchResult.classes[0] || null : null;
     const { selectedIds, toggleExamSelection } = useSelectedExamIds(currentClass, classSearchResult.exams);
@@ -136,6 +146,13 @@ export function useSearchExperience() {
             queryCoverage,
             searchPhase,
             searching,
+            sortMode: collectionSortMode,
+            filters: collectionFilters,
+            filterOptions,
+            onSortModeChange: setCollectionSortMode,
+            onFiltersChange: (patch: SitegraphSearchFilters) => {
+                setCollectionFilters(previous => ({ ...previous, ...patch }));
+            },
             classMode: classSearchResult,
             selectedIds,
             reminders,

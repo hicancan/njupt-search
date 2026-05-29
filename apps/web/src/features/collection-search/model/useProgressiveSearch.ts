@@ -3,12 +3,14 @@ import {
     RankedSitegraphDocument,
     SitegraphQueryStats,
     SitegraphSearchCoverage,
-    SitegraphSearchPhase
+    SitegraphSearchFilters,
+    SitegraphSearchPhase,
+    SitegraphSortMode
 } from '@/shared/lib/contracts';
 import { APP_CONFIG } from '@/app/config/constants';
 
 type SearchState = {
-    query: string;
+    key: string;
     results: RankedSitegraphDocument[];
     stats: SitegraphQueryStats | null;
     coverage: SitegraphSearchCoverage | null;
@@ -17,13 +19,24 @@ type SearchState = {
     settled: boolean;
 };
 
+interface ProgressiveSearchControls {
+    sortMode?: SitegraphSortMode;
+    filters?: SitegraphSearchFilters;
+}
+
 export function useProgressiveSearch(
     worker: Worker | null,
     searchQuery: string,
-    enabled = true
+    enabled = true,
+    controls: ProgressiveSearchControls = {}
 ) {
+    const sortMode = controls.sortMode ?? 'relevance';
+    const sourceId = controls.filters?.sourceId ?? 'all';
+    const facet = controls.filters?.facet ?? 'all';
+    const dateRange = controls.filters?.dateRange ?? 'all';
+    const searchKey = `${searchQuery.trim()}\u0000${sortMode}\u0000${sourceId}\u0000${facet}\u0000${dateRange}`;
     const [searchState, setSearchState] = useState<SearchState>({
-        query: '',
+        key: '',
         results: [],
         stats: null,
         coverage: null,
@@ -41,6 +54,7 @@ export function useProgressiveSearch(
 
         const requestId = Date.now() + Math.floor(Math.random() * 100000);
         const requestQuery = trimmed;
+        const requestKey = `${requestQuery}\u0000${sortMode}\u0000${sourceId}\u0000${facet}\u0000${dateRange}`;
         let active = true;
 
         const handleMessage = (event: MessageEvent) => {
@@ -68,7 +82,7 @@ export function useProgressiveSearch(
                 'cancelled'
             ].includes(phase)) {
                 setSearchState(previous => ({
-                    query: requestQuery,
+                    key: requestKey,
                     results: message.results || previous.results,
                     stats: message.stats || previous.stats,
                     coverage: message.coverage || previous.coverage,
@@ -78,7 +92,7 @@ export function useProgressiveSearch(
                 }));
             } else if (message.type === 'error') {
                 setSearchState({
-                    query: requestQuery,
+                    key: requestKey,
                     results: [],
                     stats: null,
                     coverage: message.coverage || null,
@@ -94,7 +108,13 @@ export function useProgressiveSearch(
             type: 'query',
             requestId,
             query: requestQuery,
-            limit: APP_CONFIG.COLLECTION_SEARCH_RESULT_LIMIT
+            limit: APP_CONFIG.COLLECTION_SEARCH_RESULT_LIMIT,
+            sortMode,
+            filters: {
+                sourceId,
+                facet,
+                dateRange,
+            },
         });
 
         return () => {
@@ -102,9 +122,9 @@ export function useProgressiveSearch(
             worker.removeEventListener('message', handleMessage);
             worker.postMessage({ type: 'cancel', requestId });
         };
-    }, [enabled, worker, trimmed]);
+    }, [enabled, worker, trimmed, sortMode, sourceId, facet, dateRange]);
 
-    const isCurrentResult = canSearch && searchState.query === trimmed;
+    const isCurrentResult = canSearch && searchState.key === searchKey;
 
     return {
         recalledResults: isCurrentResult ? searchState.results : [],

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+    formatResolvedSearchDate,
     parseSitegraphDocMeta,
     parseSitegraphManifest,
     recallSitegraphDocuments,
@@ -280,9 +281,161 @@ describe('sitegraph search contract', () => {
             const { results, stats } = await recallSitegraphDocuments(bundle, '转专业申请表', new AbortController().signal);
             expect(results[0]?.id).toBe('jwc-detail-1');
             expect(results[0]?.score_reason).toContain('附件名命中');
+            expect(results[0]?.match_snippet?.text).toContain('学生申请转专业需要符合管理办法');
+            expect(results[0]?.match_snippet?.matched_terms).toContain('转专业');
             expect(stats.loadedShardCount).toBe(1);
             expect(stats.loadedShardPaths).toEqual([fullShard.path]);
             expect(stats.coverage.exhaustive_complete).toBe(true);
+        } finally {
+            globalThis.fetch = originalFetch;
+        }
+    });
+
+    it('uses version and recorded dates for display and date sorting', async () => {
+        const oldNotice = {
+            ...fullDocument,
+            doc_index: 0,
+            id: 'old-notice',
+            facet: 'notice_article' as const,
+            title: '2024年推免工作方案',
+            canonical_title: '2024年推免工作方案',
+            published_at: '2024-09-07',
+            version_date: null,
+            date_kind: 'published',
+            summary: '推免工作方案',
+            content: '2024年推免工作方案。'
+        };
+        const versionedDownload = {
+            ...fullDocument,
+            doc_index: 1,
+            id: 'versioned-download',
+            facet: 'download' as const,
+            title: '南京邮电大学学生一般事务申请表 2026-04-16',
+            canonical_title: '南京邮电大学学生一般事务申请表 2026-04-16',
+            published_at: null,
+            version_date: '2026-04-16',
+            date_kind: 'version',
+            date_confidence: 'title_or_attachment',
+            summary: '附件元数据：南京邮电大学学生一般事务申请表 2026-04-16。来源栏目：推免生。',
+            content: '附件元数据命中推免生栏目。',
+            collection_method: 'attachment_metadata_only'
+        };
+        const otherSource = {
+            ...versionedDownload,
+            doc_index: 2,
+            id: 'other-source',
+            source_id: 'graduate',
+            source: '研究生院',
+            source_domain: 'graduate.njupt.edu.cn',
+            facet: 'download' as const,
+            version_date: '2026-05-01',
+            title: '研究生院推免下载入口',
+            canonical_title: '研究生院推免下载入口',
+            summary: '研究生院推免下载入口。',
+            content: '研究生院推免下载入口。'
+        };
+        const docs = [oldNotice, versionedDownload, otherSource];
+        const searchShard = {
+            ...fullShard,
+            path: 'fixture-date-filter-shard.0123456789abcdef.json',
+            count: docs.length,
+            facet_range: ['notice_article', 'download']
+        };
+        const searchManifest: SitegraphSearchManifest = {
+            ...manifest,
+            total_documents: docs.length,
+            sitegraph: {
+                ...manifest.sitegraph,
+                full_shards: [searchShard]
+            },
+            progressive_search: {
+                ...manifest.progressive_search,
+                total_documents: docs.length
+            }
+        };
+        const bundle: SitegraphIndexBundle = {
+            manifest: searchManifest,
+            docMeta: docs.map(document => ({
+                doc_index: document.doc_index,
+                id: document.id,
+                record_type: document.record_type,
+                facet: document.facet,
+                title: document.title,
+                url: document.url,
+                source_id: document.source_id,
+                source: document.source,
+                section_id: document.section_id,
+                section: document.section,
+                nav_path: document.nav_path,
+                nav_path_text: document.nav_path_text,
+                published_at: document.published_at,
+                version_date: document.version_date,
+                recorded_at: document.recorded_at,
+                date_kind: document.date_kind,
+                date_confidence: document.date_confidence,
+                task_kind: document.task_kind,
+                attachment_count: document.attachment_count,
+                collection_method: document.collection_method,
+                shard: { shard_id: searchShard.shard_id, path: searchShard.path }
+            })),
+            lightInvertedIndex: {
+                version: 'sitegraph-light-inverted-progressive',
+                tokenizer: 'test',
+                field_codes: { title: 't' },
+                tokens: {
+                    推免: { t: [0, 1, 2] }
+                }
+            },
+            queryAliases: {}
+        };
+        const originalFetch = globalThis.fetch;
+        globalThis.fetch = (async (input: RequestInfo | URL) => {
+            const url = String(input);
+            if (url.includes('body_inverted_index')) {
+                return new Response(JSON.stringify({
+                    version: 'sitegraph-body-inverted-progressive',
+                    tokenizer: 'test',
+                    field_codes: { content: 'c' },
+                    tokens: {
+                        推免: { c: [0, 1, 2] }
+                    }
+                }));
+            }
+            if (url.includes('shard_filter')) {
+                return new Response(JSON.stringify({
+                    [searchShard.shard_id]: {
+                        bitset_base64: '/w==',
+                        bit_count: 8,
+                        hash_count: 1,
+                        token_count: 3,
+                        sha256: '0123456789abcdef0123456789abcdef',
+                        hash_algorithm: 'bloom-fnv1a32-utf8'
+                    }
+                }));
+            }
+            return new Response(JSON.stringify(docs.map(document => ({
+                ...document,
+                shard: { shard_id: searchShard.shard_id, path: searchShard.path }
+            }))));
+        }) as typeof fetch;
+        try {
+            const events: SitegraphSearchEvent[] = [];
+            await searchSitegraphProgressively(bundle, '推免', new AbortController().signal, event => events.push(event), {
+                limit: 10,
+                sortMode: 'date_desc',
+                filters: { sourceId: 'jwc', facet: 'download', dateRange: 'past_year' },
+                now: new Date('2026-05-29T00:00:00+08:00').getTime()
+            });
+            const complete = events.at(-1);
+            expect(complete?.type).toBe('exhaustive_complete');
+            expect(complete?.results?.map(result => result.id)).toEqual(['versioned-download']);
+            expect(formatResolvedSearchDate(versionedDownload)).toBe('版本日期 2026/04/16');
+            expect(formatResolvedSearchDate({
+                ...versionedDownload,
+                published_at: null,
+                version_date: null,
+                recorded_at: '2026-05-01'
+            })).toBe('收录日期 2026/05/01');
         } finally {
             globalThis.fetch = originalFetch;
         }

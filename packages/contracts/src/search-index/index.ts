@@ -4,6 +4,7 @@ import {
     SitegraphFullShardSchema
 } from './schema-parts';
 import type {
+    SitegraphFacet,
     SitegraphDocMeta,
     SitegraphFullDocument
 } from './schema-parts';
@@ -178,9 +179,37 @@ export interface SitegraphQueryStats {
     resultCount: number;
 }
 
+export type SitegraphSortMode = 'relevance' | 'date_desc';
+
+export type SitegraphDateFilter = 'all' | 'past_year' | 'past_3_years' | 'past_5_years' | 'undated';
+
+export interface SitegraphSearchFilters {
+    sourceId?: string;
+    facet?: SitegraphFacet | 'all';
+    dateRange?: SitegraphDateFilter;
+}
+
+export interface SitegraphFilterOption {
+    id: string;
+    label: string;
+    count: number;
+}
+
+export interface SitegraphFilterOptions {
+    sources: SitegraphFilterOption[];
+    facets: Array<SitegraphFilterOption & { id: SitegraphFacet }>;
+}
+
+export interface SitegraphMatchSnippet {
+    text: string;
+    field: 'title' | 'summary' | 'content' | 'attachments' | 'nav_path' | 'url';
+    matched_terms: string[];
+}
+
 export interface RankedSitegraphDocument extends SitegraphFullDocument {
     score: number;
     score_reason: string;
+    match_snippet?: SitegraphMatchSnippet;
     query_stats?: SitegraphQueryStats;
 }
 

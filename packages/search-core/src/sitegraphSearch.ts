@@ -7,7 +7,9 @@ import {
     SitegraphQueryStats,
     SitegraphSearchCoverage,
     SitegraphSearchEvent,
-    SitegraphSearchPhase
+    SitegraphSearchFilters,
+    SitegraphSearchPhase,
+    SitegraphSortMode
 } from '@njupt-search/contracts';
 import { fetchJson } from './fetchJson';
 import {
@@ -15,6 +17,7 @@ import {
     parseSitegraphInvertedIndex,
     SearchContractError
 } from './sitegraphContract';
+import { sitegraphDocumentMatchesFilters } from './sitegraphFilters';
 import { rankingDateSortValue, rankSitegraphDocument, SITEGRAPH_FIELD_WEIGHTS } from './ranking/rankDocument';
 import { expandSitegraphQueryPhrases, normalizeSearchText as normalize, tokenizeSitegraphQuery } from './tokenizer';
 const DEFAULT_CANDIDATE_LIMIT = 160;
@@ -125,10 +128,19 @@ const applyPostings = (
 const applyLightMetaFallback = (
     bundle: SitegraphIndexBundle,
     scores: Map<number, number>,
-    normalizedQuery: string
+    normalizedQuery: string,
+    filters: SitegraphSearchFilters,
+    now: number
 ): void => {
-    if (scores.size >= 8 || !normalizedQuery) return;
+    if (!normalizedQuery) return;
+    let filteredScoreCount = 0;
+    for (const docIndex of scores.keys()) {
+        const meta = bundle.docMeta[docIndex];
+        if (meta && sitegraphDocumentMatchesFilters(meta, filters, now)) filteredScoreCount += 1;
+        if (filteredScoreCount >= 8) return;
+    }
     for (const meta of bundle.docMeta) {
+        if (!sitegraphDocumentMatchesFilters(meta, filters, now)) continue;
         const haystack = textBlob(meta, ['title', 'section', 'nav_path_text']);
         if (haystack.includes(normalizedQuery)) {
             scores.set(meta.doc_index, (scores.get(meta.doc_index) || 0) + 90);
@@ -148,7 +160,9 @@ const candidateShardPaths = (
     bundle: SitegraphIndexBundle,
     scores: Map<number, number>,
     candidateLimit: number,
-    maxShardLoads: number
+    maxShardLoads: number,
+    filters: SitegraphSearchFilters,
+    now: number
 ): { indices: number[]; paths: string[] } => {
     const indices: number[] = [];
     const paths: string[] = [];
@@ -156,6 +170,7 @@ const candidateShardPaths = (
     for (const [docIndex] of sortedScoreEntries(scores).slice(0, candidateLimit)) {
         const meta = bundle.docMeta[docIndex];
         if (!meta?.shard?.shard_id) continue;
+        if (!sitegraphDocumentMatchesFilters(meta, filters, now)) continue;
         const shardPath = shardPathForMeta(bundle, meta);
         if (!shardPath) continue;
         const isNewShard = !seenPaths.has(shardPath);
@@ -190,11 +205,15 @@ const loadShardBatch = async (
     }
 };
 
-const sortRankedResults = (results: RankedSitegraphDocument[]): RankedSitegraphDocument[] => {
+const sortRankedResults = (
+    results: RankedSitegraphDocument[],
+    sortMode: SitegraphSortMode = 'relevance'
+): RankedSitegraphDocument[] => {
     return results.sort((a, b) => {
+        const dateDelta = rankingDateSortValue(b) - rankingDateSortValue(a);
+        if (sortMode === 'date_desc' && dateDelta !== 0) return dateDelta;
         const scoreDelta = b.score - a.score;
         if (scoreDelta !== 0) return scoreDelta;
-        const dateDelta = rankingDateSortValue(b) - rankingDateSortValue(a);
         if (dateDelta !== 0) return dateDelta;
         return a.id.localeCompare(b.id);
     });
@@ -231,9 +250,10 @@ const loadedBytesFor = (bundle: SitegraphIndexBundle, loadedShardPaths: Set<stri
 const rankedSnapshot = (
     resultMap: Map<string, RankedSitegraphDocument>,
     stats: SitegraphQueryStats,
-    limit: number
+    limit: number,
+    sortMode: SitegraphSortMode
 ): RankedSitegraphDocument[] => {
-    return sortRankedResults(Array.from(resultMap.values()))
+    return sortRankedResults(Array.from(resultMap.values()), sortMode)
         .slice(0, limit)
         .map(result => ({ ...result, query_stats: stats }));
 };
@@ -284,12 +304,16 @@ const rankHydratedCandidates = (
     scores: Map<number, number>,
     query: string,
     terms: string[],
-    matchPhrases: string[]
+    matchPhrases: string[],
+    filters: SitegraphSearchFilters,
+    now: number
 ): RankedSitegraphDocument[] => {
     return indices
         .map(docIndex => {
             const document = fullDocsByIndex.get(docIndex);
-            return document && documentMatchesFullScan(document, matchPhrases)
+            return document
+                && sitegraphDocumentMatchesFilters(document, filters, now)
+                && documentMatchesFullScan(document, matchPhrases)
                 ? rankSitegraphDocument(document, query, terms, scores.get(docIndex) || 0)
                 : null;
         })
@@ -306,13 +330,15 @@ const hydrateCandidatePhase = async (
     fullDocsByIndex: Map<number, SitegraphFullDocument>,
     candidateLimit: number,
     maxShardLoads: number,
-    matchPhrases: string[]
+    matchPhrases: string[],
+    filters: SitegraphSearchFilters,
+    now: number
 ): Promise<{ ranked: RankedSitegraphDocument[]; candidateCount: number }> => {
-    const candidates = candidateShardPaths(bundle, scores, candidateLimit, maxShardLoads);
+    const candidates = candidateShardPaths(bundle, scores, candidateLimit, maxShardLoads, filters, now);
     const pathsToLoad = candidates.paths.filter(path => !loadedShardPaths.has(path));
     await loadShardBatch(pathsToLoad, signal, loadedShardPaths, fullDocsByIndex);
     return {
-        ranked: rankHydratedCandidates(candidates.indices, fullDocsByIndex, scores, query, terms, matchPhrases),
+        ranked: rankHydratedCandidates(candidates.indices, fullDocsByIndex, scores, query, terms, matchPhrases, filters, now),
         candidateCount: candidates.indices.length,
     };
 };
@@ -376,6 +402,9 @@ export interface ProgressiveSearchOptions {
     limit?: number;
     candidateLimit?: number;
     maxShardLoads?: number;
+    sortMode?: SitegraphSortMode;
+    filters?: SitegraphSearchFilters;
+    now?: number;
 }
 
 export const searchSitegraphProgressively = async (
@@ -389,6 +418,9 @@ export const searchSitegraphProgressively = async (
     const limit = options.limit ?? 60;
     const candidateLimit = options.candidateLimit ?? DEFAULT_CANDIDATE_LIMIT;
     const maxShardLoads = options.maxShardLoads ?? DEFAULT_MAX_SHARD_LOADS;
+    const sortMode = options.sortMode ?? 'relevance';
+    const filters = options.filters ?? {};
+    const now = options.now ?? Date.now();
     const terms = tokenizeSitegraphQuery(trimmed, bundle.queryAliases);
     const normalizedQuery = normalize(trimmed);
     const matchPhrases = expandSitegraphQueryPhrases(trimmed, bundle.queryAliases);
@@ -411,7 +443,7 @@ export const searchSitegraphProgressively = async (
             query: trimmed,
             coverage,
             stats,
-            ...(includeResults ? { results: rankedSnapshot(resultMap, stats, limit) } : {}),
+            ...(includeResults ? { results: rankedSnapshot(resultMap, stats, limit, sortMode) } : {}),
         });
     };
 
@@ -426,7 +458,7 @@ export const searchSitegraphProgressively = async (
     }
 
     applyPostings(scores, bundle.lightInvertedIndex.tokens, terms);
-    applyLightMetaFallback(bundle, scores, normalizedQuery);
+    applyLightMetaFallback(bundle, scores, normalizedQuery, filters, now);
     const quick = await hydrateCandidatePhase(
         bundle,
         scores,
@@ -437,7 +469,9 @@ export const searchSitegraphProgressively = async (
         fullDocsByIndex,
         Math.min(candidateLimit, 48),
         Math.min(maxShardLoads, QUICK_MAX_SHARD_LOADS),
-        matchPhrases
+        matchPhrases,
+        filters,
+        now
     );
     candidateCount = quick.candidateCount;
     mergeRankedResults(resultMap, quick.ranked);
@@ -451,7 +485,7 @@ export const searchSitegraphProgressively = async (
     throwIfAborted(signal);
     usedBodyIndex = true;
     applyPostings(scores, bodyIndex.tokens, terms);
-    applyLightMetaFallback(bundle, scores, normalizedQuery);
+    applyLightMetaFallback(bundle, scores, normalizedQuery, filters, now);
     const body = await hydrateCandidatePhase(
         bundle,
         scores,
@@ -462,7 +496,9 @@ export const searchSitegraphProgressively = async (
         fullDocsByIndex,
         Math.min(candidateLimit, 96),
         Math.min(maxShardLoads, BODY_MAX_SHARD_LOADS),
-        matchPhrases
+        matchPhrases,
+        filters,
+        now
     );
     candidateCount = body.candidateCount;
     mergeRankedResults(resultMap, body.ranked);
@@ -481,7 +517,9 @@ export const searchSitegraphProgressively = async (
         fullDocsByIndex,
         candidateLimit,
         Math.min(maxShardLoads, HYDRATE_MAX_SHARD_LOADS),
-        matchPhrases
+        matchPhrases,
+        filters,
+        now
     );
     candidateCount = hydrate.candidateCount;
     mergeRankedResults(resultMap, hydrate.ranked);
@@ -513,7 +551,7 @@ export const searchSitegraphProgressively = async (
             for (const document of documents) {
                 fullDocsByIndex.set(document.doc_index, document);
                 searchedDocuments += 1;
-                if (documentMatchesFullScan(document, matchPhrases)) {
+                if (sitegraphDocumentMatchesFilters(document, filters, now) && documentMatchesFullScan(document, matchPhrases)) {
                     const baseScore = scores.get(document.doc_index) ?? 24;
                     verifyMatches.push(rankSitegraphDocument(document, trimmed, terms, baseScore));
                 }
@@ -551,16 +589,4 @@ export const recallSitegraphDocuments = async (
         results: finalEvent.results || [],
         stats: finalEvent.stats,
     };
-};
-
-export const formatSearchDate = (dateLike: string | null | undefined): string => {
-    if (!dateLike) return '日期未标注';
-    const date = new Date(dateLike);
-    if (Number.isNaN(date.getTime())) return dateLike;
-
-    return date.toLocaleDateString('zh-CN', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit'
-    });
 };

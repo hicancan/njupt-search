@@ -1,5 +1,7 @@
 import type { RankedSitegraphDocument, SitegraphFullDocument } from '@njupt-search/contracts';
 import { detectQueryIntent, SEARCH_INTENT_CONFIG, sourceIdForDocument } from '../intent/queryIntent';
+import { dateSortValue, searchDateSortValue } from '../sitegraphDate';
+import { buildSitegraphMatchSnippet } from '../sitegraphSnippet';
 import { normalizeSearchText as normalize } from '../tokenizer';
 
 export const SITEGRAPH_FIELD_WEIGHTS: Record<string, number> = SEARCH_INTENT_CONFIG.field_weights;
@@ -20,14 +22,10 @@ const attachmentBlob = (document: SitegraphFullDocument): string => normalize(
         .join(' ')
 );
 
-export const dateSortValue = (dateLike: string | null | undefined): number => {
-    if (!dateLike) return 0;
-    const date = new Date(dateLike);
-    return Number.isNaN(date.getTime()) ? 0 : date.getTime();
-};
+export { dateSortValue };
 
 export const rankingDateSortValue = (document: SitegraphFullDocument): number => {
-    return dateSortValue(document.published_at) || dateSortValue(document.version_date);
+    return searchDateSortValue(document);
 };
 
 const ageDays = (timestamp: number): number => Math.max(0, (Date.now() - timestamp) / 86_400_000);
@@ -208,6 +206,7 @@ export const rankSitegraphDocument = (
     return {
         ...document,
         score,
-        score_reason: reasons.join('；') || '倒排候选'
+        score_reason: reasons.join('；') || '倒排候选',
+        match_snippet: buildSitegraphMatchSnippet(document, query, terms),
     };
 };

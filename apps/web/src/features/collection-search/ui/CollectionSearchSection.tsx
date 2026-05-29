@@ -1,14 +1,18 @@
 import { useMemo, useState } from 'react';
-import { ChevronDown, ChevronUp, Download, ExternalLink, FileText, Filter, ShieldCheck } from 'lucide-react';
+import { ArrowDownWideNarrow, CalendarDays, ChevronDown, ChevronUp, Download, ExternalLink, FileText, Filter, ListFilter, RotateCcw, ShieldCheck } from 'lucide-react';
 import {
+    SitegraphFilterOption,
+    SitegraphFilterOptions,
     RankedSitegraphDocument,
     SitegraphFacet,
     SitegraphFullDocument,
     SitegraphQueryStats,
+    SitegraphSearchFilters,
     SitegraphSearchCoverage,
     SitegraphSearchPhase,
+    SitegraphSortMode,
 } from '@/shared/lib/contracts';
-import { formatSearchDate } from '@njupt-search/search-core';
+import { formatResolvedSearchDate } from '@njupt-search/search-core';
 import { getSearchCoverageProgress } from './searchCoverageProgress';
 
 type FacetFilter = SitegraphFacet | 'all';
@@ -23,6 +27,14 @@ const FACET_LABELS: Record<FacetFilter, string> = {
     exam: '考试相关',
     news: '教务快讯',
     external: '外部链接',
+};
+
+const DATE_FILTER_LABELS: Record<NonNullable<SitegraphSearchFilters['dateRange']>, string> = {
+    all: '全部时间',
+    past_year: '近一年',
+    past_3_years: '近三年',
+    past_5_years: '近五年',
+    undated: '未标日期',
 };
 
 const isExternalUrl = (url: string): boolean => /^https?:\/\//.test(url);
@@ -73,29 +85,72 @@ function formatBytes(bytes: number): string {
     return `${bytes} B`;
 }
 
+function highlightedSegments(text: string, terms: string[]): Array<{ text: string; highlighted: boolean }> {
+    const uniqueTerms = Array.from(new Set(terms.filter(term => term.length >= 2)))
+        .sort((a, b) => b.length - a.length);
+    if (uniqueTerms.length === 0) return [{ text, highlighted: false }];
+
+    const lowerText = text.toLocaleLowerCase('zh-CN');
+    const segments: Array<{ text: string; highlighted: boolean }> = [];
+    let index = 0;
+    while (index < text.length) {
+        const matched = uniqueTerms.find(term => lowerText.startsWith(term.toLocaleLowerCase('zh-CN'), index));
+        if (matched) {
+            segments.push({ text: text.slice(index, index + matched.length), highlighted: true });
+            index += matched.length;
+            continue;
+        }
+        const nextIndex = uniqueTerms
+            .map(term => lowerText.indexOf(term.toLocaleLowerCase('zh-CN'), index + 1))
+            .filter(next => next >= 0)
+            .sort((a, b) => a - b)[0] ?? text.length;
+        segments.push({ text: text.slice(index, nextIndex), highlighted: false });
+        index = nextIndex;
+    }
+    return segments.filter(segment => segment.text.length > 0);
+}
+
+function HighlightedText({ text, terms }: { text: string; terms: string[] }) {
+    return (
+        <>
+            {highlightedSegments(text, terms).map((segment, index) => segment.highlighted ? (
+                <mark key={`${segment.text}-${index}`} className="rounded bg-[#fff3bf] px-0.5 text-inherit dark:bg-[#5f4b18]">
+                    {segment.text}
+                </mark>
+            ) : (
+                <span key={`${segment.text}-${index}`}>{segment.text}</span>
+            ))}
+        </>
+    );
+}
+
+function hasActiveFilters(filters: SitegraphSearchFilters): boolean {
+    return (filters.sourceId || 'all') !== 'all'
+        || (filters.facet || 'all') !== 'all'
+        || (filters.dateRange || 'all') !== 'all';
+}
+
 function resultSummary(
-    activeFacet: FacetFilter,
-    filteredCount: number,
+    filters: SitegraphSearchFilters,
     returnedCount: number,
     totalCount: number,
-    exhaustiveComplete: boolean
+    exhaustiveComplete: boolean,
+    sortMode: SitegraphSortMode
 ): string {
     const phaseVerb = exhaustiveComplete ? '匹配' : '已召回';
     const isCapped = totalCount > returnedCount;
-    if (activeFacet === 'all') {
-        return isCapped
-            ? `${phaseVerb} ${totalCount} 条，展示相关性最高的前 ${returnedCount} 条。`
-            : `${phaseVerb} ${totalCount} 条。`;
-    }
-
+    const scope = hasActiveFilters(filters) ? '筛选后' : '';
+    const sortLabel = sortMode === 'date_desc' ? '时间较新的' : '相关性最高的';
     if (isCapped) {
-        return `${FACET_LABELS[activeFacet]}展示 ${filteredCount} 条，范围来自前 ${returnedCount} 条高相关结果。`;
+        return `${scope}${phaseVerb} ${totalCount} 条，展示${sortLabel}前 ${returnedCount} 条。`;
     }
-    return `${FACET_LABELS[activeFacet]} ${phaseVerb} ${filteredCount} 条。`;
+    return `${scope}${phaseVerb} ${totalCount} 条。`;
 }
 
 function SearchResultCard({ document }: SearchResultCardProps) {
     const recallReason = (document as Partial<RankedSitegraphDocument>).score_reason || '';
+    const snippet = (document as Partial<RankedSitegraphDocument>).match_snippet;
+    const snippetText = snippet?.text || document.summary || document.content;
     const wrapperProps = {
         href: document.url,
         target: isExternalUrl(document.url) ? '_blank' : undefined,
@@ -109,12 +164,8 @@ function SearchResultCard({ document }: SearchResultCardProps) {
                 <span>{document.source}</span>
                 <span>›</span>
                 <span>{document.nav_path_text || document.section}</span>
-                {document.published_at ? (
-                    <>
-                        <span>›</span>
-                        <span>{formatSearchDate(document.published_at)}</span>
-                    </>
-                ) : null}
+                <span>›</span>
+                <span>{formatResolvedSearchDate(document)}</span>
             </div>
 
             <h3 className="mt-1 text-[20px] leading-snug font-medium text-[#1a0dab] dark:text-[#8ab4f8] group-hover:underline break-words">
@@ -138,7 +189,7 @@ function SearchResultCard({ document }: SearchResultCardProps) {
             </div>
 
             <p className="mt-2 text-[14px] text-[#4d5156] dark:text-[#bdc1c6] line-clamp-2 break-words">
-                {document.summary || document.content}
+                <HighlightedText text={snippetText} terms={snippet?.matched_terms || []} />
             </p>
 
             <div className="mt-2 flex flex-wrap gap-2 text-[12px] text-[#5f6368] dark:text-[#9aa0a6]">
@@ -188,6 +239,11 @@ interface CollectionSearchSectionProps {
     queryCoverage: SitegraphSearchCoverage | null;
     searchPhase: SitegraphSearchPhase | null;
     searching: boolean;
+    sortMode: SitegraphSortMode;
+    filters: SitegraphSearchFilters;
+    filterOptions: SitegraphFilterOptions | null;
+    onSortModeChange: (sortMode: SitegraphSortMode) => void;
+    onFiltersChange: (patch: SitegraphSearchFilters) => void;
 }
 
 export function CollectionSearchSection({
@@ -197,53 +253,124 @@ export function CollectionSearchSection({
     queryCoverage,
     searchPhase,
     searching,
+    sortMode,
+    filters,
+    filterOptions,
+    onSortModeChange,
+    onFiltersChange,
 }: CollectionSearchSectionProps) {
     const trimmedQuery = query.trim();
-    const [activeFacet, setActiveFacet] = useState<FacetFilter>('all');
     const [showDiagnostics, setShowDiagnostics] = useState(false);
     const [visibleState, setVisibleState] = useState({ key: '', count: 20 });
-    const availableFacets = useMemo(() => {
-        const facets = Array.from(new Set(results.map(document => document.facet)));
+    const facetOptions = useMemo(() => {
+        const facets = Array.from(new Set((filterOptions?.facets || []).map(facet => facet.id)));
         const preferred: SitegraphFacet[] = ['notice_article', 'policy', 'workflow', 'download', 'system', 'exam', 'news', 'external'];
-        return preferred.filter(facet => facets.includes(facet));
-    }, [results]);
-    const filteredResults = useMemo(() => {
-        return results.filter(document => activeFacet === 'all' || document.facet === activeFacet);
-    }, [activeFacet, results]);
-    const visibleKey = `${trimmedQuery}\u0000${activeFacet}`;
+        const facetById = new Map((filterOptions?.facets || []).map(facet => [facet.id, facet]));
+        return preferred
+            .filter(facet => facets.includes(facet))
+            .map(facet => facetById.get(facet))
+            .filter((facet): facet is SitegraphFilterOption & { id: SitegraphFacet } => Boolean(facet));
+    }, [filterOptions]);
+    const sourceOptions = filterOptions?.sources || [];
+    const visibleKey = `${trimmedQuery}\u0000${sortMode}\u0000${filters.sourceId || 'all'}\u0000${filters.facet || 'all'}\u0000${filters.dateRange || 'all'}`;
     const visibleCount = visibleState.key === visibleKey ? visibleState.count : 20;
-    const visibleResults = filteredResults.slice(0, visibleCount);
+    const visibleResults = results.slice(0, visibleCount);
     const coverage = queryCoverage || queryStats?.coverage || null;
     const totalResultCount = queryStats?.resultCount ?? results.length;
     const coverageProgress = coverage ? getSearchCoverageProgress(coverage) : null;
     const phaseText = phaseLabel(searchPhase, searching);
     const summary = resultSummary(
-        activeFacet,
-        filteredResults.length,
+        filters,
         results.length,
         totalResultCount,
-        Boolean(coverage?.exhaustive_complete)
+        Boolean(coverage?.exhaustive_complete),
+        sortMode
     );
     const statusText = trimmedQuery.length < 2
         ? '输入至少两个字符搜索南邮官网信息。'
         : phaseText
             ? `${summary}${phaseText}。`
             : summary;
+    const activeFilters = hasActiveFilters(filters);
 
     return (
         <section>
             <div className="mb-2">
-                <div className="flex gap-4 mb-1 border-b border-[#dadce0] dark:border-[#3c4043] overflow-x-auto whitespace-nowrap">
-                    <button onClick={() => setActiveFacet('all')} className={`shrink-0 pb-2 text-sm font-medium ${activeFacet === 'all' ? 'text-[#1a73e8] border-b-2 border-[#1a73e8]' : 'text-[#5f6368] hover:text-[#202124] dark:text-[#9aa0a6] dark:hover:text-[#e8eaed]'}`}>全部</button>
-                    {availableFacets.map(facet => (
+                <div className="mb-2 flex flex-wrap items-center gap-2">
+                    <div className="inline-flex h-9 items-center rounded-md border border-[#dadce0] dark:border-[#3c4043] bg-white dark:bg-[#202124] p-0.5" aria-label="排序方式">
                         <button
-                            key={facet}
-                            onClick={() => setActiveFacet(facet)}
-                            className={`shrink-0 pb-2 text-sm font-medium ${activeFacet === facet ? 'text-[#1a73e8] border-b-2 border-[#1a73e8]' : 'text-[#5f6368] hover:text-[#202124] dark:text-[#9aa0a6] dark:hover:text-[#e8eaed]'}`}
+                            type="button"
+                            aria-pressed={sortMode === 'relevance'}
+                            onClick={() => onSortModeChange('relevance')}
+                            className={`inline-flex h-7 items-center gap-1 rounded px-2.5 text-sm ${sortMode === 'relevance' ? 'bg-[#e8f0fe] text-[#1967d2] dark:bg-[#263850] dark:text-[#8ab4f8]' : 'text-[#5f6368] hover:bg-[#f1f3f4] dark:text-[#9aa0a6] dark:hover:bg-[#303134]'}`}
                         >
-                            {FACET_LABELS[facet]}
+                            <ArrowDownWideNarrow size={14} aria-hidden="true" />
+                            相关性
                         </button>
-                    ))}
+                        <button
+                            type="button"
+                            aria-pressed={sortMode === 'date_desc'}
+                            onClick={() => onSortModeChange('date_desc')}
+                            className={`inline-flex h-7 items-center gap-1 rounded px-2.5 text-sm ${sortMode === 'date_desc' ? 'bg-[#e8f0fe] text-[#1967d2] dark:bg-[#263850] dark:text-[#8ab4f8]' : 'text-[#5f6368] hover:bg-[#f1f3f4] dark:text-[#9aa0a6] dark:hover:bg-[#303134]'}`}
+                        >
+                            <CalendarDays size={14} aria-hidden="true" />
+                            时间
+                        </button>
+                    </div>
+                    <label className="inline-flex h-9 items-center gap-1.5 rounded-md border border-[#dadce0] dark:border-[#3c4043] bg-white dark:bg-[#202124] px-2 text-sm text-[#4d5156] dark:text-[#bdc1c6]">
+                        <Filter size={14} aria-hidden="true" />
+                        <span className="sr-only">来源筛选</span>
+                        <select
+                            value={filters.sourceId || 'all'}
+                            onChange={event => onFiltersChange({ sourceId: event.target.value })}
+                            className="max-w-[210px] bg-transparent text-sm outline-none"
+                            aria-label="来源筛选"
+                        >
+                            <option value="all">全部来源</option>
+                            {sourceOptions.map(source => (
+                                <option key={source.id} value={source.id}>{source.label} ({source.count})</option>
+                            ))}
+                        </select>
+                    </label>
+                    <label className="inline-flex h-9 items-center gap-1.5 rounded-md border border-[#dadce0] dark:border-[#3c4043] bg-white dark:bg-[#202124] px-2 text-sm text-[#4d5156] dark:text-[#bdc1c6]">
+                        <ListFilter size={14} aria-hidden="true" />
+                        <span className="sr-only">类型筛选</span>
+                        <select
+                            value={filters.facet || 'all'}
+                            onChange={event => onFiltersChange({ facet: event.target.value as FacetFilter })}
+                            className="bg-transparent text-sm outline-none"
+                            aria-label="类型筛选"
+                        >
+                            <option value="all">全部类型</option>
+                            {facetOptions.map(facet => (
+                                <option key={facet.id} value={facet.id}>{FACET_LABELS[facet.id]} ({facet.count})</option>
+                            ))}
+                        </select>
+                    </label>
+                    <label className="inline-flex h-9 items-center gap-1.5 rounded-md border border-[#dadce0] dark:border-[#3c4043] bg-white dark:bg-[#202124] px-2 text-sm text-[#4d5156] dark:text-[#bdc1c6]">
+                        <CalendarDays size={14} aria-hidden="true" />
+                        <span className="sr-only">时间筛选</span>
+                        <select
+                            value={filters.dateRange || 'all'}
+                            onChange={event => onFiltersChange({ dateRange: event.target.value as NonNullable<SitegraphSearchFilters['dateRange']> })}
+                            className="bg-transparent text-sm outline-none"
+                            aria-label="时间筛选"
+                        >
+                            {Object.entries(DATE_FILTER_LABELS).map(([value, label]) => (
+                                <option key={value} value={value}>{label}</option>
+                            ))}
+                        </select>
+                    </label>
+                    {activeFilters ? (
+                        <button
+                            type="button"
+                            onClick={() => onFiltersChange({ sourceId: 'all', facet: 'all', dateRange: 'all' })}
+                            className="inline-flex h-9 items-center gap-1.5 rounded-md px-2 text-sm text-[#1a73e8] hover:bg-[#f1f3f4] dark:text-[#8ab4f8] dark:hover:bg-[#303134]"
+                        >
+                            <RotateCcw size={14} aria-hidden="true" />
+                            清除筛选
+                        </button>
+                    ) : null}
                 </div>
                 <div className="mt-1 flex max-w-[880px] flex-col gap-2 text-sm text-[#70757a] dark:text-[#9aa0a6] sm:flex-row sm:items-center sm:justify-between">
                     <p>
@@ -300,7 +427,7 @@ export function CollectionSearchSection({
                     {visibleResults.map(document => (
                         <SearchResultCard key={document.id} document={document} />
                     ))}
-                    {visibleCount < filteredResults.length && (
+                    {visibleCount < results.length && (
                         <div className="pt-4 pb-2 text-center">
                             <button
                                 onClick={() => setVisibleState({ key: visibleKey, count: visibleCount + 20 })}
