@@ -32,6 +32,11 @@ const FULL_SCAN_FIELDS = ['title', 'section', 'nav_path', 'summary', 'content', 
 
 const shardCache = new Map<string, SitegraphFullDocument[]>();
 
+interface SearchTelemetry {
+    lightMetaFallbackDocIndices: Set<number>;
+    fullScanMatchDocIndices: Set<number>;
+}
+
 const publicAssetPath = (path: string): string => {
     if (/^https?:\/\//.test(path) || path.startsWith('/')) return path;
     return `/${path}`;
@@ -131,21 +136,24 @@ const applyLightMetaFallback = (
     normalizedQuery: string,
     filters: SitegraphSearchFilters,
     now: number
-): void => {
-    if (!normalizedQuery) return;
+): number[] => {
+    if (!normalizedQuery) return [];
     let filteredScoreCount = 0;
     for (const docIndex of scores.keys()) {
         const meta = bundle.docMeta[docIndex];
         if (meta && sitegraphDocumentMatchesFilters(meta, filters, now)) filteredScoreCount += 1;
-        if (filteredScoreCount >= 8) return;
+        if (filteredScoreCount >= 8) return [];
     }
+    const matchedIndices: number[] = [];
     for (const meta of bundle.docMeta) {
         if (!sitegraphDocumentMatchesFilters(meta, filters, now)) continue;
         const haystack = textBlob(meta, ['title', 'section', 'nav_path_text']);
         if (haystack.includes(normalizedQuery)) {
             scores.set(meta.doc_index, (scores.get(meta.doc_index) || 0) + 90);
+            matchedIndices.push(meta.doc_index);
         }
     }
+    return matchedIndices;
 };
 
 const sortedScoreEntries = (scores: Map<number, number>): Array<[number, number]> => {
@@ -286,8 +294,9 @@ const statsFor = (
     coverage: SitegraphSearchCoverage,
     loadedShardPaths: Set<string>,
     candidateCount: number,
-    resultCount: number
-) => ({
+    resultMap: Map<string, RankedSitegraphDocument>,
+    telemetry: SearchTelemetry
+): SitegraphQueryStats => ({
     phase,
     coverage,
     usedBodyIndex: coverage.used_body_index,
@@ -295,7 +304,12 @@ const statsFor = (
     loadedShardPaths: Array.from(loadedShardPaths).sort(),
     candidateCount,
     exhaustiveComplete: coverage.exhaustive_complete,
-    resultCount,
+    resultCount: resultMap.size,
+    fallbacks: {
+        lightMetaFallbackDocuments: telemetry.lightMetaFallbackDocIndices.size,
+        snippetFallbackResults: Array.from(resultMap.values()).filter(result => result.match_snippet?.fallback === true).length,
+        exhaustiveFullScanMatches: telemetry.fullScanMatchDocIndices.size,
+    },
 });
 
 const rankHydratedCandidates = (
@@ -428,6 +442,10 @@ export const searchSitegraphProgressively = async (
     const resultMap = new Map<string, RankedSitegraphDocument>();
     const loadedShardPaths = new Set<string>();
     const fullDocsByIndex = new Map<number, SitegraphFullDocument>();
+    const telemetry: SearchTelemetry = {
+        lightMetaFallbackDocIndices: new Set<number>(),
+        fullScanMatchDocIndices: new Set<number>(),
+    };
     let candidateCount = 0;
     let usedBodyIndex = false;
     const totalDocuments = bundle.manifest.total_documents;
@@ -437,7 +455,7 @@ export const searchSitegraphProgressively = async (
         coverage: SitegraphSearchCoverage,
         includeResults: boolean
     ) => {
-        const stats = statsFor(type, coverage, loadedShardPaths, candidateCount, resultMap.size);
+        const stats = statsFor(type, coverage, loadedShardPaths, candidateCount, resultMap, telemetry);
         emit({
             type,
             query: trimmed,
@@ -445,6 +463,12 @@ export const searchSitegraphProgressively = async (
             stats,
             ...(includeResults ? { results: rankedSnapshot(resultMap, stats, limit, sortMode) } : {}),
         });
+    };
+
+    const recordLightMetaFallback = () => {
+        for (const docIndex of applyLightMetaFallback(bundle, scores, normalizedQuery, filters, now)) {
+            telemetry.lightMetaFallbackDocIndices.add(docIndex);
+        }
     };
 
     const startedCoverage = coverageFor(bundle, 'quick_started', [], 0, 0, 0, loadedShardPaths, false, false);
@@ -458,7 +482,7 @@ export const searchSitegraphProgressively = async (
     }
 
     applyPostings(scores, bundle.lightInvertedIndex.tokens, terms);
-    applyLightMetaFallback(bundle, scores, normalizedQuery, filters, now);
+    recordLightMetaFallback();
     const quick = await hydrateCandidatePhase(
         bundle,
         scores,
@@ -485,7 +509,7 @@ export const searchSitegraphProgressively = async (
     throwIfAborted(signal);
     usedBodyIndex = true;
     applyPostings(scores, bodyIndex.tokens, terms);
-    applyLightMetaFallback(bundle, scores, normalizedQuery, filters, now);
+    recordLightMetaFallback();
     const body = await hydrateCandidatePhase(
         bundle,
         scores,
@@ -552,6 +576,7 @@ export const searchSitegraphProgressively = async (
                 fullDocsByIndex.set(document.doc_index, document);
                 searchedDocuments += 1;
                 if (sitegraphDocumentMatchesFilters(document, filters, now) && documentMatchesFullScan(document, matchPhrases)) {
+                    telemetry.fullScanMatchDocIndices.add(document.doc_index);
                     const baseScore = scores.get(document.doc_index) ?? 24;
                     verifyMatches.push(rankSitegraphDocument(document, trimmed, terms, baseScore));
                 }

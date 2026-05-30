@@ -168,6 +168,12 @@ export interface SitegraphSearchCoverage {
     exhaustive_complete: boolean;
 }
 
+export interface SitegraphFallbackStats {
+    lightMetaFallbackDocuments: number;
+    snippetFallbackResults: number;
+    exhaustiveFullScanMatches: number;
+}
+
 export interface SitegraphQueryStats {
     phase: SitegraphSearchPhase;
     coverage: SitegraphSearchCoverage;
@@ -177,6 +183,7 @@ export interface SitegraphQueryStats {
     candidateCount: number;
     exhaustiveComplete: boolean;
     resultCount: number;
+    fallbacks: SitegraphFallbackStats;
 }
 
 export type SitegraphSortMode = 'relevance' | 'date_desc';
@@ -212,6 +219,7 @@ export interface SitegraphMatchSnippet {
     matched_terms: string[];
     highlights: SitegraphMatchHighlight[];
     primary_term?: string;
+    fallback?: boolean;
 }
 
 export interface RankedSitegraphDocument extends SitegraphFullDocument {

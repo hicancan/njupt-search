@@ -19,6 +19,9 @@ def test_collection_update_is_triggered_by_sitegraph_dispatch():
     assert "Validate sitegraph ref exists" in text
     assert "repos/hicancan/njupt-site-graph/commits/$SITEGRAPH_REF" in text
     assert "sitegraph_ref $SITEGRAPH_REF is not a commit visible in hicancan/njupt-site-graph" in text
+    assert "python tools/ci/commit_generated_changes.py" in text
+    assert "--add apps/web/public/generated/collections/njupt-public/" in text
+    assert "git push" not in text
 
 
 def test_collection_update_uses_configured_source_packages():
@@ -27,3 +30,22 @@ def test_collection_update_uses_configured_source_packages():
     assert "NJUPT_SITEGRAPH_REPO: _sitegraph/njupt-site-graph" in text
     assert "--source-package \"$SITEGRAPH_JWC_INDEX\"" not in text
     assert "python -m njupt_search_indexer validate --skip-output" in text
+
+
+def test_exam_update_uses_retrying_generated_commit_helper():
+    workflow = Path(".github/workflows/update-exam-data.yml")
+    assert workflow.exists()
+    text = workflow.read_text(encoding="utf-8")
+    assert "python tools/ci/commit_generated_changes.py" in text
+    assert "--add apps/web/public/generated/exam/" in text
+    assert "git push" not in text
+
+
+def test_generated_commit_helper_retries_push_after_rebase():
+    helper = Path("tools/ci/commit_generated_changes.py")
+    assert helper.exists()
+    text = helper.read_text(encoding="utf-8")
+    assert 'git", "push", "origin", f"HEAD:{branch}"' in text
+    assert 'git", "fetch", "origin", branch' in text
+    assert 'git", "rebase", f"origin/{branch}"' in text
+    assert "GITHUB_OUTPUT" in text

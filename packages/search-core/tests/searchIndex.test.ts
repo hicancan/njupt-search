@@ -225,7 +225,9 @@ describe('sitegraph search contract', () => {
     });
 
     it('keeps the primary body hit visible near the start of mobile-safe snippets', () => {
-        const terms = tokenizeSitegraphQuery('四六级');
+        const terms = tokenizeSitegraphQuery('四六级', {
+            四六级: { aliases: ['四级', '六级'] }
+        });
         const snippet = buildSitegraphMatchSnippet({
             ...fullDocument,
             title: '关于英国伦敦大学学院2026年暑期访学项目报名的通知',
@@ -236,11 +238,23 @@ describe('sitegraph search contract', () => {
 
         expect(snippet?.text).toContain('六级400');
         expect(snippet?.matched_terms).toEqual(expect.arrayContaining(['四级', '六级']));
+        expect(snippet?.fallback).toBeFalsy();
         const firstHighlight = snippet?.highlights[0];
         expect(firstHighlight?.term).toBe('四级');
         expect(firstHighlight?.start).toBeLessThanOrEqual(32);
         const visibleLead = snippet?.text.slice(0, firstHighlight?.end ?? 0);
         expect(visibleLead).toContain('四级');
+    });
+
+    it('marks snippets that could not place a query hit as fallback snippets', () => {
+        const snippet = buildSitegraphMatchSnippet({
+            ...fullDocument,
+            content: '这是一段可显示的正文，但它不包含当前查询词。'
+        }, '不存在的词', ['不存在的词']);
+
+        expect(snippet?.fallback).toBe(true);
+        expect(snippet?.highlights).toEqual([]);
+        expect(snippet?.matched_terms).toEqual([]);
     });
 
     it('rejects obsolete provider fields instead of masking schema errors', () => {
@@ -308,6 +322,56 @@ describe('sitegraph search contract', () => {
             expect(stats.loadedShardCount).toBe(1);
             expect(stats.loadedShardPaths).toEqual([fullShard.path]);
             expect(stats.coverage.exhaustive_complete).toBe(true);
+        } finally {
+            globalThis.fetch = originalFetch;
+        }
+    });
+
+    it('reports fallback and verification telemetry in query stats', async () => {
+        const docMeta = docMetaLightFixture();
+        const bundle: SitegraphIndexBundle = {
+            manifest,
+            docMeta: [docMeta],
+            lightInvertedIndex: {
+                version: 'sitegraph-light-inverted-progressive',
+                tokenizer: 'test',
+                field_codes: { title: 't' },
+                tokens: {}
+            },
+            queryAliases: {}
+        };
+        const originalFetch = globalThis.fetch;
+        globalThis.fetch = (async (input: RequestInfo | URL) => {
+            const url = String(input);
+            if (url.includes('body_inverted_index')) {
+                return new Response(JSON.stringify({
+                    version: 'sitegraph-body-inverted-progressive',
+                    tokenizer: 'test',
+                    field_codes: { summary: 'm', content: 'c' },
+                    tokens: {}
+                }));
+            }
+            if (url.includes('shard_filter')) {
+                return new Response(JSON.stringify({
+                    [fullShard.shard_id]: {
+                        bitset_base64: '/w==',
+                        bit_count: 8,
+                        hash_count: 1,
+                        token_count: 1,
+                        sha256: '0123456789abcdef0123456789abcdef',
+                        hash_algorithm: 'bloom-fnv1a32-utf8'
+                    }
+                }));
+            }
+            return new Response(JSON.stringify([fullDocument]));
+        }) as typeof fetch;
+        try {
+            const { results, stats } = await recallSitegraphDocuments(bundle, fullDocument.title, new AbortController().signal);
+            expect(results[0]?.id).toBe('jwc-detail-1');
+            expect(stats.fallbacks.lightMetaFallbackDocuments).toBe(1);
+            expect(stats.fallbacks.exhaustiveFullScanMatches).toBe(1);
+            expect(stats.fallbacks.snippetFallbackResults).toBe(0);
+            expect(results[0]?.query_stats?.fallbacks.lightMetaFallbackDocuments).toBe(1);
         } finally {
             globalThis.fetch = originalFetch;
         }

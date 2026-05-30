@@ -42,16 +42,8 @@ const FIELD_WEIGHTS: Record<SnippetField, number> = {
 
 const compactText = (value: string): string => value.replace(/\s+/g, ' ').trim();
 
-const expandVisibleTermAliases = (terms: string[]): string[] => {
-    const expanded = [...terms];
-    if (terms.some(term => term === '四六级' || term === '四六' || term.includes('四六级'))) {
-        expanded.push('四级', '六级');
-    }
-    return expanded;
-};
-
 const normalizedTerms = (query: string, terms: string[]): string[] => {
-    return Array.from(new Set(expandVisibleTermAliases([query, ...terms])
+    return Array.from(new Set([query, ...terms]
         .map(normalize)
         .filter(term => term.length >= 2)))
         .sort((a, b) => b.length - a.length);
@@ -163,6 +155,7 @@ const fallbackSnippet = (candidate: SnippetCandidate): SitegraphMatchSnippet | n
         text: text.length > FALLBACK_SNIPPET_LENGTH ? `${text.slice(0, FALLBACK_SNIPPET_LENGTH).trim()}...` : text,
         matched_terms: [],
         highlights: [],
+        fallback: true,
     };
 };
 

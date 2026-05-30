@@ -456,6 +456,13 @@ export function CollectionSearchSection({
                             <span>已加载 {formatBytes(coverage.loaded_bytes)}</span>
                             <span>阶段：{coverage.phase}</span>
                             <span>字段：{fieldLabel(coverage.searched_fields)}</span>
+                            {queryStats ? (
+                                <>
+                                    <span>轻元数据兜底 {queryStats.fallbacks.lightMetaFallbackDocuments}</span>
+                                    <span>摘要兜底 {queryStats.fallbacks.snippetFallbackResults}</span>
+                                    <span>全量命中 {queryStats.fallbacks.exhaustiveFullScanMatches}</span>
+                                </>
+                            ) : null}
                         </div>
                     </div>
                 ) : null}
