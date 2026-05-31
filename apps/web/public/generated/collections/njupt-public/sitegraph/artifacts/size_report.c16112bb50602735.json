@@ -1,0 +1,57 @@
+{
+  "generated_at": "2026-05-31T13:37:04.285193+00:00",
+  "first_screen_files": [],
+  "first_screen_bytes": 0,
+  "routed_first_screen_files": [
+    {
+      "name": "source_registry",
+      "path": "generated/collections/njupt-public/sitegraph/artifacts/source_registry.7b78048926010817.json",
+      "bytes": 4405
+    },
+    {
+      "name": "global_query_directory",
+      "path": "generated/collections/njupt-public/sitegraph/artifacts/global_query_directory.b8233d8db025f979.json",
+      "bytes": 197030
+    },
+    {
+      "name": "query_aliases",
+      "path": "generated/collections/njupt-public/sitegraph/artifacts/query_aliases.4025b911a712ffee.json",
+      "bytes": 2809
+    }
+  ],
+  "routed_first_screen_bytes": 204244,
+  "routed_first_screen_total_bytes": 204244,
+  "global_query_directory_bytes": 197030,
+  "source_registry_bytes": 4405,
+  "query_aliases_bytes": 2809,
+  "local_impact_light_index_total_bytes": 28563086,
+  "local_impact_body_index_total_bytes": 30920155,
+  "local_index_count": 246,
+  "body_index_bytes": 30920155,
+  "full_scan_total_bytes": 44782519,
+  "shard_count": 942,
+  "max_shard_bytes": 485346,
+  "avg_shard_bytes": 47539.83,
+  "full_shard_count": 942,
+  "max_full_shard_bytes": 485346,
+  "avg_full_shard_bytes": 47539.83,
+  "max_full_shard_documents": 152,
+  "avg_full_shard_documents": 10.89,
+  "artifact_count": 1464,
+  "artifact_total_bytes": 122262888,
+  "representative_query_phase_timings": {
+    "query": "校历",
+    "planning_ms": 0,
+    "local_index_ms": 0,
+    "hydrate_ms": 0,
+    "verify_scan_ms": 2339.789
+  },
+  "exhaustive_scan": {
+    "shard_count": 942,
+    "max_shard_bytes": 485346,
+    "avg_shard_bytes": 47539.83,
+    "estimated_full_scan_bytes": 44782519,
+    "representative_query": "校历",
+    "representative_query_full_scan_time_ms": 2339.789
+  }
+}
