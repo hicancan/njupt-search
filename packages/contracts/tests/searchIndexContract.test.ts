@@ -29,6 +29,8 @@ describe('search index contracts package', () => {
         expect(manifest.core_search.first_screen_artifacts).toEqual(['source_registry', 'global_query_directory', 'query_aliases']);
         expect(manifest.progressive_search.full_scan_supported).toBe(true);
         expect(manifest.verification_contract.shard_filter_supported).toBe(true);
+        expect(manifest.verification_contract.proof_catalog_artifact_family).toBe('proof_catalogs');
+        expect(manifest.verification_contract.completion_requires_ledger).toBe(true);
         expect('full_shards' in manifest.sitegraph).toBe(false);
         expect(Object.keys(manifest.sitegraph.source_manifests).length).toBeGreaterThan(0);
         expect('doc_meta_light' in manifest.artifacts).toBe(false);
@@ -54,6 +56,7 @@ describe('search index contracts package', () => {
         expect(queryDirectory.entries['大创']?.local_index_ids.length).toBeGreaterThan(0);
         expect(sourceManifest.local_indexes.length).toBeGreaterThan(0);
         expect(sourceManifest.full_shards.length).toBeGreaterThan(0);
+        expect(sourceManifest.artifacts.proof_catalog?.role).toBe('proof_catalog');
     });
 
     it('keeps local light index metadata free of full-document fields', () => {
@@ -74,6 +77,9 @@ describe('search index contracts package', () => {
         expect('summary' in firstDoc).toBe(false);
         expect('attachments' in firstDoc).toBe(false);
         expect('provenance' in firstDoc).toBe(false);
+        expect('tokens' in localLightIndex).toBe(false);
+        expect(localLightIndex.scoring_model).toBe('impact-ordered-block-max-bm25f-lite-v2');
+        expect(Object.keys(localLightIndex.terms).length).toBeGreaterThan(0);
 
         const docMeta = {
             doc_index: 0,

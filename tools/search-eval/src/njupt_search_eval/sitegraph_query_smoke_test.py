@@ -206,7 +206,7 @@ def validate_size_budget() -> dict[str, Any]:
     first_screen_artifacts = manifest["core_search"]["first_screen_artifacts"]
     if first_screen_artifacts != ["source_registry", "global_query_directory", "query_aliases"]:
         fail("unexpected first-screen artifact list", first_screen_artifacts)
-    if any(name in first_screen_artifacts for name in ("body_inverted_index", "local_light_index", "local_body_index")):
+    if any(name in first_screen_artifacts for name in ("body_inverted_index", "local_light_index", "local_body_index", "local_impact_light_index", "local_impact_body_index")):
         fail("local/body indexes must not be first-screen artifacts")
 
     size_report = read_json(PUBLIC_ROOT / artifacts["size_report"]["path"])

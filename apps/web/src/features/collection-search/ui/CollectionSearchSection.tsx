@@ -452,6 +452,9 @@ export function CollectionSearchSection({
                     <div className="mt-2 max-w-[880px] rounded-md border border-[#dadce0] dark:border-[#3c4043] bg-[#f8fafc] dark:bg-[#2d2e30] px-3 py-2 text-[13px] text-[#4d5156] dark:text-[#bdc1c6]">
                         <div className="flex flex-wrap gap-x-4 gap-y-1">
                             <span>已证明跳过 {coverage.proved_no_match_shards}</span>
+                            <span>筛选排除 {coverage.excluded_by_filter_shards}</span>
+                            <span>待证明 {coverage.pending_shards}</span>
+                            <span>失败 {coverage.failed_shards}</span>
                             <span>已扫描 {coverage.scanned_shards}/{coverage.total_shards}</span>
                             <span>文档 {coverage.searched_documents}/{coverage.total_documents}</span>
                             <span>已加载 {formatBytes(coverage.loaded_bytes)}</span>
@@ -463,6 +466,8 @@ export function CollectionSearchSection({
                                     <span>摘要兜底 {queryStats.fallbacks.snippetFallbackResults}</span>
                                     <span>验证命中 {queryStats.fallbacks.verifiedFullScanMatches}</span>
                                     <span>局部索引 {queryStats.loadedLocalIndexCount}</span>
+                                    <span>剪枝块 {queryStats.retrieval.impactBlocksPruned}</span>
+                                    <span>跳过 postings {queryStats.retrieval.postingsPruned}</span>
                                 </>
                             ) : null}
                         </div>

@@ -14,7 +14,7 @@ import type {
     SitegraphFullDocument,
     SitegraphFullShard,
     SitegraphGlobalQueryDirectory,
-    SitegraphInvertedIndex,
+    SitegraphImpactIndex,
     SitegraphLocalBodyIndex,
     SitegraphLocalIndexRef,
     SitegraphLocalLightIndex,
@@ -157,8 +157,20 @@ const route = (
     candidate_shard_group_count: 1,
     authority_priors: { jwc: 1 },
     freshness_policy: 'prefer_recent_for_current_notice_intents',
-    matched_document_count: 1
+    matched_document_count: 1,
+    expected_cost_bytes: 256,
+    expected_utility_per_kb: 4,
+    planner_features: {
+        source_entropy: 1,
+        facet_entropy: 1,
+        year_entropy: 1,
+        local_index_count: localIndexIds.length
+    }
 });
+
+const impactTerms = (postings: Record<string, Record<string, number[]>>): SitegraphImpactIndex['terms'] => {
+    return postings;
+};
 
 interface RoutedFixture {
     session: SitegraphRoutedSession;
@@ -174,8 +186,8 @@ const makeRoutedFixture = (
     documents: SitegraphFullDocument[],
     options: {
         queryTerms?: string[];
-        lightTokens?: SitegraphInvertedIndex['tokens'];
-        bodyTokens?: SitegraphInvertedIndex['tokens'];
+        lightTerms?: SitegraphImpactIndex['terms'];
+        bodyTerms?: SitegraphImpactIndex['terms'];
         queryAliases?: Record<string, unknown>;
         routeEntries?: Record<string, QueryDirectoryRoute>;
         intentRoutes?: Record<string, QueryDirectoryRoute>;
@@ -196,8 +208,8 @@ const makeRoutedFixture = (
         index_id: localIndexId,
         scope,
         doc_count: documents.length,
-        light_index: artifact(`${prefix}/local-light.json`, 'local_light_index', 'query_planned', documents.length),
-        body_index: artifact(`${prefix}/local-body.json`, 'local_body_index', 'query_planned', documents.length)
+        light_index: artifact(`${prefix}/local-impact-light.json`, 'local_impact_light_index', 'query_planned', documents.length),
+        body_index: artifact(`${prefix}/local-impact-body.json`, 'local_impact_body_index', 'query_planned', documents.length)
     };
     const manifest: SitegraphSearchManifest = {
         generated_at: '2026-05-30T00:00:00Z',
@@ -229,7 +241,7 @@ const makeRoutedFixture = (
             total_documents: documents.length,
             full_scan_supported: true,
             progressive_events: true,
-            artifact_roles: ['source_registry', 'global_query_directory', 'local_light_indexes', 'local_body_indexes', 'full_shards']
+            artifact_roles: ['source_registry', 'global_query_directory', 'local_impact_light_index', 'local_impact_body_index', 'proof_catalog', 'full_shards']
         },
         coverage_contract: {
             states: ['plan_started', 'local_index_started', 'first_trusted_results', 'body_index_started', 'top_results_hydrated', 'verification_started', 'partial_verified', 'global_exhaustive_complete'],
@@ -237,7 +249,8 @@ const makeRoutedFixture = (
             proof: {
                 indexed_fields: ['title', 'section', 'nav_path', 'attachments'],
                 full_scan_fields: ['title', 'section', 'nav_path', 'summary', 'content', 'attachments', 'url'],
-                complete_requires: ['source_manifest', 'shard_filter', 'full_shard_scan_or_proof']
+                complete_requires: ['proof_ledger', 'shard_filter', 'full_shard_scan_or_proof'],
+                ledger_states: ['pending', 'scanned', 'proved_no_match', 'excluded_by_filter', 'excluded_by_declared_scope', 'failed']
             },
             total_shards: 1,
             total_documents: documents.length
@@ -247,10 +260,11 @@ const makeRoutedFixture = (
             proved_skip_supported: true,
             scan_fallback_supported: true,
             filter_artifact_family: 'shard_filters',
-            catalog_artifact_family: 'shard_catalogs'
+            proof_catalog_artifact_family: 'proof_catalogs',
+            completion_requires_ledger: true
         },
         routing_contract: {
-            planner: 'source_registry_plus_global_query_directory',
+            planner: 'cost_authority_proof_ledger_planner_v2',
             directory_contains_doc_postings: false,
             startup_loads_local_indexes: false,
             startup_loads_full_shards: false,
@@ -347,7 +361,7 @@ const makeRoutedFixture = (
         local_indexes: [localRef],
         full_shards: [shard],
         artifacts: {
-            shard_catalog: artifact(`${prefix}/shard-catalog.json`, 'shard_catalog', 'verify', 1),
+            proof_catalog: artifact(`${prefix}/proof-catalog.json`, 'proof_catalog', 'verify', 1),
             shard_filter: artifact(`${prefix}/shard-filter.json`, 'shard_filter', 'verify', 1),
             attachment_meta_index: artifact(`${prefix}/attachment-meta.json`, 'attachment_meta_index', 'on_demand', 1),
             attachment_filename_index: artifact(`${prefix}/attachment-filename.json`, 'attachment_filename_index', 'on_demand', 1),
@@ -357,19 +371,25 @@ const makeRoutedFixture = (
         }
     };
     const localLightIndex: SitegraphLocalLightIndex = {
-        version: 'sitegraph-local-light-index-v1',
+        version: 'sitegraph-local-light-impact-v2',
         tokenizer: 'test',
         field_codes: { title: 't', attachment: 'a', section: 's' },
+        field_impacts: { t: 120, a: 95, s: 60 },
+        block_size: 32,
+        scoring_model: 'impact-ordered-block-max-bm25f-lite-v2',
         scope,
         documents: documents.map(document => docMetaFrom({ ...document, shard: { shard_id: shard.shard_id, path: shard.path } })),
-        tokens: options.lightTokens || { 转专业: { t: [0] }, 申请表: { a: [0] } }
+        terms: options.lightTerms || impactTerms({ 转专业: { t: [0] }, 申请表: { a: [0] } })
     };
     const localBodyIndex: SitegraphLocalBodyIndex = {
-        version: 'sitegraph-local-body-index-v1',
+        version: 'sitegraph-local-body-impact-v2',
         tokenizer: 'test',
         field_codes: { summary: 'm', content: 'c' },
+        field_impacts: { m: 16, c: 10 },
+        block_size: 32,
+        scoring_model: 'impact-ordered-block-max-bm25f-lite-v2',
         scope,
-        tokens: options.bodyTokens || { 转专业: { c: [0] }, 申请表: { c: [0] } }
+        terms: options.bodyTerms || impactTerms({ 转专业: { c: [0] }, 申请表: { c: [0] } })
     };
     const shardFilter = {
         [shard.shard_id]: {
@@ -487,8 +507,8 @@ describe('sitegraph search contract', () => {
         const document = makeDocument();
         const fixture = makeRoutedFixture('rank-attachment', [document], {
             queryTerms: ['转专业申请表'],
-            lightTokens: { 转专业: { t: [0] }, 申请表: { a: [0] }, 转专业申请表: { a: [0] } },
-            bodyTokens: { 转专业: { c: [0] }, 申请表: { c: [0] } },
+            lightTerms: impactTerms({ 转专业: { t: [0] }, 申请表: { a: [0] }, 转专业申请表: { a: [0] } }),
+            bodyTerms: impactTerms({ 转专业: { c: [0] }, 申请表: { c: [0] } }),
             queryAliases: { 转专业申请表: { aliases: ['专业变更申请表'] } }
         });
 
@@ -508,8 +528,8 @@ describe('sitegraph search contract', () => {
     it('reports fallback and verification telemetry in routed query stats', async () => {
         const fixture = makeRoutedFixture('fallback-telemetry', [makeDocument()], {
             queryTerms: ['南京邮电大学本科生转专业管理办法'],
-            lightTokens: {},
-            bodyTokens: {}
+            lightTerms: {},
+            bodyTerms: {}
         });
 
         await withMockFetch(fixture, async () => {
@@ -558,8 +578,8 @@ describe('sitegraph search contract', () => {
         const fixture = makeRoutedFixture('date-filter', docs, {
             queryTerms: ['推免'],
             facet: 'download',
-            lightTokens: { 推免: { t: [0, 1] } },
-            bodyTokens: { 推免: { c: [0, 1] } }
+            lightTerms: impactTerms({ 推免: { t: [0, 1] } }),
+            bodyTerms: impactTerms({ 推免: { c: [0, 1] } })
         });
 
         await withMockFetch(fixture, async () => {
@@ -617,16 +637,16 @@ describe('sitegraph search contract', () => {
         const fixture = makeRoutedFixture('alias-recall', [calendarDocument, weakAliasDocument], {
             queryTerms: ['校历'],
             facet: 'notice_article',
-            lightTokens: {
+            lightTerms: impactTerms({
                 校历: { t: [0] },
                 '2025-2026': { t: [0, 1] },
                 学年: { t: [0, 1] }
-            },
-            bodyTokens: {
+            }),
+            bodyTerms: impactTerms({
                 校历: { c: [0] },
                 '2025-2026': { c: [0, 1] },
                 学年: { c: [0, 1] }
-            },
+            }),
             queryAliases: { 校历: { aliases: ['2025-2026学年校历'] } }
         });
 
@@ -640,8 +660,8 @@ describe('sitegraph search contract', () => {
     it('emits routed progressive phases with exhaustive coverage', async () => {
         const fixture = makeRoutedFixture('progressive-phases', [makeDocument()], {
             queryTerms: ['转专业申请'],
-            lightTokens: { 转专业: { t: [0] } },
-            bodyTokens: { 申请: { c: [0] } }
+            lightTerms: impactTerms({ 转专业: { t: [0] } }),
+            bodyTerms: impactTerms({ 申请: { c: [0] } })
         });
 
         await withMockFetch(fixture, async () => {
@@ -670,8 +690,8 @@ describe('sitegraph search contract', () => {
     it('uses shard filter proof to skip no-match shards', async () => {
         const fixture = makeRoutedFixture('filter-skip', [makeDocument()], {
             queryTerms: ['不存在的查询'],
-            lightTokens: {},
-            bodyTokens: {},
+            lightTerms: {},
+            bodyTerms: {},
             filterBase64: 'AA=='
         });
 

@@ -8,8 +8,8 @@ import {
     SitegraphFullDocumentSchema,
     SitegraphGlobalQueryDirectory,
     SitegraphGlobalQueryDirectorySchema,
-    SitegraphInvertedIndex,
-    SitegraphInvertedIndexSchema,
+    SitegraphImpactIndex,
+    SitegraphImpactIndexSchema,
     SitegraphLocalBodyIndex,
     SitegraphLocalBodyIndexSchema,
     SitegraphLocalLightIndex,
@@ -202,9 +202,9 @@ export const parseSitegraphExternalIndex = (payload: unknown, source = 'sitegrap
     return parseArray(SitegraphExternalRecordSchema, payload, source);
 };
 
-export const parseSitegraphInvertedIndex = (payload: unknown, source = 'sitegraph inverted_index'): SitegraphInvertedIndex => {
+export const parseSitegraphImpactIndex = (payload: unknown, source = 'sitegraph impact_index'): SitegraphImpactIndex => {
     try {
-        return SitegraphInvertedIndexSchema.parse(payload);
+        return SitegraphImpactIndexSchema.parse(payload);
     } catch (e) {
         if (e instanceof z.ZodError) {
             throw new SearchContractError(`Validation failed for ${source}: ${formatZodIssues(payload, e)}`);

@@ -48,6 +48,18 @@ FIELD_CODES = {
 
 LIGHT_FIELD_CODES = {key: FIELD_CODES[key] for key in ("title", "section", "nav_path", "attachment", "external", "system", "tag")}
 BODY_FIELD_CODES = {key: FIELD_CODES[key] for key in ("summary", "content")}
+FIELD_IMPACTS = {
+    "t": 120,
+    "a": 95,
+    "e": 95,
+    "y": 95,
+    "s": 60,
+    "n": 55,
+    "g": 45,
+    "m": 16,
+    "c": 10,
+}
+IMPACT_BLOCK_SIZE = 32
 
 
 def query_alias_payload() -> dict[str, dict[str, list[str]]]:
@@ -64,14 +76,18 @@ def add_postings(index: dict[str, dict[str, set[int]]], doc_index: int, field_co
         index[token][field_code].add(doc_index)
 
 
-def compact_postings(raw_index: dict[str, dict[str, set[int]]]) -> dict[str, dict[str, list[int]]]:
-    tokens: dict[str, dict[str, list[int]]] = {}
+def compact_impact_terms(raw_index: dict[str, dict[str, set[int]]]) -> dict[str, dict[str, Any]]:
+    terms: dict[str, dict[str, Any]] = {}
     for token, fields in raw_index.items():
-        compact_fields: dict[str, list[int]] = {}
+        postings: dict[str, list[int]] = {}
         for field, ids in fields.items():
-            compact_fields[field] = sorted(ids)
-        tokens[token] = compact_fields
-    return tokens
+            doc_ids = sorted(ids)
+            if not doc_ids:
+                continue
+            postings[field] = doc_ids
+        if postings:
+            terms[token] = postings
+    return terms
 
 
 def build_light_inverted_index(documents: list[dict[str, Any]]) -> dict[str, Any]:
@@ -93,11 +109,14 @@ def build_light_inverted_index(documents: list[dict[str, Any]]) -> dict[str, Any
             add_postings(raw_index, doc_index, FIELD_CODES["system"], sitegraph_tokens([document.get("title"), document.get("url"), document.get("section")], cjk_max_n=5))
 
     return {
-        "version": "sitegraph-light-inverted-progressive",
+        "version": "sitegraph-local-light-impact-v2",
         "tokenizer": "nfkc-lower-cjk-ngram-code",
         "field_codes": LIGHT_FIELD_CODES,
+        "field_impacts": {code: FIELD_IMPACTS[code] for code in LIGHT_FIELD_CODES.values()},
+        "block_size": IMPACT_BLOCK_SIZE,
+        "scoring_model": "impact-ordered-block-max-bm25f-lite-v2",
         "entry_fields": ["title", "section", "nav_path", "tag", "attachment", "external", "system"],
-        "tokens": compact_postings(raw_index),
+        "terms": compact_impact_terms(raw_index),
     }
 
 
@@ -108,11 +127,14 @@ def build_body_inverted_index(documents: list[dict[str, Any]]) -> dict[str, Any]
         add_postings(raw_index, doc_index, FIELD_CODES["summary"], sitegraph_tokens(document.get("summary"), cjk_max_n=4, cap=80))
         add_postings(raw_index, doc_index, FIELD_CODES["content"], sitegraph_tokens(document.get("content"), cjk_max_n=3, cap=180))
     return {
-        "version": "sitegraph-body-inverted-progressive",
+        "version": "sitegraph-local-body-impact-v2",
         "tokenizer": "nfkc-lower-cjk-ngram-code",
         "field_codes": BODY_FIELD_CODES,
+        "field_impacts": {code: FIELD_IMPACTS[code] for code in BODY_FIELD_CODES.values()},
+        "block_size": IMPACT_BLOCK_SIZE,
+        "scoring_model": "impact-ordered-block-max-bm25f-lite-v2",
         "entry_fields": ["summary", "content"],
-        "tokens": compact_postings(raw_index),
+        "terms": compact_impact_terms(raw_index),
     }
 
 

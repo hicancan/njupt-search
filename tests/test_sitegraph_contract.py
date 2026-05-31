@@ -141,8 +141,9 @@ def test_public_index_is_pure_sitegraph_contract():
     assert manifest["verification_contract"]["proved_skip_supported"] is True
     assert manifest["verification_contract"]["scan_fallback_supported"] is True
     assert manifest["verification_contract"]["filter_artifact_family"] == "shard_filters"
-    assert manifest["verification_contract"]["catalog_artifact_family"] == "shard_catalogs"
-    assert manifest["routing_contract"]["planner"] == "source_registry_plus_global_query_directory"
+    assert manifest["verification_contract"]["proof_catalog_artifact_family"] == "proof_catalogs"
+    assert manifest["verification_contract"]["completion_requires_ledger"] is True
+    assert manifest["routing_contract"]["planner"] == "cost_authority_proof_ledger_planner_v2"
     assert manifest["routing_contract"]["directory_contains_doc_postings"] is False
     assert manifest["routing_contract"]["startup_loads_local_indexes"] is False
     assert manifest["routing_contract"]["startup_loads_full_shards"] is False
@@ -181,7 +182,7 @@ def test_public_index_is_pure_sitegraph_contract():
 
     query_directory = read_artifact(manifest["artifacts"]["global_query_directory"])
     assert query_directory["entry_count"] == len(query_directory["entries"])
-    assert query_directory["fallback"]["mode"] == "load_authority_source_manifests_then_verify_in_scope_shards"
+    assert query_directory["fallback"]["mode"] == "cost_sort_authority_manifests_then_proof_ledger_verify"
     assert not {"doc_index", "postings", "documents"} & set(walk_keys(query_directory))
 
 
@@ -230,6 +231,12 @@ def test_light_index_and_shards_have_no_obsolete_fields():
             assert body_index["scope"] == ref["scope"]
             assert set(light_index["field_codes"].values()) <= {"t", "s", "n", "g", "a", "e", "y"}
             assert set(body_index["field_codes"].values()) == {"m", "c"}
+            assert "tokens" not in light_index
+            assert "tokens" not in body_index
+            assert light_index["scoring_model"] == "impact-ordered-block-max-bm25f-lite-v2"
+            assert body_index["scoring_model"] == "impact-ordered-block-max-bm25f-lite-v2"
+            assert isinstance(light_index["terms"], dict)
+            assert isinstance(body_index["terms"], dict)
             assert len(light_index["documents"]) == ref["doc_count"]
             assert not (BANNED_KEYS & set(walk_keys(light_index)))
             for item in light_index["documents"]:

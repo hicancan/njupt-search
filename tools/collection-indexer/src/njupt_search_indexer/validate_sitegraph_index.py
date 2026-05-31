@@ -137,7 +137,7 @@ def validate_local_indexes(source_manifests: list[dict[str, Any]], expected_sour
     local_documents: list[dict[str, Any]] = []
     for source_manifest in source_manifests:
         source_id = str(source_manifest["source_id"])
-        for name in ("shard_catalog", "shard_filter", "attachment_meta_index", "attachment_filename_index", "attachment_text_shards"):
+        for name in ("proof_catalog", "shard_filter", "attachment_meta_index", "attachment_filename_index", "attachment_text_shards"):
             entry = source_manifest.get("artifacts", {}).get(name)
             if not isinstance(entry, dict) or not entry.get("path"):
                 fail(f"source {source_id} missing artifact {name}")
@@ -154,6 +154,15 @@ def validate_local_indexes(source_manifests: list[dict[str, Any]], expected_sour
                 fail(f"local light index has invalid field codes: {ref.get('index_id')}")
             if set((body_payload.get("field_codes") or {}).values()).difference({"m", "c"}):
                 fail(f"local body index has invalid field codes: {ref.get('index_id')}")
+            for label, payload in (("light", light_payload), ("body", body_payload)):
+                if "tokens" in payload:
+                    fail(f"local {label} index must not expose legacy tokens: {ref.get('index_id')}")
+                if payload.get("scoring_model") != "impact-ordered-block-max-bm25f-lite-v2":
+                    fail(f"local {label} index has unexpected scoring_model: {ref.get('index_id')}")
+                if not isinstance(payload.get("terms"), dict):
+                    fail(f"local {label} index missing impact terms: {ref.get('index_id')}")
+                if int(payload.get("block_size") or 0) <= 0:
+                    fail(f"local {label} index missing block_size: {ref.get('index_id')}")
             docs = light_payload.get("documents")
             if not isinstance(docs, list) or len(docs) != int(ref.get("doc_count", -1)):
                 fail(f"local light index document count mismatch: {ref.get('index_id')}")
@@ -256,6 +265,10 @@ def validate_generated_index(packages: list[dict[str, Any]] | dict[str, Any]) ->
         fail("manifest.verification_contract.scan_fallback_supported must be true")
     if verification_contract.get("filter_artifact_family") != "shard_filters":
         fail("manifest.verification_contract.filter_artifact_family must be shard_filters")
+    if verification_contract.get("proof_catalog_artifact_family") != "proof_catalogs":
+        fail("manifest.verification_contract.proof_catalog_artifact_family must be proof_catalogs")
+    if verification_contract.get("completion_requires_ledger") is not True:
+        fail("manifest.verification_contract.completion_requires_ledger must be true")
 
     required_artifacts = (
         "source_registry",
@@ -284,7 +297,7 @@ def validate_generated_index(packages: list[dict[str, Any]] | dict[str, Any]) ->
                 fail(f"source registry entry missing {field}: {item.get('source_id')}")
 
     query_directory = read_json(artifact_path(manifest, "global_query_directory"))
-    if query_directory.get("version") != "sitegraph-global-query-directory-routed-v1":
+    if query_directory.get("version") != "sitegraph-global-query-directory-cost-v2":
         fail("global_query_directory has unexpected version")
     directory_text = json.dumps(query_directory, ensure_ascii=False)
     if "doc_index" in directory_text:

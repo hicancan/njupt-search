@@ -7,6 +7,9 @@ import {
     SitegraphLocalBodyIndex,
     SitegraphLocalIndexRef,
     SitegraphLocalLightIndex,
+    SitegraphProofLedgerEntry,
+    SitegraphProofLedgerState,
+    SitegraphProofLedgerSummary,
     SitegraphQueryPlan,
     SitegraphQueryStats,
     SitegraphRoutedSession,
@@ -56,11 +59,20 @@ interface LoadedPlanningScope {
     sourceManifestBytes: number;
     shardPathById: Map<string, string>;
     shardById: Map<string, SitegraphFullShard>;
+    selectedLocalIndexes: NonNullable<SitegraphQueryPlan['selected_local_indexes']>;
 }
 
 interface SearchTelemetry {
     localMetaFallbackDocIndices: Set<number>;
     fullScanMatchDocIndices: Set<number>;
+    retrieval: {
+        dynamicPruning: boolean;
+        impactBlocksVisited: number;
+        impactBlocksPruned: number;
+        postingsVisited: number;
+        postingsPruned: number;
+        competitiveThreshold: number;
+    };
 }
 
 const sourceManifestCache = new Map<string, SitegraphSourceManifest>();
@@ -184,6 +196,16 @@ const buildQueryPlan = (
     const routeSources = routes.flatMap(route => route.likely_sources);
     const routeLocalIndexes = routes.flatMap(route => route.local_index_ids);
     const routeResultTypes = routes.flatMap(route => route.expected_result_types);
+    const routeDecisions = routes.map(route => ({
+        term: route.term || profile.intent,
+        local_index_count: route.local_index_ids.length,
+        expected_cost_bytes: route.expected_cost_bytes,
+        expected_utility_per_kb: route.expected_utility_per_kb,
+        likely_sources: route.likely_sources,
+        likely_facets: route.likely_facets,
+    }));
+    const estimatedCostBytes = routeDecisions.reduce((sum, route) => sum + route.expected_cost_bytes, 0);
+    const estimatedUtility = routeDecisions.reduce((sum, route) => sum + route.expected_utility_per_kb, 0);
     const allSources = session.sourceRegistry.sources.map(source => source.source_id);
     const filteredSource = filters.sourceId && filters.sourceId !== 'all' ? [filters.sourceId] : [];
     const sourceIds = uniqueOrdered([
@@ -202,6 +224,10 @@ const buildQueryPlan = (
         source_ids: sourceIds,
         local_index_ids: uniqueOrdered(routeLocalIndexes),
         verification_source_ids: verificationSourceIds,
+        declared_completion_scope: activeFilters(filters) ? 'scoped' : 'global',
+        estimated_cost_bytes: estimatedCostBytes,
+        estimated_utility_per_kb: Number(estimatedUtility.toFixed(6)),
+        route_decisions: routeDecisions,
     };
 };
 
@@ -238,6 +264,20 @@ const loadPlanningScope = async (
 
     const plannedIndexIds = new Set(plan.local_index_ids);
     const plannedIndexOrder = new Map(plan.local_index_ids.map((indexId, index) => [indexId, index]));
+    const routeFacetPriors = new Set(plan.route_decisions.flatMap(route => route.likely_facets));
+    const routeSourcePriors = new Set(plan.route_decisions.flatMap(route => route.likely_sources));
+    const yearScore = (year: string): number => {
+        const numeric = Number(year);
+        if (!Number.isFinite(numeric)) return 0.2;
+        return Math.max(0.2, Math.min(1.2, (numeric - 2015) / 10));
+    };
+    const utilityForRef = (ref: SitegraphLocalIndexRef): number => {
+        const routed = plannedIndexIds.has(ref.index_id) ? 4 : 1;
+        const sourcePrior = routeSourcePriors.has(ref.scope.source_id) || plan.authority_sources.includes(ref.scope.source_id) ? 2 : 1;
+        const facetPrior = routeFacetPriors.has(ref.scope.facet) ? 1.5 : 1;
+        const costKb = Math.max(1, (ref.light_index.bytes + ref.body_index.bytes) / 1024);
+        return Number((routed * sourcePrior * facetPrior * yearScore(ref.scope.year) * Math.log2(ref.doc_count + 2) / costKb).toFixed(6));
+    };
     let localRefs = sourceManifests
         .flatMap(sourceManifest => sourceManifest.local_indexes)
         .filter(ref => scopeMatchesFilters(ref.scope, filters, now));
@@ -246,6 +286,8 @@ const loadPlanningScope = async (
         if (routedRefs.length > 0) {
             localRefs = routedRefs
                 .sort((a, b) => {
+                    const utilityDelta = utilityForRef(b) - utilityForRef(a);
+                    if (utilityDelta !== 0) return utilityDelta;
                     const orderDelta = (plannedIndexOrder.get(a.index_id) ?? Number.MAX_SAFE_INTEGER)
                         - (plannedIndexOrder.get(b.index_id) ?? Number.MAX_SAFE_INTEGER);
                     if (orderDelta !== 0) return orderDelta;
@@ -257,6 +299,8 @@ const loadPlanningScope = async (
     if (plannedIndexIds.size === 0 || localRefs.every(ref => !plannedIndexIds.has(ref.index_id))) {
         localRefs = localRefs
             .sort((a, b) => {
+                const utilityDelta = utilityForRef(b) - utilityForRef(a);
+                if (utilityDelta !== 0) return utilityDelta;
                 const yearDelta = Number(b.scope.year) - Number(a.scope.year);
                 if (Number.isFinite(yearDelta) && yearDelta !== 0) return yearDelta;
                 return b.doc_count - a.doc_count || a.index_id.localeCompare(b.index_id);
@@ -279,6 +323,14 @@ const loadPlanningScope = async (
         sourceManifestBytes,
         shardPathById,
         shardById,
+        selectedLocalIndexes: localRefs.map(ref => ({
+            index_id: ref.index_id,
+            expected_bytes: ref.light_index.bytes + ref.body_index.bytes,
+            utility_score: utilityForRef(ref),
+            source_id: ref.scope.source_id,
+            facet: ref.scope.facet,
+            year: ref.scope.year,
+        })),
     };
 };
 
@@ -361,19 +413,81 @@ const fullScanBlob = (document: SitegraphFullDocument): string => normalize([
         .join(' ')
 ].join(' '));
 
-const applyPostings = (
-    scores: Map<number, number>,
-    tokens: SitegraphLocalLightIndex['tokens'] | SitegraphLocalBodyIndex['tokens'],
+interface ImpactBlock {
+    key: string;
+    impact: number;
+    ids: number[];
+}
+
+const competitiveThreshold = (scores: Map<number, number>, target: number): number => {
+    if (scores.size < target) return Number.NEGATIVE_INFINITY;
+    return sortedScoreEntries(scores)[Math.max(0, target - 1)]?.[1] ?? Number.NEGATIVE_INFINITY;
+};
+
+const impactBlocksForTerms = (
+    index: SitegraphLocalLightIndex | SitegraphLocalBodyIndex,
     terms: string[]
-): void => {
+): ImpactBlock[] => {
+    const blocks: ImpactBlock[] = [];
+    const blockSize = Math.max(8, index.block_size || 32);
     for (const term of terms) {
-        const postings = tokens[term];
-        if (!postings) continue;
-        for (const [field, ids] of Object.entries(postings)) {
-            const weight = SITEGRAPH_FIELD_WEIGHTS[field] || 8;
-            for (const docIndex of ids) {
-                scores.set(docIndex, (scores.get(docIndex) || 0) + weight + Math.min(term.length, 8));
+        const termPayload = index.terms[term];
+        if (!termPayload) continue;
+        for (const [field, ids] of Object.entries(termPayload)) {
+            const impact = (index.field_impacts[field] || SITEGRAPH_FIELD_WEIGHTS[field] || 8) + Math.min(term.length, 8);
+            for (let offset = 0; offset < ids.length; offset += blockSize) {
+                blocks.push({
+                    key: `${term}\u0000${field}`,
+                    impact,
+                    ids: ids.slice(offset, offset + blockSize),
+                });
             }
+        }
+    }
+    return blocks.sort((a, b) => b.impact - a.impact || a.key.localeCompare(b.key));
+};
+
+const suffixUniqueImpact = (blocks: ImpactBlock[]): number[] => {
+    const suffix = new Array<number>(blocks.length + 1).fill(0);
+    const seen = new Set<string>();
+    let sum = 0;
+    for (let index = blocks.length - 1; index >= 0; index -= 1) {
+        const block = blocks[index];
+        if (block && !seen.has(block.key)) {
+            seen.add(block.key);
+            sum += block.impact;
+        }
+        suffix[index] = sum;
+    }
+    return suffix;
+};
+
+const applyImpactIndex = (
+    scores: Map<number, number>,
+    index: SitegraphLocalLightIndex | SitegraphLocalBodyIndex,
+    terms: string[],
+    targetCandidates: number,
+    telemetry: SearchTelemetry
+): void => {
+    const blocks = impactBlocksForTerms(index, terms);
+    const suffix = suffixUniqueImpact(blocks);
+    telemetry.retrieval.dynamicPruning = true;
+    for (let index = 0; index < blocks.length; index += 1) {
+        const block = blocks[index];
+        if (!block) continue;
+        const threshold = competitiveThreshold(scores, targetCandidates);
+        telemetry.retrieval.competitiveThreshold = Number.isFinite(threshold) ? threshold : telemetry.retrieval.competitiveThreshold;
+        const maxPossibleForUnseenDoc = block.impact + (suffix[index + 1] ?? 0);
+        const hasKnownCandidate = block.ids.some(docIndex => scores.has(docIndex));
+        if (!hasKnownCandidate && scores.size >= targetCandidates && maxPossibleForUnseenDoc <= threshold) {
+            telemetry.retrieval.impactBlocksPruned += 1;
+            telemetry.retrieval.postingsPruned += block.ids.length;
+            continue;
+        }
+        telemetry.retrieval.impactBlocksVisited += 1;
+        for (const docIndex of block.ids) {
+            telemetry.retrieval.postingsVisited += 1;
+            scores.set(docIndex, (scores.get(docIndex) || 0) + block.impact);
         }
     }
 };
@@ -523,24 +637,38 @@ const coverageFor = (
     filterBytes: number,
     usedBodyIndex: boolean,
     exhaustiveComplete: boolean,
-    scoped: boolean
-): SitegraphSearchCoverage => ({
-    phase,
-    coverage_state: phase,
-    scope: scoped ? 'scoped' : 'global',
-    searched_fields: searchedFields,
-    proved_no_match_shards: provedNoMatchShards,
-    scanned_shards: scannedShards,
-    total_shards: totalShards,
-    searched_documents: searchedDocuments,
-    total_documents: totalDocuments,
-    loaded_bytes: loadedBytesFor(session, localIndexBytes, hydratedShardBytes, filterBytes),
-    first_screen_bytes: firstScreenBytes(session),
-    local_index_bytes: localIndexBytes,
-    hydrated_shard_bytes: hydratedShardBytes,
-    used_body_index: usedBodyIndex,
-    exhaustive_complete: exhaustiveComplete,
-});
+    scoped: boolean,
+    ledgerEntries: SitegraphProofLedgerEntry[] | null = null
+): SitegraphSearchCoverage => {
+    const ledger = proofLedgerSummary(ledgerEntries, {
+        totalShards,
+        scannedShards,
+        provedNoMatchShards,
+        exhaustiveComplete,
+    });
+    return {
+        phase,
+        coverage_state: phase,
+        scope: scoped ? 'scoped' : 'global',
+        searched_fields: searchedFields,
+        proved_no_match_shards: ledger.proved_no_match_shards,
+        scanned_shards: ledger.scanned_shards,
+        excluded_by_filter_shards: ledger.excluded_by_filter_shards,
+        excluded_by_declared_scope_shards: ledger.excluded_by_declared_scope_shards,
+        pending_shards: ledger.pending_shards,
+        failed_shards: ledger.failed_shards,
+        total_shards: ledger.total_shards,
+        searched_documents: searchedDocuments,
+        total_documents: totalDocuments,
+        loaded_bytes: loadedBytesFor(session, localIndexBytes, hydratedShardBytes, filterBytes),
+        first_screen_bytes: firstScreenBytes(session),
+        local_index_bytes: localIndexBytes,
+        hydrated_shard_bytes: hydratedShardBytes,
+        used_body_index: usedBodyIndex,
+        exhaustive_complete: exhaustiveComplete && ledger.complete,
+        proof_ledger: ledger,
+    };
+};
 
 const statsFor = (
     phase: SitegraphSearchPhase,
@@ -569,6 +697,9 @@ const statsFor = (
         localMetaFallbackDocuments: telemetry.localMetaFallbackDocIndices.size,
         snippetFallbackResults: Array.from(resultMap.values()).filter(result => result.match_snippet?.fallback === true).length,
         verifiedFullScanMatches: telemetry.fullScanMatchDocIndices.size,
+    },
+    retrieval: {
+        ...telemetry.retrieval,
     },
 });
 
@@ -673,6 +804,73 @@ const shardFilterProvesNoMatch = (
     return terms.every(term => !bloomMayContain(filter, term));
 };
 
+const proofLedgerSummary = (
+    entries: SitegraphProofLedgerEntry[] | null,
+    fallback: {
+        totalShards: number;
+        scannedShards: number;
+        provedNoMatchShards: number;
+        exhaustiveComplete: boolean;
+    }
+): SitegraphProofLedgerSummary => {
+    if (!entries) {
+        return {
+            total_shards: fallback.totalShards,
+            pending_shards: fallback.exhaustiveComplete ? 0 : Math.max(0, fallback.totalShards - fallback.scannedShards - fallback.provedNoMatchShards),
+            scanned_shards: fallback.scannedShards,
+            proved_no_match_shards: fallback.provedNoMatchShards,
+            excluded_by_filter_shards: 0,
+            excluded_by_declared_scope_shards: 0,
+            failed_shards: 0,
+            complete: fallback.exhaustiveComplete,
+        };
+    }
+    const count = (state: SitegraphProofLedgerState): number => entries.filter(entry => entry.state === state).length;
+    const pending = count('pending');
+    const failed = count('failed');
+    return {
+        total_shards: entries.length,
+        pending_shards: pending,
+        scanned_shards: count('scanned'),
+        proved_no_match_shards: count('proved_no_match'),
+        excluded_by_filter_shards: count('excluded_by_filter'),
+        excluded_by_declared_scope_shards: count('excluded_by_declared_scope'),
+        failed_shards: failed,
+        complete: pending === 0 && failed === 0,
+    };
+};
+
+const buildProofLedger = (
+    shards: SitegraphFullShard[],
+    filters: SitegraphSearchFilters,
+    now: number
+): SitegraphProofLedgerEntry[] => shards.map(shard => {
+    const matches = shardMatchesFilters(shard, filters, now);
+    return {
+        shard_id: shard.shard_id,
+        source_id: String(shard.source_id || ''),
+        state: matches ? 'pending' : 'excluded_by_filter',
+        document_count: shard.count,
+        byte_size: shard.bytes,
+        path: shard.path,
+        reason: matches ? 'awaiting shard filter proof or scan' : 'excluded by active source/facet/date filter',
+        covered_fields: FULL_SCAN_FIELDS,
+    };
+});
+
+const setLedgerState = (
+    entries: SitegraphProofLedgerEntry[],
+    shardId: string,
+    state: SitegraphProofLedgerState,
+    reason: string
+): void => {
+    const entry = entries.find(item => item.shard_id === shardId);
+    if (entry) {
+        entry.state = state;
+        entry.reason = reason;
+    }
+};
+
 export interface ProgressiveSearchOptions {
     limit?: number;
     candidateLimit?: number;
@@ -709,6 +907,14 @@ export const searchSitegraphProgressively = async (
     const telemetry: SearchTelemetry = {
         localMetaFallbackDocIndices: new Set<number>(),
         fullScanMatchDocIndices: new Set<number>(),
+        retrieval: {
+            dynamicPruning: false,
+            impactBlocksVisited: 0,
+            impactBlocksPruned: 0,
+            postingsVisited: 0,
+            postingsPruned: 0,
+            competitiveThreshold: 0,
+        },
     };
     let candidateCount = 0;
     let usedBodyIndex = false;
@@ -718,6 +924,7 @@ export const searchSitegraphProgressively = async (
     let totalScopeShards = session.manifest.progressive_search.total_shards;
     let totalScopeDocuments = session.manifest.progressive_search.total_documents;
     const scoped = activeFilters(filters);
+    let proofLedgerEntries: SitegraphProofLedgerEntry[] | null = null;
 
     const emitResults = (
         type: SitegraphSearchPhase,
@@ -761,6 +968,8 @@ export const searchSitegraphProgressively = async (
     }
 
     const planningScope = await loadPlanningScope(session, plan, filters, now, signal);
+    plan.selected_local_indexes = planningScope.selectedLocalIndexes;
+    plan.estimated_cost_bytes = planningScope.selectedLocalIndexes.reduce((sum, item) => sum + item.expected_bytes, plan.estimated_cost_bytes);
     localIndexBytes += planningScope.sourceManifestBytes;
     const localIndexStartedCoverage = coverageFor(
         session,
@@ -789,7 +998,7 @@ export const searchSitegraphProgressively = async (
         for (const document of localIndex.documents) {
             docsByIndex.set(document.doc_index, document);
         }
-        applyPostings(scores, localIndex.tokens, terms);
+        applyImpactIndex(scores, localIndex, terms, candidateLimit, telemetry);
     }
     for (const docIndex of applyLocalMetaFallback(docsByIndex, scores, normalizedQuery, filters, now)) {
         telemetry.localMetaFallbackDocIndices.add(docIndex);
@@ -858,7 +1067,7 @@ export const searchSitegraphProgressively = async (
     });
     usedBodyIndex = true;
     for (const bodyIndex of bodyIndexes) {
-        applyPostings(scores, bodyIndex.tokens, terms);
+        applyImpactIndex(scores, bodyIndex, terms, candidateLimit, telemetry);
     }
     for (const docIndex of applyLocalMetaFallback(docsByIndex, scores, normalizedQuery, filters, now)) {
         telemetry.localMetaFallbackDocIndices.add(docIndex);
@@ -939,10 +1148,11 @@ export const searchSitegraphProgressively = async (
             localIndexBytes += entry.artifact_manifest.bytes;
         }
     }
-    const inScopeShards = verificationManifests
-        .flatMap(sourceManifest => sourceManifest.full_shards)
-        .filter(shard => shardMatchesFilters(shard, filters, now));
-    totalScopeShards = inScopeShards.length;
+    const allVerificationShards = verificationManifests.flatMap(sourceManifest => sourceManifest.full_shards);
+    proofLedgerEntries = buildProofLedger(allVerificationShards, filters, now);
+    const inScopeShards = allVerificationShards
+        .filter(shard => proofLedgerEntries?.find(entry => entry.shard_id === shard.shard_id)?.state === 'pending');
+    totalScopeShards = proofLedgerEntries.length;
     totalScopeDocuments = inScopeShards.reduce((sum, shard) => sum + shard.count, 0);
     const verificationStartedCoverage = coverageFor(
         session,
@@ -958,7 +1168,8 @@ export const searchSitegraphProgressively = async (
         filterBytes,
         usedBodyIndex,
         false,
-        scoped
+        scoped,
+        proofLedgerEntries
     );
     emitResults('verification_started', verificationStartedCoverage, false);
 
@@ -978,7 +1189,10 @@ export const searchSitegraphProgressively = async (
         const shardBatch = inScopeShards.slice(shardIndex, shardIndex + SHARD_BATCH_SIZE);
         const scanBatch = shardBatch.filter(shard => {
             const canSkip = shardFilterProvesNoMatch(shard.shard_id, shardFiltersBySource.get(String(shard.source_id || '')) || {}, terms);
-            if (canSkip) provedNoMatchShards += 1;
+            if (canSkip) {
+                provedNoMatchShards += 1;
+                if (proofLedgerEntries) setLedgerState(proofLedgerEntries, shard.shard_id, 'proved_no_match', 'no-false-negative shard filter proved every query term absent');
+            }
             return !canSkip;
         });
         const shardResults = await Promise.all(scanBatch.map(shard => loadShard(shard.path, signal)));
@@ -990,6 +1204,7 @@ export const searchSitegraphProgressively = async (
             loadedShardPaths.add(shard.path);
             if (firstLoad) hydratedShardBytes += shardBytesByPath.get(shard.path) || 0;
             scannedShards += 1;
+            if (proofLedgerEntries) setLedgerState(proofLedgerEntries, shard.shard_id, 'scanned', 'full shard scanned for completion proof');
             for (const document of documents) {
                 fullDocsByIndex.set(document.doc_index, document);
                 searchedDocuments += 1;
@@ -1015,7 +1230,8 @@ export const searchSitegraphProgressively = async (
             filterBytes,
             usedBodyIndex,
             false,
-            scoped
+            scoped,
+            proofLedgerEntries
         );
         if (mergeRankedResults(resultMap, verifyMatches) > 0) {
             emitResults('partial_verified', progressCoverage, true);
@@ -1025,6 +1241,12 @@ export const searchSitegraphProgressively = async (
         await yieldToWorker();
     }
 
+    const ledgerComplete = proofLedgerSummary(proofLedgerEntries, {
+        totalShards: totalScopeShards,
+        scannedShards,
+        provedNoMatchShards,
+        exhaustiveComplete: true,
+    }).complete;
     const completePhase = scoped ? 'scoped_exhaustive_complete' : 'global_exhaustive_complete';
     const completeCoverage = coverageFor(
         session,
@@ -1039,8 +1261,9 @@ export const searchSitegraphProgressively = async (
         hydratedShardBytes,
         filterBytes,
         usedBodyIndex,
-        true,
-        scoped
+        ledgerComplete,
+        scoped,
+        proofLedgerEntries
     );
     emitResults(completePhase, completeCoverage, true);
 };

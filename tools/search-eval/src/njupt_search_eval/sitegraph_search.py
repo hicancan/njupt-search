@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import base64
 import json
+import math
 import re
 import unicodedata
 from datetime import datetime, timezone
@@ -209,6 +210,17 @@ def build_plan(index: dict[str, Any], query: str, terms: list[str]) -> dict[str,
     route_sources = [str(source) for route in routes for source in route.get("likely_sources", [])]
     local_index_ids = [str(item) for route in routes for item in route.get("local_index_ids", [])]
     result_types = [str(item) for route in routes for item in route.get("expected_result_types", [])]
+    route_decisions = [
+        {
+            "term": str(route.get("term") or profile["intent"]),
+            "local_index_count": len(route.get("local_index_ids") or []),
+            "expected_cost_bytes": int(route.get("expected_cost_bytes") or 0),
+            "expected_utility_per_kb": float(route.get("expected_utility_per_kb") or 0.0),
+            "likely_sources": [str(source) for source in route.get("likely_sources", [])],
+            "likely_facets": [str(facet) for facet in route.get("likely_facets", [])],
+        }
+        for route in routes
+    ]
     return {
         "normalized_query": normalize_text(query),
         "aliases": expand_query_phrases(query, index["aliases"]),
@@ -218,6 +230,10 @@ def build_plan(index: dict[str, Any], query: str, terms: list[str]) -> dict[str,
         "source_ids": [source_id for source_id in unique_ordered([*profile["authority_sources"], *route_sources, *all_sources]) if source_id in all_sources],
         "local_index_ids": unique_ordered(local_index_ids),
         "verification_source_ids": all_sources,
+        "declared_completion_scope": "global",
+        "estimated_cost_bytes": sum(int(route["expected_cost_bytes"]) for route in route_decisions),
+        "estimated_utility_per_kb": round(sum(float(route["expected_utility_per_kb"]) for route in route_decisions), 6),
+        "route_decisions": route_decisions,
     }
 
 
@@ -230,12 +246,31 @@ def select_local_refs(index: dict[str, Any], plan: dict[str, Any]) -> tuple[list
     planned_ids = set(plan["local_index_ids"])
     planned_order = {str(index_id): order for order, index_id in enumerate(plan["local_index_ids"])}
     refs = [ref for manifest in source_manifests for ref in manifest["local_indexes"]]
+
+    route_facets = {facet for route in plan["route_decisions"] for facet in route["likely_facets"]}
+    route_sources = {source for route in plan["route_decisions"] for source in route["likely_sources"]}
+
+    def year_score(year: Any) -> float:
+        try:
+            return max(0.2, min(1.2, (float(year) - 2015) / 10))
+        except (TypeError, ValueError):
+            return 0.2
+
+    def utility(ref: dict[str, Any]) -> float:
+        scope = ref.get("scope") or {}
+        routed = 4.0 if str(ref["index_id"]) in planned_ids else 1.0
+        source_prior = 2.0 if str(scope.get("source_id")) in {*route_sources, *plan["authority_sources"]} else 1.0
+        facet_prior = 1.5 if str(scope.get("facet")) in route_facets else 1.0
+        cost_kb = max(1.0, (int(ref["light_index"]["bytes"]) + int(ref["body_index"]["bytes"])) / 1024)
+        return round(routed * source_prior * facet_prior * year_score(scope.get("year")) * math.log2(int(ref.get("doc_count") or 0) + 2) / cost_kb, 6)
+
     if planned_ids:
         routed_refs = [ref for ref in refs if ref["index_id"] in planned_ids]
         if routed_refs:
             refs = sorted(
                 routed_refs,
                 key=lambda ref: (
+                    -utility(ref),
                     planned_order.get(str(ref["index_id"]), 999_999),
                     -int(ref.get("doc_count") or 0),
                     str(ref["index_id"]),
@@ -245,6 +280,7 @@ def select_local_refs(index: dict[str, Any], plan: dict[str, Any]) -> tuple[list
             refs = sorted(
                 refs,
                 key=lambda ref: (
+                    -utility(ref),
                     -int(str(ref["scope"].get("year", "0")).replace("undated", "0") or 0),
                     -int(ref.get("doc_count") or 0),
                     str(ref["index_id"]),
@@ -254,6 +290,7 @@ def select_local_refs(index: dict[str, Any], plan: dict[str, Any]) -> tuple[list
         refs = sorted(
             refs,
             key=lambda ref: (
+                -utility(ref),
                 -int(str(ref["scope"].get("year", "0")).replace("undated", "0") or 0),
                 -int(ref.get("doc_count") or 0),
                 str(ref["index_id"]),
@@ -263,6 +300,18 @@ def select_local_refs(index: dict[str, Any], plan: dict[str, Any]) -> tuple[list
         int(source_entries_by_id(index)[manifest["source_id"]]["artifact_manifest"]["bytes"])
         for manifest in source_manifests
     )
+    plan["selected_local_indexes"] = [
+        {
+            "index_id": str(ref["index_id"]),
+            "expected_bytes": int(ref["light_index"]["bytes"]) + int(ref["body_index"]["bytes"]),
+            "utility_score": utility(ref),
+            "source_id": str((ref.get("scope") or {}).get("source_id")),
+            "facet": str((ref.get("scope") or {}).get("facet")),
+            "year": str((ref.get("scope") or {}).get("year")),
+        }
+        for ref in refs
+    ]
+    plan["estimated_cost_bytes"] = int(plan["estimated_cost_bytes"]) + sum(item["expected_bytes"] for item in plan["selected_local_indexes"])
     return source_manifests, refs, source_manifest_bytes
 
 
@@ -459,15 +508,54 @@ def rank_document(document: dict[str, Any], query: str, terms: list[str], light_
     return ranked
 
 
-def apply_postings(scores: dict[int, float], inverted_tokens: dict[str, Any], terms: list[str]) -> None:
+def apply_impact_index(
+    scores: dict[int, float],
+    impact_terms: dict[str, Any],
+    terms: list[str],
+    retrieval: dict[str, Any],
+    target_candidates: int,
+) -> None:
+    blocks: list[dict[str, Any]] = []
     for term in terms:
-        postings = inverted_tokens.get(term)
-        if not isinstance(postings, dict):
+        term_payload = impact_terms.get(term)
+        if not isinstance(term_payload, dict):
             continue
-        for field, ids in postings.items():
-            weight = FIELD_WEIGHTS.get(field, 8.0)
-            for doc_index in ids:
-                scores[int(doc_index)] = scores.get(int(doc_index), 0.0) + weight + min(len(term), 8)
+        for field, doc_ids in term_payload.items():
+            impact = float(FIELD_WEIGHTS.get(field, 8.0) + min(len(term), 8))
+            ids = [int(doc_id) for doc_id in doc_ids]
+            for offset in range(0, len(ids), 32):
+                blocks.append({"key": f"{term}\0{field}", "impact": impact, "ids": ids[offset: offset + 32]})
+    blocks.sort(key=lambda item: (-float(item["impact"]), str(item["key"])))
+    suffix = [0.0 for _ in range(len(blocks) + 1)]
+    seen: set[str] = set()
+    total = 0.0
+    for index in range(len(blocks) - 1, -1, -1):
+        key = str(blocks[index]["key"])
+        if key not in seen:
+            seen.add(key)
+            total += float(blocks[index]["impact"])
+        suffix[index] = total
+
+    def threshold() -> float:
+        if len(scores) < target_candidates:
+            return float("-inf")
+        return sorted(scores.values(), reverse=True)[target_candidates - 1]
+
+    retrieval["dynamic_pruning"] = True
+    for index, block in enumerate(blocks):
+        current_threshold = threshold()
+        if math.isfinite(current_threshold):
+            retrieval["competitive_threshold"] = current_threshold
+        max_possible = float(block["impact"]) + suffix[index + 1]
+        has_known = any(doc_id in scores for doc_id in block["ids"])
+        if not has_known and len(scores) >= target_candidates and max_possible <= current_threshold:
+            retrieval["impact_blocks_pruned"] += 1
+            retrieval["postings_pruned"] += len(block["ids"])
+            continue
+        retrieval["impact_blocks_visited"] += 1
+        for doc_index in block["ids"]:
+            retrieval["postings_visited"] += 1
+            scores[int(doc_index)] = scores.get(int(doc_index), 0.0) + float(block["impact"])
 
 
 def full_scan_blob(document: dict[str, Any]) -> str:
@@ -557,6 +645,8 @@ def coverage(
     filter_bytes: int,
     used_body_index: bool,
     exhaustive_complete: bool,
+    excluded_by_filter_shards: int = 0,
+    failed_shards: int = 0,
 ) -> dict[str, Any]:
     shard_bytes: dict[str, int] = {}
     for source_manifest in (load_source_manifest(index, source["source_id"]) for source in index["source_registry"]["sources"]):
@@ -566,6 +656,8 @@ def coverage(
             shard_bytes[str(shard["path"])] = int(shard["bytes"])
     hydrated_shard_bytes = sum(shard_bytes.get(path, 0) for path in loaded_paths)
     first_bytes = first_screen_bytes(index)
+    pending_shards = 0 if exhaustive_complete else max(0, total_shards - scanned_shards - proved_no_match_shards - excluded_by_filter_shards - failed_shards)
+    ledger_complete = pending_shards == 0 and failed_shards == 0
     return {
         "phase": phase,
         "coverage_state": phase,
@@ -573,6 +665,10 @@ def coverage(
         "searched_fields": fields,
         "proved_no_match_shards": proved_no_match_shards,
         "scanned_shards": scanned_shards,
+        "excluded_by_filter_shards": excluded_by_filter_shards,
+        "excluded_by_declared_scope_shards": 0,
+        "pending_shards": pending_shards,
+        "failed_shards": failed_shards,
         "total_shards": total_shards,
         "searched_documents": searched_documents,
         "total_documents": total_documents,
@@ -581,7 +677,17 @@ def coverage(
         "local_index_bytes": local_index_bytes,
         "hydrated_shard_bytes": hydrated_shard_bytes,
         "used_body_index": used_body_index,
-        "exhaustive_complete": exhaustive_complete,
+        "exhaustive_complete": exhaustive_complete and ledger_complete,
+        "proof_ledger": {
+            "total_shards": total_shards,
+            "pending_shards": pending_shards,
+            "scanned_shards": scanned_shards,
+            "proved_no_match_shards": proved_no_match_shards,
+            "excluded_by_filter_shards": excluded_by_filter_shards,
+            "excluded_by_declared_scope_shards": 0,
+            "failed_shards": failed_shards,
+            "complete": ledger_complete,
+        },
     }
 
 
@@ -615,13 +721,21 @@ def recall_documents_with_stats(
 
     docs_by_index: dict[int, dict[str, Any]] = {}
     scores: dict[int, float] = {}
+    retrieval = {
+        "dynamic_pruning": False,
+        "impact_blocks_visited": 0,
+        "impact_blocks_pruned": 0,
+        "postings_visited": 0,
+        "postings_pruned": 0,
+        "competitive_threshold": 0.0,
+    }
     local_index_bytes = source_manifest_bytes
     for ref in local_refs:
         local_index = load_local_light(index, ref)
         local_index_bytes += int(ref["light_index"]["bytes"])
         for document in local_index.get("documents", []):
             docs_by_index[int(document["doc_index"])] = document
-        apply_postings(scores, local_index.get("tokens", {}), terms)
+        apply_impact_index(scores, local_index.get("terms", {}), terms, retrieval, candidate_limit)
 
     normalized_query = normalize_text(query)
     local_meta_fallbacks = 0
@@ -669,7 +783,7 @@ def recall_documents_with_stats(
     for ref in local_refs:
         body_index = load_local_body(index, ref)
         local_index_bytes += int(ref["body_index"]["bytes"])
-        apply_postings(scores, body_index.get("tokens", {}), terms)
+        apply_impact_index(scores, body_index.get("terms", {}), terms, retrieval, candidate_limit)
         used_body_index = True
 
     selected_candidate_indices, candidate_paths = select_candidates(candidate_limit, max_shard_loads)
@@ -758,6 +872,7 @@ def recall_documents_with_stats(
             "local_meta_fallback_documents": local_meta_fallbacks,
             "exhaustive_complete": True,
             "plan": plan,
+            "retrieval": retrieval,
         },
     }
 

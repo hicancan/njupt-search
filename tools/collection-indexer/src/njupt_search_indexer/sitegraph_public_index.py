@@ -35,9 +35,9 @@ PUBLIC_INDEX_DIR = PUBLIC_ROOT / "generated" / "collections" / COLLECTION_ID
 PUBLIC_SITEGRAPH_DIR = PUBLIC_INDEX_DIR / "sitegraph"
 PUBLIC_ARTIFACT_DIR = PUBLIC_SITEGRAPH_DIR / "artifacts"
 PUBLIC_SOURCE_MANIFEST_DIR = PUBLIC_SITEGRAPH_DIR / "source_manifests"
-PUBLIC_LOCAL_LIGHT_DIR = PUBLIC_SITEGRAPH_DIR / "local_light_indexes"
-PUBLIC_LOCAL_BODY_DIR = PUBLIC_SITEGRAPH_DIR / "local_body_indexes"
-PUBLIC_SHARD_CATALOG_DIR = PUBLIC_SITEGRAPH_DIR / "shard_catalogs"
+PUBLIC_LOCAL_LIGHT_DIR = PUBLIC_SITEGRAPH_DIR / "local_impact_light_indexes"
+PUBLIC_LOCAL_BODY_DIR = PUBLIC_SITEGRAPH_DIR / "local_impact_body_indexes"
+PUBLIC_PROOF_CATALOG_DIR = PUBLIC_SITEGRAPH_DIR / "proof_catalogs"
 PUBLIC_SHARD_FILTER_DIR = PUBLIC_SITEGRAPH_DIR / "shard_filters"
 PUBLIC_FULL_SHARD_DIR = PUBLIC_SITEGRAPH_DIR / "full_shards"
 PUBLIC_ATTACHMENT_META_DIR = PUBLIC_SITEGRAPH_DIR / "attachment_meta_indexes"
@@ -119,7 +119,7 @@ SOURCE_AUTHORITY: dict[str, dict[str, Any]] = {
 def configure_collection_output(collection_id: str = COLLECTION_ID, output_dir: Path | None = None) -> None:
     global COLLECTION_ID, PUBLIC_INDEX_DIR, PUBLIC_SITEGRAPH_DIR, PUBLIC_ARTIFACT_DIR
     global PUBLIC_SOURCE_MANIFEST_DIR, PUBLIC_LOCAL_LIGHT_DIR, PUBLIC_LOCAL_BODY_DIR
-    global PUBLIC_SHARD_CATALOG_DIR, PUBLIC_SHARD_FILTER_DIR, PUBLIC_FULL_SHARD_DIR, PUBLIC_SHARD_DIR
+    global PUBLIC_PROOF_CATALOG_DIR, PUBLIC_SHARD_FILTER_DIR, PUBLIC_FULL_SHARD_DIR, PUBLIC_SHARD_DIR
     global PUBLIC_ATTACHMENT_META_DIR, PUBLIC_ATTACHMENT_FILENAME_DIR, PUBLIC_ATTACHMENT_TEXT_DIR
     global PUBLIC_SECTION_DIR, PUBLIC_EXTERNAL_DIR
 
@@ -136,9 +136,9 @@ def configure_collection_output(collection_id: str = COLLECTION_ID, output_dir: 
     PUBLIC_SITEGRAPH_DIR = PUBLIC_INDEX_DIR / "sitegraph"
     PUBLIC_ARTIFACT_DIR = PUBLIC_SITEGRAPH_DIR / "artifacts"
     PUBLIC_SOURCE_MANIFEST_DIR = PUBLIC_SITEGRAPH_DIR / "source_manifests"
-    PUBLIC_LOCAL_LIGHT_DIR = PUBLIC_SITEGRAPH_DIR / "local_light_indexes"
-    PUBLIC_LOCAL_BODY_DIR = PUBLIC_SITEGRAPH_DIR / "local_body_indexes"
-    PUBLIC_SHARD_CATALOG_DIR = PUBLIC_SITEGRAPH_DIR / "shard_catalogs"
+    PUBLIC_LOCAL_LIGHT_DIR = PUBLIC_SITEGRAPH_DIR / "local_impact_light_indexes"
+    PUBLIC_LOCAL_BODY_DIR = PUBLIC_SITEGRAPH_DIR / "local_impact_body_indexes"
+    PUBLIC_PROOF_CATALOG_DIR = PUBLIC_SITEGRAPH_DIR / "proof_catalogs"
     PUBLIC_SHARD_FILTER_DIR = PUBLIC_SITEGRAPH_DIR / "shard_filters"
     PUBLIC_FULL_SHARD_DIR = PUBLIC_SITEGRAPH_DIR / "full_shards"
     PUBLIC_SHARD_DIR = PUBLIC_FULL_SHARD_DIR
@@ -278,6 +278,7 @@ def route_summary(
     docs: list[dict[str, Any]],
     *,
     term: str | None = None,
+    local_index_costs: dict[str, int] | None = None,
     max_local_indexes: int = 24,
     max_shards: int = 12,
 ) -> dict[str, Any]:
@@ -288,6 +289,13 @@ def route_summary(
     result_types = Counter(str(document.get("record_type") or "detail") for document in docs)
     local_indexes = Counter(index_id_for_scope(*index_scope_for_document(document)) for document in docs)
     shard_ids = Counter(str((document.get("shard") or {}).get("shard_id") or "") for document in docs)
+    selected_local_indexes = [key for key, _ in local_indexes.most_common(max_local_indexes)]
+    expected_cost_bytes = sum((local_index_costs or {}).get(index_id, 0) for index_id in selected_local_indexes)
+    expected_utility = round(
+        (len(docs) + sum(sources.values()) * 0.4 + sum(facets.values()) * 0.2)
+        / max(1, expected_cost_bytes / 1024),
+        6,
+    )
     summary = {
         "term": term,
         "likely_sources": [key for key, _ in sources.most_common()],
@@ -295,7 +303,7 @@ def route_summary(
         "likely_years": [key for key, _ in years.most_common()],
         "likely_task_kinds": [key for key, _ in task_kinds.most_common(8)],
         "expected_result_types": [key for key, _ in result_types.most_common()],
-        "local_index_ids": [key for key, _ in local_indexes.most_common(max_local_indexes)],
+        "local_index_ids": selected_local_indexes,
         "sample_shard_ids": [key for key, _ in shard_ids.most_common(max_shards) if key],
         "candidate_shard_group_count": len(shard_ids),
         "authority_priors": {
@@ -304,11 +312,23 @@ def route_summary(
         },
         "freshness_policy": "prefer_recent_for_current_notice_intents",
         "matched_document_count": len(docs),
+        "expected_cost_bytes": expected_cost_bytes,
+        "expected_utility_per_kb": expected_utility,
+        "planner_features": {
+            "source_entropy": len(sources),
+            "facet_entropy": len(facets),
+            "year_entropy": len(years),
+            "local_index_count": len(selected_local_indexes),
+        },
     }
     return summary
 
 
-def build_global_query_directory(documents: list[dict[str, Any]], query_aliases: dict[str, Any]) -> dict[str, Any]:
+def build_global_query_directory(
+    documents: list[dict[str, Any]],
+    query_aliases: dict[str, Any],
+    local_index_costs: dict[str, int],
+) -> dict[str, Any]:
     normalized_blobs = [(document, route_blob(document)) for document in documents]
     known_terms: set[str] = set()
     for key, payload in query_aliases.items():
@@ -326,22 +346,23 @@ def build_global_query_directory(documents: list[dict[str, Any]], query_aliases:
         matched_docs = [document for document, blob in normalized_blobs if normalized in blob]
         if not matched_docs:
             continue
-        entries[normalized] = route_summary(matched_docs, term=normalized)
+        entries[normalized] = route_summary(matched_docs, term=normalized, local_index_costs=local_index_costs)
 
     intents: dict[str, Any] = {}
     for intent in sorted({str(document.get("task_kind") or "broad_exploratory") for document in documents}):
         intent_docs = [document for document in documents if str(document.get("task_kind") or "broad_exploratory") == intent]
-        intents[intent] = route_summary(intent_docs, term=intent, max_local_indexes=36, max_shards=16)
+        intents[intent] = route_summary(intent_docs, term=intent, local_index_costs=local_index_costs, max_local_indexes=36, max_shards=16)
 
     return {
-        "version": "sitegraph-global-query-directory-routed-v1",
+        "version": "sitegraph-global-query-directory-cost-v2",
         "description": "Routing evidence only. This directory maps query evidence to sources, facets, years, local indexes, and shard groups; it never stores corpus-wide document postings.",
         "tokenizer": "nfkc-lower-cjk-ngram-code",
+        "planner": "cost_authority_proof_ledger_v2",
         "entry_count": len(entries),
         "entries": entries,
         "intents": intents,
         "fallback": {
-            "mode": "load_authority_source_manifests_then_verify_in_scope_shards",
+            "mode": "cost_sort_authority_manifests_then_proof_ledger_verify",
             "false_negative_policy": "directory misses route broadly and cannot justify exhaustive completion without shard scan or safe filter proof",
         },
     }
@@ -370,23 +391,23 @@ def build_local_indexes(
         }
         light_payload = {
             **build_light_inverted_index(sorted_docs),
-            "version": "sitegraph-local-light-index-routed-v1",
+            "version": "sitegraph-local-light-impact-v2",
             "scope": scope,
             "documents": [local_doc_meta(document, shard_by_id) for document in sorted_docs],
         }
         body_payload = {
             **build_body_inverted_index(sorted_docs),
-            "version": "sitegraph-local-body-index-routed-v1",
+            "version": "sitegraph-local-body-impact-v2",
             "scope": scope,
         }
-        light_artifact = write_hashed_json(PUBLIC_ROOT, PUBLIC_LOCAL_LIGHT_DIR, f"local_light.{index_id}", light_payload, compact=True)
-        body_artifact = write_hashed_json(PUBLIC_ROOT, PUBLIC_LOCAL_BODY_DIR, f"local_body.{index_id}", body_payload, compact=True)
+        light_artifact = write_hashed_json(PUBLIC_ROOT, PUBLIC_LOCAL_LIGHT_DIR, f"local_impact_light.{index_id}", light_payload, compact=True)
+        body_artifact = write_hashed_json(PUBLIC_ROOT, PUBLIC_LOCAL_BODY_DIR, f"local_impact_body.{index_id}", body_payload, compact=True)
         ref = {
             "index_id": index_id,
             "scope": scope,
             "doc_count": len(sorted_docs),
-            "light_index": artifact_entry(light_artifact, role="local_light_index", count=len(sorted_docs), load="query_planned"),
-            "body_index": artifact_entry(body_artifact, role="local_body_index", load="query_deepening"),
+            "light_index": artifact_entry(light_artifact, role="local_impact_light_index", count=len(sorted_docs), load="query_planned"),
+            "body_index": artifact_entry(body_artifact, role="local_impact_body_index", load="query_deepening"),
         }
         local_refs.append(ref)
         refs_by_source[source_id].append(ref)
@@ -427,7 +448,46 @@ def build_source_manifests(
             if shard_id in source_shard_ids
         }
         attachment_meta = attachments_by_source.get(source_id, [])
-        shard_catalog_artifact = write_hashed_json(PUBLIC_ROOT, PUBLIC_SHARD_CATALOG_DIR, f"shard_catalog.{source_id}", source_shards, compact=True)
+        proof_catalog = {
+            "version": "sitegraph-proof-ledger-catalog-v2",
+            "source_id": source_id,
+            "state_model": [
+                "pending",
+                "scanned",
+                "proved_no_match",
+                "excluded_by_filter",
+                "excluded_by_declared_scope",
+                "failed",
+            ],
+            "complete_requires_no_states": ["pending", "failed"],
+            "covered_fields": ["title", "section", "nav_path", "summary", "content", "attachments", "url"],
+            "shards": [
+                {
+                    "shard_id": shard["shard_id"],
+                    "source_id": shard["source_id"],
+                    "path": shard["path"],
+                    "sha256": shard["sha256"],
+                    "bytes": shard["bytes"],
+                    "document_count": shard["count"],
+                    "scope": {
+                        "facets": shard["facet_range"],
+                        "record_types": shard["record_type_range"],
+                        "sections": shard["section_range"],
+                        "years": shard["year_range"],
+                        "hash_bucket": shard["hash_bucket"],
+                    },
+                    "filter_contract": {
+                        "artifact_family": "shard_filters",
+                        "hash_algorithm": "bloom-fnv1a32-utf8",
+                        "false_negative": False,
+                        "filter_sha256": shard["filter_sha256"],
+                        "filter_token_count": shard["filter_token_count"],
+                    },
+                }
+                for shard in source_shards
+            ],
+        }
+        proof_catalog_artifact = write_hashed_json(PUBLIC_ROOT, PUBLIC_PROOF_CATALOG_DIR, f"proof_catalog.{source_id}", proof_catalog, compact=True)
         shard_filter_artifact = write_hashed_json(PUBLIC_ROOT, PUBLIC_SHARD_FILTER_DIR, f"shard_filter.{source_id}", source_filter, compact=True)
         attachment_meta_artifact = write_hashed_json(PUBLIC_ROOT, PUBLIC_ATTACHMENT_META_DIR, f"attachment_meta.{source_id}", attachment_meta, compact=True)
         attachment_filename_artifact = write_hashed_json(PUBLIC_ROOT, PUBLIC_ATTACHMENT_FILENAME_DIR, f"attachment_filename.{source_id}", attachment_filename_index(attachment_meta), compact=True)
@@ -441,7 +501,7 @@ def build_source_manifests(
         section_artifact = write_hashed_json(PUBLIC_ROOT, PUBLIC_SECTION_DIR, f"section_index.{source_id}", sections_by_source.get(source_id, []), compact=True)
         external_artifact = write_hashed_json(PUBLIC_ROOT, PUBLIC_EXTERNAL_DIR, f"external_index.{source_id}", external_by_source.get(source_id, []), compact=True)
         payload = {
-            "version": "sitegraph-source-manifest-routed-v1",
+            "version": "sitegraph-source-manifest-proof-ledger-v2",
             "source_id": source_id,
             "display_name": site_display_name(package["site"]),
             "domain": source_domain(package),
@@ -453,7 +513,7 @@ def build_source_manifests(
             "local_indexes": local_refs_by_source.get(source_id, []),
             "full_shards": source_shards,
             "artifacts": {
-                "shard_catalog": artifact_entry(shard_catalog_artifact, role="shard_catalog", count=len(source_shards), load="verify"),
+                "proof_catalog": artifact_entry(proof_catalog_artifact, role="proof_catalog", count=len(source_shards), load="verify"),
                 "shard_filter": artifact_entry(shard_filter_artifact, role="shard_filter", count=len(source_filter), load="verify"),
                 "attachment_meta_index": artifact_entry(attachment_meta_artifact, role="attachment_meta_index", count=len(attachment_meta), load="on_demand"),
                 "attachment_filename_index": artifact_entry(attachment_filename_artifact, role="attachment_filename_index", count=len(attachment_meta), load="query_planned"),
@@ -527,7 +587,7 @@ def public_artifact_dirs() -> tuple[Path, ...]:
         PUBLIC_SOURCE_MANIFEST_DIR,
         PUBLIC_LOCAL_LIGHT_DIR,
         PUBLIC_LOCAL_BODY_DIR,
-        PUBLIC_SHARD_CATALOG_DIR,
+        PUBLIC_PROOF_CATALOG_DIR,
         PUBLIC_SHARD_FILTER_DIR,
         PUBLIC_FULL_SHARD_DIR,
         PUBLIC_ATTACHMENT_META_DIR,
@@ -568,7 +628,11 @@ def write_public_index(packages: list[dict[str, Any]], built: dict[str, Any], *,
         built["external_index"],
     )
     source_registry = build_source_registry(packages, documents, built, source_manifest_artifacts)
-    global_query_directory = build_global_query_directory(documents, query_aliases)
+    local_index_costs = {
+        ref["index_id"]: int(ref["light_index"]["bytes"]) + int(ref["body_index"]["bytes"])
+        for ref in local_refs
+    }
+    global_query_directory = build_global_query_directory(documents, query_aliases, local_index_costs)
 
     artifacts: dict[str, dict[str, Any]] = {}
     source_registry_artifact = write_hashed_json(PUBLIC_ROOT, PUBLIC_ARTIFACT_DIR, "source_registry", source_registry, compact=True)
@@ -634,7 +698,7 @@ def write_public_index(packages: list[dict[str, Any]], built: dict[str, Any], *,
             "facet_counts": dict(facet_counts),
             "exam_vertical_preserved": True,
             "core_search": {
-                "algorithm": "authority-aware routed static search with local indexes, lazy full shards, and proof-based coverage verification",
+                "algorithm": "cost-authority planned impact-block retrieval with lazy evidence hydration and per-shard proof ledger completion",
                 "execution_model": "pure_frontend_worker",
                 "readiness": "routed_bootstrap",
                 "legacy_global_first_screen": False,
@@ -655,9 +719,9 @@ def write_public_index(packages: list[dict[str, Any]], built: dict[str, Any], *,
                     "global_query_directory",
                     "query_aliases",
                     "source_manifest",
-                    "local_light_index",
-                    "local_body_index",
-                    "shard_catalog",
+                    "local_impact_light_index",
+                    "local_impact_body_index",
+                    "proof_catalog",
                     "shard_filter",
                     "full_shards",
                     "attachment_meta_index",
@@ -684,6 +748,7 @@ def write_public_index(packages: list[dict[str, Any]], built: dict[str, Any], *,
                     "indexed_fields": ["title", "section", "nav_path", "tags", "attachments", "external", "system", "summary", "content"],
                     "full_scan_fields": ["title", "section", "nav_path", "summary", "content", "attachments", "url"],
                     "complete_requires": ["scanned_shard", "explicit_filter_exclusion", "metadata_scope_exclusion", "no_false_negative_filter_exclusion"],
+                    "ledger_states": ["pending", "scanned", "proved_no_match", "excluded_by_filter", "excluded_by_declared_scope", "failed"],
                 },
                 "total_shards": len(full_shards),
                 "total_documents": len(documents),
@@ -693,10 +758,11 @@ def write_public_index(packages: list[dict[str, Any]], built: dict[str, Any], *,
                 "proved_skip_supported": True,
                 "scan_fallback_supported": True,
                 "filter_artifact_family": "shard_filters",
-                "catalog_artifact_family": "shard_catalogs",
+                "proof_catalog_artifact_family": "proof_catalogs",
+                "completion_requires_ledger": True,
             },
             "routing_contract": {
-                "planner": "source_registry_plus_global_query_directory",
+                "planner": "cost_authority_proof_ledger_planner_v2",
                 "directory_contains_doc_postings": False,
                 "startup_loads_local_indexes": False,
                 "startup_loads_full_shards": False,
@@ -748,8 +814,8 @@ def write_public_index(packages: list[dict[str, Any]], built: dict[str, Any], *,
         "global_query_directory_bytes": artifacts["global_query_directory"]["bytes"],
         "source_registry_bytes": artifacts["source_registry"]["bytes"],
         "query_aliases_bytes": artifacts["query_aliases"]["bytes"],
-        "local_light_index_total_bytes": sum(int(ref["light_index"]["bytes"]) for ref in local_refs),
-        "local_body_index_total_bytes": sum(int(ref["body_index"]["bytes"]) for ref in local_refs),
+        "local_impact_light_index_total_bytes": sum(int(ref["light_index"]["bytes"]) for ref in local_refs),
+        "local_impact_body_index_total_bytes": sum(int(ref["body_index"]["bytes"]) for ref in local_refs),
         "local_index_count": len(local_refs),
         "body_index_bytes": sum(int(ref["body_index"]["bytes"]) for ref in local_refs),
         "full_scan_total_bytes": total_full_scan_bytes,

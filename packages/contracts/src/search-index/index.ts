@@ -19,14 +19,17 @@ export type {
     SitegraphFullShard
 } from './schema-parts';
 
-export const SitegraphInvertedPostingSchema = z.record(z.string(), z.array(z.number()));
-export const SitegraphInvertedIndexSchema = z.object({
+export const SitegraphImpactTermSchema = z.record(z.string(), z.array(z.number()));
+export const SitegraphImpactIndexSchema = z.object({
     version: z.string().min(1),
     tokenizer: z.string().min(1),
     field_codes: z.record(z.string(), z.string()),
-    tokens: z.record(z.string(), SitegraphInvertedPostingSchema)
+    field_impacts: z.record(z.string(), z.number()),
+    block_size: z.number(),
+    scoring_model: z.literal('impact-ordered-block-max-bm25f-lite-v2'),
+    terms: z.record(z.string(), SitegraphImpactTermSchema)
 }).passthrough();
-export type SitegraphInvertedIndex = z.infer<typeof SitegraphInvertedIndexSchema>;
+export type SitegraphImpactIndex = z.infer<typeof SitegraphImpactIndexSchema>;
 
 export const SitegraphLocalIndexScopeSchema = z.object({
     index_id: z.string().min(1),
@@ -37,13 +40,13 @@ export const SitegraphLocalIndexScopeSchema = z.object({
 }).passthrough();
 export type SitegraphLocalIndexScope = z.infer<typeof SitegraphLocalIndexScopeSchema>;
 
-export const SitegraphLocalLightIndexSchema = SitegraphInvertedIndexSchema.extend({
+export const SitegraphLocalLightIndexSchema = SitegraphImpactIndexSchema.extend({
     scope: SitegraphLocalIndexScopeSchema,
     documents: z.array(z.custom<SitegraphDocMeta>())
 }).passthrough();
 export type SitegraphLocalLightIndex = z.infer<typeof SitegraphLocalLightIndexSchema>;
 
-export const SitegraphLocalBodyIndexSchema = SitegraphInvertedIndexSchema.extend({
+export const SitegraphLocalBodyIndexSchema = SitegraphImpactIndexSchema.extend({
     scope: SitegraphLocalIndexScopeSchema
 }).passthrough();
 export type SitegraphLocalBodyIndex = z.infer<typeof SitegraphLocalBodyIndexSchema>;
@@ -125,7 +128,10 @@ export const QueryDirectoryRouteSchema = z.object({
     candidate_shard_group_count: z.number().optional(),
     authority_priors: z.record(z.string(), z.number()),
     freshness_policy: z.string().min(1),
-    matched_document_count: z.number()
+    matched_document_count: z.number(),
+    expected_cost_bytes: z.number(),
+    expected_utility_per_kb: z.number(),
+    planner_features: z.record(z.string(), z.number())
 }).passthrough();
 export type QueryDirectoryRoute = z.infer<typeof QueryDirectoryRouteSchema>;
 
@@ -200,7 +206,8 @@ export const SitegraphSearchManifestSchema = z.object({
         proved_skip_supported: z.literal(true),
         scan_fallback_supported: z.literal(true),
         filter_artifact_family: z.literal('shard_filters'),
-        catalog_artifact_family: z.literal('shard_catalogs')
+        proof_catalog_artifact_family: z.literal('proof_catalogs'),
+        completion_requires_ledger: z.literal(true)
     }).passthrough(),
     routing_contract: z.object({
         planner: z.string().min(1),
@@ -263,6 +270,36 @@ export type SitegraphSearchPhase =
     | 'cancelled'
     | 'error';
 
+export type SitegraphProofLedgerState =
+    | 'pending'
+    | 'scanned'
+    | 'proved_no_match'
+    | 'excluded_by_filter'
+    | 'excluded_by_declared_scope'
+    | 'failed';
+
+export interface SitegraphProofLedgerEntry {
+    shard_id: string;
+    source_id: string;
+    state: SitegraphProofLedgerState;
+    document_count: number;
+    byte_size: number;
+    path: string;
+    reason: string;
+    covered_fields: string[];
+}
+
+export interface SitegraphProofLedgerSummary {
+    total_shards: number;
+    pending_shards: number;
+    scanned_shards: number;
+    proved_no_match_shards: number;
+    excluded_by_filter_shards: number;
+    excluded_by_declared_scope_shards: number;
+    failed_shards: number;
+    complete: boolean;
+}
+
 export interface SitegraphSearchCoverage {
     phase: SitegraphSearchPhase;
     coverage_state: SitegraphSearchPhase;
@@ -270,6 +307,10 @@ export interface SitegraphSearchCoverage {
     searched_fields: string[];
     proved_no_match_shards: number;
     scanned_shards: number;
+    excluded_by_filter_shards: number;
+    excluded_by_declared_scope_shards: number;
+    pending_shards: number;
+    failed_shards: number;
     total_shards: number;
     searched_documents: number;
     total_documents: number;
@@ -279,6 +320,7 @@ export interface SitegraphSearchCoverage {
     hydrated_shard_bytes: number;
     used_body_index: boolean;
     exhaustive_complete: boolean;
+    proof_ledger: SitegraphProofLedgerSummary;
 }
 
 export interface SitegraphFallbackStats {
@@ -296,6 +338,25 @@ export interface SitegraphQueryPlan {
     source_ids: string[];
     local_index_ids: string[];
     verification_source_ids: string[];
+    declared_completion_scope: 'global' | 'scoped';
+    estimated_cost_bytes: number;
+    estimated_utility_per_kb: number;
+    route_decisions: Array<{
+        term: string;
+        local_index_count: number;
+        expected_cost_bytes: number;
+        expected_utility_per_kb: number;
+        likely_sources: string[];
+        likely_facets: string[];
+    }>;
+    selected_local_indexes?: Array<{
+        index_id: string;
+        expected_bytes: number;
+        utility_score: number;
+        source_id: string;
+        facet: string;
+        year: string;
+    }>;
 }
 
 export interface SitegraphQueryStats {
@@ -313,6 +374,14 @@ export interface SitegraphQueryStats {
     localIndexBytes: number;
     hydratedShardBytes: number;
     fallbacks: SitegraphFallbackStats;
+    retrieval: {
+        dynamicPruning: boolean;
+        impactBlocksVisited: number;
+        impactBlocksPruned: number;
+        postingsVisited: number;
+        postingsPruned: number;
+        competitiveThreshold: number;
+    };
 }
 
 export type SitegraphSortMode = 'relevance' | 'date_desc';

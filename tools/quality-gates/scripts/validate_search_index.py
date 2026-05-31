@@ -50,6 +50,10 @@ def main() -> None:
         fail("legacy global startup artifacts must not be runtime artifacts")
     if manifest.get("routing_contract", {}).get("startup_loads_global_document_metadata") is not False:
         fail("routing contract must explicitly reject global document metadata startup")
+    if manifest.get("routing_contract", {}).get("planner") != "cost_authority_proof_ledger_planner_v2":
+        fail("routing planner must be cost_authority_proof_ledger_planner_v2")
+    if manifest.get("verification_contract", {}).get("completion_requires_ledger") is not True:
+        fail("completion must require a proof ledger")
     for name in ("source_registry", "global_query_directory", "query_aliases", "size_report"):
         entry = (manifest.get("artifacts") or {}).get(name)
         if not isinstance(entry, dict) or not entry.get("path"):
