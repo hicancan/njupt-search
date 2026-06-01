@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
     buildSitegraphMatchSnippet,
+    clearSitegraphRuntimeCaches,
     decodePackedLocalBodyIndex,
     decodePackedLocalBodyIndexTerms,
     formatResolvedSearchDate,
@@ -27,6 +28,7 @@ import type {
     SitegraphSourceManifest,
     SitegraphSourceRegistry
 } from '@njupt-search/contracts';
+import type { ArtifactContentCache } from '../src';
 
 const artifact = (path: string, role: string, load = 'on_demand', count?: number) => ({
     path,
@@ -633,6 +635,24 @@ const withMockFetch = async (
     }
 };
 
+const createPersistentFixtureCache = (): ArtifactContentCache => {
+    const store = new Map<string, ArrayBuffer>();
+    const clone = (buffer: ArrayBuffer): ArrayBuffer => buffer.slice(0);
+    return {
+        scope: 'browser_persistent_content_hash',
+        async has(url: string): Promise<boolean> {
+            return store.has(url);
+        },
+        async read(url: string): Promise<ArrayBuffer | null> {
+            const payload = store.get(url);
+            return payload ? clone(payload) : null;
+        },
+        async write(url: string, payload: ArrayBuffer): Promise<void> {
+            store.set(url, clone(payload));
+        },
+    };
+};
+
 describe('sitegraph search contract', () => {
     it('decodes packed local body impact indexes', () => {
         const payload: SitegraphLocalBodyIndex = {
@@ -975,6 +995,36 @@ describe('sitegraph search contract', () => {
             expect(complete?.coverage.scanned_shards).toBe(0);
             expect(complete?.results).toEqual([]);
         });
+    });
+
+    it('reuses browser persistent content-hash artifacts after runtime memory caches are cleared', async () => {
+        const fixture = makeRoutedFixture('persistent-cache-warm', [makeDocument()], {
+            queryTerms: ['转专业申请'],
+            lightTerms: impactTerms({ 转专业: { t: [0] } }),
+            bodyTerms: impactTerms({ 申请: { c: [0] } })
+        });
+        const artifactCache = createPersistentFixtureCache();
+        const session = { ...fixture.session, artifactCache };
+
+        clearSitegraphRuntimeCaches();
+        await withMockFetch({ ...fixture, session }, async () => {
+            const cold = await recallSitegraphDocuments(session, '转专业申请', new AbortController().signal, 5);
+            expect(cold.stats.cache.scope).toBe('browser_persistent_content_hash');
+            expect(cold.stats.cache.artifact_misses).toBeGreaterThan(0);
+            expect(cold.stats.cache.network_misses).toBeGreaterThan(0);
+            expect(cold.stats.cache.persistent_hits).toBe(0);
+
+            clearSitegraphRuntimeCaches();
+            const warm = await recallSitegraphDocuments(session, '转专业申请', new AbortController().signal, 5);
+            expect(warm.stats.cache.scope).toBe('browser_persistent_content_hash');
+            expect(warm.stats.cache.artifact_misses).toBe(0);
+            expect(warm.stats.cache.network_misses).toBe(0);
+            expect(warm.stats.cache.uncached_bytes).toBe(0);
+            expect(warm.stats.cache.persistent_hits).toBeGreaterThan(0);
+            expect(warm.stats.plan.selected_local_indexes?.[0]?.cache_state).toBe('warm');
+            expect(warm.results[0]?.id).toBe(cold.results[0]?.id);
+        });
+        clearSitegraphRuntimeCaches();
     });
 
     it('refuses exhaustive completion when cancellation leaves proof ledger shards pending', async () => {

@@ -46,11 +46,15 @@ def cache_state_counts(result: dict[str, Any]) -> dict[str, int]:
 def cache_summary(stats: dict[str, Any]) -> dict[str, Any]:
     cache = dict(stats.get("cache") or {})
     return {
+        "scope": str(cache.get("scope") or "memory_content_hash"),
         "artifact_hits": int(cache.get("artifact_hits") or 0),
         "artifact_misses": int(cache.get("artifact_misses") or 0),
         "cached_bytes": int(cache.get("cached_bytes") or 0),
         "uncached_bytes": int(cache.get("uncached_bytes") or 0),
         "cacheable_bytes": int(cache.get("cacheable_bytes") or 0),
+        "memory_hits": int(cache.get("memory_hits") or 0),
+        "persistent_hits": int(cache.get("persistent_hits") or 0),
+        "network_misses": int(cache.get("network_misses") or 0),
     }
 
 
@@ -114,7 +118,8 @@ def run_cache_benchmark(queries: list[str] | None = None) -> dict[str, Any]:
         "failure_count": len(failures),
     }
     return {
-        "benchmark": "sitegraph-memory-content-hash-cache-v1",
+        "benchmark": "sitegraph-memory-content-hash-cache-v2",
+        "evidence_scope": "deterministic in-process cache simulation; browser persistent cache is measured by browser verification",
         "queries": rows,
         "summary": summary,
         "failures": failures,

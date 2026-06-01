@@ -166,6 +166,10 @@ def test_public_index_is_pure_sitegraph_contract():
     assert manifest["routing_contract"]["startup_loads_local_indexes"] is False
     assert manifest["routing_contract"]["startup_loads_full_shards"] is False
     assert manifest["routing_contract"]["startup_loads_global_document_metadata"] is False
+    assert manifest["cache_contract"]["runtime_cache"] == "browser_persistent_content_hash"
+    assert manifest["cache_contract"]["cache_key"] == "content_hashed_artifact_url"
+    assert manifest["cache_contract"]["manifest_load"] == "reload_for_hash_invalidation"
+    assert manifest["cache_contract"]["warm_repeat_requires_zero_uncached_immutable_reads"] is True
     assert "doc_meta_light" not in manifest["artifacts"]
     assert "light_inverted_index" not in manifest["artifacts"]
 

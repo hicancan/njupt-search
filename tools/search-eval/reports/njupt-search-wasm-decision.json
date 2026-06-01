@@ -1,13 +1,13 @@
 {
   "artifact_count": 246,
-  "benchmark": "packed-impact-decoder-wasm-vs-typescript-v1",
+  "benchmark": "packed-impact-retrieval-wasm-vs-typescript-v2",
   "collection": "apps/web/public/generated/collections/njupt-public",
   "decision": {
-    "reason": "The current browser runtime consumes a JavaScript SitegraphLocalBodyIndex object. On the full packed body workload, Rust/WASM decode plus JSON bridge was 1.084x the TypeScript decoder, so replacing only the decoder would increase current runtime decode cost. The stats-only WASM path is recorded as a lower-bound signal for a future full WASM retrieval core that avoids JS object materialization.",
-    "status": "typescript_better_for_current_runtime",
-    "winner": "typescript_runtime_decoder"
+    "reason": "The browser runtime can consume Rust/WASM stateful score entries directly. On the full packed body workload, the Rust/WASM session score bridge was 0.175x the TypeScript selective retrieval kernel for the same artifact format, query set, and global top-k pruning state.",
+    "status": "rust_wasm_retrieval_runtime_selected",
+    "winner": "wasm_retrieval_session_scores_bridge"
   },
-  "generated_at": "2026-06-01T03:52:59.270Z",
+  "generated_at": "2026-06-01T07:10:51.619Z",
   "runs": 5,
   "toolchain": {
     "node": "v24.16.0",
@@ -17,10 +17,44 @@
     "wasm_tools": "wasm-tools 1.251.0 (a1a178a02 2026-05-28)"
   },
   "total_bytes": 16850611,
+  "retrieval_queries": [
+    {
+      "query": "校历",
+      "term_count": 19
+    },
+    {
+      "query": "慕课考试",
+      "term_count": 28
+    },
+    {
+      "query": "转专业",
+      "term_count": 30
+    },
+    {
+      "query": "学生相关文件及表格",
+      "term_count": 45
+    },
+    {
+      "query": "教务管理系统",
+      "term_count": 25
+    },
+    {
+      "query": "奖学金",
+      "term_count": 12
+    },
+    {
+      "query": "大创",
+      "term_count": 29
+    },
+    {
+      "query": "不存在的查询词",
+      "term_count": 19
+    }
+  ],
   "typescript_decode_to_object": {
-    "max_ms": 688.527,
-    "mean_ms": 636.351,
-    "min_ms": 602.181,
+    "max_ms": 737.17,
+    "mean_ms": 645.327,
+    "min_ms": 609.692,
     "runs": 5,
     "summary": {
       "field_count": 1164483,
@@ -30,9 +64,9 @@
     }
   },
   "wasm_decode_to_json_then_parse": {
-    "max_ms": 705.837,
-    "mean_ms": 689.802,
-    "min_ms": 659.382,
+    "max_ms": 702.058,
+    "mean_ms": 685.09,
+    "min_ms": 677.183,
     "runs": 5,
     "summary": {
       "field_count": 1164483,
@@ -42,15 +76,75 @@
     }
   },
   "wasm_stats_only_decode": {
-    "max_ms": 42.998,
-    "mean_ms": 39.948,
-    "min_ms": 37.004,
+    "max_ms": 46.11,
+    "mean_ms": 43.046,
+    "min_ms": 37.65,
     "runs": 5,
     "summary": {
       "field_count": 1164483,
       "max_doc_id": 10259,
       "posting_count": 2302002,
       "term_count": 879433
+    }
+  },
+  "typescript_retrieval_kernel": {
+    "max_ms": 3422.653,
+    "mean_ms": 3360.691,
+    "min_ms": 3307.103,
+    "runs": 5,
+    "summary": {
+      "block_count": 12092,
+      "candidate_count": 19720,
+      "impact_blocks_pruned": 2424,
+      "impact_blocks_visited": 9668,
+      "matched_term_count": 6814,
+      "postings_pruned": 14388,
+      "postings_visited": 61035
+    }
+  },
+  "wasm_retrieval_kernel": {
+    "max_ms": 518.326,
+    "mean_ms": 470.565,
+    "min_ms": 442.374,
+    "runs": 5,
+    "summary": {
+      "block_count": 12092,
+      "candidate_count": 26598,
+      "impact_blocks_pruned": 0,
+      "impact_blocks_visited": 12092,
+      "matched_term_count": 6814,
+      "postings_pruned": 0,
+      "postings_visited": 75423
+    }
+  },
+  "wasm_retrieval_session": {
+    "max_ms": 626.321,
+    "mean_ms": 587.936,
+    "min_ms": 537.36,
+    "runs": 5,
+    "summary": {
+      "block_count": 12092,
+      "candidate_count": 19720,
+      "impact_blocks_pruned": 2424,
+      "impact_blocks_visited": 9668,
+      "matched_term_count": 6814,
+      "postings_pruned": 14388,
+      "postings_visited": 61035
+    }
+  },
+  "wasm_retrieval_session_scores_bridge": {
+    "max_ms": 597.751,
+    "mean_ms": 587.416,
+    "min_ms": 574.691,
+    "runs": 5,
+    "summary": {
+      "block_count": 12092,
+      "candidate_count": 19720,
+      "impact_blocks_pruned": 2424,
+      "impact_blocks_visited": 9668,
+      "matched_term_count": 6814,
+      "postings_pruned": 14388,
+      "postings_visited": 61035
     }
   }
 }

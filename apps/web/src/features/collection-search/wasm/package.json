@@ -1,0 +1,15 @@
+{
+  "name": "packed-impact-decoder",
+  "type": "module",
+  "version": "0.1.0",
+  "files": [
+    "packed_impact_decoder_bg.wasm",
+    "packed_impact_decoder.js",
+    "packed_impact_decoder.d.ts"
+  ],
+  "main": "packed_impact_decoder.js",
+  "types": "packed_impact_decoder.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}

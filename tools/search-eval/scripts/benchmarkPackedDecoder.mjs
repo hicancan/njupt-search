@@ -8,13 +8,18 @@ import path from 'node:path';
 import { performance } from 'node:perf_hooks';
 import { fileURLToPath } from 'node:url';
 
-import { decodePackedLocalBodyIndex } from '../../../packages/search-core/src/sitegraphBinaryIndex.ts';
+import {
+    decodePackedLocalBodyIndex,
+    decodePackedLocalBodyIndexTerms,
+} from '../../../packages/search-core/src/sitegraphBinaryIndex.ts';
+import { tokenizeSitegraphQuery } from '../../../packages/search-core/src/tokenizer.ts';
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(scriptDir, '../../..');
 const defaultCollection = path.join(repoRoot, 'apps/web/public/generated/collections/njupt-public');
 const wasmCrateDir = path.join(repoRoot, 'tools/wasm/packed-impact-decoder');
 const wasmModulePath = path.join(wasmCrateDir, 'pkg/packed_impact_decoder.js');
+const defaultRetrievalQueries = ['校历', '慕课考试', '转专业', '学生相关文件及表格', '教务管理系统', '奖学金', '大创', '不存在的查询词'];
 
 const parseArgs = () => {
     const args = {
@@ -22,6 +27,7 @@ const parseArgs = () => {
         collection: defaultCollection,
         markdown: null,
         output: null,
+        queries: [],
         runs: 5,
     };
     for (let index = 2; index < process.argv.length; index += 1) {
@@ -36,6 +42,8 @@ const parseArgs = () => {
             args.markdown = path.resolve(process.argv[++index]);
         } else if (arg === '--runs') {
             args.runs = Math.max(1, Number.parseInt(process.argv[++index], 10));
+        } else if (arg === '--query') {
+            args.queries.push(process.argv[++index]);
         } else {
             throw new Error(`Unknown argument: ${arg}`);
         }
@@ -100,6 +108,35 @@ const emptySummary = () => ({
     term_count: 0,
 });
 
+const emptyRetrievalSummary = () => ({
+    block_count: 0,
+    candidate_count: 0,
+    impact_blocks_pruned: 0,
+    impact_blocks_visited: 0,
+    matched_term_count: 0,
+    postings_pruned: 0,
+    postings_visited: 0,
+});
+
+const addRetrievalSummary = (left, right) => ({
+    block_count: left.block_count + Number(right.block_count || 0),
+    candidate_count: left.candidate_count + Number(right.candidate_count || 0),
+    impact_blocks_pruned: left.impact_blocks_pruned + Number(right.impact_blocks_pruned || 0),
+    impact_blocks_visited: left.impact_blocks_visited + Number(right.impact_blocks_visited || 0),
+    matched_term_count: left.matched_term_count + Number(right.matched_term_count || 0),
+    postings_pruned: left.postings_pruned + Number(right.postings_pruned || 0),
+    postings_visited: left.postings_visited + Number(right.postings_visited || 0),
+});
+
+const sameRetrievalSummary = (left, right) =>
+    left.block_count === right.block_count
+    && left.candidate_count === right.candidate_count
+    && left.impact_blocks_pruned === right.impact_blocks_pruned
+    && left.impact_blocks_visited === right.impact_blocks_visited
+    && left.matched_term_count === right.matched_term_count
+    && left.postings_pruned === right.postings_pruned
+    && left.postings_visited === right.postings_visited;
+
 const sameSummary = (left, right) =>
     left.term_count === right.term_count
     && left.field_count === right.field_count
@@ -127,6 +164,90 @@ const timed = (runs, fn) => {
     };
 };
 
+const timedRetrieval = (runs, fn) => {
+    const durations = [];
+    let summary = emptyRetrievalSummary();
+    for (let run = 0; run < runs; run += 1) {
+        const started = performance.now();
+        summary = fn();
+        durations.push(performance.now() - started);
+    }
+    return {
+        ...summarizeDurations(durations),
+        runs,
+        summary,
+    };
+};
+
+const sortedScoreEntries = scores => Array.from(scores.entries()).sort((left, right) => {
+    const scoreDelta = right[1] - left[1];
+    if (scoreDelta !== 0) return scoreDelta;
+    return left[0] - right[0];
+});
+
+const competitiveThreshold = (scores, target) => {
+    if (scores.size < target) return Number.NEGATIVE_INFINITY;
+    return sortedScoreEntries(scores)[Math.max(0, target - 1)]?.[1] ?? Number.NEGATIVE_INFINITY;
+};
+
+const scoreImpactIndexInto = (scores, index, terms, targetCandidates = 160) => {
+    const blocks = [];
+    const blockSize = Math.max(8, index.block_size || 32);
+    for (const term of terms) {
+        const termPayload = index.terms[term];
+        if (!termPayload) continue;
+        for (const [field, ids] of Object.entries(termPayload)) {
+            const impact = (index.field_impacts[field] || 8) + Math.min(term.length, 8);
+            for (let offset = 0; offset < ids.length; offset += blockSize) {
+                blocks.push({
+                    key: `${term}\0${field}`,
+                    impact,
+                    ids: ids.slice(offset, offset + blockSize),
+                });
+            }
+        }
+    }
+    blocks.sort((left, right) => right.impact - left.impact || left.key.localeCompare(right.key));
+    const suffix = new Array(blocks.length + 1).fill(0);
+    const seen = new Set();
+    let total = 0;
+    for (let index = blocks.length - 1; index >= 0; index -= 1) {
+        if (!seen.has(blocks[index].key)) {
+            seen.add(blocks[index].key);
+            total += blocks[index].impact;
+        }
+        suffix[index] = total;
+    }
+    const summary = {
+        ...emptyRetrievalSummary(),
+        block_count: blocks.length,
+        matched_term_count: Object.keys(index.terms).length,
+    };
+    for (let index = 0; index < blocks.length; index += 1) {
+        const block = blocks[index];
+        const threshold = competitiveThreshold(scores, targetCandidates);
+        const maxPossibleForUnseenDoc = block.impact + (suffix[index + 1] ?? 0);
+        const hasKnownCandidate = block.ids.some(docIndex => scores.has(docIndex));
+        if (!hasKnownCandidate && scores.size >= targetCandidates && maxPossibleForUnseenDoc <= threshold) {
+            summary.impact_blocks_pruned += 1;
+            summary.postings_pruned += block.ids.length;
+            continue;
+        }
+        summary.impact_blocks_visited += 1;
+        for (const docIndex of block.ids) {
+            summary.postings_visited += 1;
+            scores.set(docIndex, (scores.get(docIndex) || 0) + block.impact);
+        }
+    }
+    return summary;
+};
+
+const loadAliases = async collection => {
+    const manifest = JSON.parse(await fs.readFile(path.join(collection, 'manifest.json'), 'utf8'));
+    const aliasesPath = path.join(repoRoot, 'apps/web/public', manifest.artifacts.query_aliases.path);
+    return JSON.parse(await fs.readFile(aliasesPath, 'utf8'));
+};
+
 const writeJson = async (filePath, payload) => {
     if (!filePath) return;
     await fs.mkdir(path.dirname(filePath), { recursive: true });
@@ -136,8 +257,9 @@ const writeJson = async (filePath, payload) => {
 const renderMarkdown = report => {
     const materialized = report.wasm_decode_to_json_then_parse.mean_ms / report.typescript_decode_to_object.mean_ms;
     const statsOnly = report.wasm_stats_only_decode.mean_ms / report.typescript_decode_to_object.mean_ms;
+    const retrievalRatio = report.wasm_retrieval_session.mean_ms / report.typescript_retrieval_kernel.mean_ms;
     return [
-        '# NJUPT Search Rust/WASM Decoder Decision',
+        '# NJUPT Search Rust/WASM Retrieval Decision',
         '',
         `- Generated at: \`${report.generated_at}\``,
         `- Artifact count: \`${report.artifact_count}\``,
@@ -151,6 +273,10 @@ const renderMarkdown = report => {
         `| TypeScript runtime decoder to JS object | ${report.typescript_decode_to_object.mean_ms.toFixed(3)} | ${report.typescript_decode_to_object.min_ms.toFixed(3)} | ${report.typescript_decode_to_object.max_ms.toFixed(3)} |`,
         `| Rust/WASM decode to JSON string, then JS parse | ${report.wasm_decode_to_json_then_parse.mean_ms.toFixed(3)} | ${report.wasm_decode_to_json_then_parse.min_ms.toFixed(3)} | ${report.wasm_decode_to_json_then_parse.max_ms.toFixed(3)} |`,
         `| Rust/WASM stats-only decode lower bound | ${report.wasm_stats_only_decode.mean_ms.toFixed(3)} | ${report.wasm_stats_only_decode.min_ms.toFixed(3)} | ${report.wasm_stats_only_decode.max_ms.toFixed(3)} |`,
+        `| TypeScript selective retrieval kernel | ${report.typescript_retrieval_kernel.mean_ms.toFixed(3)} | ${report.typescript_retrieval_kernel.min_ms.toFixed(3)} | ${report.typescript_retrieval_kernel.max_ms.toFixed(3)} |`,
+        `| Rust/WASM stateless retrieval kernel | ${report.wasm_retrieval_kernel.mean_ms.toFixed(3)} | ${report.wasm_retrieval_kernel.min_ms.toFixed(3)} | ${report.wasm_retrieval_kernel.max_ms.toFixed(3)} |`,
+        `| Rust/WASM stateful retrieval session | ${report.wasm_retrieval_session.mean_ms.toFixed(3)} | ${report.wasm_retrieval_session.min_ms.toFixed(3)} | ${report.wasm_retrieval_session.max_ms.toFixed(3)} |`,
+        `| Rust/WASM stateful retrieval with score bridge | ${report.wasm_retrieval_session_scores_bridge.mean_ms.toFixed(3)} | ${report.wasm_retrieval_session_scores_bridge.min_ms.toFixed(3)} | ${report.wasm_retrieval_session_scores_bridge.max_ms.toFixed(3)} |`,
         '',
         '## Decision',
         '',
@@ -158,6 +284,8 @@ const renderMarkdown = report => {
         `- Winner for current runtime: \`${report.decision.winner}\``,
         `- WASM materialized path ratio vs TypeScript: \`${materialized.toFixed(3)}x\``,
         `- WASM stats-only lower-bound ratio vs TypeScript: \`${statsOnly.toFixed(3)}x\``,
+        `- WASM stateful retrieval ratio vs TypeScript retrieval kernel: \`${retrievalRatio.toFixed(3)}x\``,
+        `- WASM stateful score bridge ratio vs TypeScript retrieval kernel: \`${(report.wasm_retrieval_session_scores_bridge.mean_ms / report.typescript_retrieval_kernel.mean_ms).toFixed(3)}x\``,
         `- Reason: ${report.decision.reason}`,
         '',
         '## Reproduction',
@@ -184,6 +312,12 @@ const main = async () => {
     const require = createRequire(import.meta.url);
     const wasm = require(wasmModulePath);
     const artifactPaths = await listPackedArtifacts(args.collection);
+    const aliases = await loadAliases(args.collection);
+    const retrievalQueries = args.queries.length > 0 ? args.queries : defaultRetrievalQueries;
+    const retrievalTermsByQuery = retrievalQueries.map(query => ({
+        query,
+        terms: tokenizeSitegraphQuery(query, aliases),
+    }));
     const payloads = await Promise.all(
         artifactPaths.map(async artifactPath => {
             const bytes = await fs.readFile(artifactPath);
@@ -227,31 +361,118 @@ const main = async () => {
         }
         return aggregate;
     };
+    const retrieveWithTypescript = () => {
+        let aggregate = emptyRetrievalSummary();
+        for (const { terms } of retrievalTermsByQuery) {
+            const scores = new Map();
+            let querySummary = emptyRetrievalSummary();
+            for (const payload of payloads) {
+                const decoded = decodePackedLocalBodyIndexTerms(payload.arrayBuffer, terms, payload.path);
+                querySummary = addRetrievalSummary(querySummary, scoreImpactIndexInto(scores, decoded, terms));
+            }
+            querySummary.candidate_count = scores.size;
+            aggregate = addRetrievalSummary(aggregate, querySummary);
+        }
+        return aggregate;
+    };
+    const retrieveWithWasm = () => {
+        let aggregate = emptyRetrievalSummary();
+        for (const { terms } of retrievalTermsByQuery) {
+            const serializedTerms = JSON.stringify(terms);
+            for (const payload of payloads) {
+                aggregate = addRetrievalSummary(
+                    aggregate,
+                    JSON.parse(wasm.retrieve_packed_impact_topk_stats(payload.uint8, serializedTerms, 160)),
+                );
+            }
+        }
+        return aggregate;
+    };
+    const retrieveWithWasmSession = () => {
+        let aggregate = emptyRetrievalSummary();
+        for (const { terms } of retrievalTermsByQuery) {
+            const session = new wasm.PackedImpactRetrievalSession(160);
+            const serializedTerms = JSON.stringify(terms);
+            let querySummary = emptyRetrievalSummary();
+            for (const payload of payloads) {
+                const result = JSON.parse(session.apply(payload.uint8, serializedTerms));
+                querySummary = addRetrievalSummary(querySummary, { ...result, candidate_count: 0 });
+            }
+            const finalStats = JSON.parse(session.stats_json());
+            querySummary.candidate_count = Number(finalStats.candidate_count || 0);
+            aggregate = addRetrievalSummary(aggregate, querySummary);
+            session.free();
+        }
+        return aggregate;
+    };
+    const retrieveWithWasmSessionScoresBridge = () => {
+        let aggregate = emptyRetrievalSummary();
+        for (const { terms } of retrievalTermsByQuery) {
+            const session = new wasm.PackedImpactRetrievalSession(160);
+            const serializedTerms = JSON.stringify(terms);
+            let querySummary = emptyRetrievalSummary();
+            for (const payload of payloads) {
+                const result = JSON.parse(session.apply(payload.uint8, serializedTerms));
+                querySummary = addRetrievalSummary(querySummary, { ...result, candidate_count: 0 });
+            }
+            const scoresPayload = JSON.parse(session.scores_json());
+            if (!Array.isArray(scoresPayload.score_entries)) {
+                throw new Error('WASM score bridge result is missing score_entries');
+            }
+            if (scoresPayload.score_entries.length !== Number(scoresPayload.candidate_count || 0)) {
+                throw new Error('WASM score bridge candidate_count does not match score_entries length');
+            }
+            querySummary.candidate_count = Number(scoresPayload.candidate_count || 0);
+            aggregate = addRetrievalSummary(aggregate, querySummary);
+            session.free();
+        }
+        return aggregate;
+    };
 
     const tsResult = timed(args.runs, decodeWithTypescript);
     const wasmJsonResult = timed(args.runs, decodeWithWasmJson);
     const wasmStatsResult = timed(args.runs, decodeWithWasmStats);
+    const tsRetrievalResult = timedRetrieval(args.runs, retrieveWithTypescript);
+    const wasmRetrievalResult = timedRetrieval(args.runs, retrieveWithWasm);
+    const wasmRetrievalSessionResult = timedRetrieval(args.runs, retrieveWithWasmSession);
+    const wasmRetrievalSessionScoresBridgeResult = timedRetrieval(args.runs, retrieveWithWasmSessionScoresBridge);
     if (!sameSummary(tsResult.summary, wasmJsonResult.summary) || !sameSummary(tsResult.summary, wasmStatsResult.summary)) {
         throw new Error('Decoder benchmark summaries do not match');
     }
+    if (!sameRetrievalSummary(tsRetrievalResult.summary, wasmRetrievalSessionResult.summary)) {
+        throw new Error(`Stateful retrieval benchmark summaries do not match: ${JSON.stringify({ ts: tsRetrievalResult.summary, wasm: wasmRetrievalSessionResult.summary })}`);
+    }
+    if (!sameRetrievalSummary(wasmRetrievalSessionResult.summary, wasmRetrievalSessionScoresBridgeResult.summary)) {
+        throw new Error(`WASM session score bridge retrieval summaries do not match: ${JSON.stringify({ stats: wasmRetrievalSessionResult.summary, scores: wasmRetrievalSessionScoresBridgeResult.summary })}`);
+    }
 
     const tsWinsCurrentRuntime = tsResult.mean_ms <= wasmJsonResult.mean_ms;
+    const retrievalRatio = wasmRetrievalSessionResult.mean_ms / tsRetrievalResult.mean_ms;
+    const scoreBridgeRatio = wasmRetrievalSessionScoresBridgeResult.mean_ms / tsRetrievalResult.mean_ms;
     const ratio = wasmJsonResult.mean_ms / tsResult.mean_ms;
-    const decision = tsWinsCurrentRuntime
+    const tsRetrievalWins = tsRetrievalResult.mean_ms <= wasmRetrievalSessionScoresBridgeResult.mean_ms;
+    const wasmScoreBridgeWins = wasmRetrievalSessionScoresBridgeResult.mean_ms < tsRetrievalResult.mean_ms;
+    const decision = wasmScoreBridgeWins
         ? {
-            reason: `The current browser runtime consumes a JavaScript SitegraphLocalBodyIndex object. On the full packed body workload, Rust/WASM decode plus JSON bridge was ${ratio.toFixed(3)}x the TypeScript decoder, so replacing only the decoder would increase current runtime decode cost. The stats-only WASM path is recorded as a lower-bound signal for a future full WASM retrieval core that avoids JS object materialization.`,
-            status: 'typescript_better_for_current_runtime',
+            reason: `The browser runtime can consume Rust/WASM stateful score entries directly. On the full packed body workload, the Rust/WASM session score bridge was ${scoreBridgeRatio.toFixed(3)}x the TypeScript selective retrieval kernel for the same artifact format, query set, and global top-k pruning state.`,
+            status: 'rust_wasm_retrieval_runtime_selected',
+            winner: 'wasm_retrieval_session_scores_bridge',
+        }
+        : tsWinsCurrentRuntime && tsRetrievalWins
+        ? {
+            reason: `The current browser runtime consumes JavaScript search objects. On the full packed body workload, Rust/WASM decode plus JSON bridge was ${ratio.toFixed(3)}x the TypeScript decoder, and the Rust/WASM selective retrieval kernel was ${retrievalRatio.toFixed(3)}x the TypeScript selective retrieval kernel for the same query set. TypeScript remains the selected runtime until a full browser WASM integration beats it end to end.`,
+            status: 'typescript_runtime_selected_after_wasm_retrieval_kernel',
             winner: 'typescript_runtime_decoder',
         }
         : {
-            reason: `Rust/WASM decode plus JSON bridge was ${(1 / ratio).toFixed(3)}x faster than the TypeScript decoder on the full packed body workload. This is evidence to integrate the WASM materialized decoder or move retrieval into WASM before claiming the Rust/WASM DoD item complete.`,
-            status: 'wasm_materialized_decoder_wins_integration_needed',
-            winner: 'wasm_json_bridge_decoder',
+            reason: `Rust/WASM produced a faster path in at least one measured mode: materialized decode ratio ${ratio.toFixed(3)}x, retrieval kernel ratio ${retrievalRatio.toFixed(3)}x. Integrate the winning WASM retrieval path in the browser before treating the TypeScript runtime as final.`,
+            status: 'wasm_retrieval_integration_needed',
+            winner: tsRetrievalWins ? 'wasm_json_bridge_decoder' : 'wasm_retrieval_kernel',
         };
 
     const report = {
         artifact_count: payloads.length,
-        benchmark: 'packed-impact-decoder-wasm-vs-typescript-v1',
+        benchmark: 'packed-impact-retrieval-wasm-vs-typescript-v2',
         collection: path.relative(repoRoot, args.collection).replaceAll(path.sep, '/'),
         decision,
         generated_at: new Date().toISOString(),
@@ -264,9 +485,14 @@ const main = async () => {
             wasm_tools: commandVersion('wasm-tools', ['--version']),
         },
         total_bytes: payloads.reduce((total, payload) => total + payload.bytes.byteLength, 0),
+        retrieval_queries: retrievalTermsByQuery.map(item => ({ query: item.query, term_count: item.terms.length })),
         typescript_decode_to_object: tsResult,
         wasm_decode_to_json_then_parse: wasmJsonResult,
         wasm_stats_only_decode: wasmStatsResult,
+        typescript_retrieval_kernel: tsRetrievalResult,
+        wasm_retrieval_kernel: wasmRetrievalResult,
+        wasm_retrieval_session: wasmRetrievalSessionResult,
+        wasm_retrieval_session_scores_bridge: wasmRetrievalSessionScoresBridgeResult,
     };
 
     await writeJson(args.output, report);

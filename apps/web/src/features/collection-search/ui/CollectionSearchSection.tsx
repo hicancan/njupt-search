@@ -476,6 +476,9 @@ export function CollectionSearchSection({
                             <span>已加载 {formatBytes(coverage.loaded_bytes)}</span>
                             <span>新读 {formatBytes(coverage.uncached_loaded_bytes)}</span>
                             <span>缓存命中 {formatBytes(coverage.cached_artifact_bytes)} / {coverage.cache.artifact_hits}</span>
+                            {coverage.cache.scope === 'browser_persistent_content_hash' ? (
+                                <span>持久缓存 {coverage.cache.persistent_hits} / 内存 {coverage.cache.memory_hits}</span>
+                            ) : null}
                             <span>阶段：{coverage.phase}</span>
                             <span>字段：{fieldLabel(coverage.searched_fields)}</span>
                             {queryStats ? (
@@ -484,6 +487,9 @@ export function CollectionSearchSection({
                                     <span>摘要兜底 {queryStats.fallbacks.snippetFallbackResults}</span>
                                     <span>验证命中 {queryStats.fallbacks.verifiedFullScanMatches}</span>
                                     <span>局部索引 {queryStats.loadedLocalIndexCount}</span>
+                                    {queryStats.retrieval.engine ? (
+                                        <span>检索内核 {queryStats.retrieval.engine}</span>
+                                    ) : null}
                                     <span>剪枝块 {queryStats.retrieval.impactBlocksPruned}</span>
                                     <span>跳过 postings {queryStats.retrieval.postingsPruned}</span>
                                 </>

@@ -27,6 +27,7 @@ DEFAULT_REPORT_QUERIES = [
 ]
 
 DEFAULT_WASM_DECISION_REPORT = BASE_DIR / "tools" / "search-eval" / "reports" / "njupt-search-wasm-decision.json"
+DEFAULT_BROWSER_VERIFICATION_REPORT = BASE_DIR / "tools" / "search-eval" / "reports" / "njupt-search-browser-verification.json"
 
 BYTE_METRICS = [
     "routed_first_screen_total_bytes",
@@ -169,6 +170,12 @@ def load_local_light_payloads(manifest: dict[str, Any], *, baseline_ref: str | N
 
 
 def load_wasm_decision_report(path: Path = DEFAULT_WASM_DECISION_REPORT) -> dict[str, Any] | None:
+    if not path.exists():
+        return None
+    return read_json(path)
+
+
+def load_browser_verification_report(path: Path = DEFAULT_BROWSER_VERIFICATION_REPORT) -> dict[str, Any] | None:
     if not path.exists():
         return None
     return read_json(path)
@@ -574,6 +581,8 @@ def attachment_evidence_summary(manifest: dict[str, Any]) -> dict[str, Any]:
 def dod_audit(report: dict[str, Any]) -> dict[str, dict[str, Any]]:
     query = report["query_measurement_summary"]
     cache = ((report.get("cache_benchmark") or {}).get("summary") or {})
+    browser = report.get("browser_verification") if isinstance(report.get("browser_verification"), dict) else {}
+    browser_summary = browser.get("summary") if isinstance(browser.get("summary"), dict) else {}
     attachment = report["attachment_evidence"]
     current_sizes = report["current_size_snapshot"]
     baseline_sizes = report["baseline_size_snapshot"]
@@ -585,6 +594,11 @@ def dod_audit(report: dict[str, Any]) -> dict[str, dict[str, Any]]:
     light_json_bytes = int(current_sizes.get("local_impact_light_index_total_bytes") or 0)
     wasm_decision = report.get("rust_wasm_decision") if isinstance(report.get("rust_wasm_decision"), dict) else None
     wasm_status = str(((wasm_decision or {}).get("decision") or {}).get("status") or "")
+    acceptable_wasm_statuses = {
+        "rust_wasm_retrieval_runtime_selected",
+        "typescript_better_for_current_runtime",
+        "typescript_runtime_selected_after_wasm_retrieval_kernel",
+    }
     artifact_total_improved = int(current_sizes.get("artifact_total_bytes") or 0) < int(baseline_sizes.get("artifact_total_bytes") or 0)
     local_runtime_bytes_improved = float(parse_decode_summary.get("bytes_percent_change") or 0) < 0
     local_runtime_decode_improved = float(parse_decode_summary.get("parse_decode_percent_change") or 0) < 0
@@ -639,11 +653,11 @@ def dod_audit(report: dict[str, Any]) -> dict[str, dict[str, Any]]:
                 "light_split_runtime_bytes": light_meta_bytes + packed_light_bytes,
                 "body_json_bytes": body_json_bytes,
                 "body_packed_runtime_bytes": packed_body_bytes,
-                "note": "Packed binary light terms plus metadata JSON are used for query planning; packed binary body indexes are used for query deepening.",
+                "note": "Packed binary light terms plus metadata JSON are used for query planning; packed binary light/body indexes are scored by the stateful Rust/WASM top-k retrieval session in the browser worker.",
             },
         },
         "7": {
-            "status": "evidence_present" if wasm_status == "typescript_better_for_current_runtime" else "needs_attention",
+            "status": "evidence_present" if wasm_status in acceptable_wasm_statuses else "needs_attention",
             "evidence": wasm_decision
             or "No Rust/WASM retrieval or measured TypeScript-vs-WASM decision is recorded in this report.",
         },
@@ -652,6 +666,7 @@ def dod_audit(report: dict[str, Any]) -> dict[str, dict[str, Any]]:
             "evidence": {
                 **cache,
                 "cache_invalidation_test": "Changed content-hash artifact paths are treated as cold cache misses.",
+                "browser_persistent_cache": browser_summary.get("persistent_cache_passed"),
             },
         },
         "9": {
@@ -663,8 +678,8 @@ def dod_audit(report: dict[str, Any]) -> dict[str, dict[str, Any]]:
             "evidence": "Smoke queries, task queries, measured cold queries, warm cache queries, and a negative query are represented when full report mode is used.",
         },
         "11": {
-            "status": "external_browser_evidence_required",
-            "evidence": "Browser verification is not performed by this CLI report; use the in-app browser evidence from the goal run.",
+            "status": "evidence_present" if browser_summary.get("passed") is True else "external_browser_evidence_required",
+            "evidence": browser if browser and not browser.get("missing") else "Browser verification is not recorded in this CLI report yet; use the in-app browser evidence from the goal run.",
         },
         "12": {
             "status": "external_ci_deploy_required",
@@ -751,6 +766,7 @@ def build_lower_bound_report(
         "task_eval": validate_task_queries() if include_task else {"skipped": True},
         "cache_benchmark": run_cache_benchmark(cache_queries or DEFAULT_CACHE_QUERIES) if include_cache else {"skipped": True},
         "rust_wasm_decision": load_wasm_decision_report() or {"missing": True},
+        "browser_verification": load_browser_verification_report() or {"missing": True},
     }
     report["dod_audit"] = dod_audit(report)
     return report
@@ -845,6 +861,10 @@ def render_markdown_report(report: dict[str, Any]) -> str:
         ts_decode = wasm_decision.get("typescript_decode_to_object") or {}
         wasm_decode = wasm_decision.get("wasm_decode_to_json_then_parse") or {}
         wasm_stats = wasm_decision.get("wasm_stats_only_decode") or {}
+        ts_retrieval = wasm_decision.get("typescript_retrieval_kernel") or {}
+        wasm_retrieval = wasm_decision.get("wasm_retrieval_kernel") or {}
+        wasm_session = wasm_decision.get("wasm_retrieval_session") or {}
+        wasm_score_bridge = wasm_decision.get("wasm_retrieval_session_scores_bridge") or {}
         lines.extend(
             [
                 "",
@@ -855,6 +875,10 @@ def render_markdown_report(report: dict[str, Any]) -> str:
                 f"- TypeScript decode mean ms: `{format_ms(ts_decode.get('mean_ms'))}`",
                 f"- WASM materialized decode mean ms: `{format_ms(wasm_decode.get('mean_ms'))}`",
                 f"- WASM stats-only decode mean ms: `{format_ms(wasm_stats.get('mean_ms'))}`",
+                f"- TypeScript retrieval kernel mean ms: `{format_ms(ts_retrieval.get('mean_ms'))}`",
+                f"- WASM stateless retrieval kernel mean ms: `{format_ms(wasm_retrieval.get('mean_ms'))}`",
+                f"- WASM stateful retrieval session mean ms: `{format_ms(wasm_session.get('mean_ms'))}`",
+                f"- WASM stateful retrieval score bridge mean ms: `{format_ms(wasm_score_bridge.get('mean_ms'))}`",
                 f"- Reason: {decision.get('reason')}",
             ]
         )
@@ -891,6 +915,22 @@ def render_markdown_report(report: dict[str, Any]) -> str:
                 f"- Max warm uncached bytes: `{format_int(summary.get('max_warm_uncached_bytes'))}`",
                 f"- Total warm cached bytes: `{format_int(summary.get('total_warm_cached_bytes'))}`",
                 f"- Passed: `{summary.get('passed')}`",
+            ]
+        )
+
+    browser = report.get("browser_verification") if isinstance(report.get("browser_verification"), dict) else {}
+    if browser and not browser.get("missing"):
+        summary = browser.get("summary") or {}
+        lines.extend(
+            [
+                "",
+                "## Browser Verification",
+                "",
+                f"- Passed: `{summary.get('passed')}`",
+                f"- Persistent cache passed: `{summary.get('persistent_cache_passed')}`",
+                f"- Viewports: `{json.dumps(summary.get('viewports') or [], ensure_ascii=False)}`",
+                f"- Scenario count: `{format_int(summary.get('scenario_count'))}`",
+                f"- Max warm uncached immutable bytes: `{format_int(summary.get('max_warm_uncached_immutable_bytes'))}`",
             ]
         )
 

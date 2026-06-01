@@ -41,6 +41,9 @@ const coverage = (partial: Partial<SitegraphSearchCoverage>): SitegraphSearchCov
         cached_bytes: 0,
         uncached_bytes: 0,
         cacheable_bytes: 0,
+        memory_hits: 0,
+        persistent_hits: 0,
+        network_misses: 0,
     },
     ...partial,
 });

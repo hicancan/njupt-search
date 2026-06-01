@@ -21,13 +21,13 @@ uv run python -m njupt_search_eval run-task-queries --collection apps\web\public
 uv run python -m njupt_search_eval run-cache-benchmark --collection apps\web\public\generated\collections\njupt-public
 ```
 
-`run-cache-benchmark` runs each query cold, then repeats it against the same in-process content-hash artifact cache. It fails if a warm repeat changes the top result, loses exhaustive coverage, or performs any uncached immutable artifact reads.
+`run-cache-benchmark` runs each query cold, then repeats it against the deterministic in-process content-hash artifact cache. Browser persistent-cache proof is recorded separately by the in-app browser verification report because IndexedDB persistence must survive a real reload.
 
 ```powershell
 node --import tsx tools\search-eval\scripts\benchmarkPackedDecoder.mjs --build-wasm --collection apps\web\public\generated\collections\njupt-public --runs 5 --output tools\search-eval\reports\njupt-search-wasm-decision.json --markdown tools\search-eval\reports\njupt-search-wasm-decision.md
 ```
 
-`benchmarkPackedDecoder.mjs` builds the Rust/WASM packed impact decoder and compares it with the TypeScript runtime decoder on the generated packed body-index artifacts. The output is consumed by the lower-bound report as the Rust/WASM decision evidence.
+`benchmarkPackedDecoder.mjs` builds the Rust/WASM packed impact decoder/retrieval kernel and compares it with the TypeScript runtime decoder plus the same global top-k pruning state used by the browser worker. The report includes the stateful WASM score-bridge path, which is the runtime integration evidence consumed by the lower-bound report.
 
 ```powershell
 uv run python -m njupt_search_eval run-lower-bound-report --collection apps\web\public\generated\collections\njupt-public --output docs\reports\njupt-search-lower-bound-report.json --markdown docs\reports\njupt-search-lower-bound-report.md

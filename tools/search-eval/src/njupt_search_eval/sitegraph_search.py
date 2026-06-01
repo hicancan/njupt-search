@@ -32,6 +32,9 @@ def new_cache_stats() -> dict[str, Any]:
         "cached_bytes": 0,
         "uncached_bytes": 0,
         "cacheable_bytes": 0,
+        "memory_hits": 0,
+        "persistent_hits": 0,
+        "network_misses": 0,
     }
 
 
@@ -46,9 +49,11 @@ def record_cache(index: dict[str, Any], hit: bool, bytes_count: int) -> None:
     if hit:
         stats["artifact_hits"] += 1
         stats["cached_bytes"] += safe_bytes
+        stats["memory_hits"] = int(stats.get("memory_hits") or 0) + 1
     else:
         stats["artifact_misses"] += 1
         stats["uncached_bytes"] += safe_bytes
+        stats["network_misses"] = int(stats.get("network_misses") or 0) + 1
 
 
 def cache_snapshot(index: dict[str, Any]) -> dict[str, Any]:

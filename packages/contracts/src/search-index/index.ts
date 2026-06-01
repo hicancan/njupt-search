@@ -297,6 +297,14 @@ export const SitegraphSearchManifestSchema = z.object({
         startup_loads_full_shards: z.literal(false),
         startup_loads_global_document_metadata: z.literal(false)
     }).passthrough(),
+    cache_contract: z.object({
+        runtime_cache: z.literal('browser_persistent_content_hash'),
+        cache_key: z.literal('content_hashed_artifact_url'),
+        manifest_load: z.literal('reload_for_hash_invalidation'),
+        immutable_artifact_load: z.string().min(1),
+        warm_repeat_requires_zero_uncached_immutable_reads: z.literal(true),
+        manifest_hash_invalidation: z.string().min(1)
+    }).passthrough().optional(),
     artifacts: z.object({
         source_registry: SitegraphArtifactSchema,
         global_query_directory: SitegraphArtifactSchema,
@@ -384,12 +392,15 @@ export interface SitegraphProofLedgerSummary {
 }
 
 export interface SitegraphArtifactCacheStats {
-    scope: 'memory_content_hash';
+    scope: 'memory_content_hash' | 'browser_persistent_content_hash';
     artifact_hits: number;
     artifact_misses: number;
     cached_bytes: number;
     uncached_bytes: number;
     cacheable_bytes: number;
+    memory_hits: number;
+    persistent_hits: number;
+    network_misses: number;
 }
 
 export interface SitegraphSearchCoverage {
@@ -476,11 +487,15 @@ export interface SitegraphQueryStats {
     fallbacks: SitegraphFallbackStats;
     retrieval: {
         dynamicPruning: boolean;
+        engine?: 'typescript_impact_index' | 'rust_wasm_packed_impact' | 'mixed';
         impactBlocksVisited: number;
         impactBlocksPruned: number;
         postingsVisited: number;
         postingsPruned: number;
         competitiveThreshold: number;
+        wasmCalls?: number;
+        typescriptCalls?: number;
+        scoreEntriesReturned?: number;
     };
 }
 

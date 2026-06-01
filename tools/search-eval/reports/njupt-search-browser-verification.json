@@ -1,0 +1,233 @@
+{
+  "report": "njupt-search-browser-verification-v2",
+  "generated_at": "2026-06-01T07:22:17.169Z",
+  "target": "http://127.0.0.1:5175",
+  "summary": {
+    "passed": true,
+    "persistent_cache_passed": true,
+    "wasm_runtime_passed": true,
+    "dynamic_pruning_passed": true,
+    "scenario_count": 7,
+    "viewports": [
+      "desktop-default",
+      "390x844"
+    ],
+    "max_warm_uncached_bytes": 0,
+    "cold_uncached_bytes": 52323942,
+    "cold_top_result": "2025-2026学年校历",
+    "warm_top_result": "2025-2026学年校历"
+  },
+  "scenarios": [
+    {
+      "name": "desktop_cold_calendar_wasm",
+      "query": "校历",
+      "target": "http://127.0.0.1:5175/?q=%E6%A0%A1%E5%8E%86",
+      "viewport": "desktop-default",
+      "sourceLabel": null,
+      "facetLabel": null,
+      "diagnostics": {
+        "complete": true,
+        "no_result": false,
+        "new_read_text": "49.9 MB",
+        "new_read_bytes": 52323942,
+        "cached_text": "5.8 MB",
+        "cache_hits": 40,
+        "persistent_hits": 0,
+        "memory_hits": 40,
+        "engine": "rust_wasm_packed_impact",
+        "pruned_postings": 8,
+        "pruned_blocks": 6,
+        "phase": "global_exhaustive_complete",
+        "loaded_text": "50.1 MB"
+      },
+      "top_titles": [
+        "2025-2026学年校历",
+        "【教务管理办公室】2025-2026学年第二学期2022-2025级学生选课通知",
+        "【教务科】2025-2026学年第一学期2022-2024级学生网上选课通知",
+        "南邮风华八四载，红史铸魂启新程——第五届辅导员宣讲团走进数字媒体与设计艺术学院",
+        "南邮风华八四载，红史铸魂启新程——第五届辅导员宣讲团走进数字媒体与设计艺术学院"
+      ],
+      "screenshot": null
+    },
+    {
+      "name": "desktop_warm_calendar_reload_wasm",
+      "query": "校历",
+      "target": "http://127.0.0.1:5175/?q=%E6%A0%A1%E5%8E%86",
+      "viewport": "desktop-default",
+      "sourceLabel": null,
+      "facetLabel": null,
+      "diagnostics": {
+        "complete": true,
+        "no_result": false,
+        "new_read_text": "0 B",
+        "new_read_bytes": 0,
+        "cached_text": "55.8 MB",
+        "cache_hits": 616,
+        "persistent_hits": 576,
+        "memory_hits": 40,
+        "engine": "rust_wasm_packed_impact",
+        "pruned_postings": 173,
+        "pruned_blocks": 19,
+        "phase": "global_exhaustive_complete",
+        "loaded_text": "50.1 MB"
+      },
+      "top_titles": [
+        "2025-2026学年校历",
+        "【教务管理办公室】2025-2026学年第二学期2022-2025级学生选课通知",
+        "【教务科】2025-2026学年第一学期2022-2024级学生网上选课通知",
+        "南邮风华八四载，红史铸魂启新程——第五届辅导员宣讲团走进数字媒体与设计艺术学院",
+        "南邮风华八四载，红史铸魂启新程——第五届辅导员宣讲团走进数字媒体与设计艺术学院"
+      ],
+      "screenshot": null
+    },
+    {
+      "name": "desktop_negative_no_result_wasm",
+      "query": "不存在的查询词",
+      "target": "http://127.0.0.1:5175/?q=%E4%B8%8D%E5%AD%98%E5%9C%A8%E7%9A%84%E6%9F%A5%E8%AF%A2%E8%AF%8D",
+      "viewport": "desktop-default",
+      "sourceLabel": null,
+      "facetLabel": null,
+      "diagnostics": {
+        "complete": true,
+        "no_result": true,
+        "new_read_text": "9.7 MB",
+        "new_read_bytes": 10171187,
+        "cached_text": "38.8 MB",
+        "cache_hits": 236,
+        "persistent_hits": 206,
+        "memory_hits": 30,
+        "engine": "rust_wasm_packed_impact",
+        "pruned_postings": 0,
+        "pruned_blocks": 0,
+        "phase": "global_exhaustive_complete",
+        "loaded_text": "42.3 MB"
+      },
+      "top_titles": [],
+      "screenshot": null
+    },
+    {
+      "name": "desktop_exam_mooc_wasm",
+      "query": "慕课考试",
+      "target": "http://127.0.0.1:5175/?q=%E6%85%95%E8%AF%BE%E8%80%83%E8%AF%95",
+      "viewport": "desktop-default",
+      "sourceLabel": null,
+      "facetLabel": null,
+      "diagnostics": {
+        "complete": true,
+        "no_result": false,
+        "new_read_text": "4.7 MB",
+        "new_read_bytes": 4928307,
+        "cached_text": "59.9 MB",
+        "cache_hits": 578,
+        "persistent_hits": 535,
+        "memory_hits": 43,
+        "engine": "rust_wasm_packed_impact",
+        "pruned_postings": 253,
+        "pruned_blocks": 80,
+        "phase": "global_exhaustive_complete",
+        "loaded_text": "57.6 MB"
+      },
+      "top_titles": [
+        "【教务管理办公室】2025-2026学年第二学期在线开放课程（慕课）线下考试报名通知",
+        "【实践科】2025-2026学年第一学期在线开放课程（慕课）线下考试报名通知",
+        "【教务管理办公室】关于学习慕课的学生加入“慕课堂”的通知（陆续更新中）",
+        "2025世界慕课与在线教育大会在墨西哥举办",
+        "【教务管理办公室】关于2025-2026学年第二学期毕业生、结业生回校重修课程的通知"
+      ],
+      "screenshot": null
+    },
+    {
+      "name": "desktop_download_attachment_wasm",
+      "query": "学生相关文件及表格",
+      "target": "http://127.0.0.1:5175/?q=%E5%AD%A6%E7%94%9F%E7%9B%B8%E5%85%B3%E6%96%87%E4%BB%B6%E5%8F%8A%E8%A1%A8%E6%A0%BC",
+      "viewport": "desktop-default",
+      "sourceLabel": null,
+      "facetLabel": null,
+      "diagnostics": {
+        "complete": true,
+        "no_result": false,
+        "new_read_text": "2.6 MB",
+        "new_read_bytes": 2726298,
+        "cached_text": "60.2 MB",
+        "cache_hits": 683,
+        "persistent_hits": 640,
+        "memory_hits": 43,
+        "engine": "rust_wasm_packed_impact",
+        "pruned_postings": 861,
+        "pruned_blocks": 213,
+        "phase": "global_exhaustive_complete",
+        "loaded_text": "58.7 MB"
+      },
+      "top_titles": [
+        "南京邮电大学学生缓考申请表 2026-04-16",
+        "南京邮电大学学生一般事务申请表 2026-04-16",
+        "南京邮电大学学生成绩复核申请表 2026-04-16",
+        "南京邮电大学学生提前毕业（结业）申请表 2026-04-16",
+        "南京邮电大学学生毕业申请表 2026-04-16"
+      ],
+      "screenshot": null
+    },
+    {
+      "name": "desktop_filtered_student_affairs_wasm",
+      "query": "奖学金",
+      "target": "http://127.0.0.1:5175/?q=%E5%A5%96%E5%AD%A6%E9%87%91",
+      "viewport": "desktop-default",
+      "sourceLabel": "学生工作部（处） (1669)",
+      "facetLabel": null,
+      "diagnostics": {
+        "complete": true,
+        "no_result": false,
+        "new_read_text": "0 B",
+        "new_read_bytes": 0,
+        "cached_text": "14.0 MB",
+        "cache_hits": 184,
+        "persistent_hits": 0,
+        "memory_hits": 184,
+        "engine": "rust_wasm_packed_impact",
+        "pruned_postings": 0,
+        "pruned_blocks": 0,
+        "phase": "scoped_exhaustive_complete",
+        "loaded_text": "10.7 MB"
+      },
+      "top_titles": [
+        "南京邮电大学2024-2025学年“甘霖励志奖学金”拟推荐名单公示",
+        "校学发〔2025〕12号南京邮电大学“甘霖励志奖学金”评选办法",
+        "南邮“思源之旅”主题教育活动暨“鼓楼区绿色低碳奖学金”发放仪式在鼓楼高新区成功举办",
+        "学生资助管理中心",
+        "本科生海外访学奖学金实施办法"
+      ],
+      "screenshot": null
+    },
+    {
+      "name": "mobile_innovation_wasm",
+      "query": "大创",
+      "target": "http://127.0.0.1:5175/?q=%E5%A4%A7%E5%88%9B",
+      "viewport": "390x844",
+      "sourceLabel": null,
+      "facetLabel": null,
+      "diagnostics": {
+        "complete": true,
+        "no_result": false,
+        "new_read_text": "439 KB",
+        "new_read_bytes": 449536,
+        "cached_text": "63.5 MB",
+        "cache_hits": 739,
+        "persistent_hits": 696,
+        "memory_hits": 43,
+        "engine": "rust_wasm_packed_impact",
+        "pruned_postings": 334,
+        "pruned_blocks": 57,
+        "phase": "global_exhaustive_complete",
+        "loaded_text": "60.0 MB"
+      },
+      "top_titles": [
+        "2024年度大学生创新创业训练计划项目结题验收成绩公示",
+        "关于公布2025年度大学生创新创业训练计划批准立项项目的通知",
+        "【资助项目遴选】关于遴选第十四批“南邮-紫金科创学生创业基金” 资助项目的通知",
+        "【科创竞赛】关于举办南京邮电大学2026年大学生创新大赛（高教主赛道、红旅赛道）暨“三维通信杯”创新大赛的通知",
+        "【科创竞赛】关于开展2026年第20届教育部“西门子杯”中国智能制造挑战赛 南京邮电大学校内选拔赛的通知"
+      ],
+      "screenshot": null
+    }
+  ]
+}

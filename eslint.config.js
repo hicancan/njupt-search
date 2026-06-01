@@ -6,7 +6,7 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import tseslint from 'typescript-eslint'
 
 export default tseslint.config(
-  { ignores: ['dist', '.venv', 'node_modules', 'android/**/build', 'coverage', 'tools/wasm/**/pkg', 'tools/wasm/**/target'] },
+  { ignores: ['dist', '.venv', 'node_modules', 'android/**/build', 'coverage', 'tools/wasm/**/pkg', 'tools/wasm/**/target', 'apps/web/src/features/collection-search/wasm/**'] },
   {
     extends: [js.configs.recommended, ...tseslint.configs.strict],
     files: ['**/*.{ts,tsx}'],
