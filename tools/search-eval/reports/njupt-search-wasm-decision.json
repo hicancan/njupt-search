@@ -3,11 +3,11 @@
   "benchmark": "packed-impact-decoder-wasm-vs-typescript-v1",
   "collection": "apps/web/public/generated/collections/njupt-public",
   "decision": {
-    "reason": "The current browser runtime consumes a JavaScript SitegraphLocalBodyIndex object. On the full packed body workload, Rust/WASM decode plus JSON bridge was 1.131x the TypeScript decoder, so replacing only the decoder would increase current runtime decode cost. The stats-only WASM path is recorded as a lower-bound signal for a future full WASM retrieval core that avoids JS object materialization.",
+    "reason": "The current browser runtime consumes a JavaScript SitegraphLocalBodyIndex object. On the full packed body workload, Rust/WASM decode plus JSON bridge was 1.084x the TypeScript decoder, so replacing only the decoder would increase current runtime decode cost. The stats-only WASM path is recorded as a lower-bound signal for a future full WASM retrieval core that avoids JS object materialization.",
     "status": "typescript_better_for_current_runtime",
     "winner": "typescript_runtime_decoder"
   },
-  "generated_at": "2026-06-01T00:52:58.006Z",
+  "generated_at": "2026-06-01T03:52:59.270Z",
   "runs": 5,
   "toolchain": {
     "node": "v24.16.0",
@@ -16,11 +16,11 @@
     "wasm_pack": "wasm-pack 0.15.0",
     "wasm_tools": "wasm-tools 1.251.0 (a1a178a02 2026-05-28)"
   },
-  "total_bytes": 15970965,
+  "total_bytes": 16850611,
   "typescript_decode_to_object": {
-    "max_ms": 641.155,
-    "mean_ms": 566.902,
-    "min_ms": 506.442,
+    "max_ms": 688.527,
+    "mean_ms": 636.351,
+    "min_ms": 602.181,
     "runs": 5,
     "summary": {
       "field_count": 1164483,
@@ -30,9 +30,9 @@
     }
   },
   "wasm_decode_to_json_then_parse": {
-    "max_ms": 741.586,
-    "mean_ms": 641.194,
-    "min_ms": 579.495,
+    "max_ms": 705.837,
+    "mean_ms": 689.802,
+    "min_ms": 659.382,
     "runs": 5,
     "summary": {
       "field_count": 1164483,
@@ -42,9 +42,9 @@
     }
   },
   "wasm_stats_only_decode": {
-    "max_ms": 19.45,
-    "mean_ms": 18.89,
-    "min_ms": 18.583,
+    "max_ms": 42.998,
+    "mean_ms": 39.948,
+    "min_ms": 37.004,
     "runs": 5,
     "summary": {
       "field_count": 1164483,

@@ -68,7 +68,7 @@ export const SitegraphLocalIndexRefSchema = z.object({
     light_index: SitegraphArtifactSchema.optional(),
     light_index_meta: SitegraphArtifactSchema.optional(),
     light_index_packed: SitegraphArtifactSchema.optional(),
-    body_index: SitegraphArtifactSchema,
+    body_index: SitegraphArtifactSchema.optional(),
     body_index_packed: SitegraphArtifactSchema.optional()
 }).passthrough().superRefine((ref, ctx) => {
     const hasSplitLight = Boolean(ref.light_index_meta) && Boolean(ref.light_index_packed);
@@ -83,6 +83,12 @@ export const SitegraphLocalIndexRefSchema = z.object({
         ctx.addIssue({
             code: z.ZodIssueCode.custom,
             message: 'local index must publish split light artifacts or a legacy full light_index'
+        });
+    }
+    if (!ref.body_index && !ref.body_index_packed) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'local index must publish a packed body index or a legacy body_index'
         });
     }
 });

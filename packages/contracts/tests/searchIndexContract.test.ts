@@ -62,6 +62,7 @@ describe('search index contracts package', () => {
         expect(sourceManifest.local_indexes[0]?.light_index_meta?.role).toBe('local_impact_light_index_meta');
         expect(sourceManifest.local_indexes[0]?.light_index_packed?.role).toBe('local_impact_light_index_packed');
         expect(sourceManifest.local_indexes[0]?.light_index_packed?.path.endsWith('.bin')).toBe(true);
+        expect(sourceManifest.local_indexes[0]?.body_index).toBeUndefined();
         expect(sourceManifest.local_indexes[0]?.body_index_packed?.role).toBe('local_impact_body_index_packed');
         expect(sourceManifest.local_indexes[0]?.body_index_packed?.path.endsWith('.bin')).toBe(true);
         expect(sourceManifest.artifacts.proof_catalog?.role).toBe('proof_catalog');

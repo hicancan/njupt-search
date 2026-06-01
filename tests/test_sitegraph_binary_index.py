@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from njupt_search_indexer.sitegraph_binary_index import pack_impact_index, unpack_impact_index
+from njupt_search_indexer.sitegraph_binary_index import PACKED_IMPACT_MAGIC_V2, pack_impact_index, unpack_impact_index, unpack_impact_terms
 
 
 def test_packed_impact_index_roundtrips_delta_encoded_terms() -> None:
@@ -26,5 +26,12 @@ def test_packed_impact_index_roundtrips_delta_encoded_terms() -> None:
 
     packed = pack_impact_index(payload)
 
+    assert packed.startswith(PACKED_IMPACT_MAGIC_V2)
     assert len(packed) < len(str(payload).encode("utf-8"))
     assert unpack_impact_index(packed) == payload
+    assert unpack_impact_terms(packed, ["考试"]) == {
+        **payload,
+        "terms": {
+            "考试": {"c": [1, 2, 99]},
+        },
+    }

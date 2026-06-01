@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from njupt_search_indexer.sitegraph_binary_index import unpack_impact_index
+from njupt_search_indexer.sitegraph_binary_index import unpack_impact_index, unpack_impact_terms
 
 
 BASE_DIR = Path(__file__).resolve().parents[4]
@@ -142,41 +142,54 @@ def load_source_manifest(index: dict[str, Any], source_id: str) -> dict[str, Any
     return payload
 
 
-def load_local_light(index: dict[str, Any], ref: dict[str, Any]) -> dict[str, Any]:
+def load_local_light(index: dict[str, Any], ref: dict[str, Any], terms: list[str]) -> dict[str, Any]:
     path = light_index_cache_key(ref)
     artifact = light_index_artifact(ref)
+    cache_key = local_light_query_cache_key(path, artifact, terms)
     cache = index["local_light_cache"]
-    if path in cache:
+    if cache_key in cache:
         record_cache(index, True, int(artifact.get("bytes") or 0))
-        return cache[path]
+        return cache[cache_key]
     if "meta" in artifact and "packed" in artifact:
         payload = read_json(PUBLIC_ROOT / str(artifact["meta"]["path"]))
-        packed_terms = unpack_impact_index((PUBLIC_ROOT / str(artifact["packed"]["path"])).read_bytes())
+        packed_terms = unpack_impact_terms((PUBLIC_ROOT / str(artifact["packed"]["path"])).read_bytes(), terms)
         payload["terms"] = packed_terms.get("terms") or {}
-        cache[path] = payload
+        cache[cache_key] = payload
     else:
-        cache[path] = read_json(PUBLIC_ROOT / str(artifact["path"]))
+        cache[cache_key] = read_json(PUBLIC_ROOT / str(artifact["path"]))
     record_cache(index, False, int(artifact.get("bytes") or 0))
-    return cache[path]
+    return cache[cache_key]
 
 
-def load_local_body(index: dict[str, Any], ref: dict[str, Any]) -> dict[str, Any]:
+def local_light_query_cache_key(path: str, artifact: dict[str, Any], terms: list[str]) -> str:
+    return path if "packed" not in artifact else f"{path}\0{chr(0).join(sorted(set(terms)))}"
+
+
+def load_local_body(index: dict[str, Any], ref: dict[str, Any], terms: list[str]) -> dict[str, Any]:
     artifact = body_index_artifact(ref)
     path = str(artifact["path"])
+    cache_key = local_body_cache_key(path, terms)
     cache = index["local_body_cache"]
-    if path in cache:
+    if cache_key in cache:
         record_cache(index, True, int(artifact.get("bytes") or 0))
-        return cache[path]
-    cache[path] = unpack_impact_index((PUBLIC_ROOT / path).read_bytes()) if path.endswith(".bin") else read_json(PUBLIC_ROOT / path)
+        return cache[cache_key]
+    cache[cache_key] = unpack_impact_terms((PUBLIC_ROOT / path).read_bytes(), terms) if path.endswith(".bin") else read_json(PUBLIC_ROOT / path)
     record_cache(index, False, int(artifact.get("bytes") or 0))
-    return cache[path]
+    return cache[cache_key]
+
+
+def local_body_cache_key(path: str, terms: list[str]) -> str:
+    return path if not path.endswith(".bin") else f"{path}\0{chr(0).join(sorted(set(terms)))}"
 
 
 def body_index_artifact(ref: dict[str, Any]) -> dict[str, Any]:
     packed = ref.get("body_index_packed")
     if isinstance(packed, dict) and packed.get("path"):
         return packed
-    return ref["body_index"]
+    fallback = ref.get("body_index")
+    if isinstance(fallback, dict) and fallback.get("path"):
+        return fallback
+    raise ValueError(f"local index missing body artifacts: {ref.get('index_id')}")
 
 
 def light_index_artifact(ref: dict[str, Any]) -> dict[str, Any]:
@@ -347,7 +360,7 @@ def build_plan(index: dict[str, Any], query: str, terms: list[str]) -> dict[str,
     }
 
 
-def select_local_refs(index: dict[str, Any], plan: dict[str, Any]) -> tuple[list[dict[str, Any]], list[dict[str, Any]], int]:
+def select_local_refs(index: dict[str, Any], plan: dict[str, Any], terms: list[str]) -> tuple[list[dict[str, Any]], list[dict[str, Any]], int]:
     source_manifests = [
         source_manifest
         for source_id in plan["source_ids"]
@@ -368,16 +381,17 @@ def select_local_refs(index: dict[str, Any], plan: dict[str, Any]) -> tuple[list
 
     def expected_uncached_bytes(ref: dict[str, Any]) -> int:
         light_artifact = light_index_artifact(ref)
-        light_path = str(light_artifact["path"])
+        light_path = local_light_query_cache_key(str(light_artifact["path"]), light_artifact, terms)
         body_artifact = body_index_artifact(ref)
-        body_path = str(body_artifact["path"])
+        body_path = local_body_cache_key(str(body_artifact["path"]), terms)
         light_bytes = 0 if light_path in index["local_light_cache"] else int(light_artifact["bytes"])
         body_bytes = 0 if body_path in index["local_body_cache"] else int(body_artifact["bytes"])
         return light_bytes + body_bytes
 
     def cache_state(ref: dict[str, Any]) -> str:
-        light_cached = str(light_index_artifact(ref)["path"]) in index["local_light_cache"]
-        body_cached = str(body_index_artifact(ref)["path"]) in index["local_body_cache"]
+        light_artifact = light_index_artifact(ref)
+        light_cached = local_light_query_cache_key(str(light_artifact["path"]), light_artifact, terms) in index["local_light_cache"]
+        body_cached = local_body_cache_key(str(body_index_artifact(ref)["path"]), terms) in index["local_body_cache"]
         if light_cached and body_cached:
             return "warm"
         if light_cached or body_cached:
@@ -904,7 +918,7 @@ def recall_documents_with_stats(
     terms = tokens_for_query(query, index["aliases"])
     match_phrases = expand_query_phrases(query, index["aliases"])
     plan = build_plan(index, query, terms)
-    source_manifests, local_refs, source_manifest_bytes = select_local_refs(index, plan)
+    source_manifests, local_refs, source_manifest_bytes = select_local_refs(index, plan, terms)
     shard_path_by_id, shard_bytes_by_path = local_shard_maps(local_refs, source_manifests)
 
     docs_by_index: dict[int, dict[str, Any]] = {}
@@ -919,7 +933,7 @@ def recall_documents_with_stats(
     }
     local_index_bytes = source_manifest_bytes
     for ref in local_refs:
-        local_index = load_local_light(index, ref)
+        local_index = load_local_light(index, ref, terms)
         local_index_bytes += int(light_index_artifact(ref)["bytes"])
         for document in local_index.get("documents", []):
             docs_by_index[int(document["doc_index"])] = document
@@ -969,8 +983,9 @@ def recall_documents_with_stats(
 
     used_body_index = False
     for ref in local_refs:
-        body_index = load_local_body(index, ref)
-        local_index_bytes += int(ref["body_index"]["bytes"])
+        body_artifact = body_index_artifact(ref)
+        body_index = load_local_body(index, ref, terms)
+        local_index_bytes += int(body_artifact.get("bytes") or 0)
         apply_impact_index(scores, body_index.get("terms", {}), terms, retrieval, candidate_limit)
         used_body_index = True
 

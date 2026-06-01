@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
     buildSitegraphMatchSnippet,
     decodePackedLocalBodyIndex,
+    decodePackedLocalBodyIndexTerms,
     formatResolvedSearchDate,
     parseSitegraphLocalLightIndex,
     parseSitegraphManifest,
@@ -99,6 +100,42 @@ const packedImpactIndexFixture = (payload: SitegraphImpactIndex): ArrayBuffer =>
                 previous = docId;
             });
         }
+    }
+    return new Uint8Array(bytes).buffer;
+};
+
+const packedImpactIndexFixtureV2 = (payload: SitegraphImpactIndex): ArrayBuffer => {
+    const encoder = new TextEncoder();
+    const metadata = encoder.encode(JSON.stringify(Object.fromEntries(
+        Object.entries(payload).filter(([key]) => key !== 'terms')
+    )));
+    const termPayloads = Object.keys(payload.terms).sort().map(term => {
+        const fields = payload.terms[term];
+        const payloadBytes: number[] = [...encodeVarint(Object.keys(fields).length)];
+        for (const field of Object.keys(fields).sort()) {
+            payloadBytes.push(field.charCodeAt(0), ...encodeVarint(fields[field].length));
+            let previous = 0;
+            fields[field].forEach((docId, index) => {
+                payloadBytes.push(...encodeVarint(index === 0 ? docId : docId - previous));
+                previous = docId;
+            });
+        }
+        return { term, termBytes: encoder.encode(term), payloadBytes };
+    });
+    const bytes: number[] = [
+        ...encoder.encode('SGIXB002'),
+        metadata.length & 0xff,
+        (metadata.length >> 8) & 0xff,
+        (metadata.length >> 16) & 0xff,
+        (metadata.length >> 24) & 0xff,
+        ...metadata,
+        ...encodeVarint(termPayloads.length),
+    ];
+    for (const item of termPayloads) {
+        bytes.push(...encodeVarint(item.termBytes.length), ...item.termBytes, ...encodeVarint(item.payloadBytes.length));
+    }
+    for (const item of termPayloads) {
+        bytes.push(...item.payloadBytes);
     }
     return new Uint8Array(bytes).buffer;
 };
@@ -290,7 +327,7 @@ const makeRoutedFixture = (
         }],
         light_index_meta: artifact(`${prefix}/local-impact-light-meta.json`, 'local_impact_light_index_meta', 'query_planned', documents.length),
         light_index_packed: artifact(`${prefix}/local-impact-light.bin`, 'local_impact_light_index_packed', 'query_planned', documents.length),
-        body_index: artifact(`${prefix}/local-impact-body.json`, 'local_impact_body_index', 'query_planned', documents.length)
+        body_index_packed: artifact(`${prefix}/local-impact-body.bin`, 'local_impact_body_index_packed', 'query_planned', documents.length)
     };
     const manifest: SitegraphSearchManifest = {
         generated_at: '2026-05-30T00:00:00Z',
@@ -322,7 +359,7 @@ const makeRoutedFixture = (
             total_documents: documents.length,
             full_scan_supported: true,
             progressive_events: true,
-            artifact_roles: ['source_registry', 'global_query_directory', 'local_impact_light_index_meta', 'local_impact_light_index_packed', 'local_impact_body_index', 'local_impact_body_index_packed', 'proof_catalog', 'full_shards']
+            artifact_roles: ['source_registry', 'global_query_directory', 'local_impact_light_index_meta', 'local_impact_light_index_packed', 'local_impact_body_index_packed', 'proof_catalog', 'full_shards']
         },
         coverage_contract: {
             states: ['plan_started', 'local_index_started', 'first_trusted_results', 'body_index_started', 'top_results_hydrated', 'verification_started', 'partial_verified', 'global_exhaustive_complete'],
@@ -571,7 +608,7 @@ const withMockFetch = async (
         [proofCatalogArtifact.path, fixture.proofCatalog],
         [required(localRef.light_index_meta, 'expected light index metadata artifact').path, Object.fromEntries(Object.entries(fixture.localLightIndex).filter(([key]) => key !== 'terms'))],
         [required(localRef.light_index_packed, 'expected packed light index artifact').path, packedImpactIndexFixture(Object.fromEntries(Object.entries(fixture.localLightIndex).filter(([key]) => key !== 'documents')) as SitegraphImpactIndex)],
-        [localRef.body_index.path, fixture.localBodyIndex],
+        [required(localRef.body_index_packed, 'expected packed body index artifact').path, packedImpactIndexFixtureV2(fixture.localBodyIndex)],
         [shardFilterArtifact.path, fixture.shardFilter],
         [shard.path, fixture.documents]
     ]);
@@ -616,6 +653,13 @@ describe('sitegraph search contract', () => {
         };
 
         expect(decodePackedLocalBodyIndex(packedImpactIndexFixture(payload), 'fixture.bin')).toEqual(payload);
+        expect(decodePackedLocalBodyIndex(packedImpactIndexFixtureV2(payload), 'fixture-v2.bin')).toEqual(payload);
+        expect(decodePackedLocalBodyIndexTerms(packedImpactIndexFixtureV2(payload), ['考试'], 'fixture-v2.bin')).toEqual({
+            ...payload,
+            terms: {
+                考试: { c: [1, 2, 99] },
+            },
+        });
     });
 
     it('tokenizes Chinese, ASCII, and aliases for recall', () => {

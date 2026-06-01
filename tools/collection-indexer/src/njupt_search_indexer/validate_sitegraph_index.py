@@ -231,15 +231,25 @@ def validate_local_indexes(source_manifests: list[dict[str, Any]], expected_sour
                 light_payload = read_json(ensure_public_hashed_path(str(light_entry.get("path") or ""), f"local_light.{ref.get('index_id')}"))
             else:
                 fail(f"local index missing light artifacts: {ref.get('index_id')}")
-            body_payload = read_json(ensure_public_hashed_path(str(ref["body_index"]["path"]), f"local_body.{ref.get('index_id')}"))
+            body_entry = ref.get("body_index") if isinstance(ref.get("body_index"), dict) else None
             packed_entry = ref.get("body_index_packed") if isinstance(ref.get("body_index_packed"), dict) else None
+            if body_entry is None and packed_entry is None:
+                fail(f"local index missing body artifacts: {ref.get('index_id')}")
+            body_payload: dict[str, Any] | None = None
+            if body_entry is not None:
+                body_payload = read_json(ensure_public_hashed_path(str(body_entry.get("path") or ""), f"local_body.{ref.get('index_id')}"))
             if packed_entry is not None:
                 packed_path = ensure_public_hashed_path(str(packed_entry.get("path") or ""), f"local_body_packed.{ref.get('index_id')}", extension="bin")
                 packed_payload = unpack_impact_index(packed_path.read_bytes())
-                if packed_payload.get("scope") != body_payload.get("scope"):
-                    fail(f"packed local body index scope mismatch: {ref.get('index_id')}")
-                if packed_payload.get("terms") != body_payload.get("terms"):
-                    fail(f"packed local body index terms mismatch: {ref.get('index_id')}")
+                if body_payload is not None:
+                    if packed_payload.get("scope") != body_payload.get("scope"):
+                        fail(f"packed local body index scope mismatch: {ref.get('index_id')}")
+                    if packed_payload.get("terms") != body_payload.get("terms"):
+                        fail(f"packed local body index terms mismatch: {ref.get('index_id')}")
+                else:
+                    body_payload = packed_payload
+            if body_payload is None:
+                fail(f"local body index could not be loaded: {ref.get('index_id')}")
             if set((light_payload.get("field_codes") or {}).values()).difference({"t", "s", "n", "g", "a", "e", "y"}):
                 fail(f"local light index has invalid field codes: {ref.get('index_id')}")
             if set((body_payload.get("field_codes") or {}).values()).difference({"m", "c"}):

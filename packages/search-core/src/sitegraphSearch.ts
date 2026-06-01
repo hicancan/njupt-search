@@ -1,6 +1,7 @@
 import {
     QueryDirectoryRoute,
     RankedSitegraphDocument,
+    SitegraphArtifact,
     SitegraphArtifactCacheStats,
     SitegraphDocMeta,
     SitegraphFullDocument,
@@ -35,7 +36,7 @@ import {
     parseSitegraphSourceManifest,
     SearchContractError
 } from './sitegraphContract';
-import { decodePackedImpactIndex, decodePackedLocalBodyIndex } from './sitegraphBinaryIndex';
+import { decodePackedImpactIndexTerms, decodePackedLocalBodyIndexTerms } from './sitegraphBinaryIndex';
 import { sitegraphDocumentMatchesFilters } from './sitegraphFilters';
 import { rankingDateSortValue, rankSitegraphDocument, SITEGRAPH_FIELD_WEIGHTS } from './ranking/rankDocument';
 import { detectQueryIntent } from './intent/queryIntent';
@@ -100,7 +101,10 @@ interface SearchTelemetry {
 
 const sourceManifestCache = new Map<string, SitegraphSourceManifest>();
 const localLightIndexCache = new Map<string, SitegraphLocalLightIndex>();
+const localLightMetaCache = new Map<string, Omit<SitegraphLocalLightIndex, 'terms'>>();
+const localLightPackedBytesCache = new Map<string, ArrayBuffer>();
 const localBodyIndexCache = new Map<string, SitegraphLocalBodyIndex>();
+const localBodyPackedBytesCache = new Map<string, ArrayBuffer>();
 const proofCatalogCache = new Map<string, SitegraphProofCatalog>();
 const shardFilterCache = new Map<string, ShardFilterMap>();
 const shardCache = new Map<string, SitegraphFullDocument[]>();
@@ -349,6 +353,8 @@ const lightIndexArtifactKey = (ref: SitegraphLocalIndexRef): string => {
     return ref.light_index.path;
 };
 
+const queryTermCacheKey = (terms: string[]): string => Array.from(new Set(terms)).sort().join('\u0000');
+
 const lightIndexRuntimeBytes = (ref: SitegraphLocalIndexRef): number => {
     if (ref.light_index_meta && ref.light_index_packed) {
         return ref.light_index_meta.bytes + ref.light_index_packed.bytes;
@@ -357,6 +363,16 @@ const lightIndexRuntimeBytes = (ref: SitegraphLocalIndexRef): number => {
         throw new SearchContractError(`Local index ${ref.index_id} is missing split light artifacts`);
     }
     return ref.light_index.bytes;
+};
+
+const lightIndexCachedBytes = (ref: SitegraphLocalIndexRef): number => {
+    if (ref.light_index_meta && ref.light_index_packed) {
+        const metaBytes = localLightMetaCache.has(ref.light_index_meta.path) ? ref.light_index_meta.bytes : 0;
+        const packedBytes = localLightPackedBytesCache.has(ref.light_index_packed.path) ? ref.light_index_packed.bytes : 0;
+        return metaBytes + packedBytes;
+    }
+    if (ref.light_index && localLightIndexCache.has(ref.light_index.path)) return ref.light_index.bytes;
+    return 0;
 };
 
 const verificationShardFromFullShard = (shard: SitegraphFullShard): VerificationShard => ({
@@ -420,16 +436,16 @@ const loadPlanningScope = async (
         return Math.max(0.2, Math.min(1.2, (numeric - 2015) / 10));
     };
     const cacheStateForRef = (ref: SitegraphLocalIndexRef): 'cold' | 'partial' | 'warm' => {
-        const lightCached = localLightIndexCache.has(lightIndexArtifactKey(ref));
-        const bodyCached = localBodyIndexCache.has(bodyIndexArtifact(ref).path);
+        const lightCached = lightIndexCachedBytes(ref) === lightIndexRuntimeBytes(ref);
+        const bodyCached = bodyIndexCachedBytes(ref) === bodyIndexArtifact(ref).bytes;
         if (lightCached && bodyCached) return 'warm';
         if (lightCached || bodyCached) return 'partial';
         return 'cold';
     };
     const expectedUncachedBytesForRef = (ref: SitegraphLocalIndexRef): number => {
-        const lightBytes = localLightIndexCache.has(lightIndexArtifactKey(ref)) ? 0 : lightIndexRuntimeBytes(ref);
+        const lightBytes = Math.max(0, lightIndexRuntimeBytes(ref) - lightIndexCachedBytes(ref));
         const bodyArtifact = bodyIndexArtifact(ref);
-        const bodyBytes = localBodyIndexCache.has(bodyArtifact.path) ? 0 : bodyArtifact.bytes;
+        const bodyBytes = Math.max(0, bodyArtifact.bytes - bodyIndexCachedBytes(ref));
         return lightBytes + bodyBytes;
     };
     const utilityForRef = (ref: SitegraphLocalIndexRef): number => {
@@ -507,28 +523,45 @@ const loadPlanningScope = async (
 
 const loadLocalLightIndex = async (
     ref: SitegraphLocalIndexRef,
+    terms: string[],
     signal: AbortSignal,
     cacheStats?: SitegraphArtifactCacheStats
 ): Promise<SitegraphLocalLightIndex> => {
     const path = lightIndexArtifactKey(ref);
+    const cacheKey = ref.light_index_meta && ref.light_index_packed ? `${path}\u0000${queryTermCacheKey(terms)}` : path;
     const bytes = lightIndexRuntimeBytes(ref);
-    const existing = localLightIndexCache.get(path);
+    const existing = localLightIndexCache.get(cacheKey);
     if (existing) {
         recordArtifactCache(cacheStats, true, bytes);
         return existing;
     }
     let payload: unknown;
     if (ref.light_index_meta && ref.light_index_packed) {
+        let metadata = localLightMetaCache.get(ref.light_index_meta.path);
+        if (metadata) {
+            recordArtifactCache(cacheStats, true, ref.light_index_meta.bytes);
+        } else {
+            metadata = await fetchJson<Omit<SitegraphLocalLightIndex, 'terms'>>(
+                publicAssetPath(ref.light_index_meta.path),
+                signal,
+                'index'
+            );
+            localLightMetaCache.set(ref.light_index_meta.path, metadata);
+            recordArtifactCache(cacheStats, false, ref.light_index_meta.bytes);
+        }
+        let packedBytes = localLightPackedBytesCache.get(ref.light_index_packed.path);
+        if (packedBytes) {
+            recordArtifactCache(cacheStats, true, ref.light_index_packed.bytes);
+        } else {
+            packedBytes = await fetchArrayBuffer(publicAssetPath(ref.light_index_packed.path), signal, 'index');
+            localLightPackedBytesCache.set(ref.light_index_packed.path, packedBytes);
+            recordArtifactCache(cacheStats, false, ref.light_index_packed.bytes);
+        }
         payload = {
-            ...(
-                await fetchJson<Omit<SitegraphLocalLightIndex, 'terms'>>(
-                    publicAssetPath(ref.light_index_meta.path),
-                    signal,
-                    'index'
-                )
-            ),
-            terms: decodePackedImpactIndex<SitegraphImpactIndex>(
-                await fetchArrayBuffer(publicAssetPath(ref.light_index_packed.path), signal, 'index'),
+            ...metadata,
+            terms: decodePackedImpactIndexTerms<SitegraphImpactIndex>(
+                packedBytes,
+                terms,
                 ref.light_index_packed.path
             ).terms,
         };
@@ -537,36 +570,62 @@ const loadLocalLightIndex = async (
             throw new SearchContractError(`Local index ${ref.index_id} is missing split light artifacts`);
         }
         payload = await fetchJson(publicAssetPath(ref.light_index.path), signal, 'index');
+        recordArtifactCache(cacheStats, false, bytes);
     }
     const parsed = parseSitegraphLocalLightIndex(payload, path);
-    localLightIndexCache.set(path, parsed);
-    recordArtifactCache(cacheStats, false, bytes);
+    localLightIndexCache.set(cacheKey, parsed);
     return parsed;
 };
 
 const loadLocalBodyIndex = async (
     ref: SitegraphLocalIndexRef,
+    terms: string[],
     signal: AbortSignal,
     cacheStats?: SitegraphArtifactCacheStats
 ): Promise<SitegraphLocalBodyIndex> => {
     const artifact = bodyIndexArtifact(ref);
     const path = artifact.path;
-    const existing = localBodyIndexCache.get(path);
+    const packed = path.endsWith('.bin');
+    const cacheKey = packed ? `${path}\u0000${Array.from(new Set(terms)).sort().join('\u0000')}` : path;
+    const existing = localBodyIndexCache.get(cacheKey);
     if (existing) {
         recordArtifactCache(cacheStats, true, artifact.bytes);
         return existing;
     }
-    const payload = path.endsWith('.bin')
-        ? decodePackedLocalBodyIndex(await fetchArrayBuffer(publicAssetPath(path), signal, 'index'), path)
-        : await fetchJson(publicAssetPath(path), signal, 'index');
+    let payload: unknown;
+    if (packed) {
+        let buffer = localBodyPackedBytesCache.get(path);
+        if (buffer) {
+            recordArtifactCache(cacheStats, true, artifact.bytes);
+        } else {
+            buffer = await fetchArrayBuffer(publicAssetPath(path), signal, 'index');
+            localBodyPackedBytesCache.set(path, buffer);
+            recordArtifactCache(cacheStats, false, artifact.bytes);
+        }
+        payload = decodePackedLocalBodyIndexTerms(buffer, terms, path);
+    } else {
+        payload = await fetchJson(publicAssetPath(path), signal, 'index');
+        recordArtifactCache(cacheStats, false, artifact.bytes);
+    }
     const parsed = parseSitegraphLocalBodyIndex(payload, path);
-    localBodyIndexCache.set(path, parsed);
-    recordArtifactCache(cacheStats, false, artifact.bytes);
+    localBodyIndexCache.set(cacheKey, parsed);
     return parsed;
 };
 
-const bodyIndexArtifact = (ref: SitegraphLocalIndexRef): SitegraphLocalIndexRef['body_index'] => {
-    return ref.body_index_packed ?? ref.body_index;
+const bodyIndexArtifact = (ref: SitegraphLocalIndexRef): SitegraphArtifact => {
+    const artifact = ref.body_index_packed ?? ref.body_index;
+    if (!artifact) {
+        throw new SearchContractError(`Local index ${ref.index_id} is missing body index artifacts`);
+    }
+    return artifact;
+};
+
+const bodyIndexCachedBytes = (ref: SitegraphLocalIndexRef): number => {
+    const artifact = bodyIndexArtifact(ref);
+    if (artifact.path.endsWith('.bin')) {
+        return localBodyPackedBytesCache.has(artifact.path) ? artifact.bytes : 0;
+    }
+    return localBodyIndexCache.has(artifact.path) ? artifact.bytes : 0;
 };
 
 const loadShardFilter = async (
@@ -1255,7 +1314,7 @@ export const searchSitegraphProgressively = async (
     );
     emitResults('local_index_started', localIndexStartedCoverage, false);
 
-    const localLightIndexes = await Promise.all(planningScope.localRefs.map(ref => loadLocalLightIndex(ref, signal, cacheStats)));
+    const localLightIndexes = await Promise.all(planningScope.localRefs.map(ref => loadLocalLightIndex(ref, terms, signal, cacheStats)));
     planningScope.localRefs.forEach(ref => {
         loadedLocalIndexIds.add(ref.index_id);
         localIndexBytes += lightIndexRuntimeBytes(ref);
@@ -1332,7 +1391,7 @@ export const searchSitegraphProgressively = async (
     );
     emitResults('body_index_started', bodyStartedCoverage, false);
     throwIfAborted(signal);
-    const bodyIndexes = await Promise.all(planningScope.localRefs.map(ref => loadLocalBodyIndex(ref, signal, cacheStats)));
+    const bodyIndexes = await Promise.all(planningScope.localRefs.map(ref => loadLocalBodyIndex(ref, terms, signal, cacheStats)));
     planningScope.localRefs.forEach(ref => {
         localIndexBytes += bodyIndexArtifact(ref).bytes;
     });

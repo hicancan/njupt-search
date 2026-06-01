@@ -4,7 +4,9 @@ import json
 from typing import Any
 
 
-PACKED_IMPACT_MAGIC = b"SGIXB001"
+PACKED_IMPACT_MAGIC_V1 = b"SGIXB001"
+PACKED_IMPACT_MAGIC_V2 = b"SGIXB002"
+PACKED_IMPACT_MAGIC = PACKED_IMPACT_MAGIC_V2
 
 
 def encode_varint(value: int) -> bytes:
@@ -43,6 +45,28 @@ def impact_index_metadata(payload: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _pack_term_fields(fields: dict[str, Any], term: str) -> bytes:
+    out = bytearray()
+    if not isinstance(fields, dict):
+        raise ValueError(f"impact term fields must be an object: {term}")
+    out.extend(encode_varint(len(fields)))
+    for field, doc_ids in sorted(fields.items()):
+        field_code = str(field)
+        if len(field_code.encode("ascii")) != 1:
+            raise ValueError(f"field code must be one ASCII byte: {field_code}")
+        sorted_ids = sorted(int(item) for item in doc_ids)
+        out.extend(field_code.encode("ascii"))
+        out.extend(encode_varint(len(sorted_ids)))
+        previous = 0
+        for index, doc_id in enumerate(sorted_ids):
+            delta = doc_id if index == 0 else doc_id - previous
+            if delta < 0:
+                raise ValueError("doc ids must be sorted")
+            out.extend(encode_varint(delta))
+            previous = doc_id
+    return bytes(out)
+
+
 def pack_impact_index(payload: dict[str, Any]) -> bytes:
     metadata = json.dumps(impact_index_metadata(payload), ensure_ascii=False, separators=(",", ":")).encode("utf-8")
     terms = payload.get("terms")
@@ -52,44 +76,48 @@ def pack_impact_index(payload: dict[str, Any]) -> bytes:
     out = bytearray(PACKED_IMPACT_MAGIC)
     out.extend(len(metadata).to_bytes(4, "little"))
     out.extend(metadata)
-    out.extend(encode_varint(len(terms)))
+    packed_terms: list[tuple[str, bytes, bytes]] = []
     for term, fields in sorted(terms.items()):
         term_bytes = str(term).encode("utf-8")
+        packed_terms.append((str(term), term_bytes, _pack_term_fields(fields, str(term))))
+
+    out.extend(encode_varint(len(packed_terms)))
+    for _term, term_bytes, payload_bytes in packed_terms:
         out.extend(encode_varint(len(term_bytes)))
         out.extend(term_bytes)
-        if not isinstance(fields, dict):
-            raise ValueError(f"impact term fields must be an object: {term}")
-        out.extend(encode_varint(len(fields)))
-        for field, doc_ids in sorted(fields.items()):
-            field_code = str(field)
-            if len(field_code.encode("ascii")) != 1:
-                raise ValueError(f"field code must be one ASCII byte: {field_code}")
-            sorted_ids = sorted(int(item) for item in doc_ids)
-            out.extend(field_code.encode("ascii"))
-            out.extend(encode_varint(len(sorted_ids)))
-            previous = 0
-            for index, doc_id in enumerate(sorted_ids):
-                delta = doc_id if index == 0 else doc_id - previous
-                if delta < 0:
-                    raise ValueError("doc ids must be sorted")
-                out.extend(encode_varint(delta))
-                previous = doc_id
+        out.extend(encode_varint(len(payload_bytes)))
+    for _term, _term_bytes, payload_bytes in packed_terms:
+        out.extend(payload_bytes)
     return bytes(out)
 
 
-def unpack_impact_index(data: bytes) -> dict[str, Any]:
-    if not data.startswith(PACKED_IMPACT_MAGIC):
-        raise ValueError("packed impact index has invalid magic header")
-    offset = len(PACKED_IMPACT_MAGIC)
-    if offset + 4 > len(data):
-        raise ValueError("packed impact index is missing metadata length")
-    metadata_length = int.from_bytes(data[offset: offset + 4], "little")
-    offset += 4
-    metadata_end = offset + metadata_length
-    if metadata_end > len(data):
-        raise ValueError("packed impact index metadata is truncated")
-    payload = json.loads(data[offset:metadata_end])
-    offset = metadata_end
+def _unpack_term_fields(data: bytes, offset: int, end: int, *, collect: bool = True) -> tuple[dict[str, list[int]], int]:
+    field_count, offset = decode_varint(data, offset)
+    fields: dict[str, list[int]] = {}
+    for _ in range(field_count):
+        if offset >= end:
+            raise ValueError("packed impact field code is truncated")
+        field = chr(data[offset])
+        offset += 1
+        doc_count, offset = decode_varint(data, offset)
+        doc_ids: list[int] = []
+        previous = 0
+        for index in range(doc_count):
+            delta, offset = decode_varint(data, offset)
+            if offset > end:
+                raise ValueError("packed impact doc ids are truncated")
+            doc_id = delta if index == 0 else previous + delta
+            if collect:
+                doc_ids.append(doc_id)
+            previous = doc_id
+        if collect:
+            fields[field] = doc_ids
+    if offset != end:
+        raise ValueError("packed impact term payload has trailing bytes")
+    return fields, offset
+
+
+def _unpack_v1_terms(data: bytes, offset: int, selected_terms: set[str] | None = None) -> tuple[dict[str, dict[str, list[int]]], int]:
     term_count, offset = decode_varint(data, offset)
     terms: dict[str, dict[str, list[int]]] = {}
     for _ in range(term_count):
@@ -99,6 +127,7 @@ def unpack_impact_index(data: bytes) -> dict[str, Any]:
             raise ValueError("packed impact term is truncated")
         term = data[offset:term_end].decode("utf-8")
         offset = term_end
+        collect = selected_terms is None or term in selected_terms
         field_count, offset = decode_varint(data, offset)
         fields: dict[str, list[int]] = {}
         for _ in range(field_count):
@@ -112,11 +141,73 @@ def unpack_impact_index(data: bytes) -> dict[str, Any]:
             for index in range(doc_count):
                 delta, offset = decode_varint(data, offset)
                 doc_id = delta if index == 0 else previous + delta
-                doc_ids.append(doc_id)
+                if collect:
+                    doc_ids.append(doc_id)
                 previous = doc_id
-            fields[field] = doc_ids
-        terms[term] = fields
+            if collect:
+                fields[field] = doc_ids
+        if collect:
+            terms[term] = fields
+    return terms, offset
+
+
+def _unpack_v2_terms(data: bytes, offset: int, selected_terms: set[str] | None = None) -> tuple[dict[str, dict[str, list[int]]], int]:
+    term_count, offset = decode_varint(data, offset)
+    directory: list[tuple[str, int]] = []
+    payload_length_total = 0
+    for _ in range(term_count):
+        term_length, offset = decode_varint(data, offset)
+        term_end = offset + term_length
+        if term_end > len(data):
+            raise ValueError("packed impact term is truncated")
+        term = data[offset:term_end].decode("utf-8")
+        offset = term_end
+        payload_length, offset = decode_varint(data, offset)
+        directory.append((term, payload_length))
+        payload_length_total += payload_length
+    payload_start = offset
+    if payload_start + payload_length_total != len(data):
+        raise ValueError("packed impact payload directory length mismatch")
+
+    terms: dict[str, dict[str, list[int]]] = {}
+    for term, payload_length in directory:
+        payload_end = offset + payload_length
+        if payload_end > len(data):
+            raise ValueError("packed impact term payload is truncated")
+        if selected_terms is None or term in selected_terms:
+            fields, _ = _unpack_term_fields(data, offset, payload_end, collect=True)
+            terms[term] = fields
+        offset = payload_end
+    return terms, offset
+
+
+def _unpack_impact_index(data: bytes, selected_terms: set[str] | None = None) -> dict[str, Any]:
+    if data.startswith(PACKED_IMPACT_MAGIC_V2):
+        magic = PACKED_IMPACT_MAGIC_V2
+    elif data.startswith(PACKED_IMPACT_MAGIC_V1):
+        magic = PACKED_IMPACT_MAGIC_V1
+    else:
+        raise ValueError("packed impact index has invalid magic header")
+    offset = len(magic)
+    if offset + 4 > len(data):
+        raise ValueError("packed impact index is missing metadata length")
+    metadata_length = int.from_bytes(data[offset: offset + 4], "little")
+    offset += 4
+    metadata_end = offset + metadata_length
+    if metadata_end > len(data):
+        raise ValueError("packed impact index metadata is truncated")
+    payload = json.loads(data[offset:metadata_end])
+    offset = metadata_end
+    terms, offset = _unpack_v2_terms(data, offset, selected_terms) if magic == PACKED_IMPACT_MAGIC_V2 else _unpack_v1_terms(data, offset, selected_terms)
     if offset != len(data):
         raise ValueError("packed impact index has trailing bytes")
     payload["terms"] = terms
     return payload
+
+
+def unpack_impact_index(data: bytes) -> dict[str, Any]:
+    return _unpack_impact_index(data)
+
+
+def unpack_impact_terms(data: bytes, terms: list[str] | set[str]) -> dict[str, Any]:
+    return _unpack_impact_index(data, set(terms))

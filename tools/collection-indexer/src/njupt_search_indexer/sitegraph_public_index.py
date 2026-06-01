@@ -456,7 +456,6 @@ def build_local_indexes(
             pack_impact_index(light_terms_payload),
             extension="bin",
         )
-        body_artifact = write_hashed_json(PUBLIC_ROOT, PUBLIC_LOCAL_BODY_DIR, f"local_impact_body.{index_id}", body_payload, compact=True)
         body_packed_artifact = write_hashed_bytes(
             PUBLIC_ROOT,
             PUBLIC_LOCAL_BODY_PACKED_DIR,
@@ -471,7 +470,6 @@ def build_local_indexes(
             "shards": local_shard_refs(shard_ids, shard_by_id),
             "light_index_meta": artifact_entry(light_meta_artifact, role="local_impact_light_index_meta", count=len(sorted_docs), load="query_planned"),
             "light_index_packed": artifact_entry(light_packed_artifact, role="local_impact_light_index_packed", load="query_planned"),
-            "body_index": artifact_entry(body_artifact, role="local_impact_body_index", load="query_deepening"),
             "body_index_packed": artifact_entry(body_packed_artifact, role="local_impact_body_index_packed", load="query_deepening"),
         }
         local_refs.append(ref)
@@ -655,7 +653,6 @@ def public_artifact_dirs() -> tuple[Path, ...]:
         PUBLIC_SOURCE_MANIFEST_DIR,
         PUBLIC_LOCAL_LIGHT_META_DIR,
         PUBLIC_LOCAL_LIGHT_PACKED_DIR,
-        PUBLIC_LOCAL_BODY_DIR,
         PUBLIC_LOCAL_BODY_PACKED_DIR,
         PUBLIC_PROOF_CATALOG_DIR,
         PUBLIC_SHARD_FILTER_DIR,
@@ -683,7 +680,10 @@ def local_body_runtime_bytes(ref: dict[str, Any]) -> int:
     packed = ref.get("body_index_packed") if isinstance(ref.get("body_index_packed"), dict) else None
     if packed is not None:
         return int(packed.get("bytes") or 0)
-    return int(ref["body_index"]["bytes"])
+    fallback = ref.get("body_index") if isinstance(ref.get("body_index"), dict) else None
+    if fallback is not None:
+        return int(fallback.get("bytes") or 0)
+    raise ValueError(f"local index missing body artifacts: {ref.get('index_id')}")
 
 
 def write_public_index(packages: list[dict[str, Any]], built: dict[str, Any], *, shard_size: int) -> dict[str, Any]:
@@ -810,7 +810,6 @@ def write_public_index(packages: list[dict[str, Any]], built: dict[str, Any], *,
                     "source_manifest",
                     "local_impact_light_index_meta",
                     "local_impact_light_index_packed",
-                    "local_impact_body_index",
                     "local_impact_body_index_packed",
                     "proof_catalog",
                     "shard_filter",
@@ -915,11 +914,11 @@ def write_public_index(packages: list[dict[str, Any]], built: dict[str, Any], *,
         "local_impact_light_index_total_bytes": sum(int((ref.get("light_index") or {}).get("bytes") or 0) for ref in local_refs),
         "local_impact_light_index_meta_total_bytes": sum(int(ref["light_index_meta"]["bytes"]) for ref in local_refs),
         "local_impact_light_index_packed_total_bytes": sum(int(ref["light_index_packed"]["bytes"]) for ref in local_refs),
-        "local_impact_body_index_total_bytes": sum(int(ref["body_index"]["bytes"]) for ref in local_refs),
+        "local_impact_body_index_total_bytes": sum(int((ref.get("body_index") or {}).get("bytes") or 0) for ref in local_refs),
         "local_impact_body_index_packed_total_bytes": sum(int(ref["body_index_packed"]["bytes"]) for ref in local_refs),
         "local_index_count": len(local_refs),
         "light_index_runtime_bytes": sum(local_light_runtime_bytes(ref) for ref in local_refs),
-        "body_index_bytes": sum(int(ref["body_index"]["bytes"]) for ref in local_refs),
+        "body_index_bytes": sum(int((ref.get("body_index") or {}).get("bytes") or 0) for ref in local_refs),
         "body_index_runtime_bytes": sum(local_body_runtime_bytes(ref) for ref in local_refs),
         "local_index_runtime_bytes": sum(local_light_runtime_bytes(ref) + local_body_runtime_bytes(ref) for ref in local_refs),
         "full_scan_total_bytes": total_full_scan_bytes,

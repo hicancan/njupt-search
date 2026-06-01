@@ -261,14 +261,13 @@ def test_light_index_and_shards_have_no_obsolete_fields():
             light_meta_index = read_json(PUBLIC_ROOT / ref["light_index_meta"]["path"])
             packed_light_index = unpack_impact_index((PUBLIC_ROOT / ref["light_index_packed"]["path"]).read_bytes())
             light_index = {**light_meta_index, "terms": packed_light_index.get("terms")}
-            body_index = read_json(PUBLIC_ROOT / ref["body_index"]["path"])
-            packed_body_index = unpack_impact_index((PUBLIC_ROOT / ref["body_index_packed"]["path"]).read_bytes())
             assert "light_index" not in ref
+            assert "body_index" not in ref
+            body_index = unpack_impact_index((PUBLIC_ROOT / ref["body_index_packed"]["path"]).read_bytes())
             assert light_index["scope"] == ref["scope"]
             assert light_meta_index["scope"] == ref["scope"]
             assert packed_light_index["scope"] == ref["scope"]
             assert body_index["scope"] == ref["scope"]
-            assert packed_body_index["scope"] == ref["scope"]
             assert set(light_index["field_codes"].values()) <= {"t", "s", "n", "g", "a", "e", "y"}
             assert set(body_index["field_codes"].values()) == {"m", "c"}
             assert "tokens" not in light_index
@@ -279,7 +278,6 @@ def test_light_index_and_shards_have_no_obsolete_fields():
             assert isinstance(body_index["terms"], dict)
             assert "terms" not in light_meta_index
             assert "documents" not in packed_light_index
-            assert packed_body_index["terms"] == body_index["terms"]
             assert len(light_index["documents"]) == ref["doc_count"]
             assert not (BANNED_KEYS & set(walk_keys(light_index)))
             for item in light_index["documents"]:
