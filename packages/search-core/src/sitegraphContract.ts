@@ -14,6 +14,8 @@ import {
     SitegraphLocalBodyIndexSchema,
     SitegraphLocalLightIndex,
     SitegraphLocalLightIndexSchema,
+    SitegraphProofCatalog,
+    SitegraphProofCatalogSchema,
     SitegraphSearchManifest,
     SitegraphSearchManifestSchema,
     SitegraphSourceManifest,
@@ -141,6 +143,25 @@ export const parseSitegraphSourceManifest = (payload: unknown, source = 'sitegra
     try {
         assertNoLegacyFields(payload, source);
         return SitegraphSourceManifestSchema.parse(payload);
+    } catch (e) {
+        if (e instanceof z.ZodError) {
+            throw new SearchContractError(`Validation failed for ${source}: ${formatZodIssues(payload, e)}`);
+        }
+        throw new SearchContractError(`Validation failed for ${source}: ${e instanceof Error ? e.message : String(e)}`);
+    }
+};
+
+export const parseSitegraphProofCatalog = (payload: unknown, source = 'sitegraph proof catalog'): SitegraphProofCatalog => {
+    try {
+        assertNoLegacyFields(payload, source);
+        const parsed = SitegraphProofCatalogSchema.parse(payload);
+        if (!parsed.state_model.includes('pending') || !parsed.state_model.includes('failed')) {
+            throw new SearchContractError(`Validation failed for ${source}: proof catalog state model must include pending and failed`);
+        }
+        if (!parsed.complete_requires_no_states.includes('pending') || !parsed.complete_requires_no_states.includes('failed')) {
+            throw new SearchContractError(`Validation failed for ${source}: proof catalog must reject completion with pending or failed shards`);
+        }
+        return parsed;
     } catch (e) {
         if (e instanceof z.ZodError) {
             throw new SearchContractError(`Validation failed for ${source}: ${formatZodIssues(payload, e)}`);

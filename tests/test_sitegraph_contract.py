@@ -2,6 +2,7 @@ import json
 from pathlib import Path
 
 from njupt_search_eval.sitegraph_search import recall_documents
+from njupt_search_indexer.sitegraph_binary_index import unpack_impact_index
 from njupt_search_indexer.sitegraph_source import (
     COUNT_FIELDS,
     load_collection_source_packages,
@@ -78,6 +79,21 @@ def load_source_manifests(manifest: dict) -> list[dict]:
     ]
 
 
+def load_proof_catalogs(source_manifests: list[dict]) -> list[dict]:
+    return [
+        read_artifact(source_manifest["artifacts"]["proof_catalog"])
+        for source_manifest in source_manifests
+    ]
+
+
+def proof_catalog_shards(proof_catalogs: list[dict]) -> list[dict]:
+    return [
+        shard
+        for catalog in proof_catalogs
+        for shard in catalog["shards"]
+    ]
+
+
 def expected_source_counts(manifest: dict) -> dict[str, dict[str, int]]:
     source_package_paths = [path for path in load_collection_source_packages() if path.exists()]
     if source_package_paths:
@@ -131,12 +147,14 @@ def test_public_index_is_pure_sitegraph_contract():
     source_manifests = load_source_manifests(manifest)
     source_registry = load_source_registry(manifest)
     assert {item["source_id"] for item in source_registry["sources"]} == {"jwc", "xsc", "cxcy"}
-    total_shards = sum(len(source_manifest["full_shards"]) for source_manifest in source_manifests)
+    proof_catalogs = load_proof_catalogs(source_manifests)
+    total_shards = len(proof_catalog_shards(proof_catalogs))
     assert manifest["progressive_search"]["total_shards"] == total_shards
     assert manifest["progressive_search"]["total_documents"] == manifest["total_documents"]
     assert manifest["coverage_contract"]["total_shards"] == total_shards
     assert manifest["coverage_contract"]["total_documents"] == manifest["total_documents"]
     assert set(["title", "url", "section", "nav_path", "summary", "content", "attachments"]) <= set(manifest["coverage_contract"]["coverage_fields"])
+    assert set(["metadata_only", "filename_only", "text_extracted", "snippet", "full_content"]) <= set(manifest["coverage_contract"]["attachment_evidence_levels"])
     assert manifest["verification_contract"]["shard_filter_supported"] is True
     assert manifest["verification_contract"]["proved_skip_supported"] is True
     assert manifest["verification_contract"]["scan_fallback_supported"] is True
@@ -179,6 +197,11 @@ def test_public_index_is_pure_sitegraph_contract():
         source_id = source["source_id"]
         assert source["artifact_manifest"]["path"] == source_manifest_artifacts[source_id]["path"]
         assert source["artifact_manifest"]["load"] == "query_planned"
+    for source_manifest, proof_catalog in zip(source_manifests, proof_catalogs, strict=True):
+        assert "full_shards" not in source_manifest
+        assert proof_catalog["source_id"] == source_manifest["source_id"]
+        assert {"pending", "failed"} <= set(proof_catalog["complete_requires_no_states"])
+        assert proof_catalog["shards"]
 
     query_directory = read_artifact(manifest["artifacts"]["global_query_directory"])
     assert query_directory["entry_count"] == len(query_directory["entries"])
@@ -213,6 +236,12 @@ def test_source_truth_counts_are_preserved():
     assert manifest["sitegraph"]["quality"]["errors"] == 0
     assert manifest["sitegraph"]["quality"]["all_discovered_urls_have_outcomes"] is True
     assert manifest["sitegraph"]["quality"]["attachment_policy"] == "metadata_only"
+    assert manifest["sitegraph"]["attachment_evidence_policy"] == "metadata_and_filename_only_no_extracted_attachment_content"
+    assert manifest["sitegraph"]["attachment_evidence_coverage"]["total"] == truth_counts["attachments"]
+    assert manifest["sitegraph"]["attachment_evidence_coverage"]["filename_only"] == truth_counts["attachments"]
+    assert manifest["sitegraph"]["attachment_evidence_coverage"]["text_extracted"] == 0
+    assert manifest["sitegraph"]["attachment_evidence_coverage"]["snippet"] == 0
+    assert manifest["sitegraph"]["attachment_evidence_coverage"]["full_content"] == 0
     assert manifest["sitegraph"]["quality"]["external_link_policy"] == "record_only"
 
 
@@ -221,14 +250,25 @@ def test_light_index_and_shards_have_no_obsolete_fields():
     for source_manifest in load_source_manifests(manifest):
         assert source_manifest["source_id"] in EXPECTED_SOURCE_IDS
         assert source_manifest["local_indexes"]
-        assert source_manifest["full_shards"]
         for ref in source_manifest["local_indexes"]:
             assert ref["scope"]["source_id"] == source_manifest["source_id"]
             assert ref["index_id"] == ref["scope"]["index_id"]
-            light_index = read_json(PUBLIC_ROOT / ref["light_index"]["path"])
+            assert {item["shard_id"] for item in ref["shards"]} == set(ref["scope"]["shard_ids"])
+            for shard_ref in ref["shards"]:
+                assert shard_ref["path"].startswith("generated/collections/njupt-public/sitegraph/full_shards/")
+                assert shard_ref["bytes"] > 0
+                assert shard_ref["count"] > 0
+            light_meta_index = read_json(PUBLIC_ROOT / ref["light_index_meta"]["path"])
+            packed_light_index = unpack_impact_index((PUBLIC_ROOT / ref["light_index_packed"]["path"]).read_bytes())
+            light_index = {**light_meta_index, "terms": packed_light_index.get("terms")}
             body_index = read_json(PUBLIC_ROOT / ref["body_index"]["path"])
+            packed_body_index = unpack_impact_index((PUBLIC_ROOT / ref["body_index_packed"]["path"]).read_bytes())
+            assert "light_index" not in ref
             assert light_index["scope"] == ref["scope"]
+            assert light_meta_index["scope"] == ref["scope"]
+            assert packed_light_index["scope"] == ref["scope"]
             assert body_index["scope"] == ref["scope"]
+            assert packed_body_index["scope"] == ref["scope"]
             assert set(light_index["field_codes"].values()) <= {"t", "s", "n", "g", "a", "e", "y"}
             assert set(body_index["field_codes"].values()) == {"m", "c"}
             assert "tokens" not in light_index
@@ -237,6 +277,9 @@ def test_light_index_and_shards_have_no_obsolete_fields():
             assert body_index["scoring_model"] == "impact-ordered-block-max-bm25f-lite-v2"
             assert isinstance(light_index["terms"], dict)
             assert isinstance(body_index["terms"], dict)
+            assert "terms" not in light_meta_index
+            assert "documents" not in packed_light_index
+            assert packed_body_index["terms"] == body_index["terms"]
             assert len(light_index["documents"]) == ref["doc_count"]
             assert not (BANNED_KEYS & set(walk_keys(light_index)))
             for item in light_index["documents"]:
@@ -248,18 +291,27 @@ def test_light_index_and_shards_have_no_obsolete_fields():
                 assert item.get("date_kind")
                 assert item.get("task_kind")
 
-        for shard in source_manifest["full_shards"]:
+        proof_catalog = read_artifact(source_manifest["artifacts"]["proof_catalog"])
+        for shard in proof_catalog["shards"]:
             documents = read_json(PUBLIC_ROOT / shard["path"])
-            assert len(documents) == shard["count"]
+            assert len(documents) == shard["document_count"]
             assert not (BANNED_KEYS & set(walk_keys(documents)))
             assert ".000." not in shard["path"]
             assert "\\" not in shard["path"]
             assert shard["source_id"] == source_manifest["source_id"]
-            assert shard["filter_token_count"] > 0
-            assert shard["filter_sha256"]
+            assert shard["filter_contract"]["filter_token_count"] > 0
+            assert shard["filter_contract"]["filter_sha256"]
             for document in documents:
                 assert set(["title", "url", "section", "nav_path", "summary", "content", "attachments", "record_type", "facet", "published_at", "provenance", "source_id", "canonical_title", "date_kind", "date_confidence", "task_kind", "authority_profile", "dedupe_key"]) <= set(document)
                 assert document["source_id"] == document["provenance"]["site_id"]
+                for attachment in document.get("attachments", []):
+                    assert attachment["metadata_only"] is True
+                    assert attachment["evidence_level"] == "filename_only"
+                    assert {"metadata_only", "filename_only"} <= set(attachment.get("available_evidence", ["metadata_only", "filename_only"]))
+                    assert {"text_extracted", "snippet", "full_content"} <= set(attachment.get("unavailable_evidence", ["text_extracted", "snippet", "full_content"]))
+                    assert attachment["text_extracted"] is False
+                    assert attachment["snippet_available"] is False
+                    assert attachment["full_content_available"] is False
                 if document["record_type"] == "external":
                     assert not document.get("published_at")
                     assert document.get("recorded_at")

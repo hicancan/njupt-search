@@ -9,6 +9,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from njupt_search_indexer.sitegraph_binary_index import unpack_impact_index
+
 
 BASE_DIR = Path(__file__).resolve().parents[4]
 PUBLIC_ROOT = BASE_DIR / "apps" / "web" / "public"
@@ -20,6 +22,37 @@ SEARCH_INTENT_CONFIG = json.loads(
 FIELD_WEIGHTS = {key: float(value) for key, value in SEARCH_INTENT_CONFIG["field_weights"].items()}
 DEFAULT_MAX_SHARD_LOADS = 32
 FULL_SCAN_FIELDS = ["title", "section", "nav_path", "summary", "content", "attachments", "url"]
+
+
+def new_cache_stats() -> dict[str, Any]:
+    return {
+        "scope": "memory_content_hash",
+        "artifact_hits": 0,
+        "artifact_misses": 0,
+        "cached_bytes": 0,
+        "uncached_bytes": 0,
+        "cacheable_bytes": 0,
+    }
+
+
+def reset_cache_stats(index: dict[str, Any]) -> None:
+    index["cache_stats"] = new_cache_stats()
+
+
+def record_cache(index: dict[str, Any], hit: bool, bytes_count: int) -> None:
+    stats = index.setdefault("cache_stats", new_cache_stats())
+    safe_bytes = max(0, int(bytes_count or 0))
+    stats["cacheable_bytes"] += safe_bytes
+    if hit:
+        stats["artifact_hits"] += 1
+        stats["cached_bytes"] += safe_bytes
+    else:
+        stats["artifact_misses"] += 1
+        stats["uncached_bytes"] += safe_bytes
+
+
+def cache_snapshot(index: dict[str, Any]) -> dict[str, Any]:
+    return dict(index.get("cache_stats") or new_cache_stats())
 
 
 def read_json(path: Path) -> Any:
@@ -80,6 +113,9 @@ def load_index() -> dict[str, Any]:
         "local_light_cache": {},
         "local_body_cache": {},
         "shard_filter_cache": {},
+        "proof_catalog_cache": {},
+        "full_shard_cache": {},
+        "cache_stats": new_cache_stats(),
     }
 
 
@@ -93,6 +129,8 @@ def source_entries_by_id(index: dict[str, Any]) -> dict[str, dict[str, Any]]:
 def load_source_manifest(index: dict[str, Any], source_id: str) -> dict[str, Any] | None:
     cache = index["source_manifest_cache"]
     if source_id in cache:
+        entry = source_entries_by_id(index).get(source_id)
+        record_cache(index, True, int((entry or {}).get("artifact_manifest", {}).get("bytes") or 0))
         return cache[source_id]
     entry = source_entries_by_id(index).get(source_id)
     if not entry:
@@ -100,35 +138,107 @@ def load_source_manifest(index: dict[str, Any], source_id: str) -> dict[str, Any
     path = PUBLIC_ROOT / str(entry["artifact_manifest"]["path"])
     payload = read_json(path)
     cache[source_id] = payload
+    record_cache(index, False, int(entry["artifact_manifest"].get("bytes") or 0))
     return payload
 
 
 def load_local_light(index: dict[str, Any], ref: dict[str, Any]) -> dict[str, Any]:
-    path = str(ref["light_index"]["path"])
+    path = light_index_cache_key(ref)
+    artifact = light_index_artifact(ref)
     cache = index["local_light_cache"]
-    if path not in cache:
-        cache[path] = read_json(PUBLIC_ROOT / path)
+    if path in cache:
+        record_cache(index, True, int(artifact.get("bytes") or 0))
+        return cache[path]
+    if "meta" in artifact and "packed" in artifact:
+        payload = read_json(PUBLIC_ROOT / str(artifact["meta"]["path"]))
+        packed_terms = unpack_impact_index((PUBLIC_ROOT / str(artifact["packed"]["path"])).read_bytes())
+        payload["terms"] = packed_terms.get("terms") or {}
+        cache[path] = payload
+    else:
+        cache[path] = read_json(PUBLIC_ROOT / str(artifact["path"]))
+    record_cache(index, False, int(artifact.get("bytes") or 0))
     return cache[path]
 
 
 def load_local_body(index: dict[str, Any], ref: dict[str, Any]) -> dict[str, Any]:
-    path = str(ref["body_index"]["path"])
+    artifact = body_index_artifact(ref)
+    path = str(artifact["path"])
     cache = index["local_body_cache"]
-    if path not in cache:
-        cache[path] = read_json(PUBLIC_ROOT / path)
+    if path in cache:
+        record_cache(index, True, int(artifact.get("bytes") or 0))
+        return cache[path]
+    cache[path] = unpack_impact_index((PUBLIC_ROOT / path).read_bytes()) if path.endswith(".bin") else read_json(PUBLIC_ROOT / path)
+    record_cache(index, False, int(artifact.get("bytes") or 0))
     return cache[path]
+
+
+def body_index_artifact(ref: dict[str, Any]) -> dict[str, Any]:
+    packed = ref.get("body_index_packed")
+    if isinstance(packed, dict) and packed.get("path"):
+        return packed
+    return ref["body_index"]
+
+
+def light_index_artifact(ref: dict[str, Any]) -> dict[str, Any]:
+    meta = ref.get("light_index_meta")
+    packed = ref.get("light_index_packed")
+    if isinstance(meta, dict) and meta.get("path") and isinstance(packed, dict) and packed.get("path"):
+        return {
+            "bytes": int(meta.get("bytes") or 0) + int(packed.get("bytes") or 0),
+            "meta": meta,
+            "packed": packed,
+            "path": light_index_cache_key(ref),
+        }
+    fallback = ref.get("light_index")
+    if isinstance(fallback, dict) and fallback.get("path"):
+        return fallback
+    raise KeyError(f"local index missing light artifacts: {ref.get('index_id')}")
+
+
+def light_index_cache_key(ref: dict[str, Any]) -> str:
+    meta = ref.get("light_index_meta")
+    packed = ref.get("light_index_packed")
+    if isinstance(meta, dict) and meta.get("path") and isinstance(packed, dict) and packed.get("path"):
+        return f"{meta['path']}|{packed['path']}"
+    fallback = ref.get("light_index")
+    if isinstance(fallback, dict) and fallback.get("path"):
+        return str(fallback["path"])
+    raise KeyError(f"local index missing light artifacts: {ref.get('index_id')}")
 
 
 def load_shard_filter(index: dict[str, Any], source_manifest: dict[str, Any]) -> dict[str, Any]:
     path = str(source_manifest["artifacts"]["shard_filter"]["path"])
     cache = index["shard_filter_cache"]
-    if path not in cache:
-        cache[path] = read_json(PUBLIC_ROOT / path)
+    bytes_count = int(source_manifest["artifacts"]["shard_filter"].get("bytes") or 0)
+    if path in cache:
+        record_cache(index, True, bytes_count)
+        return cache[path]
+    cache[path] = read_json(PUBLIC_ROOT / path)
+    record_cache(index, False, bytes_count)
     return cache[path]
 
 
-def load_shard(path: str) -> list[dict[str, Any]]:
-    return read_json(PUBLIC_ROOT / path)
+def load_proof_catalog(index: dict[str, Any], source_manifest: dict[str, Any]) -> dict[str, Any]:
+    path = str(source_manifest["artifacts"]["proof_catalog"]["path"])
+    cache = index["proof_catalog_cache"]
+    bytes_count = int(source_manifest["artifacts"]["proof_catalog"].get("bytes") or 0)
+    if path in cache:
+        record_cache(index, True, bytes_count)
+        return cache[path]
+    cache[path] = read_json(PUBLIC_ROOT / path)
+    record_cache(index, False, bytes_count)
+    return cache[path]
+
+
+def load_shard(index: dict[str, Any], path: str, bytes_count: int = 0) -> list[dict[str, Any]]:
+    cache = index["full_shard_cache"]
+    if path in cache:
+        record_cache(index, True, bytes_count)
+        return cache[path]
+    payload = read_json(PUBLIC_ROOT / path)
+    cache[path] = payload
+    record_cache(index, False, bytes_count)
+    return payload
 
 
 def source_id_for(item: dict[str, Any]) -> str:
@@ -256,12 +366,30 @@ def select_local_refs(index: dict[str, Any], plan: dict[str, Any]) -> tuple[list
         except (TypeError, ValueError):
             return 0.2
 
+    def expected_uncached_bytes(ref: dict[str, Any]) -> int:
+        light_artifact = light_index_artifact(ref)
+        light_path = str(light_artifact["path"])
+        body_artifact = body_index_artifact(ref)
+        body_path = str(body_artifact["path"])
+        light_bytes = 0 if light_path in index["local_light_cache"] else int(light_artifact["bytes"])
+        body_bytes = 0 if body_path in index["local_body_cache"] else int(body_artifact["bytes"])
+        return light_bytes + body_bytes
+
+    def cache_state(ref: dict[str, Any]) -> str:
+        light_cached = str(light_index_artifact(ref)["path"]) in index["local_light_cache"]
+        body_cached = str(body_index_artifact(ref)["path"]) in index["local_body_cache"]
+        if light_cached and body_cached:
+            return "warm"
+        if light_cached or body_cached:
+            return "partial"
+        return "cold"
+
     def utility(ref: dict[str, Any]) -> float:
         scope = ref.get("scope") or {}
         routed = 4.0 if str(ref["index_id"]) in planned_ids else 1.0
         source_prior = 2.0 if str(scope.get("source_id")) in {*route_sources, *plan["authority_sources"]} else 1.0
         facet_prior = 1.5 if str(scope.get("facet")) in route_facets else 1.0
-        cost_kb = max(1.0, (int(ref["light_index"]["bytes"]) + int(ref["body_index"]["bytes"])) / 1024)
+        cost_kb = max(1.0, expected_uncached_bytes(ref) / 1024)
         return round(routed * source_prior * facet_prior * year_score(scope.get("year")) * math.log2(int(ref.get("doc_count") or 0) + 2) / cost_kb, 6)
 
     if planned_ids:
@@ -303,7 +431,9 @@ def select_local_refs(index: dict[str, Any], plan: dict[str, Any]) -> tuple[list
     plan["selected_local_indexes"] = [
         {
             "index_id": str(ref["index_id"]),
-            "expected_bytes": int(ref["light_index"]["bytes"]) + int(ref["body_index"]["bytes"]),
+            "expected_bytes": int(light_index_artifact(ref)["bytes"]) + int(body_index_artifact(ref)["bytes"]),
+            "expected_uncached_bytes": expected_uncached_bytes(ref),
+            "cache_state": cache_state(ref),
             "utility_score": utility(ref),
             "source_id": str((ref.get("scope") or {}).get("source_id")),
             "facet": str((ref.get("scope") or {}).get("facet")),
@@ -311,8 +441,51 @@ def select_local_refs(index: dict[str, Any], plan: dict[str, Any]) -> tuple[list
         }
         for ref in refs
     ]
-    plan["estimated_cost_bytes"] = int(plan["estimated_cost_bytes"]) + sum(item["expected_bytes"] for item in plan["selected_local_indexes"])
+    plan["estimated_cost_bytes"] = int(plan["estimated_cost_bytes"]) + sum(item["expected_uncached_bytes"] for item in plan["selected_local_indexes"])
     return source_manifests, refs, source_manifest_bytes
+
+
+def local_shard_maps(refs: list[dict[str, Any]], source_manifests: list[dict[str, Any]]) -> tuple[dict[str, str], dict[str, int]]:
+    shard_path_by_id: dict[str, str] = {}
+    shard_bytes_by_path: dict[str, int] = {}
+    for ref in refs:
+        for shard in ref.get("shards") or []:
+            shard_path_by_id[str(shard["shard_id"])] = str(shard["path"])
+            shard_bytes_by_path[str(shard["path"])] = int(shard.get("bytes") or 0)
+    for source_manifest in source_manifests:
+        for shard in source_manifest.get("full_shards") or []:
+            shard_path_by_id[str(shard["shard_id"])] = str(shard["path"])
+            shard_bytes_by_path[str(shard["path"])] = int(shard.get("bytes") or 0)
+    return shard_path_by_id, shard_bytes_by_path
+
+
+def proof_catalog_shards(index: dict[str, Any], source_manifests: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    shards: list[dict[str, Any]] = []
+    for source_manifest in source_manifests:
+        catalog = load_proof_catalog(index, source_manifest)
+        for shard in catalog.get("shards") or []:
+            scope = shard.get("scope") or {}
+            shards.append(
+                {
+                    "shard_id": str(shard["shard_id"]),
+                    "source_id": str(shard["source_id"]),
+                    "path": str(shard["path"]),
+                    "bytes": int(shard["bytes"]),
+                    "count": int(shard["document_count"]),
+                    "facet_range": [str(item) for item in scope.get("facets") or []],
+                    "record_type_range": [str(item) for item in scope.get("record_types") or []],
+                    "section_range": [str(item) for item in scope.get("sections") or []],
+                    "year_range": [str(item) for item in scope.get("years") or []],
+                    "hash_bucket": str(scope.get("hash_bucket") or ""),
+                }
+            )
+    if shards:
+        return shards
+    return [
+        shard
+        for source_manifest in source_manifests
+        for shard in source_manifest.get("full_shards") or []
+    ]
 
 
 def text_blob(document: dict[str, Any], *fields: str) -> str:
@@ -642,22 +815,17 @@ def coverage(
     total_documents: int,
     loaded_paths: set[str],
     local_index_bytes: int,
+    hydrated_shard_bytes: int,
     filter_bytes: int,
     used_body_index: bool,
     exhaustive_complete: bool,
     excluded_by_filter_shards: int = 0,
     failed_shards: int = 0,
 ) -> dict[str, Any]:
-    shard_bytes: dict[str, int] = {}
-    for source_manifest in (load_source_manifest(index, source["source_id"]) for source in index["source_registry"]["sources"]):
-        if not source_manifest:
-            continue
-        for shard in source_manifest["full_shards"]:
-            shard_bytes[str(shard["path"])] = int(shard["bytes"])
-    hydrated_shard_bytes = sum(shard_bytes.get(path, 0) for path in loaded_paths)
     first_bytes = first_screen_bytes(index)
     pending_shards = 0 if exhaustive_complete else max(0, total_shards - scanned_shards - proved_no_match_shards - excluded_by_filter_shards - failed_shards)
     ledger_complete = pending_shards == 0 and failed_shards == 0
+    cache = cache_snapshot(index)
     return {
         "phase": phase,
         "coverage_state": phase,
@@ -673,6 +841,8 @@ def coverage(
         "searched_documents": searched_documents,
         "total_documents": total_documents,
         "loaded_bytes": first_bytes + local_index_bytes + hydrated_shard_bytes + filter_bytes,
+        "uncached_loaded_bytes": cache["uncached_bytes"],
+        "cached_artifact_bytes": cache["cached_bytes"],
         "first_screen_bytes": first_bytes,
         "local_index_bytes": local_index_bytes,
         "hydrated_shard_bytes": hydrated_shard_bytes,
@@ -688,6 +858,7 @@ def coverage(
             "failed_shards": failed_shards,
             "complete": ledger_complete,
         },
+        "cache": cache,
     }
 
 
@@ -702,22 +873,15 @@ def recall_documents_with_stats(
     limit: int = 20,
     candidate_limit: int = 160,
     max_shard_loads: int = DEFAULT_MAX_SHARD_LOADS,
+    index: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    index = load_index()
+    index = index if index is not None else load_index()
+    reset_cache_stats(index)
     terms = tokens_for_query(query, index["aliases"])
     match_phrases = expand_query_phrases(query, index["aliases"])
     plan = build_plan(index, query, terms)
     source_manifests, local_refs, source_manifest_bytes = select_local_refs(index, plan)
-    shard_path_by_id = {
-        str(shard["shard_id"]): str(shard["path"])
-        for source_manifest in source_manifests
-        for shard in source_manifest["full_shards"]
-    }
-    shard_bytes_by_path = {
-        str(shard["path"]): int(shard["bytes"])
-        for source_manifest in source_manifests
-        for shard in source_manifest["full_shards"]
-    }
+    shard_path_by_id, shard_bytes_by_path = local_shard_maps(local_refs, source_manifests)
 
     docs_by_index: dict[int, dict[str, Any]] = {}
     scores: dict[int, float] = {}
@@ -732,7 +896,7 @@ def recall_documents_with_stats(
     local_index_bytes = source_manifest_bytes
     for ref in local_refs:
         local_index = load_local_light(index, ref)
-        local_index_bytes += int(ref["light_index"]["bytes"])
+        local_index_bytes += int(light_index_artifact(ref)["bytes"])
         for document in local_index.get("documents", []):
             docs_by_index[int(document["doc_index"])] = document
         apply_impact_index(scores, local_index.get("terms", {}), terms, retrieval, candidate_limit)
@@ -766,7 +930,7 @@ def recall_documents_with_stats(
     def load_shards_for_paths(paths: set[str]) -> dict[int, dict[str, Any]]:
         docs: dict[int, dict[str, Any]] = {}
         for path in paths:
-            for document in load_shard(path):
+            for document in load_shard(index, path, shard_bytes_by_path.get(path, 0)):
                 docs[int(document["doc_index"])] = document
         return docs
 
@@ -806,12 +970,15 @@ def recall_documents_with_stats(
         for source in index["source_registry"]["sources"]
         if (source_manifest := load_source_manifest(index, str(source["source_id"]))) is not None
     ]
-    in_scope_shards = [shard for source_manifest in verification_manifests for shard in source_manifest["full_shards"]]
+    in_scope_shards = proof_catalog_shards(index, verification_manifests)
     shard_filters = {
         str(source_manifest["source_id"]): load_shard_filter(index, source_manifest)
         for source_manifest in verification_manifests
     }
-    filter_bytes = sum(int(source_manifest["artifacts"]["shard_filter"]["bytes"]) for source_manifest in verification_manifests)
+    filter_bytes = sum(
+        int(source_manifest["artifacts"]["proof_catalog"]["bytes"]) + int(source_manifest["artifacts"]["shard_filter"]["bytes"])
+        for source_manifest in verification_manifests
+    )
     proved_no_match_shards = 0
     scanned_shards = 0
     searched_documents = 0
@@ -824,8 +991,9 @@ def recall_documents_with_stats(
             continue
         path = str(shard["path"])
         loaded_paths.add(path)
+        shard_bytes_by_path[path] = int(shard["bytes"])
         scanned_shards += 1
-        for document in load_shard(path):
+        for document in load_shard(index, path, int(shard["bytes"])):
             searched_documents += 1
             doc_index = int(document["doc_index"])
             if full_scan_matches(document, match_phrases):
@@ -836,6 +1004,7 @@ def recall_documents_with_stats(
                     ranked_by_id[str(item["id"])] = item
 
     ranked = sorted_ranked(list(ranked_by_id.values()))
+    hydrated_shard_bytes = sum(shard_bytes_by_path.get(path, 0) for path in loaded_paths)
     final_coverage = coverage(
         index,
         phase="global_exhaustive_complete",
@@ -847,6 +1016,7 @@ def recall_documents_with_stats(
         total_documents=sum(int(shard["count"]) for shard in in_scope_shards),
         loaded_paths=loaded_paths,
         local_index_bytes=local_index_bytes,
+        hydrated_shard_bytes=hydrated_shard_bytes,
         filter_bytes=filter_bytes,
         used_body_index=used_body_index,
         exhaustive_complete=True,
@@ -860,7 +1030,10 @@ def recall_documents_with_stats(
             "loaded_local_index_count": len(local_refs),
             "loaded_local_index_ids": [str(ref["index_id"]) for ref in local_refs],
             "local_index_bytes": local_index_bytes,
-            "hydrated_shard_bytes": sum(shard_bytes_by_path.get(path, 0) for path in loaded_paths),
+            "hydrated_shard_bytes": hydrated_shard_bytes,
+            "uncached_loaded_bytes": final_coverage["uncached_loaded_bytes"],
+            "cached_artifact_bytes": final_coverage["cached_artifact_bytes"],
+            "cache": final_coverage["cache"],
             "candidate_count": len(selected_candidate_indices),
             "quick_result_count": len(quick_ranked),
             "quick_results": quick_ranked[:limit],

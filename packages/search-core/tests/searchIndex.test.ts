@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
     buildSitegraphMatchSnippet,
+    decodePackedLocalBodyIndex,
     formatResolvedSearchDate,
     parseSitegraphLocalLightIndex,
     parseSitegraphManifest,
@@ -18,6 +19,7 @@ import type {
     SitegraphLocalBodyIndex,
     SitegraphLocalIndexRef,
     SitegraphLocalLightIndex,
+    SitegraphProofCatalog,
     SitegraphRoutedSession,
     SitegraphSearchEvent,
     SitegraphSearchManifest,
@@ -37,6 +39,48 @@ const artifact = (path: string, role: string, load = 'on_demand', count?: number
 const required = <T>(value: T | undefined, message: string): T => {
     if (value === undefined) throw new Error(message);
     return value;
+};
+
+const encodeVarint = (value: number): number[] => {
+    const bytes: number[] = [];
+    let current = value;
+    while (current >= 0x80) {
+        bytes.push((current & 0x7f) | 0x80);
+        current = Math.floor(current / 128);
+    }
+    bytes.push(current);
+    return bytes;
+};
+
+const packedImpactIndexFixture = (payload: SitegraphImpactIndex): ArrayBuffer => {
+    const encoder = new TextEncoder();
+    const metadata = encoder.encode(JSON.stringify(Object.fromEntries(
+        Object.entries(payload).filter(([key]) => key !== 'terms')
+    )));
+    const bytes: number[] = [
+        ...encoder.encode('SGIXB001'),
+        metadata.length & 0xff,
+        (metadata.length >> 8) & 0xff,
+        (metadata.length >> 16) & 0xff,
+        (metadata.length >> 24) & 0xff,
+        ...metadata,
+        ...encodeVarint(Object.keys(payload.terms).length),
+    ];
+    for (const term of Object.keys(payload.terms).sort()) {
+        const termBytes = encoder.encode(term);
+        bytes.push(...encodeVarint(termBytes.length), ...termBytes);
+        const fields = payload.terms[term];
+        bytes.push(...encodeVarint(Object.keys(fields).length));
+        for (const field of Object.keys(fields).sort()) {
+            bytes.push(field.charCodeAt(0), ...encodeVarint(fields[field].length));
+            let previous = 0;
+            fields[field].forEach((docId, index) => {
+                bytes.push(...encodeVarint(index === 0 ? docId : docId - previous));
+                previous = docId;
+            });
+        }
+    }
+    return new Uint8Array(bytes).buffer;
 };
 
 const fullShard = (prefix: string, count: number, facet = 'policy'): SitegraphFullShard => ({
@@ -105,6 +149,13 @@ const makeDocument = (overrides: Partial<SitegraphFullDocument> = {}): Sitegraph
             section: '规章制度',
             nav_path: ['规章制度'],
             metadata_only: true,
+            evidence_level: 'filename_only',
+            available_evidence: ['metadata_only', 'filename_only'],
+            unavailable_evidence: ['text_extracted', 'snippet', 'full_content'],
+            text_extracted: false,
+            snippet_available: false,
+            full_content_available: false,
+            coverage_note: 'Only authoritative attachment metadata and filename are indexed; binary attachment content is not extracted.',
             position: 1
         }],
         ...overrides
@@ -175,6 +226,7 @@ const impactTerms = (postings: Record<string, Record<string, number[]>>): Sitegr
 interface RoutedFixture {
     session: SitegraphRoutedSession;
     sourceManifest: SitegraphSourceManifest;
+    proofCatalog: SitegraphProofCatalog;
     localLightIndex: SitegraphLocalLightIndex;
     localBodyIndex: SitegraphLocalBodyIndex;
     shardFilter: Record<string, unknown>;
@@ -208,7 +260,14 @@ const makeRoutedFixture = (
         index_id: localIndexId,
         scope,
         doc_count: documents.length,
-        light_index: artifact(`${prefix}/local-impact-light.json`, 'local_impact_light_index', 'query_planned', documents.length),
+        shards: [{
+            shard_id: shard.shard_id,
+            path: shard.path,
+            bytes: shard.bytes,
+            count: shard.count
+        }],
+        light_index_meta: artifact(`${prefix}/local-impact-light-meta.json`, 'local_impact_light_index_meta', 'query_planned', documents.length),
+        light_index_packed: artifact(`${prefix}/local-impact-light.bin`, 'local_impact_light_index_packed', 'query_planned', documents.length),
         body_index: artifact(`${prefix}/local-impact-body.json`, 'local_impact_body_index', 'query_planned', documents.length)
     };
     const manifest: SitegraphSearchManifest = {
@@ -241,11 +300,12 @@ const makeRoutedFixture = (
             total_documents: documents.length,
             full_scan_supported: true,
             progressive_events: true,
-            artifact_roles: ['source_registry', 'global_query_directory', 'local_impact_light_index', 'local_impact_body_index', 'proof_catalog', 'full_shards']
+            artifact_roles: ['source_registry', 'global_query_directory', 'local_impact_light_index_meta', 'local_impact_light_index_packed', 'local_impact_body_index', 'local_impact_body_index_packed', 'proof_catalog', 'full_shards']
         },
         coverage_contract: {
             states: ['plan_started', 'local_index_started', 'first_trusted_results', 'body_index_started', 'top_results_hydrated', 'verification_started', 'partial_verified', 'global_exhaustive_complete'],
             coverage_fields: ['title', 'section', 'nav_path', 'summary', 'content', 'attachments', 'url'],
+            attachment_evidence_levels: ['metadata_only', 'filename_only', 'text_extracted', 'snippet', 'full_content'],
             proof: {
                 indexed_fields: ['title', 'section', 'nav_path', 'attachments'],
                 full_scan_fields: ['title', 'section', 'nav_path', 'summary', 'content', 'attachments', 'url'],
@@ -290,6 +350,15 @@ const makeRoutedFixture = (
             external_document_records: 0,
             utility_link_records: 0,
             attachment_policy: 'metadata_only',
+            attachment_evidence_policy: 'metadata_and_filename_only_no_extracted_attachment_content',
+            attachment_evidence_coverage: {
+                total: 1,
+                metadata_only: 1,
+                filename_only: 1,
+                text_extracted: 0,
+                snippet: 0,
+                full_content: 0
+            },
             external_link_policy: 'record_only',
             source_manifests: {
                 jwc: artifact(`${prefix}/source-manifest.json`, 'source_manifest', 'query_planned', documents.length)
@@ -323,6 +392,14 @@ const makeRoutedFixture = (
             artifact_manifest: required(manifest.sitegraph.source_manifests.jwc, 'expected jwc source manifest artifact'),
             doc_count: documents.length,
             attachment_count: 1,
+            attachment_evidence_coverage: {
+                total: 1,
+                metadata_only: 1,
+                filename_only: 1,
+                text_extracted: 0,
+                snippet: 0,
+                full_content: 0
+            },
             updated_at: '2026-05-30T00:00:00Z',
             quality_status: 'ok',
             coverage_status: 'audited',
@@ -354,8 +431,16 @@ const makeRoutedFixture = (
         display_name: '本科生院 / 教务处',
         domain: 'jwc.njupt.edu.cn',
         doc_count: documents.length,
-        attachment_count: 1,
-        facet_counts: { [scope.facet]: documents.length },
+            attachment_count: 1,
+            attachment_evidence_coverage: {
+                total: 1,
+                metadata_only: 1,
+                filename_only: 1,
+                text_extracted: 0,
+                snippet: 0,
+                full_content: 0
+            },
+            facet_counts: { [scope.facet]: documents.length },
         record_counts: { detail: documents.length },
         year_counts: { '2026': documents.length },
         local_indexes: [localRef],
@@ -369,6 +454,35 @@ const makeRoutedFixture = (
             section_index: artifact(`${prefix}/section-index.json`, 'section_index', 'on_demand', 1),
             external_index: artifact(`${prefix}/external-index.json`, 'external_index', 'on_demand', 0)
         }
+    };
+    const proofCatalog: SitegraphProofCatalog = {
+        version: 'sitegraph-proof-ledger-catalog-v2',
+        source_id: 'jwc',
+        state_model: ['pending', 'scanned', 'proved_no_match', 'excluded_by_filter', 'excluded_by_declared_scope', 'failed'],
+        complete_requires_no_states: ['pending', 'failed'],
+        covered_fields: ['title', 'section', 'nav_path', 'summary', 'content', 'attachments', 'url'],
+        shards: [{
+            shard_id: shard.shard_id,
+            source_id: 'jwc',
+            path: shard.path,
+            sha256: shard.sha256,
+            bytes: shard.bytes,
+            document_count: shard.count,
+            scope: {
+                facets: shard.facet_range,
+                record_types: shard.record_type_range,
+                sections: shard.section_range,
+                years: shard.year_range,
+                hash_bucket: shard.hash_bucket
+            },
+            filter_contract: {
+                artifact_family: 'shard_filters',
+                hash_algorithm: 'bloom-fnv1a32-utf8',
+                false_negative: false,
+                filter_sha256: shard.filter_sha256,
+                filter_token_count: shard.filter_token_count
+            }
+        }]
     };
     const localLightIndex: SitegraphLocalLightIndex = {
         version: 'sitegraph-local-light-impact-v2',
@@ -410,6 +524,7 @@ const makeRoutedFixture = (
             queryAliases: options.queryAliases || {}
         },
         sourceManifest,
+        proofCatalog,
         localLightIndex,
         localBodyIndex,
         shardFilter,
@@ -417,25 +532,37 @@ const makeRoutedFixture = (
     };
 };
 
-const withMockFetch = async (fixture: RoutedFixture, callback: () => Promise<void>): Promise<void> => {
+const withMockFetch = async (
+    fixture: RoutedFixture,
+    callback: () => Promise<void>,
+    options: { failPaths?: string[] } = {}
+): Promise<void> => {
     const originalFetch = globalThis.fetch;
     const manifestArtifact = required(fixture.session.sourceRegistry.sources[0], 'expected source registry entry').artifact_manifest;
     const localRef = required(fixture.sourceManifest.local_indexes[0], 'expected local index ref');
     const sourceManifest = fixture.sourceManifest;
     const shard = required(sourceManifest.full_shards[0], 'expected full shard');
     const shardFilterArtifact = required(sourceManifest.artifacts.shard_filter, 'expected shard filter artifact');
+    const proofCatalogArtifact = required(sourceManifest.artifacts.proof_catalog, 'expected proof catalog artifact');
     const responses = new Map<string, unknown>([
         [manifestArtifact.path, sourceManifest],
-        [localRef.light_index.path, fixture.localLightIndex],
+        [proofCatalogArtifact.path, fixture.proofCatalog],
+        [required(localRef.light_index_meta, 'expected light index metadata artifact').path, Object.fromEntries(Object.entries(fixture.localLightIndex).filter(([key]) => key !== 'terms'))],
+        [required(localRef.light_index_packed, 'expected packed light index artifact').path, packedImpactIndexFixture(Object.fromEntries(Object.entries(fixture.localLightIndex).filter(([key]) => key !== 'documents')) as SitegraphImpactIndex)],
         [localRef.body_index.path, fixture.localBodyIndex],
         [shardFilterArtifact.path, fixture.shardFilter],
         [shard.path, fixture.documents]
     ]);
     globalThis.fetch = (async (input: RequestInfo | URL) => {
         const url = String(input).replace(/^\//, '');
+        if ((options.failPaths || []).some(path => url.endsWith(path))) {
+            return new Response('fixture failure', { status: 503 });
+        }
         const match = Array.from(responses.entries()).find(([path]) => url.endsWith(path));
         if (!match) return new Response(JSON.stringify({}), { status: 404 });
-        return new Response(JSON.stringify(match[1]));
+        return match[1] instanceof ArrayBuffer
+            ? new Response(match[1])
+            : new Response(JSON.stringify(match[1]));
     }) as typeof fetch;
     try {
         await callback();
@@ -445,6 +572,30 @@ const withMockFetch = async (fixture: RoutedFixture, callback: () => Promise<voi
 };
 
 describe('sitegraph search contract', () => {
+    it('decodes packed local body impact indexes', () => {
+        const payload: SitegraphLocalBodyIndex = {
+            version: 'sitegraph-local-body-impact-v2',
+            tokenizer: 'nfkc-lower-cjk-ngram-code',
+            field_codes: { summary: 'm', content: 'c' },
+            field_impacts: { m: 16, c: 10 },
+            block_size: 32,
+            scoring_model: 'impact-ordered-block-max-bm25f-lite-v2',
+            scope: {
+                index_id: 'jwc__exam__2026',
+                source_id: 'jwc',
+                facet: 'exam',
+                year: '2026',
+                shard_ids: ['s1', 's2'],
+            },
+            terms: {
+                校历: { m: [3, 9, 14], c: [4] },
+                考试: { c: [1, 2, 99] },
+            },
+        };
+
+        expect(decodePackedLocalBodyIndex(packedImpactIndexFixture(payload), 'fixture.bin')).toEqual(payload);
+    });
+
     it('tokenizes Chinese, ASCII, and aliases for recall', () => {
         const tokens = tokenizeSitegraphQuery('转专业 B250403.xlsx', {
             转专业: { aliases: ['专业变更'] }
@@ -517,6 +668,7 @@ describe('sitegraph search contract', () => {
             expect(results[0]?.id).toBe('jwc-detail-1');
             expect(results[0]?.score_reason).toContain('附件名命中');
             expect(results[0]?.match_snippet?.field).toBe('attachments');
+            expect(results[0]?.match_snippet?.evidence_level).toBe('filename_only');
             expect(results[0]?.match_snippet?.text).toContain('转专业申请表.doc');
             expect(stats.loadedLocalIndexIds).toEqual([required(fixture.sourceManifest.local_indexes[0], 'expected local index ref').index_id]);
             expect(stats.loadedShardPaths).toEqual([required(fixture.sourceManifest.full_shards[0], 'expected full shard').path]);
@@ -687,6 +839,56 @@ describe('sitegraph search contract', () => {
         });
     });
 
+    it('reports warm immutable artifact cache hits and cache-aware local index cost', async () => {
+        const fixture = makeRoutedFixture('cache-warm', [makeDocument()], {
+            queryTerms: ['转专业申请'],
+            lightTerms: impactTerms({ 转专业: { t: [0] } }),
+            bodyTerms: impactTerms({ 申请: { c: [0] } })
+        });
+
+        await withMockFetch(fixture, async () => {
+            const first = await recallSitegraphDocuments(fixture.session, '转专业申请', new AbortController().signal, 5);
+            expect(first.stats.cache.artifact_misses).toBeGreaterThan(0);
+            expect(first.stats.cache.uncached_bytes).toBeGreaterThan(0);
+            expect(first.stats.coverage.uncached_loaded_bytes).toBe(first.stats.cache.uncached_bytes);
+            expect(first.stats.plan.selected_local_indexes?.[0]?.expected_uncached_bytes).toBeGreaterThan(0);
+
+            const second = await recallSitegraphDocuments(fixture.session, '转专业申请', new AbortController().signal, 5);
+            expect(second.stats.cache.artifact_hits).toBeGreaterThan(0);
+            expect(second.stats.cache.artifact_misses).toBe(0);
+            expect(second.stats.cache.uncached_bytes).toBe(0);
+            expect(second.stats.cache.cached_bytes).toBeGreaterThan(0);
+            expect(second.stats.coverage.uncached_loaded_bytes).toBe(0);
+            expect(second.stats.plan.selected_local_indexes?.[0]?.cache_state).toBe('warm');
+            expect(second.stats.plan.selected_local_indexes?.[0]?.expected_uncached_bytes).toBe(0);
+        });
+    });
+
+    it('treats changed content-hash artifact paths as cache misses', async () => {
+        const firstFixture = makeRoutedFixture('cache-invalidate-a', [makeDocument()], {
+            queryTerms: ['转专业申请'],
+            lightTerms: impactTerms({ 转专业: { t: [0] } }),
+            bodyTerms: impactTerms({ 申请: { c: [0] } })
+        });
+        const changedFixture = makeRoutedFixture('cache-invalidate-b', [makeDocument()], {
+            queryTerms: ['转专业申请'],
+            lightTerms: impactTerms({ 转专业: { t: [0] } }),
+            bodyTerms: impactTerms({ 申请: { c: [0] } })
+        });
+
+        await withMockFetch(firstFixture, async () => {
+            const first = await recallSitegraphDocuments(firstFixture.session, '转专业申请', new AbortController().signal, 5);
+            expect(first.stats.cache.artifact_misses).toBeGreaterThan(0);
+        });
+        await withMockFetch(changedFixture, async () => {
+            const changed = await recallSitegraphDocuments(changedFixture.session, '转专业申请', new AbortController().signal, 5);
+            expect(changed.stats.cache.artifact_misses).toBeGreaterThan(0);
+            expect(changed.stats.cache.uncached_bytes).toBeGreaterThan(0);
+            expect(changed.stats.plan.selected_local_indexes?.[0]?.cache_state).toBe('cold');
+            expect(changed.stats.plan.selected_local_indexes?.[0]?.expected_uncached_bytes).toBeGreaterThan(0);
+        });
+    });
+
     it('uses shard filter proof to skip no-match shards', async () => {
         const fixture = makeRoutedFixture('filter-skip', [makeDocument()], {
             queryTerms: ['不存在的查询'],
@@ -704,5 +906,32 @@ describe('sitegraph search contract', () => {
             expect(complete?.coverage.scanned_shards).toBe(0);
             expect(complete?.results).toEqual([]);
         });
+    });
+
+    it('marks failed proof ledger shards and refuses exhaustive completion when verification loading fails', async () => {
+        const fixture = makeRoutedFixture('proof-failure', [makeDocument()], {
+            queryTerms: ['不存在的查询'],
+            lightTerms: {},
+            bodyTerms: {},
+            filterBase64: '/w=='
+        });
+        const shardPath = required(fixture.sourceManifest.full_shards[0], 'expected full shard').path;
+
+        await withMockFetch(fixture, async () => {
+            const events: SitegraphSearchEvent[] = [];
+            await expect(searchSitegraphProgressively(
+                fixture.session,
+                '不存在的查询',
+                new AbortController().signal,
+                event => events.push(event),
+                { limit: 5 }
+            )).rejects.toThrow(/HTTP 503/);
+            const error = events.at(-1);
+            expect(error?.type).toBe('error');
+            expect(error?.coverage.failed_shards).toBe(1);
+            expect(error?.coverage.pending_shards).toBe(0);
+            expect(error?.coverage.exhaustive_complete).toBe(false);
+            expect(events.some(event => event.type === 'global_exhaustive_complete')).toBe(false);
+        }, { failPaths: [shardPath] });
     });
 });

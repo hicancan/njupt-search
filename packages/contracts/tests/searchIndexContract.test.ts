@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import {
     SitegraphDocMetaSchema,
     SitegraphGlobalQueryDirectorySchema,
-    SitegraphLocalLightIndexSchema,
+    SitegraphProofCatalogSchema,
     SitegraphSearchManifestSchema,
     SitegraphSourceManifestSchema,
     SitegraphSourceRegistrySchema
@@ -55,8 +55,21 @@ describe('search index contracts package', () => {
         expect(queryDirectory.entry_count).toBe(Object.keys(queryDirectory.entries).length);
         expect(queryDirectory.entries['大创']?.local_index_ids.length).toBeGreaterThan(0);
         expect(sourceManifest.local_indexes.length).toBeGreaterThan(0);
-        expect(sourceManifest.full_shards.length).toBeGreaterThan(0);
+        expect(sourceManifest.full_shards.length).toBe(0);
+        expect(sourceManifest.attachment_evidence_coverage?.filename_only).toBe(sourceManifest.attachment_count);
+        expect(sourceManifest.attachment_evidence_coverage?.text_extracted).toBe(0);
+        expect(sourceManifest.local_indexes[0]?.shards.length).toBeGreaterThan(0);
+        expect(sourceManifest.local_indexes[0]?.light_index_meta?.role).toBe('local_impact_light_index_meta');
+        expect(sourceManifest.local_indexes[0]?.light_index_packed?.role).toBe('local_impact_light_index_packed');
+        expect(sourceManifest.local_indexes[0]?.light_index_packed?.path.endsWith('.bin')).toBe(true);
+        expect(sourceManifest.local_indexes[0]?.body_index_packed?.role).toBe('local_impact_body_index_packed');
+        expect(sourceManifest.local_indexes[0]?.body_index_packed?.path.endsWith('.bin')).toBe(true);
         expect(sourceManifest.artifacts.proof_catalog?.role).toBe('proof_catalog');
+        const proofCatalog = SitegraphProofCatalogSchema.parse(
+            loadPublicJson(`../../../apps/web/public/${sourceManifest.artifacts.proof_catalog.path}`)
+        );
+        expect(proofCatalog.shards.length).toBeGreaterThan(0);
+        expect(proofCatalog.complete_requires_no_states).toEqual(expect.arrayContaining(['pending', 'failed']));
     });
 
     it('keeps local light index metadata free of full-document fields', () => {
@@ -67,19 +80,22 @@ describe('search index contracts package', () => {
             loadPublicJson(`../../../apps/web/public/${manifest.sitegraph.source_manifests.jwc.path}`)
         );
         const firstLocalIndex = required(sourceManifest.local_indexes[0], 'expected a local light index fixture');
-        const localLightIndex = SitegraphLocalLightIndexSchema.parse(
-            loadPublicJson(`../../../apps/web/public/${firstLocalIndex.light_index.path}`)
-        );
-        const firstDoc = required(localLightIndex.documents[0], 'expected local metadata');
+        const localLightIndex = loadPublicJson(
+            `../../../apps/web/public/${required(firstLocalIndex.light_index_meta, 'expected light metadata artifact').path}`
+        ) as Record<string, unknown>;
+        const documents = required(localLightIndex.documents as unknown[] | undefined, 'expected local metadata documents');
+        const firstDoc = required(documents[0] as Record<string, unknown> | undefined, 'expected local metadata');
 
         expect(firstDoc.source_id).toBe('jwc');
         expect('content' in firstDoc).toBe(false);
         expect('summary' in firstDoc).toBe(false);
         expect('attachments' in firstDoc).toBe(false);
         expect('provenance' in firstDoc).toBe(false);
+        expect(firstLocalIndex.light_index).toBeUndefined();
         expect('tokens' in localLightIndex).toBe(false);
+        expect('terms' in localLightIndex).toBe(false);
         expect(localLightIndex.scoring_model).toBe('impact-ordered-block-max-bm25f-lite-v2');
-        expect(Object.keys(localLightIndex.terms).length).toBeGreaterThan(0);
+        expect(required(firstLocalIndex.light_index_packed, 'expected packed light terms artifact').path.endsWith('.bin')).toBe(true);
 
         const docMeta = {
             doc_index: 0,

@@ -1,0 +1,37 @@
+from __future__ import annotations
+
+from njupt_search_eval.sitegraph_lower_bound_report import build_lower_bound_report, render_markdown_report
+
+
+def test_lower_bound_report_contains_rerunnable_evidence() -> None:
+    report = build_lower_bound_report(
+        queries=["校历"],
+        cache_queries=["校历"],
+        include_quality=False,
+        include_task=False,
+        include_cache=True,
+        include_local_body_benchmark=False,
+        parse_runs=1,
+    )
+
+    assert report["report"] == "njupt-search-lower-bound-evidence-v1"
+    assert report["runtime_contract"]["legacy_global_first_screen"] is False
+    assert report["runtime_contract"]["startup_loads_local_indexes"] is False
+    assert report["runtime_contract"]["completion_requires_ledger"] is True
+    assert report["byte_comparison"]["routed_first_screen_total_bytes"]["current"] > 0
+    assert report["parse_decode_benchmark"]["source_manifests"]["current"]["bytes"] > 0
+
+    measurement = report["query_measurements"][0]
+    assert measurement["query"] == "校历"
+    assert measurement["coverage"]["exhaustive_complete"] is True
+    assert measurement["coverage"]["pending_shards"] == 0
+    assert measurement["planner"]["selected_local_index_count"] > 0
+    assert measurement["retrieval"]["dynamic_pruning"] is True
+
+    assert report["cache_benchmark"]["summary"]["passed"] is True
+    assert report["cache_benchmark"]["summary"]["max_warm_uncached_bytes"] == 0
+    assert report["dod_audit"]["6"]["status"] == "evidence_present"
+
+    markdown = render_markdown_report(report)
+    assert "NJUPT Search Lower-Bound Evidence Report" in markdown
+    assert "DoD items remain unmet" in markdown
