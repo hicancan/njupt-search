@@ -1,9 +1,9 @@
 # NJUPT Search Lower-Bound Evidence Report
 
-- Generated at: `2026-06-01T07:23:16.427163+00:00`
+- Generated at: `2026-06-01T13:41:37.779662+00:00`
 - Collection: `apps/web/public/generated/collections/njupt-public`
 - Baseline ref: `1a0996e`
-- Current artifact generation: `2026-06-01T07:09:11.295290+00:00`
+- Current artifact generation: `2026-06-01T13:04:28.531825+00:00`
 
 ## Runtime Contract
 
@@ -20,11 +20,11 @@
 
 | Metric | Baseline | Current | Delta | Change |
 | --- | ---: | ---: | ---: | ---: |
-| `routed_first_screen_total_bytes` | 217,034 | 218,850 | 1,816 | 0.837% |
+| `routed_first_screen_total_bytes` | 217,034 | 219,564 | 2,530 | 1.166% |
 | `bootstrap_manifest_bytes` | 12,790 | 14,259 | 1,469 | 11.486% |
 | `source_registry_bytes` | 4,405 | 4,804 | 399 | 9.058% |
-| `global_query_directory_bytes` | 197,030 | 196,978 | -52 | -0.026% |
-| `query_aliases_bytes` | 2,809 | 2,809 | 0 | 0.000% |
+| `global_query_directory_bytes` | 197,030 | 197,600 | 570 | 0.289% |
+| `query_aliases_bytes` | 2,809 | 2,901 | 92 | 3.275% |
 | `source_manifest_total_bytes` | 1,066,061 | 686,225 | -379,836 | -35.630% |
 | `local_impact_light_index_total_bytes` | 28,563,086 | 0 | -28,563,086 | -100.000% |
 | `local_impact_light_index_meta_total_bytes` | None | 11,962,895 | 11,962,895 |  |
@@ -36,9 +36,9 @@
 | `body_index_runtime_bytes` | None | 16,850,611 | 16,850,611 |  |
 | `local_index_runtime_bytes` | None | 37,820,171 | 37,820,171 |  |
 | `full_scan_total_bytes` | 44,782,519 | 45,697,141 | 914,622 | 2.042% |
-| `artifact_total_bytes` | 122,264,702 | 77,279,110 | -44,985,592 | -36.794% |
+| `artifact_total_bytes` | 122,264,702 | 77,279,824 | -44,984,878 | -36.793% |
 | `binary_artifact_total_bytes` | None | 25,857,276 | 25,857,276 |  |
-| `runtime_artifact_total_bytes` | None | 103,136,386 | 103,136,386 |  |
+| `runtime_artifact_total_bytes` | None | 103,137,100 | 103,137,100 |  |
 | `artifact_count` | 1,465 | 1,219 | -246 | -16.792% |
 | `binary_artifact_count` | None | 492 | 492 |  |
 | `local_index_count` | 246 | 246 | 0 | 0.000% |
@@ -50,27 +50,35 @@
 
 | Family | Baseline bytes | Current bytes | Baseline mean ms | Current mean ms |
 | --- | ---: | ---: | ---: | ---: |
-| `bootstrap_json` | 217,034 | 218,850 | 0.987 | 1.006 |
-| `source_manifests` | 1,066,061 | 686,225 | 4.188 | 2.142 |
-| `shard_filters_json_and_bitsets` | 2,843,792 | 2,843,792 | 9.004 | 9.151 |
-| `local_light_json` | 28,563,086 | 0 | 257.658 | 0.000 |
-| `local_light_meta_json` | 0 | 11,962,895 | 0.000 | 39.580 |
-| `local_light_packed` | 0 | 9,006,665 | 0.000 | 843.489 |
-| `local_light_packed_query_terms` | 0 | 9,006,665 | 0.000 | 211.890 |
-| `local_body_json` | 30,920,155 | 0 | 441.100 | 0.000 |
-| `local_body_packed` | 0 | 16,850,611 | 0.000 | 1670.164 |
-| `local_body_packed_query_terms` | 0 | 16,850,611 | 0.000 | 406.550 |
+| `bootstrap_json` | 217,034 | 219,564 | 0.717 | 0.786 |
+| `source_manifests` | 1,066,061 | 686,225 | 3.650 | 1.514 |
+| `shard_filters_json_and_bitsets` | 2,843,792 | 2,843,792 | 8.072 | 8.233 |
+| `local_light_json` | 28,563,086 | 0 | 244.347 | 0.000 |
+| `local_light_meta_json` | 0 | 11,962,895 | 0.000 | 39.692 |
+| `local_light_packed` | 0 | 9,006,665 | 0.000 | 814.035 |
+| `local_light_packed_query_terms` | 0 | 9,006,665 | 0.000 | 199.482 |
+| `local_body_json` | 30,920,155 | 0 | 409.360 | 0.000 |
+| `local_body_packed` | 0 | 16,850,611 | 0.000 | 1616.321 |
+| `local_body_packed_query_terms` | 0 | 16,850,611 | 0.000 | 395.257 |
 
 ## Runtime Query-Term Decode Summary
 
 - Baseline local-index runtime bytes: `59,483,241`
 - Current local-index runtime bytes: `37,820,171`
 - Runtime byte change: `-36.419%`
-- Baseline local-index parse/decode mean: `698.758` ms
-- Current query-term parse/decode mean: `658.020` ms
-- Parse/decode change: `-5.83%`
+- Baseline local-index parse/decode mean: `653.707` ms
+- Current query-term parse/decode mean: `634.431` ms
+- Parse/decode change: `-2.949%`
 - Light decode mode: `metadata_json_plus_packed_query_term_selective`
 - Body decode mode: `packed_query_term_selective`
+
+## Query Path Parse And Decode
+
+| Phase | Mean baseline bytes | Mean current bytes | Byte change | Mean baseline ms | Mean current ms | Decode change | Byte gate | Decode within tolerance |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |
+| `first_trusted_results` | 3,594,643 | 2,695,326 | `-25.018%` | 27.014 | 23.675 | `-12.362%` | `True` | `True` |
+| `top_results_hydrated` | 10,938,208 | 7,004,252 | `-35.965%` | 107.599 | 97.245 | `-9.623%` | `True` | `True` |
+- Query-path byte gate passed: `True`. Decode timing is reported separately with tolerance `5.0%`.
 
 ## Rust/WASM Decision
 
@@ -89,19 +97,34 @@
 
 | Query | ms | Results | Candidate shards | Loaded shards | Uncached bytes | Pruned postings | Complete | Top result |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |
-| `校历` | 1448.392 | 12 | 32 | 474 | 52,362,058 | 8 | `True` | 2025-2026学年校历 |
-| `慕课考试` | 1772.420 | 12 | 32 | 569 | 60,195,348 | 78 | `True` | 【教务管理办公室】2025-2026学年第二学期在线开放课程（慕课）线下考试报名通知 |
-| `学生相关文件及表格` | 2215.664 | 12 | 32 | 628 | 54,763,613 | 257 | `True` | 南京邮电大学学生毕业申请表 2026-04-16 |
-| `教务管理系统` | 2116.234 | 12 | 32 | 470 | 58,035,908 | 613 | `True` | 教务管理系统 |
-| `附件1` | 2138.339 | 12 | 32 | 601 | 54,584,482 | 250 | `True` | 【科创竞赛】第九届“外教社杯”全国高校学生跨文化能力大赛南京邮电大学校园赛通知 |
-| `不存在的查询词` | 1201.171 | 0 | 32 | 154 | 44,130,320 | 0 | `True` |  |
+| `校历` | 1378.040 | 12 | 18 | 472 | 50,246,788 | 265 | `True` | 2025-2026学年校历 |
+| `慕课考试` | 1559.846 | 12 | 18 | 569 | 53,223,215 | 70 | `True` | 【教务管理办公室】2025-2026学年第二学期在线开放课程（慕课）线下考试报名通知 |
+| `学生相关文件及表格` | 2114.132 | 12 | 18 | 628 | 54,178,693 | 250 | `True` | 南京邮电大学学生毕业申请表 2026-04-16 |
+| `教务管理系统` | 1941.742 | 12 | 18 | 483 | 51,723,971 | 309 | `True` | 教务管理系统 |
+| `附件1` | 2211.101 | 12 | 18 | 601 | 52,191,611 | 189 | `True` | 【科创竞赛】第九届“外教社杯”全国高校学生跨文化能力大赛南京邮电大学校园赛通知 |
+| `不存在的查询词` | 998.096 | 0 | 8 | 148 | 34,775,972 | 0 | `True` |  |
+
+## Phase Gates
+
+| Query | First trusted bytes | First trusted ms | Top hydrated bytes | Top hydrated ms | Proof bytes | Passed |
+| --- | ---: | ---: | ---: | ---: | ---: | --- |
+| `校历` | 4,014,830 | 43.504 | 9,315,740 | 137.205 | 50,246,788 | `True` |
+| `慕课考试` | 4,386,232 | 56.892 | 10,366,630 | 190.999 | 53,223,215 | `True` |
+| `学生相关文件及表格` | 3,505,996 | 45.925 | 7,750,789 | 155.279 | 54,178,693 | `True` |
+| `教务管理系统` | 4,118,978 | 64.733 | 9,923,870 | 255.769 | 51,723,971 | `True` |
+| `附件1` | 4,219,284 | 57.017 | 9,755,672 | 184.093 | 52,191,611 | `True` |
+| `不存在的查询词` | 3,440,203 | 34.297 | 8,743,962 | 132.523 | 34,775,972 | `True` |
+
+- First trusted hard gate: `<=5,242,880` bytes or `<=10%` of proof bytes.
+- Top hydrated hard gate: `<=10,485,760` bytes or `<=25%` of proof bytes.
+- Phase gates passed: `True`
 
 ## Cache Benchmark
 
 - Query count: `8`
-- Max cold uncached bytes: `60,195,348`
+- Max cold uncached bytes: `54,178,693`
 - Max warm uncached bytes: `0`
-- Total warm cached bytes: `477,243,404`
+- Total warm cached bytes: `412,248,327`
 - Passed: `True`
 
 ## Browser Verification
@@ -109,7 +132,7 @@
 - Passed: `True`
 - Persistent cache passed: `True`
 - Viewports: `["desktop-default", "390x844"]`
-- Scenario count: `7`
+- Scenario count: `8`
 - Max warm uncached immutable bytes: `None`
 
 ## Quality
@@ -127,16 +150,16 @@
 | Item | Status | Evidence |
 | ---: | --- | --- |
 | 1 | `evidence_present` | {"legacy_global_first_screen": false, "startup_loads_local_indexes": false, "startup_loads_full_shards": false, "startup_loads_global_document_metadata": false, "directory_contains_doc_postings": false, "completion_requires_ledger": true} |
-| 2 | `evidence_present` | Planner telemetry includes route expected_cost_bytes, selected expected_uncached bytes, and cache state per local index. |
-| 3 | `evidence_present` | {"any_dynamic_pruning": true, "total_postings_pruned": 1206} |
+| 2 | `evidence_present` | {"planner": "Planner telemetry includes route expected_cost_bytes, selected expected_uncached bytes, cache state per local index, and phase-specific local index selections.", "max_first_trusted_uncached_bytes": 4386232, "first_trusted_absol |
+| 3 | `evidence_present` | {"any_dynamic_pruning": true, "total_postings_pruned": 1083} |
 | 4 | `evidence_present` | Measured queries report proof ledger complete with zero pending/failed shards; runtime tests cover no-match proof, failed shard refusal, and cancelled pending-ledger refusal. |
-| 5 | `evidence_present` | {"artifact_total_bytes_current": 77279110, "artifact_total_bytes_baseline": 122264702, "runtime_parse_decode_summary": {"baseline_local_index_runtime_bytes": 59483241, "current_local_index_runtime_bytes": 37820171, "bytes_delta": -21663070, |
+| 5 | `evidence_present` | {"artifact_total_bytes_current": 77279824, "artifact_total_bytes_baseline": 122264702, "runtime_parse_decode_summary": {"baseline_local_index_runtime_bytes": 59483241, "current_local_index_runtime_bytes": 37820171, "bytes_delta": -21663070, |
 | 6 | `evidence_present` | {"light_json_bytes": 0, "light_split_runtime_bytes": 20969560, "body_json_bytes": 0, "body_packed_runtime_bytes": 16850611, "note": "Packed binary light terms plus metadata JSON are used for query planning; packed binary light/body indexes  |
 | 7 | `evidence_present` | {"artifact_count": 246, "benchmark": "packed-impact-retrieval-wasm-vs-typescript-v2", "collection": "apps/web/public/generated/collections/njupt-public", "decision": {"reason": "The browser runtime can consume Rust/WASM stateful score entri |
-| 8 | `evidence_present` | {"query_count": 8, "max_cold_uncached_bytes": 60195348, "max_warm_uncached_bytes": 0, "total_warm_cached_bytes": 477243404, "max_warm_ms": 1882.476, "passed": true, "failure_count": 0, "cache_invalidation_test": "Changed content-hash artifa |
+| 8 | `evidence_present` | {"query_count": 8, "max_cold_uncached_bytes": 54178693, "max_warm_uncached_bytes": 0, "total_warm_cached_bytes": 412248327, "max_warm_ms": 1538.915, "passed": true, "failure_count": 0, "cache_invalidation_test": "Changed content-hash artifa |
 | 9 | `evidence_present` | {"policy": "metadata_and_filename_only_no_extracted_attachment_content", "levels": ["metadata_only", "filename_only", "text_extracted", "snippet", "full_content"], "coverage": {"total": 8094, "metadata_only": 8094, "filename_only": 8094, "t |
 | 10 | `evidence_present` | Smoke queries, task queries, measured cold queries, warm cache queries, and a negative query are represented when full report mode is used. |
-| 11 | `evidence_present` | {"report": "njupt-search-browser-verification-v2", "generated_at": "2026-06-01T07:22:17.169Z", "target": "http://127.0.0.1:5175", "summary": {"passed": true, "persistent_cache_passed": true, "wasm_runtime_passed": true, "dynamic_pruning_pas |
+| 11 | `evidence_present` | {"report": "njupt-search-browser-verification-v3", "generated_at": "2026-06-01T13:35:55.644Z", "target": "http://127.0.0.1:4184", "storage_reset": "fresh preview origin on port 4184; no prior browser artifact cache for this origin", "screen |
 | 12 | `external_ci_deploy_required` | Local validators/tests/builds can be recorded separately; CI/deployment status is outside this local report. |
 | 13 | `evidence_present` | This report includes byte, time, quality, cache, pruning, parse/decode, and coverage sections. |
 | 14 | `unmet` | Commit, push, CI, and deployment checks are intentionally not claimed by this report. |

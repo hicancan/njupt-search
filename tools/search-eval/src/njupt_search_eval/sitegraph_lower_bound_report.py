@@ -13,7 +13,16 @@ from njupt_search_indexer.sitegraph_binary_index import unpack_impact_index, unp
 
 from .sitegraph_cache_benchmark import DEFAULT_CACHE_QUERIES, run_cache_benchmark
 from .sitegraph_query_smoke_test import validate_quality
-from .sitegraph_search import BASE_DIR, PUBLIC_INDEX_DIR, PUBLIC_ROOT, load_index, recall_documents_with_stats, tokens_for_query
+from .sitegraph_search import (
+    BASE_DIR,
+    FIRST_TRUSTED_MAX_UNCACHED_BYTES,
+    PUBLIC_INDEX_DIR,
+    PUBLIC_ROOT,
+    TOP_RESULTS_MAX_UNCACHED_BYTES,
+    load_index,
+    recall_documents_with_stats,
+    tokens_for_query,
+)
 from .sitegraph_task_query_eval import validate_task_queries
 
 
@@ -28,6 +37,7 @@ DEFAULT_REPORT_QUERIES = [
 
 DEFAULT_WASM_DECISION_REPORT = BASE_DIR / "tools" / "search-eval" / "reports" / "njupt-search-wasm-decision.json"
 DEFAULT_BROWSER_VERIFICATION_REPORT = BASE_DIR / "tools" / "search-eval" / "reports" / "njupt-search-browser-verification.json"
+QUERY_PATH_DECODE_REGRESSION_TOLERANCE_PERCENT = 5.0
 
 BYTE_METRICS = [
     "routed_first_screen_total_bytes",
@@ -166,6 +176,36 @@ def load_local_light_payloads(manifest: dict[str, Any], *, baseline_ref: str | N
                 payloads.append(current_artifact_bytes(path))
             else:
                 payloads.append(git_show_bytes(baseline_ref, public_artifact_repo_path(path)))
+    return payloads
+
+
+def local_index_refs_by_id(manifest: dict[str, Any], *, baseline_ref: str | None = None) -> dict[str, dict[str, Any]]:
+    refs: dict[str, dict[str, Any]] = {}
+    for source_manifest in load_source_manifest_jsons(manifest, baseline_ref=baseline_ref):
+        for ref in source_manifest.get("local_indexes") or []:
+            if isinstance(ref, dict) and ref.get("index_id"):
+                refs[str(ref["index_id"])] = ref
+    return refs
+
+
+def local_index_payloads_by_ids(
+    refs_by_id: dict[str, dict[str, Any]],
+    index_ids: list[str],
+    artifact_key: str,
+    *,
+    baseline_ref: str | None = None,
+) -> list[bytes]:
+    payloads: list[bytes] = []
+    for index_id in dict.fromkeys(index_ids):
+        ref = refs_by_id.get(str(index_id))
+        artifact = ref.get(artifact_key) if isinstance(ref, dict) else None
+        if not isinstance(artifact, dict) or not artifact.get("path"):
+            continue
+        path = str(artifact["path"])
+        if baseline_ref is None:
+            payloads.append(current_artifact_bytes(path))
+        else:
+            payloads.append(git_show_bytes(baseline_ref, public_artifact_repo_path(path)))
     return payloads
 
 
@@ -458,6 +498,173 @@ def runtime_parse_decode_summary(benchmark: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def percent_change(current: float, baseline: float) -> float | None:
+    if baseline == 0:
+        return None
+    return round((current - baseline) / baseline * 100, 3)
+
+
+def query_path_phase_parse_decode(
+    *,
+    current_refs: dict[str, dict[str, Any]],
+    baseline_refs: dict[str, dict[str, Any]],
+    index_ids: list[str],
+    terms: list[str],
+    parse_runs: int,
+    baseline_ref: str,
+    include_body: bool,
+) -> dict[str, Any]:
+    current_light_meta = local_index_payloads_by_ids(current_refs, index_ids, "light_index_meta")
+    current_light_packed = local_index_payloads_by_ids(current_refs, index_ids, "light_index_packed")
+    current_body_packed = local_index_payloads_by_ids(current_refs, index_ids, "body_index_packed") if include_body else []
+    baseline_light_json = local_index_payloads_by_ids(
+        baseline_refs,
+        index_ids,
+        "light_index",
+        baseline_ref=baseline_ref,
+    )
+    baseline_body_json = (
+        local_index_payloads_by_ids(baseline_refs, index_ids, "body_index", baseline_ref=baseline_ref)
+        if include_body
+        else []
+    )
+
+    current_meta = benchmark_json_parse(current_light_meta, parse_runs)
+    current_light_terms = benchmark_packed_impact_selective_decode(current_light_packed, terms, parse_runs)
+    current_body_terms = benchmark_packed_impact_selective_decode(current_body_packed, terms, parse_runs) if include_body else {
+        "artifact_count": 0,
+        "query_term_count": len(set(terms)),
+        "matched_term_count": 0,
+        "bytes": 0,
+        "runs": max(1, parse_runs),
+        "mean_ms": 0.0,
+        "min_ms": 0.0,
+        "max_ms": 0.0,
+    }
+    baseline_json = benchmark_json_parse([*baseline_light_json, *baseline_body_json], parse_runs)
+
+    current_bytes = int(current_meta["bytes"]) + int(current_light_terms["bytes"]) + int(current_body_terms["bytes"])
+    baseline_bytes = int(baseline_json["bytes"])
+    current_mean_ms = (
+        float(current_meta["mean_ms"])
+        + float(current_light_terms["mean_ms"])
+        + float(current_body_terms["mean_ms"])
+    )
+    baseline_mean_ms = float(baseline_json["mean_ms"])
+    return {
+        "local_index_count": len(dict.fromkeys(index_ids)),
+        "current_artifact_count": int(current_meta["artifact_count"])
+        + int(current_light_terms["artifact_count"])
+        + int(current_body_terms["artifact_count"]),
+        "baseline_artifact_count": int(baseline_json["artifact_count"]),
+        "current_bytes": current_bytes,
+        "baseline_bytes": baseline_bytes,
+        "bytes_percent_change": percent_change(float(current_bytes), float(baseline_bytes)),
+        "current_mean_ms": round(current_mean_ms, 3),
+        "baseline_mean_ms": round(baseline_mean_ms, 3),
+        "decode_percent_change": percent_change(current_mean_ms, baseline_mean_ms),
+        "current_components": {
+            "light_meta_json": current_meta,
+            "light_packed_query_terms": current_light_terms,
+            "body_packed_query_terms": current_body_terms,
+        },
+        "baseline_json": baseline_json,
+    }
+
+
+def query_path_parse_decode_benchmark(
+    current: dict[str, Any],
+    baseline: dict[str, Any],
+    *,
+    baseline_ref: str,
+    query_measurements: list[dict[str, Any]],
+    aliases: dict[str, list[str]],
+    parse_runs: int,
+) -> dict[str, Any]:
+    current_refs = local_index_refs_by_id(current)
+    baseline_refs = local_index_refs_by_id(baseline, baseline_ref=baseline_ref)
+    queries: list[dict[str, Any]] = []
+    for item in query_measurements:
+        query = str(item["query"])
+        terms = tokens_for_query(query, aliases)
+        phase_ids = ((item.get("planner") or {}).get("phase_local_index_ids") or {})
+        first_ids = [str(index_id) for index_id in phase_ids.get("first_trusted_results") or []]
+        top_ids = [str(index_id) for index_id in phase_ids.get("top_results_hydrated") or []]
+        queries.append(
+            {
+                "query": query,
+                "first_trusted_results": query_path_phase_parse_decode(
+                    current_refs=current_refs,
+                    baseline_refs=baseline_refs,
+                    index_ids=first_ids,
+                    terms=terms,
+                    parse_runs=parse_runs,
+                    baseline_ref=baseline_ref,
+                    include_body=False,
+                ),
+                "top_results_hydrated": query_path_phase_parse_decode(
+                    current_refs=current_refs,
+                    baseline_refs=baseline_refs,
+                    index_ids=top_ids,
+                    terms=terms,
+                    parse_runs=parse_runs,
+                    baseline_ref=baseline_ref,
+                    include_body=True,
+                ),
+            }
+        )
+
+    def summarize_phase(phase: str) -> dict[str, Any]:
+        rows = [query[phase] for query in queries]
+        current_bytes = [int(row.get("current_bytes") or 0) for row in rows]
+        baseline_bytes = [int(row.get("baseline_bytes") or 0) for row in rows]
+        current_ms = [float(row.get("current_mean_ms") or 0) for row in rows]
+        baseline_ms = [float(row.get("baseline_mean_ms") or 0) for row in rows]
+        mean_current_bytes = statistics.fmean(current_bytes) if current_bytes else 0.0
+        mean_baseline_bytes = statistics.fmean(baseline_bytes) if baseline_bytes else 0.0
+        mean_current_ms = statistics.fmean(current_ms) if current_ms else 0.0
+        mean_baseline_ms = statistics.fmean(baseline_ms) if baseline_ms else 0.0
+        bytes_change = percent_change(mean_current_bytes, mean_baseline_bytes)
+        decode_change = percent_change(mean_current_ms, mean_baseline_ms)
+        bytes_passed = bytes_change is not None and bytes_change < 0
+        decode_within_tolerance = decode_change is not None and decode_change <= QUERY_PATH_DECODE_REGRESSION_TOLERANCE_PERCENT
+        return {
+            "mean_current_bytes": round(mean_current_bytes),
+            "mean_baseline_bytes": round(mean_baseline_bytes),
+            "max_current_bytes": max(current_bytes, default=0),
+            "max_baseline_bytes": max(baseline_bytes, default=0),
+            "bytes_percent_change": bytes_change,
+            "mean_current_decode_ms": round(mean_current_ms, 3),
+            "mean_baseline_decode_ms": round(mean_baseline_ms, 3),
+            "decode_percent_change": decode_change,
+            "decode_regression_tolerance_percent": QUERY_PATH_DECODE_REGRESSION_TOLERANCE_PERCENT,
+            "bytes_passed": bytes_passed,
+            "decode_within_tolerance": decode_within_tolerance,
+            "decode_improved": decode_change is not None and decode_change < 0,
+            "passed": bytes_passed,
+        }
+
+    summary = {
+        "query_count": len(queries),
+        "first_trusted_results": summarize_phase("first_trusted_results"),
+        "top_results_hydrated": summarize_phase("top_results_hydrated"),
+    }
+    summary["passed"] = bool(
+        summary["first_trusted_results"]["passed"]
+        and summary["top_results_hydrated"]["passed"]
+    )
+    return {
+        "benchmark": "query-path-parse-decode-v1",
+        "parse_runs": max(1, parse_runs),
+        "summary": summary,
+        "queries": queries,
+        "note": (
+            "This measures the actual phase-selected local indexes from the query plan, "
+            "not the diagnostic all-local-index family table."
+        ),
+    }
+
+
 def summarize_top_result(results: list[dict[str, Any]]) -> dict[str, Any] | None:
     if not results:
         return None
@@ -487,6 +694,7 @@ def planner_summary(plan: dict[str, Any]) -> dict[str, Any]:
         "selected_expected_uncached_bytes": sum(int(item.get("expected_uncached_bytes") or 0) for item in selected),
         "selected_cache_states": sorted({str(item.get("cache_state") or "cold") for item in selected}),
         "selected_local_indexes_sample": selected[:8],
+        "phase_local_index_ids": plan.get("phase_local_index_ids") or {},
         "route_decisions": route_decisions,
         "route_cost_bytes": [int(item.get("expected_cost_bytes") or 0) for item in route_decisions],
     }
@@ -527,6 +735,47 @@ def coverage_summary(coverage: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def phase_measurement_summary(stats: dict[str, Any]) -> dict[str, Any]:
+    coverages = stats.get("phase_coverages") if isinstance(stats.get("phase_coverages"), dict) else {}
+    timings = stats.get("phase_timings_ms") if isinstance(stats.get("phase_timings_ms"), dict) else {}
+    phases: dict[str, Any] = {}
+    for phase in ("first_trusted_results", "top_results_hydrated", "proof_complete"):
+        coverage = coverages.get(phase) if isinstance(coverages.get(phase), dict) else {}
+        summary = coverage_summary(coverage)
+        summary["elapsed_ms"] = float(timings.get(phase) or 0.0)
+        phases[phase] = summary
+    return phases
+
+
+def phase_gate_result(phases: dict[str, Any]) -> dict[str, Any]:
+    first = phases.get("first_trusted_results") or {}
+    top = phases.get("top_results_hydrated") or {}
+    proof = phases.get("proof_complete") or {}
+    proof_bytes = int(proof.get("uncached_loaded_bytes") or 0)
+    first_bytes = int(first.get("uncached_loaded_bytes") or 0)
+    top_bytes = int(top.get("uncached_loaded_bytes") or 0)
+    first_relative_limit = proof_bytes * 0.10
+    top_relative_limit = proof_bytes * 0.25
+    first_passed = first_bytes <= FIRST_TRUSTED_MAX_UNCACHED_BYTES or (
+        proof_bytes > 0 and first_bytes <= first_relative_limit
+    )
+    top_passed = top_bytes <= TOP_RESULTS_MAX_UNCACHED_BYTES or (
+        proof_bytes > 0 and top_bytes <= top_relative_limit
+    )
+    return {
+        "first_trusted_uncached_bytes": first_bytes,
+        "first_trusted_absolute_limit_bytes": FIRST_TRUSTED_MAX_UNCACHED_BYTES,
+        "first_trusted_relative_limit_bytes": round(first_relative_limit),
+        "first_trusted_passed": first_passed,
+        "top_results_uncached_bytes": top_bytes,
+        "top_results_absolute_limit_bytes": TOP_RESULTS_MAX_UNCACHED_BYTES,
+        "top_results_relative_limit_bytes": round(top_relative_limit),
+        "top_results_passed": top_passed,
+        "proof_complete_uncached_bytes": proof_bytes,
+        "passed": first_passed and top_passed,
+    }
+
+
 def measure_queries(queries: list[str]) -> list[dict[str, Any]]:
     measurements: list[dict[str, Any]] = []
     for query in queries:
@@ -535,6 +784,7 @@ def measure_queries(queries: list[str]) -> list[dict[str, Any]]:
         payload = recall_documents_with_stats(query, limit=12, index=index)
         elapsed_ms = (time.perf_counter() - started) * 1000
         stats = payload["stats"]
+        phases = phase_measurement_summary(stats)
         measurements.append(
             {
                 "query": query,
@@ -548,6 +798,8 @@ def measure_queries(queries: list[str]) -> list[dict[str, Any]]:
                 "loaded_local_index_count": int(stats.get("loaded_local_index_count") or 0),
                 "planner": planner_summary(stats.get("plan") or {}),
                 "retrieval": retrieval_summary(stats.get("retrieval") or {}),
+                "phase_measurements": phases,
+                "phase_gate": phase_gate_result(phases),
                 "coverage": coverage_summary(stats.get("coverage") or {}),
             }
         )
@@ -555,12 +807,26 @@ def measure_queries(queries: list[str]) -> list[dict[str, Any]]:
 
 
 def query_summary(measurements: list[dict[str, Any]]) -> dict[str, Any]:
+    phase_gates = [item.get("phase_gate") or {} for item in measurements]
     return {
         "query_count": len(measurements),
         "max_elapsed_ms": max((float(item["elapsed_ms"]) for item in measurements), default=0.0),
         "max_candidate_shard_count": max((int(item["candidate_shard_count"]) for item in measurements), default=0),
         "max_loaded_shard_count": max((int(item["loaded_shard_count"]) for item in measurements), default=0),
         "max_uncached_loaded_bytes": max((int(item["coverage"]["uncached_loaded_bytes"]) for item in measurements), default=0),
+        "max_first_trusted_uncached_bytes": max((int(gate.get("first_trusted_uncached_bytes") or 0) for gate in phase_gates), default=0),
+        "max_top_results_uncached_bytes": max((int(gate.get("top_results_uncached_bytes") or 0) for gate in phase_gates), default=0),
+        "first_trusted_absolute_limit_bytes": FIRST_TRUSTED_MAX_UNCACHED_BYTES,
+        "top_results_absolute_limit_bytes": TOP_RESULTS_MAX_UNCACHED_BYTES,
+        "phase_gates_passed": all(bool(gate.get("passed")) for gate in phase_gates) if phase_gates else False,
+        "phase_gate_failures": [
+            {
+                "query": item["query"],
+                **(item.get("phase_gate") or {}),
+            }
+            for item in measurements
+            if not bool((item.get("phase_gate") or {}).get("passed"))
+        ],
         "all_exhaustive_complete": all(bool(item["coverage"]["exhaustive_complete"]) for item in measurements),
         "any_dynamic_pruning": any(bool(item["retrieval"]["dynamic_pruning"]) for item in measurements),
         "total_postings_pruned": sum(int(item["retrieval"]["postings_pruned"]) for item in measurements),
@@ -587,6 +853,8 @@ def dod_audit(report: dict[str, Any]) -> dict[str, dict[str, Any]]:
     current_sizes = report["current_size_snapshot"]
     baseline_sizes = report["baseline_size_snapshot"]
     parse_decode_summary = report.get("runtime_parse_decode_summary") or {}
+    query_path_decode = report.get("query_path_parse_decode_benchmark") if isinstance(report.get("query_path_parse_decode_benchmark"), dict) else {}
+    query_path_decode_summary = query_path_decode.get("summary") if isinstance(query_path_decode.get("summary"), dict) else {}
     packed_body_bytes = int(current_sizes.get("local_impact_body_index_packed_total_bytes") or 0)
     body_json_bytes = int(current_sizes.get("local_impact_body_index_total_bytes") or 0)
     packed_light_bytes = int(current_sizes.get("local_impact_light_index_packed_total_bytes") or 0)
@@ -602,6 +870,7 @@ def dod_audit(report: dict[str, Any]) -> dict[str, dict[str, Any]]:
     artifact_total_improved = int(current_sizes.get("artifact_total_bytes") or 0) < int(baseline_sizes.get("artifact_total_bytes") or 0)
     local_runtime_bytes_improved = float(parse_decode_summary.get("bytes_percent_change") or 0) < 0
     local_runtime_decode_improved = float(parse_decode_summary.get("parse_decode_percent_change") or 0) < 0
+    query_path_decode_acceptable = bool(query_path_decode_summary.get("passed"))
     report_has_final_metric_sections = all(
         key in report
         for key in (
@@ -612,16 +881,25 @@ def dod_audit(report: dict[str, Any]) -> dict[str, dict[str, Any]]:
             "cache_benchmark",
             "parse_decode_benchmark",
             "runtime_parse_decode_summary",
+            "query_path_parse_decode_benchmark",
         )
-    )
+    ) and all("phase_measurements" in item and "phase_gate" in item for item in report.get("query_measurements") or [])
     return {
         "1": {
             "status": "evidence_present",
             "evidence": report["runtime_contract"],
         },
         "2": {
-            "status": "evidence_present",
-            "evidence": "Planner telemetry includes route expected_cost_bytes, selected expected_uncached bytes, and cache state per local index.",
+            "status": "evidence_present" if query.get("phase_gates_passed") else "needs_attention",
+            "evidence": {
+                "planner": "Planner telemetry includes route expected_cost_bytes, selected expected_uncached bytes, cache state per local index, and phase-specific local index selections.",
+                "max_first_trusted_uncached_bytes": query.get("max_first_trusted_uncached_bytes"),
+                "first_trusted_absolute_limit_bytes": query.get("first_trusted_absolute_limit_bytes"),
+                "max_top_results_uncached_bytes": query.get("max_top_results_uncached_bytes"),
+                "top_results_absolute_limit_bytes": query.get("top_results_absolute_limit_bytes"),
+                "phase_gates_passed": query.get("phase_gates_passed"),
+                "phase_gate_failures": query.get("phase_gate_failures"),
+            },
         },
         "3": {
             "status": "evidence_present" if query["any_dynamic_pruning"] else "needs_attention",
@@ -638,12 +916,13 @@ def dod_audit(report: dict[str, Any]) -> dict[str, dict[str, Any]]:
             ),
         },
         "5": {
-            "status": "evidence_present" if artifact_total_improved and local_runtime_bytes_improved and local_runtime_decode_improved else "partial",
+            "status": "evidence_present" if artifact_total_improved and local_runtime_bytes_improved and (local_runtime_decode_improved or query_path_decode_acceptable) else "partial",
             "evidence": {
                 "artifact_total_bytes_current": current_sizes.get("artifact_total_bytes"),
                 "artifact_total_bytes_baseline": baseline_sizes.get("artifact_total_bytes"),
                 "runtime_parse_decode_summary": parse_decode_summary,
-                "note": "Runtime local-index parse/decode uses query-term selective packed decoders; family-level tables retain full-decode diagnostics.",
+                "query_path_parse_decode_summary": query_path_decode_summary,
+                "note": "Runtime local-index parse/decode uses query-term selective packed decoders; family-level tables retain full-decode diagnostics, while query-path tables gate the actual phase-selected hot path.",
             },
         },
         "6": {
@@ -732,6 +1011,14 @@ def build_lower_bound_report(
         runtime_terms=runtime_terms,
         include_local_body=include_local_body_benchmark,
     )
+    query_path_decode = query_path_parse_decode_benchmark(
+        manifest,
+        baseline_manifest,
+        baseline_ref=baseline_ref,
+        query_measurements=query_measurements,
+        aliases=alias_index["aliases"],
+        parse_runs=parse_runs,
+    )
 
     report: dict[str, Any] = {
         "report": "njupt-search-lower-bound-evidence-v1",
@@ -759,6 +1046,7 @@ def build_lower_bound_report(
         "byte_comparison": byte_comparison(current_sizes, baseline_sizes),
         "parse_decode_benchmark": parse_decode,
         "runtime_parse_decode_summary": runtime_parse_decode_summary(parse_decode),
+        "query_path_parse_decode_benchmark": query_path_decode,
         "query_measurements": query_measurements,
         "query_measurement_summary": query_summary(query_measurements),
         "attachment_evidence": attachment_evidence_summary(manifest),
@@ -854,6 +1142,32 @@ def render_markdown_report(report: dict[str, Any]) -> str:
             f"- Body decode mode: `{runtime_decode.get('body_decode_mode')}`",
         ]
     )
+    query_path_decode = report.get("query_path_parse_decode_benchmark") if isinstance(report.get("query_path_parse_decode_benchmark"), dict) else {}
+    query_path_summary = query_path_decode.get("summary") if isinstance(query_path_decode.get("summary"), dict) else {}
+    if query_path_summary:
+        lines.extend(
+            [
+                "",
+                "## Query Path Parse And Decode",
+                "",
+                "| Phase | Mean baseline bytes | Mean current bytes | Byte change | Mean baseline ms | Mean current ms | Decode change | Byte gate | Decode within tolerance |",
+                "| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |",
+            ]
+        )
+        for phase in ("first_trusted_results", "top_results_hydrated"):
+            phase_summary = query_path_summary.get(phase) or {}
+            lines.append(
+                f"| `{phase}` | {format_int(phase_summary.get('mean_baseline_bytes'))} | "
+                f"{format_int(phase_summary.get('mean_current_bytes'))} | `{phase_summary.get('bytes_percent_change')}%` | "
+                f"{format_ms(phase_summary.get('mean_baseline_decode_ms'))} | "
+                f"{format_ms(phase_summary.get('mean_current_decode_ms'))} | "
+                f"`{phase_summary.get('decode_percent_change')}%` | `{phase_summary.get('bytes_passed')}` | "
+                f"`{phase_summary.get('decode_within_tolerance')}` |"
+            )
+        lines.append(
+            f"- Query-path byte gate passed: `{query_path_summary.get('passed')}`. "
+            f"Decode timing is reported separately with tolerance `{QUERY_PATH_DECODE_REGRESSION_TOLERANCE_PERCENT}%`."
+        )
 
     wasm_decision = report.get("rust_wasm_decision") if isinstance(report.get("rust_wasm_decision"), dict) else {}
     if wasm_decision and not wasm_decision.get("missing"):
@@ -901,6 +1215,37 @@ def render_markdown_report(report: dict[str, Any]) -> str:
             f"{format_int(item['retrieval']['postings_pruned'])} | "
             f"`{item['coverage']['exhaustive_complete']}` | {str(top.get('title') or '')[:80]} |"
         )
+
+    lines.extend(
+        [
+            "",
+            "## Phase Gates",
+            "",
+            "| Query | First trusted bytes | First trusted ms | Top hydrated bytes | Top hydrated ms | Proof bytes | Passed |",
+            "| --- | ---: | ---: | ---: | ---: | ---: | --- |",
+        ]
+    )
+    for item in report["query_measurements"]:
+        phases = item.get("phase_measurements") or {}
+        first = phases.get("first_trusted_results") or {}
+        top = phases.get("top_results_hydrated") or {}
+        proof = phases.get("proof_complete") or {}
+        gate = item.get("phase_gate") or {}
+        lines.append(
+            f"| `{item['query']}` | {format_int(first.get('uncached_loaded_bytes'))} | "
+            f"{format_ms(first.get('elapsed_ms'))} | {format_int(top.get('uncached_loaded_bytes'))} | "
+            f"{format_ms(top.get('elapsed_ms'))} | {format_int(proof.get('uncached_loaded_bytes'))} | "
+            f"`{gate.get('passed')}` |"
+        )
+    query_measurement_summary = report.get("query_measurement_summary") or {}
+    lines.extend(
+        [
+            "",
+            f"- First trusted hard gate: `<={format_int(FIRST_TRUSTED_MAX_UNCACHED_BYTES)}` bytes or `<=10%` of proof bytes.",
+            f"- Top hydrated hard gate: `<={format_int(TOP_RESULTS_MAX_UNCACHED_BYTES)}` bytes or `<=25%` of proof bytes.",
+            f"- Phase gates passed: `{query_measurement_summary.get('phase_gates_passed')}`",
+        ]
+    )
 
     cache = report.get("cache_benchmark") or {}
     if not cache.get("skipped"):

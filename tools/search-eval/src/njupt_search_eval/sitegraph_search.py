@@ -21,6 +21,15 @@ SEARCH_INTENT_CONFIG = json.loads(
 
 FIELD_WEIGHTS = {key: float(value) for key, value in SEARCH_INTENT_CONFIG["field_weights"].items()}
 DEFAULT_MAX_SHARD_LOADS = 32
+ONE_MIB = 1024 * 1024
+FIRST_TRUSTED_MAX_UNCACHED_BYTES = 5 * ONE_MIB
+FIRST_TRUSTED_HYDRATION_RESERVE_BYTES = int(1.5 * ONE_MIB)
+TOP_RESULTS_MAX_UNCACHED_BYTES = 10 * ONE_MIB
+TOP_RESULTS_HYDRATION_RESERVE_BYTES = int(2.25 * ONE_MIB)
+MIN_FIRST_TRUSTED_LOCAL_INDEXES = 6
+MIN_TOP_RESULTS_LOCAL_INDEXES = 12
+LIGHT_SEARCH_FIELDS = ["title", "section", "nav_path", "tags", "attachments", "external", "system"]
+BODY_SEARCH_FIELDS = [*LIGHT_SEARCH_FIELDS, "summary", "content"]
 FULL_SCAN_FIELDS = ["title", "section", "nav_path", "summary", "content", "attachments", "url"]
 
 
@@ -185,6 +194,36 @@ def load_local_body(index: dict[str, Any], ref: dict[str, Any], terms: list[str]
 
 def local_body_cache_key(path: str, terms: list[str]) -> str:
     return path if not path.endswith(".bin") else f"{path}\0{chr(0).join(sorted(set(terms)))}"
+
+
+def select_local_refs_within_budget(
+    refs: list[dict[str, Any]],
+    byte_budget: int,
+    byte_size,
+    minimum_refs: int,
+) -> list[dict[str, Any]]:
+    selected: list[dict[str, Any]] = []
+    selected_bytes = 0
+    for ref in refs:
+        size = int(byte_size(ref))
+        need_minimum_coverage = len(selected) < minimum_refs
+        if not need_minimum_coverage and selected and selected_bytes + size > byte_budget:
+            continue
+        selected.append(ref)
+        selected_bytes += size
+    return selected or refs[:1]
+
+
+def unique_local_refs(refs: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    selected: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for ref in refs:
+        index_id = str(ref.get("index_id") or "")
+        if index_id in seen:
+            continue
+        seen.add(index_id)
+        selected.append(ref)
+    return selected
 
 
 def body_index_artifact(ref: dict[str, Any]) -> dict[str, Any]:
@@ -920,11 +959,55 @@ def recall_documents_with_stats(
 ) -> dict[str, Any]:
     index = index if index is not None else load_index()
     reset_cache_stats(index)
+    started_at = datetime.now(timezone.utc)
+    started_perf = math.nan
+    try:
+        import time
+
+        started_perf = time.perf_counter()
+    except Exception:
+        started_perf = math.nan
     terms = tokens_for_query(query, index["aliases"])
     match_phrases = expand_query_phrases(query, index["aliases"])
     plan = build_plan(index, query, terms)
     source_manifests, local_refs, source_manifest_bytes = select_local_refs(index, plan, terms)
     shard_path_by_id, shard_bytes_by_path = local_shard_maps(local_refs, source_manifests)
+    first_local_budget = max(
+        0,
+        FIRST_TRUSTED_MAX_UNCACHED_BYTES
+        - first_screen_bytes(index)
+        - source_manifest_bytes
+        - FIRST_TRUSTED_HYDRATION_RESERVE_BYTES,
+    )
+    first_phase_refs = select_local_refs_within_budget(
+        local_refs,
+        first_local_budget,
+        lambda ref: int(light_index_artifact(ref)["bytes"]),
+        MIN_FIRST_TRUSTED_LOCAL_INDEXES,
+    )
+    top_local_budget = max(
+        0,
+        TOP_RESULTS_MAX_UNCACHED_BYTES
+        - first_screen_bytes(index)
+        - source_manifest_bytes
+        - TOP_RESULTS_HYDRATION_RESERVE_BYTES,
+    )
+    top_phase_refs = unique_local_refs(
+        [
+            *first_phase_refs,
+            *select_local_refs_within_budget(
+                local_refs,
+                top_local_budget,
+                lambda ref: int(light_index_artifact(ref)["bytes"]) + int(body_index_artifact(ref)["bytes"]),
+                MIN_TOP_RESULTS_LOCAL_INDEXES,
+            ),
+        ]
+    )
+    plan["phase_local_index_ids"] = {
+        "first_trusted_results": [str(ref["index_id"]) for ref in first_phase_refs],
+        "top_results_hydrated": [str(ref["index_id"]) for ref in top_phase_refs],
+        "proof_complete": [str(ref["index_id"]) for ref in local_refs],
+    }
 
     docs_by_index: dict[int, dict[str, Any]] = {}
     scores: dict[int, float] = {}
@@ -937,9 +1020,11 @@ def recall_documents_with_stats(
         "competitive_threshold": 0.0,
     }
     local_index_bytes = source_manifest_bytes
-    for ref in local_refs:
+    loaded_local_index_ids: set[str] = set()
+    for ref in first_phase_refs:
         local_index = load_local_light(index, ref, terms)
         local_index_bytes += int(light_index_artifact(ref)["bytes"])
+        loaded_local_index_ids.add(str(ref["index_id"]))
         for document in local_index.get("documents", []):
             docs_by_index[int(document["doc_index"])] = document
         apply_impact_index(scores, local_index.get("terms", {}), terms, retrieval, candidate_limit)
@@ -985,18 +1070,48 @@ def recall_documents_with_stats(
         for doc_index in quick_indices
         if doc_index in quick_docs and full_scan_matches(quick_docs[doc_index], match_phrases)
     ])
+    quick_hydrated_shard_bytes = sum(shard_bytes_by_path.get(path, 0) for path in loaded_paths)
+    phase_timings_ms: dict[str, float] = {}
+    if math.isfinite(started_perf):
+        import time
+
+        phase_timings_ms["first_trusted_results"] = round((time.perf_counter() - started_perf) * 1000, 3)
+    first_trusted_coverage = coverage(
+        index,
+        phase="first_trusted_results",
+        fields=LIGHT_SEARCH_FIELDS,
+        proved_no_match_shards=0,
+        scanned_shards=len(loaded_paths),
+        searched_documents=len(quick_docs),
+        total_shards=int(index["manifest"]["progressive_search"]["total_shards"]),
+        total_documents=int(index["manifest"]["progressive_search"]["total_documents"]),
+        loaded_paths=loaded_paths,
+        local_index_bytes=local_index_bytes,
+        hydrated_shard_bytes=quick_hydrated_shard_bytes,
+        filter_bytes=0,
+        used_body_index=False,
+        exhaustive_complete=False,
+    )
 
     used_body_index = False
-    for ref in local_refs:
+    for ref in top_phase_refs:
+        if str(ref["index_id"]) not in loaded_local_index_ids:
+            local_index = load_local_light(index, ref, terms)
+            local_index_bytes += int(light_index_artifact(ref)["bytes"])
+            loaded_local_index_ids.add(str(ref["index_id"]))
+            for document in local_index.get("documents", []):
+                docs_by_index[int(document["doc_index"])] = document
+            apply_impact_index(scores, local_index.get("terms", {}), terms, retrieval, candidate_limit)
         body_artifact = body_index_artifact(ref)
         body_index = load_local_body(index, ref, terms)
         local_index_bytes += int(body_artifact.get("bytes") or 0)
         apply_impact_index(scores, body_index.get("terms", {}), terms, retrieval, candidate_limit)
         used_body_index = True
 
-    selected_candidate_indices, candidate_paths = select_candidates(candidate_limit, max_shard_loads)
+    selected_candidate_indices, candidate_paths = select_candidates(candidate_limit, min(max_shard_loads, 18))
+    new_candidate_paths = candidate_paths - loaded_paths
     loaded_paths |= candidate_paths
-    full_docs = load_shards_for_paths(candidate_paths)
+    full_docs = {**quick_docs, **load_shards_for_paths(new_candidate_paths)}
     ranked_by_id: dict[str, dict[str, Any]] = {
         str(item["id"]): item
         for item in quick_ranked
@@ -1008,6 +1123,27 @@ def recall_documents_with_stats(
         existing = ranked_by_id.get(str(item["id"]))
         if existing is None or float(item["score"]) > float(existing.get("score") or 0):
             ranked_by_id[str(item["id"])] = item
+    top_hydrated_shard_bytes = sum(shard_bytes_by_path.get(path, 0) for path in loaded_paths)
+    if math.isfinite(started_perf):
+        import time
+
+        phase_timings_ms["top_results_hydrated"] = round((time.perf_counter() - started_perf) * 1000, 3)
+    top_results_coverage = coverage(
+        index,
+        phase="top_results_hydrated",
+        fields=BODY_SEARCH_FIELDS,
+        proved_no_match_shards=0,
+        scanned_shards=len(loaded_paths),
+        searched_documents=len(full_docs),
+        total_shards=int(index["manifest"]["progressive_search"]["total_shards"]),
+        total_documents=int(index["manifest"]["progressive_search"]["total_documents"]),
+        loaded_paths=loaded_paths,
+        local_index_bytes=local_index_bytes,
+        hydrated_shard_bytes=top_hydrated_shard_bytes,
+        filter_bytes=0,
+        used_body_index=used_body_index,
+        exhaustive_complete=False,
+    )
 
     verification_manifests = [
         source_manifest
@@ -1065,14 +1201,19 @@ def recall_documents_with_stats(
         used_body_index=used_body_index,
         exhaustive_complete=True,
     )
+    if math.isfinite(started_perf):
+        import time
+
+        phase_timings_ms["proof_complete"] = round((time.perf_counter() - started_perf) * 1000, 3)
     return {
         "results": ranked[:limit],
         "stats": {
+            "started_at": started_at.isoformat(),
             "used_body_index": used_body_index,
             "loaded_shard_count": len(loaded_paths),
             "loaded_shard_paths": sorted(loaded_paths),
-            "loaded_local_index_count": len(local_refs),
-            "loaded_local_index_ids": [str(ref["index_id"]) for ref in local_refs],
+            "loaded_local_index_count": len(loaded_local_index_ids),
+            "loaded_local_index_ids": sorted(loaded_local_index_ids),
             "local_index_bytes": local_index_bytes,
             "hydrated_shard_bytes": hydrated_shard_bytes,
             "uncached_loaded_bytes": final_coverage["uncached_loaded_bytes"],
@@ -1082,6 +1223,12 @@ def recall_documents_with_stats(
             "quick_result_count": len(quick_ranked),
             "quick_results": quick_ranked[:limit],
             "candidate_shard_count": len(candidate_paths),
+            "phase_coverages": {
+                "first_trusted_results": first_trusted_coverage,
+                "top_results_hydrated": top_results_coverage,
+                "proof_complete": final_coverage,
+            },
+            "phase_timings_ms": phase_timings_ms,
             "coverage": final_coverage,
             "proved_no_match_shards": proved_no_match_shards,
             "scanned_shards": scanned_shards,

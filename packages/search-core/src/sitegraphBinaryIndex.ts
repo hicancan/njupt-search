@@ -4,6 +4,7 @@ const MAGIC_V1 = 'SGIXB001';
 const MAGIC_V2 = 'SGIXB002';
 const MAGIC_LENGTH = 8;
 const decoder = new TextDecoder();
+const encoder = new TextEncoder();
 
 class BinaryCursor {
     private offset = 0;
@@ -99,16 +100,47 @@ const readTermFields = (
     return collect ? fields : null;
 };
 
+const encodeSelectedTerms = (selectedTerms?: Set<string>): Map<number, Uint8Array[]> | undefined => {
+    if (!selectedTerms) return undefined;
+    const encoded = new Map<number, Uint8Array[]>();
+    for (const term of selectedTerms) {
+        const bytes = encoder.encode(term);
+        const bucket = encoded.get(bytes.length) ?? [];
+        bucket.push(bytes);
+        encoded.set(bytes.length, bucket);
+    }
+    return encoded;
+};
+
+const bytesEqual = (left: Uint8Array, right: Uint8Array): boolean => {
+    if (left.length !== right.length) return false;
+    for (let index = 0; index < left.length; index += 1) {
+        if (left[index] !== right[index]) return false;
+    }
+    return true;
+};
+
+const selectedTermMatches = (
+    termBytes: Uint8Array,
+    selectedTerms?: Map<number, Uint8Array[]>
+): boolean => {
+    if (!selectedTerms) return true;
+    const bucket = selectedTerms.get(termBytes.length);
+    return Boolean(bucket?.some((candidate) => bytesEqual(termBytes, candidate)));
+};
+
 const readV1Terms = (
     cursor: BinaryCursor,
     source: string,
     selectedTerms?: Set<string>
 ): SitegraphImpactIndex['terms'] => {
     const termCount = cursor.readVarint();
+    const encodedSelectedTerms = encodeSelectedTerms(selectedTerms);
     const terms: SitegraphImpactIndex['terms'] = {};
     for (let termIndex = 0; termIndex < termCount; termIndex += 1) {
-        const term = decoder.decode(cursor.readBytes(cursor.readVarint()));
-        const collect = !selectedTerms || selectedTerms.has(term);
+        const termBytes = cursor.readBytes(cursor.readVarint());
+        const collect = selectedTermMatches(termBytes, encodedSelectedTerms);
+        const term = collect ? decoder.decode(termBytes) : '';
         const fields = readTermFields(cursor, collect);
         if (fields) terms[term] = fields;
     }
@@ -125,12 +157,18 @@ const readV2Terms = (
     selectedTerms?: Set<string>
 ): SitegraphImpactIndex['terms'] => {
     const termCount = cursor.readVarint();
-    const directory: Array<{ length: number; term: string }> = [];
+    const encodedSelectedTerms = encodeSelectedTerms(selectedTerms);
+    const directory: Array<{ collect: boolean; length: number; term: string }> = [];
     let payloadLengthTotal = 0;
     for (let termIndex = 0; termIndex < termCount; termIndex += 1) {
-        const term = decoder.decode(cursor.readBytes(cursor.readVarint()));
+        const termBytes = cursor.readBytes(cursor.readVarint());
         const length = cursor.readVarint();
-        directory.push({ length, term });
+        const collect = selectedTermMatches(termBytes, encodedSelectedTerms);
+        directory.push({
+            collect,
+            length,
+            term: collect ? decoder.decode(termBytes) : '',
+        });
         payloadLengthTotal += length;
     }
     const payloadStart = cursor.position();
@@ -140,8 +178,7 @@ const readV2Terms = (
     const terms: SitegraphImpactIndex['terms'] = {};
     let offset = payloadStart;
     for (const entry of directory) {
-        const collect = !selectedTerms || selectedTerms.has(entry.term);
-        if (collect) {
+        if (entry.collect) {
             const payloadCursor = new BinaryCursor(data.subarray(offset, offset + entry.length), `${source}:${entry.term}`);
             const fields = readTermFields(payloadCursor, true);
             if (fields) terms[entry.term] = fields;
