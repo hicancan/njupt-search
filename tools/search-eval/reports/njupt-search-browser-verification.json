@@ -1,7 +1,9 @@
 {
   "report": "njupt-search-browser-verification-v3",
-  "generated_at": "2026-06-01T11:58:52.526Z",
-  "target": "http://127.0.0.1:4177",
+  "generated_at": "2026-06-01T13:35:55.644Z",
+  "target": "http://127.0.0.1:4184",
+  "storage_reset": "fresh preview origin on port 4184; no prior browser artifact cache for this origin",
+  "screenshot_capture": "in-app Browser screenshot command timed out on this large page; screenshot files are refreshed separately from the same preview URL",
   "summary": {
     "passed": true,
     "persistent_cache_passed": true,
@@ -25,10 +27,11 @@
     {
       "name": "desktop_cold_calendar_wasm",
       "query": "校历",
-      "target": "http://127.0.0.1:4177/?q=%E6%A0%A1%E5%8E%86",
+      "target": "http://127.0.0.1:4184/?q=%E6%A0%A1%E5%8E%86",
       "viewport": "desktop-default",
-      "sourceLabel": null,
-      "facetLabel": null,
+      "sourceLabel": "全部来源",
+      "sourceValue": "all",
+      "statusText": "匹配 96 条，展示相关性最高的前 80 条。",
       "diagnostics": {
         "complete": true,
         "scoped_complete": false,
@@ -40,14 +43,14 @@
         "cached_text": "2.4 MB",
         "cached_bytes_rounded_from_ui": 2516582,
         "cache_hits": 20,
-        "persistent_hits": 0,
-        "memory_hits": 20,
-        "engine": "rust_wasm_packed_impact",
-        "pruned_postings": 2,
-        "pruned_blocks": 1,
-        "phase": "global_exhaustive_complete",
         "loaded_text": "48.1 MB",
         "loaded_bytes_rounded_from_ui": 50436506,
+        "persistent_hits": 0,
+        "memory_hits": 20,
+        "phase": "global_exhaustive_complete",
+        "engine": "rust_wasm_packed_impact",
+        "pruned_blocks": 1,
+        "pruned_postings": 2,
         "proved_no_match_shards": 471,
         "excluded_by_filter_shards": 0,
         "pending_shards": 0,
@@ -57,35 +60,41 @@
         "searched_documents": 7992,
         "total_documents": 10260,
         "local_index_count": 28,
-        "fields": "标题、栏目、导航路径、摘要、正文、附件、URL"
+        "fields": "标题、栏目、导航路径、"
       },
       "top_titles": [
         "2025-2026学年校历",
         "【教务管理办公室】2025-2026学年第二学期2022-2025级学生选课通知",
         "【教务科】2025-2026学年第一学期2022-2024级学生网上选课通知",
         "南邮风华八四载，红史铸魂启新程——第五届辅导员宣讲团走进数字媒体与设计艺术学院",
-        "南邮风华八四载，红史铸魂启新程——第五届辅导员宣讲团走进数字媒体与设计艺术学院"
+        "南邮风华八四载，红史铸魂启新程——第五届辅导员宣讲团走进数字媒体与设计艺术学院",
+        "校历查询",
+        "【教务科】关于申报2025-2026学年第一学期综合素质任选课的通知",
+        "现代邮政学院、智慧交通学院开展考研状元桂花糕发放活动"
       ],
       "snippets": [
         "2025-2026学年校历",
         "...选课）选课时间： 2026 年 1 月 1 日（校历第十七周周四） 9:00—2026 年 1 月 6 日（第十八周周二） 16:00 。逾期关闭网上选课系统。 2 ．下学期初补改选日期 （预定） 2022-2025 级学生 （不含贝尔英才学院 2022-2023 级学生跨学...",
-        "...务处主页或者到自己的正方教务系统中查询（一般会在校历第四周周三前后公布）。 面向 2022-2024 级学生开设的课程，学生可以报名重修、补修， 仅面向 2025 级学生开设的课程，学生可在补改选期间报名重修、补修（已经明确的单开班重修课程不受影响）。 对于提前修读的学生，需..."
+        "...务处主页或者到自己的正方教务系统中查询（一般会在校历第四周周三前后公布）。 面向 2022-2024 级学生开设的课程，学生可以报名重修、补修， 仅面向 2025 级学生开设的课程，学生可在补改选期间报名重修、补修（已经明确的单开班重修课程不受影响）。 对于提前修读的学生，需...",
+        "...本次“红色校史”主题宣讲活动不仅加深了同学们对学校历史与文化的认知，也进一步激发了青年学生的责任感与使命感。同学们纷纷表示，将以南邮精神为指引，传承红色基因，坚定奋斗方向，在实现个人价值的同时，为国家和社会发展贡献青春力量。 学院将以此次活动为契机，持续发挥红色校史的育人功能...",
+        "...本次“红色校史”主题宣讲活动不仅加深了同学们对学校历史与文化的认知，也进一步激发了青年学生的责任感与使命感。同学们纷纷表示，将以南邮精神为指引，传承红色基因，坚定奋斗方向，在实现个人价值的同时，为国家和社会发展贡献青春力量。 学院将以此次活动为契机，持续发挥红色校史的育人功能..."
       ],
       "viewport_metrics": {
-        "height": 552,
+        "height": 900,
         "noHorizontalOverflow": true,
-        "scrollHeight": 6548,
-        "scrollWidth": 589,
-        "width": 599
+        "scrollHeight": 4996,
+        "scrollWidth": 1366,
+        "width": 1366
       }
     },
     {
       "name": "desktop_warm_calendar_reload_wasm",
       "query": "校历",
-      "target": "http://127.0.0.1:4177/?q=%E6%A0%A1%E5%8E%86",
+      "target": "http://127.0.0.1:4184/?q=%E6%A0%A1%E5%8E%86",
       "viewport": "desktop-default",
-      "sourceLabel": null,
-      "facetLabel": null,
+      "sourceLabel": "全部来源",
+      "sourceValue": "all",
+      "statusText": "匹配 96 条，展示相关性最高的前 80 条。",
       "diagnostics": {
         "complete": true,
         "scoped_complete": false,
@@ -97,14 +106,14 @@
         "cached_text": "50.3 MB",
         "cached_bytes_rounded_from_ui": 52743373,
         "cache_hits": 585,
-        "persistent_hits": 565,
-        "memory_hits": 20,
-        "engine": "rust_wasm_packed_impact",
-        "pruned_postings": 2,
-        "pruned_blocks": 1,
-        "phase": "global_exhaustive_complete",
         "loaded_text": "48.1 MB",
         "loaded_bytes_rounded_from_ui": 50436506,
+        "persistent_hits": 565,
+        "memory_hits": 20,
+        "phase": "global_exhaustive_complete",
+        "engine": "rust_wasm_packed_impact",
+        "pruned_blocks": 1,
+        "pruned_postings": 2,
         "proved_no_match_shards": 471,
         "excluded_by_filter_shards": 0,
         "pending_shards": 0,
@@ -114,36 +123,41 @@
         "searched_documents": 7992,
         "total_documents": 10260,
         "local_index_count": 28,
-        "fields": "标题、栏目、导航路径、摘要、正文、附件、URL"
+        "fields": "标题、栏目、导航路径、"
       },
       "top_titles": [
         "2025-2026学年校历",
         "【教务管理办公室】2025-2026学年第二学期2022-2025级学生选课通知",
         "【教务科】2025-2026学年第一学期2022-2024级学生网上选课通知",
         "南邮风华八四载，红史铸魂启新程——第五届辅导员宣讲团走进数字媒体与设计艺术学院",
-        "南邮风华八四载，红史铸魂启新程——第五届辅导员宣讲团走进数字媒体与设计艺术学院"
+        "南邮风华八四载，红史铸魂启新程——第五届辅导员宣讲团走进数字媒体与设计艺术学院",
+        "校历查询",
+        "【教务科】关于申报2025-2026学年第一学期综合素质任选课的通知",
+        "现代邮政学院、智慧交通学院开展考研状元桂花糕发放活动"
       ],
       "snippets": [
         "2025-2026学年校历",
         "...选课）选课时间： 2026 年 1 月 1 日（校历第十七周周四） 9:00—2026 年 1 月 6 日（第十八周周二） 16:00 。逾期关闭网上选课系统。 2 ．下学期初补改选日期 （预定） 2022-2025 级学生 （不含贝尔英才学院 2022-2023 级学生跨学...",
-        "...务处主页或者到自己的正方教务系统中查询（一般会在校历第四周周三前后公布）。 面向 2022-2024 级学生开设的课程，学生可以报名重修、补修， 仅面向 2025 级学生开设的课程，学生可在补改选期间报名重修、补修（已经明确的单开班重修课程不受影响）。 对于提前修读的学生，需..."
+        "...务处主页或者到自己的正方教务系统中查询（一般会在校历第四周周三前后公布）。 面向 2022-2024 级学生开设的课程，学生可以报名重修、补修， 仅面向 2025 级学生开设的课程，学生可在补改选期间报名重修、补修（已经明确的单开班重修课程不受影响）。 对于提前修读的学生，需...",
+        "...本次“红色校史”主题宣讲活动不仅加深了同学们对学校历史与文化的认知，也进一步激发了青年学生的责任感与使命感。同学们纷纷表示，将以南邮精神为指引，传承红色基因，坚定奋斗方向，在实现个人价值的同时，为国家和社会发展贡献青春力量。 学院将以此次活动为契机，持续发挥红色校史的育人功能...",
+        "...本次“红色校史”主题宣讲活动不仅加深了同学们对学校历史与文化的认知，也进一步激发了青年学生的责任感与使命感。同学们纷纷表示，将以南邮精神为指引，传承红色基因，坚定奋斗方向，在实现个人价值的同时，为国家和社会发展贡献青春力量。 学院将以此次活动为契机，持续发挥红色校史的育人功能..."
       ],
       "viewport_metrics": {
-        "height": 552,
+        "height": 900,
         "noHorizontalOverflow": true,
-        "scrollHeight": 6548,
-        "scrollWidth": 589,
-        "width": 599
-      },
-      "assertion": "same query after reload should use persistent content-hash cache and keep the same top result"
+        "scrollHeight": 4996,
+        "scrollWidth": 1366,
+        "width": 1366
+      }
     },
     {
       "name": "desktop_information_portal_wasm",
       "query": "信息门户",
-      "target": "http://127.0.0.1:4177/?q=%E4%BF%A1%E6%81%AF%E9%97%A8%E6%88%B7",
+      "target": "http://127.0.0.1:4184/?q=%E4%BF%A1%E6%81%AF%E9%97%A8%E6%88%B7",
       "viewport": "desktop-default",
-      "sourceLabel": null,
-      "facetLabel": null,
+      "sourceLabel": "全部来源",
+      "sourceValue": "all",
+      "statusText": "匹配 748 条，展示相关性最高的前 80 条。",
       "diagnostics": {
         "complete": true,
         "scoped_complete": false,
@@ -155,14 +169,14 @@
         "cached_text": "45.4 MB",
         "cached_bytes_rounded_from_ui": 47605350,
         "cache_hits": 451,
-        "persistent_hits": 433,
-        "memory_hits": 18,
-        "engine": "rust_wasm_packed_impact",
-        "pruned_postings": 218,
-        "pruned_blocks": 88,
-        "phase": "global_exhaustive_complete",
         "loaded_text": "49.3 MB",
         "loaded_bytes_rounded_from_ui": 51694797,
+        "persistent_hits": 433,
+        "memory_hits": 18,
+        "phase": "global_exhaustive_complete",
+        "engine": "rust_wasm_packed_impact",
+        "pruned_blocks": 88,
+        "pruned_postings": 218,
         "proved_no_match_shards": 471,
         "excluded_by_filter_shards": 0,
         "pending_shards": 0,
@@ -172,35 +186,41 @@
         "searched_documents": 8601,
         "total_documents": 10260,
         "local_index_count": 34,
-        "fields": "标题、栏目、导航路径、摘要、正文、附件、URL"
+        "fields": "标题、栏目、导航路径、"
       },
       "top_titles": [
         "教务管理系统",
         "考试信息查询",
         "教务管理系统桌面客户端账号申请表 2018-05-07",
         "【考试中心】关于公布2019-2020学年第一学期课程期末考试组织单位的通知",
-        "【考试中心】关于公布2018-2019学年第二学期课程期末考试组织单位的通知"
+        "【考试中心】关于公布2018-2019学年第二学期课程期末考试组织单位的通知",
+        "【考试中心】关于2019级新生英语分级考试学生相关注意事项的通知",
+        "【考试中心】关于2020年秋江苏省高等学校计算机等级考试学生相关注意事项的通知",
+        "【考试中心】关于2019年春江苏省高等学校计算机等级考试学生相关注意事项的通知"
       ],
       "snippets": [
         "本科生院 / 教务处记录的外链：教务管理系统。该链接只记录入口，不递归抓取内容。",
         "本科生院 / 教务处首页记录的考试信息查询入口。",
-        "附件元数据：教务管理系统桌面客户端账号申请表 2018-05-07。来源栏目：教学管理常用表格。"
+        "附件元数据：教务管理系统桌面客户端账号申请表 2018-05-07。来源栏目：教学管理常用表格。",
+        "首页 / 综合信息服务",
+        "首页 / 综合信息服务"
       ],
       "viewport_metrics": {
-        "height": 552,
+        "height": 900,
         "noHorizontalOverflow": true,
-        "scrollHeight": 5431,
-        "scrollWidth": 589,
-        "width": 599
+        "scrollHeight": 4651,
+        "scrollWidth": 1366,
+        "width": 1366
       }
     },
     {
       "name": "desktop_negative_no_result_wasm",
       "query": "不存在的查询词",
-      "target": "http://127.0.0.1:4177/?q=%E4%B8%8D%E5%AD%98%E5%9C%A8%E7%9A%84%E6%9F%A5%E8%AF%A2%E8%AF%8D",
+      "target": "http://127.0.0.1:4184/?q=%E4%B8%8D%E5%AD%98%E5%9C%A8%E7%9A%84%E6%9F%A5%E8%AF%A2%E8%AF%8D",
       "viewport": "desktop-default",
-      "sourceLabel": null,
-      "facetLabel": null,
+      "sourceLabel": "全部来源",
+      "sourceValue": "all",
+      "statusText": "匹配 0 条。",
       "diagnostics": {
         "complete": true,
         "scoped_complete": false,
@@ -212,14 +232,14 @@
         "cached_text": "33.4 MB",
         "cached_bytes_rounded_from_ui": 35022438,
         "cache_hits": 215,
-        "persistent_hits": 206,
-        "memory_hits": 9,
-        "engine": "rust_wasm_packed_impact",
-        "pruned_postings": 0,
-        "pruned_blocks": 0,
-        "phase": "global_exhaustive_complete",
         "loaded_text": "33.0 MB",
         "loaded_bytes_rounded_from_ui": 34603008,
+        "persistent_hits": 206,
+        "memory_hits": 9,
+        "phase": "global_exhaustive_complete",
+        "engine": "rust_wasm_packed_impact",
+        "pruned_blocks": 0,
+        "pruned_postings": 0,
         "proved_no_match_shards": 799,
         "excluded_by_filter_shards": 0,
         "pending_shards": 0,
@@ -229,25 +249,26 @@
         "searched_documents": 4440,
         "total_documents": 10260,
         "local_index_count": 21,
-        "fields": "标题、栏目、导航路径、摘要、正文、附件、URL"
+        "fields": "标题、栏目、导航路径、"
       },
       "top_titles": [],
       "snippets": [],
       "viewport_metrics": {
-        "height": 552,
+        "height": 900,
         "noHorizontalOverflow": true,
-        "scrollHeight": 623,
-        "scrollWidth": 589,
-        "width": 599
+        "scrollHeight": 900,
+        "scrollWidth": 1366,
+        "width": 1366
       }
     },
     {
       "name": "desktop_download_attachment_metadata_wasm",
       "query": "学生相关文件及表格",
-      "target": "http://127.0.0.1:4177/?q=%E5%AD%A6%E7%94%9F%E7%9B%B8%E5%85%B3%E6%96%87%E4%BB%B6%E5%8F%8A%E8%A1%A8%E6%A0%BC",
+      "target": "http://127.0.0.1:4184/?q=%E5%AD%A6%E7%94%9F%E7%9B%B8%E5%85%B3%E6%96%87%E4%BB%B6%E5%8F%8A%E8%A1%A8%E6%A0%BC",
       "viewport": "desktop-default",
-      "sourceLabel": null,
-      "facetLabel": null,
+      "sourceLabel": "全部来源",
+      "sourceValue": "all",
+      "statusText": "匹配 2189 条，展示相关性最高的前 80 条。",
       "diagnostics": {
         "complete": true,
         "scoped_complete": false,
@@ -259,14 +280,14 @@
         "cached_text": "49.9 MB",
         "cached_bytes_rounded_from_ui": 52323942,
         "cache_hits": 597,
-        "persistent_hits": 575,
-        "memory_hits": 22,
-        "engine": "rust_wasm_packed_impact",
-        "pruned_postings": 485,
-        "pruned_blocks": 126,
-        "phase": "global_exhaustive_complete",
         "loaded_text": "52.2 MB",
         "loaded_bytes_rounded_from_ui": 54735667,
+        "persistent_hits": 575,
+        "memory_hits": 22,
+        "phase": "global_exhaustive_complete",
+        "engine": "rust_wasm_packed_impact",
+        "pruned_blocks": 126,
+        "pruned_postings": 485,
         "proved_no_match_shards": 314,
         "excluded_by_filter_shards": 0,
         "pending_shards": 0,
@@ -276,54 +297,60 @@
         "searched_documents": 9329,
         "total_documents": 10260,
         "local_index_count": 41,
-        "fields": "标题、栏目、导航路径、摘要、正文、附件、URL"
+        "fields": "标题、栏目、导航路径、"
       },
       "top_titles": [
-        "南京邮电大学学生一般事务申请表 2026-04-16",
         "南京邮电大学学生缓考申请表 2026-04-16",
+        "南京邮电大学学生一般事务申请表 2026-04-16",
         "南京邮电大学学生成绩复核申请表 2026-04-16",
+        "南京邮电大学学生提前毕业（结业）申请表 2026-04-16",
         "南京邮电大学学生毕业申请表 2026-04-16",
-        "南京邮电大学学生提前毕业（结业）申请表 2026-04-16"
+        "南京邮电大学学生退选课程申请表 2026-04-16",
+        "南京邮电大学学生加（选）修课程申请表 2026-04-16",
+        "南京邮电大学学生自主编级审批表 2026-04-16"
       ],
       "snippets": [
-        "...一般事务申请表 2026-04-16。来源栏目：学生相关文件及表格。",
         "...学生缓考申请表 2026-04-16。来源栏目：学生相关文件及表格。",
-        "...成绩复核申请表 2026-04-16。来源栏目：学生相关文件及表格。"
+        "...一般事务申请表 2026-04-16。来源栏目：学生相关文件及表格。",
+        "...成绩复核申请表 2026-04-16。来源栏目：学生相关文件及表格。",
+        "...（结业）申请表 2026-04-16。来源栏目：学生相关文件及表格。",
+        "...学生毕业申请表 2026-04-16。来源栏目：学生相关文件及表格。"
       ],
       "viewport_metrics": {
-        "height": 552,
+        "height": 900,
         "noHorizontalOverflow": true,
-        "scrollHeight": 5716,
-        "scrollWidth": 589,
-        "width": 599
+        "scrollHeight": 4715,
+        "scrollWidth": 1366,
+        "width": 1366
       }
     },
     {
       "name": "desktop_filtered_student_affairs_wasm",
       "query": "奖学金",
-      "target": "http://127.0.0.1:4177/?q=%E5%A5%96%E5%AD%A6%E9%87%91",
+      "target": "http://127.0.0.1:4184/?q=%E5%A5%96%E5%AD%A6%E9%87%91",
       "viewport": "desktop-default",
       "sourceLabel": "学生工作部（处） (1669)",
-      "facetLabel": null,
+      "sourceValue": "xsc",
+      "statusText": "筛选后匹配 122 条，展示相关性最高的前 80 条。",
       "diagnostics": {
         "complete": true,
         "scoped_complete": true,
         "no_result": false,
-        "attachment_metadata_visible": false,
+        "attachment_metadata_visible": true,
         "attachment_text_claim_visible": false,
         "new_read_text": "1.7 MB",
         "new_read_bytes_rounded_from_ui": 1782579,
         "cached_text": "10.5 MB",
         "cached_bytes_rounded_from_ui": 11010048,
         "cache_hits": 153,
-        "persistent_hits": 1,
-        "memory_hits": 152,
-        "engine": "rust_wasm_packed_impact",
-        "pruned_postings": 0,
-        "pruned_blocks": 0,
-        "phase": "scoped_exhaustive_complete",
         "loaded_text": "10.7 MB",
         "loaded_bytes_rounded_from_ui": 11219763,
+        "persistent_hits": 1,
+        "memory_hits": 152,
+        "phase": "scoped_exhaustive_complete",
+        "engine": "rust_wasm_packed_impact",
+        "pruned_blocks": 0,
+        "pruned_postings": 0,
         "proved_no_match_shards": 90,
         "excluded_by_filter_shards": 0,
         "pending_shards": 0,
@@ -333,36 +360,42 @@
         "searched_documents": 1413,
         "total_documents": 1669,
         "local_index_count": 18,
-        "fields": "标题、栏目、导航路径、摘要、正文、附件、URL"
+        "fields": "标题、栏目、导航路径、"
       },
       "top_titles": [
         "南京邮电大学2024-2025学年“甘霖励志奖学金”拟推荐名单公示",
         "校学发〔2025〕12号南京邮电大学“甘霖励志奖学金”评选办法",
         "南邮“思源之旅”主题教育活动暨“鼓楼区绿色低碳奖学金”发放仪式在鼓楼高新区成功举办",
         "学生资助管理中心",
-        "本科生海外访学奖学金实施办法"
+        "本科生海外访学奖学金实施办法",
+        "本科生国家励志奖学金评审办法",
+        "校学发〔2023〕37号“共进电子奖学金”评选办法",
+        "校学发〔2023〕18号“华为奖学金”评选办法"
       ],
       "snippets": [
         "南京邮电大学2024-2025学年“甘霖励志奖学金”拟推荐名单.xlsx",
         "校学发〔2025〕12号南京邮电大学“甘霖励志奖学金”评选办法",
-        "南邮“思源之旅”主题教育活动暨“鼓楼区绿色低碳奖学金”发放仪式在鼓楼高新区成功举办"
+        "南邮“思源之旅”主题教育活动暨“鼓楼区绿色低碳奖学金”发放仪式在鼓楼高新区成功举办",
+        "...并协调全校学生的综合测评和评优评奖工作；做好各项奖学金、优秀学生的审批及奖学金发放工作； 6）负责国家、省级及各种社会捐资助学经费的评选、上报及经费发放工作，积极联系和争取各类社会资助； 7）负责各学院学生特殊困难补助经费划拨及新生“绿色通道”的管理； 8）指导学生勤工助学中心...",
+        "本科生海外访学奖学金实施办法"
       ],
       "viewport_metrics": {
-        "height": 552,
+        "height": 900,
         "noHorizontalOverflow": true,
-        "scrollHeight": 4723,
-        "scrollWidth": 589,
-        "width": 599
+        "scrollHeight": 4275,
+        "scrollWidth": 1366,
+        "width": 1366
       },
-      "assertion": "source filter xsc reaches scoped exhaustive completion"
+      "pre_filter_phase": "global_exhaustive_complete"
     },
     {
       "name": "desktop_cancel_stale_query_guard",
       "query": "学生相关文件及表格 -> 校历",
-      "target": "http://127.0.0.1:4177/?q=%E6%A0%A1%E5%8E%86",
+      "target": "http://127.0.0.1:4184/?q=%E6%A0%A1%E5%8E%86",
       "viewport": "desktop-default",
-      "sourceLabel": null,
-      "facetLabel": null,
+      "sourceLabel": "全部来源",
+      "sourceValue": "all",
+      "statusText": "匹配 96 条，展示相关性最高的前 80 条。",
       "diagnostics": {
         "complete": true,
         "scoped_complete": false,
@@ -374,14 +407,14 @@
         "cached_text": "50.3 MB",
         "cached_bytes_rounded_from_ui": 52743373,
         "cache_hits": 585,
-        "persistent_hits": 565,
-        "memory_hits": 20,
-        "engine": "rust_wasm_packed_impact",
-        "pruned_postings": 2,
-        "pruned_blocks": 1,
-        "phase": "global_exhaustive_complete",
         "loaded_text": "48.1 MB",
         "loaded_bytes_rounded_from_ui": 50436506,
+        "persistent_hits": 565,
+        "memory_hits": 20,
+        "phase": "global_exhaustive_complete",
+        "engine": "rust_wasm_packed_impact",
+        "pruned_blocks": 1,
+        "pruned_postings": 2,
         "proved_no_match_shards": 471,
         "excluded_by_filter_shards": 0,
         "pending_shards": 0,
@@ -391,57 +424,63 @@
         "searched_documents": 7992,
         "total_documents": 10260,
         "local_index_count": 28,
-        "fields": "标题、栏目、导航路径、摘要、正文、附件、URL"
+        "fields": "标题、栏目、导航路径、"
       },
       "top_titles": [
         "2025-2026学年校历",
         "【教务管理办公室】2025-2026学年第二学期2022-2025级学生选课通知",
         "【教务科】2025-2026学年第一学期2022-2024级学生网上选课通知",
         "南邮风华八四载，红史铸魂启新程——第五届辅导员宣讲团走进数字媒体与设计艺术学院",
-        "南邮风华八四载，红史铸魂启新程——第五届辅导员宣讲团走进数字媒体与设计艺术学院"
+        "南邮风华八四载，红史铸魂启新程——第五届辅导员宣讲团走进数字媒体与设计艺术学院",
+        "校历查询",
+        "【教务科】关于申报2025-2026学年第一学期综合素质任选课的通知",
+        "现代邮政学院、智慧交通学院开展考研状元桂花糕发放活动"
       ],
       "snippets": [
         "2025-2026学年校历",
         "...选课）选课时间： 2026 年 1 月 1 日（校历第十七周周四） 9:00—2026 年 1 月 6 日（第十八周周二） 16:00 。逾期关闭网上选课系统。 2 ．下学期初补改选日期 （预定） 2022-2025 级学生 （不含贝尔英才学院 2022-2023 级学生跨学...",
-        "...务处主页或者到自己的正方教务系统中查询（一般会在校历第四周周三前后公布）。 面向 2022-2024 级学生开设的课程，学生可以报名重修、补修， 仅面向 2025 级学生开设的课程，学生可在补改选期间报名重修、补修（已经明确的单开班重修课程不受影响）。 对于提前修读的学生，需..."
+        "...务处主页或者到自己的正方教务系统中查询（一般会在校历第四周周三前后公布）。 面向 2022-2024 级学生开设的课程，学生可以报名重修、补修， 仅面向 2025 级学生开设的课程，学生可在补改选期间报名重修、补修（已经明确的单开班重修课程不受影响）。 对于提前修读的学生，需...",
+        "...本次“红色校史”主题宣讲活动不仅加深了同学们对学校历史与文化的认知，也进一步激发了青年学生的责任感与使命感。同学们纷纷表示，将以南邮精神为指引，传承红色基因，坚定奋斗方向，在实现个人价值的同时，为国家和社会发展贡献青春力量。 学院将以此次活动为契机，持续发挥红色校史的育人功能...",
+        "...本次“红色校史”主题宣讲活动不仅加深了同学们对学校历史与文化的认知，也进一步激发了青年学生的责任感与使命感。同学们纷纷表示，将以南邮精神为指引，传承红色基因，坚定奋斗方向，在实现个人价值的同时，为国家和社会发展贡献青春力量。 学院将以此次活动为契机，持续发挥红色校史的育人功能..."
       ],
+      "inputValue": "校历",
+      "staleStudentFormVisible": false,
       "viewport_metrics": {
-        "height": 552,
+        "height": 900,
         "noHorizontalOverflow": true,
-        "scrollHeight": 6548,
-        "scrollWidth": 589,
-        "width": 599
+        "scrollHeight": 4996,
+        "scrollWidth": 1366,
+        "width": 1366
       },
-      "assertion": "rapid query replacement leaves the final input and top result on the second query",
-      "final_input": "校历",
-      "stale_student_form_title_visible": false
+      "interaction": "rapid same-tab navigation from the student-form query URL to the calendar query URL"
     },
     {
       "name": "mobile_innovation_wasm",
       "query": "大创",
-      "target": "http://127.0.0.1:4177/?q=%E5%A4%A7%E5%88%9B",
+      "target": "http://127.0.0.1:4184/?q=%E5%A4%A7%E5%88%9B",
       "viewport": "390x844",
-      "sourceLabel": null,
-      "facetLabel": null,
+      "sourceLabel": "全部来源",
+      "sourceValue": "all",
+      "statusText": "匹配 1075 条，展示相关性最高的前 80 条。",
       "diagnostics": {
         "complete": true,
         "scoped_complete": false,
         "no_result": false,
-        "attachment_metadata_visible": false,
+        "attachment_metadata_visible": true,
         "attachment_text_claim_visible": false,
         "new_read_text": "483 KB",
         "new_read_bytes_rounded_from_ui": 494592,
         "cached_text": "52.3 MB",
         "cached_bytes_rounded_from_ui": 54840525,
         "cache_hits": 650,
-        "persistent_hits": 629,
-        "memory_hits": 21,
-        "engine": "rust_wasm_packed_impact",
-        "pruned_postings": 7,
-        "pruned_blocks": 6,
-        "phase": "global_exhaustive_complete",
         "loaded_text": "51.1 MB",
         "loaded_bytes_rounded_from_ui": 53582234,
+        "persistent_hits": 629,
+        "memory_hits": 21,
+        "phase": "global_exhaustive_complete",
+        "engine": "rust_wasm_packed_impact",
+        "pruned_blocks": 6,
+        "pruned_postings": 7,
         "proved_no_match_shards": 351,
         "excluded_by_filter_shards": 0,
         "pending_shards": 0,
@@ -451,32 +490,37 @@
         "searched_documents": 9060,
         "total_documents": 10260,
         "local_index_count": 27,
-        "fields": "标题、栏目、导航路径、摘要、正文、附件、URL"
+        "fields": "标题、栏目、导航路径、"
       },
       "top_titles": [
         "2024年度大学生创新创业训练计划项目结题验收成绩公示",
         "关于公布2025年度大学生创新创业训练计划批准立项项目的通知",
         "【资助项目遴选】关于遴选第十四批“南邮-紫金科创学生创业基金” 资助项目的通知",
         "【科创竞赛】关于举办南京邮电大学2026年大学生创新大赛（高教主赛道、红旅赛道）暨“三维通信杯”创新大赛的通知",
-        "【科创竞赛】关于开展2026年第20届教育部“西门子杯”中国智能制造挑战赛 南京邮电大学校内选拔赛的通知"
+        "【科创竞赛】关于开展2026年第20届教育部“西门子杯”中国智能制造挑战赛 南京邮电大学校内选拔赛的通知",
+        "【科创竞赛】第十三届“赢在南京”青年大学生创业大赛",
+        "关于2025年度大学生创新创业训练计划项目中期检查及2024年度延期项目结题的通知",
+        "【科创竞赛】关于举办南京邮电大学第十一届大学生软件设计大赛暨组织参加第十五届“中国软件杯”大学生软件设计大赛的通知"
       ],
       "snippets": [
         "首页 / 大创项目",
         "首页 / 大创项目",
-        "为营造良好创新创业环境，促进学校科技成果转移转化，培育创新创业人才，根据《南邮-紫金科创学生创业基金暂行管理办法》（以下简称《办法》）相关规定，现面向南京邮电大学学生公开遴选第十四批南邮——紫金科创学生创业基金资助项目，相关事宜通知如下： 一..."
+        "为营造良好创新创业环境，促进学校科技成果转移转化，培育创新创业人才，根据《南邮-紫金科创学生创业基金暂行管理办法》（以下简称《办法》）相关规定，现面向南京邮电大学学生公开遴选第十四批南邮——紫金科创学生创业基金资助项目，相关事宜通知如下： 一...",
+        "...、各单位： 为深入贯彻落实全国教育大会精神，激发学生创新创业热情，选拔培育优秀项目参加中国国际大学生创新大赛省赛、国赛，经研究，学校决定举办 2026 年大学生创新大赛暨 “ 三维通信杯 ” 创新大赛。现将有关事项通知如下： 一、大赛名称 南京邮电大学 2026 年大学生创新大赛（...",
+        "...获得该项赛事年度优秀指导教师称号。《南京邮电大学大学生创新创业竞赛项目认定及分类目录（修订）》认定大赛为 B 类竞赛，目前已经有逾 1 0 名参赛队员通过大赛国奖获得 免试攻读研究生 资格。 大赛的赛程安排分为 校 级竞 赛 - 全国初赛 - 全国总决赛 三个阶段，根据竞赛要求 并 结..."
       ],
       "viewport_metrics": {
         "height": 844,
         "noHorizontalOverflow": true,
-        "scrollHeight": 7147,
-        "scrollWidth": 380,
+        "scrollHeight": 7085,
+        "scrollWidth": 390,
         "width": 390
       }
     }
   ],
   "console_errors": [],
   "screenshots": {
-    "desktop_calendar": "D:/code/github/hicancan/njupt-search/tools/search-eval/reports/browser-screenshots/desktop-calendar.png",
-    "mobile_innovation": "D:/code/github/hicancan/njupt-search/tools/search-eval/reports/browser-screenshots/mobile-innovation.png"
+    "desktop_calendar": "tools/search-eval/reports/browser-screenshots/desktop-calendar.png",
+    "mobile_innovation": "tools/search-eval/reports/browser-screenshots/mobile-innovation.png"
   }
 }
