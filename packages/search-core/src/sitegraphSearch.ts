@@ -1029,14 +1029,40 @@ const bloomMayContain = (filter: ShardFilterMap[string], term: string): boolean 
     return true;
 };
 
+const shardFilterPhraseTokens = (phrase: string): string[] => {
+    const text = normalize(phrase);
+    if (!text) return [];
+    const tokens = new Set<string>();
+    const matches = text.match(/[\u4e00-\u9fff]{2,}|[a-z0-9][a-z0-9._-]{1,}/g) || [];
+    if (matches.length === 0 && text.length >= 2) {
+        tokens.add(text);
+    }
+    for (const part of matches) {
+        if (/^[\u4e00-\u9fff]+$/.test(part)) {
+            if (part.length <= 16) tokens.add(part);
+            const maxSize = Math.min(5, part.length);
+            for (let size = 2; size <= maxSize; size += 1) {
+                for (let index = 0; index <= part.length - size; index += 1) {
+                    tokens.add(part.slice(index, index + size));
+                }
+            }
+        } else {
+            tokens.add(part);
+        }
+    }
+    return Array.from(tokens).sort((a, b) => b.length - a.length);
+};
+
 const shardFilterProvesNoMatch = (
     shardId: string,
     shardFilter: ShardFilterMap,
-    terms: string[]
+    matchPhrases: string[]
 ): boolean => {
     const filter = shardFilter[shardId];
     if (!filter || filter.hash_algorithm !== 'bloom-fnv1a32-utf8') return false;
-    return terms.every(term => !bloomMayContain(filter, term));
+    const phrases = matchPhrases.map(shardFilterPhraseTokens).filter(tokens => tokens.length > 0);
+    if (phrases.length === 0) return false;
+    return phrases.every(tokens => tokens.some(token => !bloomMayContain(filter, token)));
 };
 
 const proofLedgerSummary = (
@@ -1444,10 +1470,10 @@ export const searchSitegraphProgressively = async (
         throwIfAborted(signal);
         const shardBatch = inScopeShards.slice(shardIndex, shardIndex + SHARD_BATCH_SIZE);
         const scanBatch = shardBatch.filter(shard => {
-            const canSkip = shardFilterProvesNoMatch(shard.shard_id, shardFiltersBySource.get(String(shard.source_id || '')) || {}, terms);
+            const canSkip = shardFilterProvesNoMatch(shard.shard_id, shardFiltersBySource.get(String(shard.source_id || '')) || {}, matchPhrases);
             if (canSkip) {
                 provedNoMatchShards += 1;
-                if (proofLedgerEntries) setLedgerState(proofLedgerEntries, shard.shard_id, 'proved_no_match', 'no-false-negative shard filter proved every query term absent');
+                if (proofLedgerEntries) setLedgerState(proofLedgerEntries, shard.shard_id, 'proved_no_match', 'no-false-negative shard filter proved every full-scan phrase absent');
             }
             return !canSkip;
         });

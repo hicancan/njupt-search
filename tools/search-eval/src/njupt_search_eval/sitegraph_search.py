@@ -765,7 +765,28 @@ def filter_token_hash_int(text: str, seed: int) -> int:
     return value
 
 
-def shard_filter_proves_no_match(shard_id: str, shard_filter: dict[str, Any], terms: list[str]) -> bool:
+def shard_filter_phrase_tokens(phrase: str) -> list[str]:
+    text = normalize_text(phrase)
+    if not text:
+        return []
+    tokens: set[str] = set()
+    matches = list(re.finditer(r"[\u4e00-\u9fff]{2,}|[a-z0-9][a-z0-9._-]{1,}", text))
+    if not matches and len(text) >= 2:
+        tokens.add(text)
+    for match in matches:
+        part = match.group(0)
+        if re.fullmatch(r"[\u4e00-\u9fff]+", part):
+            if len(part) <= 16:
+                tokens.add(part)
+            for size in range(2, min(5, len(part)) + 1):
+                for index in range(0, len(part) - size + 1):
+                    tokens.add(part[index : index + size])
+        else:
+            tokens.add(part)
+    return sorted(tokens, key=len, reverse=True)
+
+
+def shard_filter_proves_no_match(shard_id: str, shard_filter: dict[str, Any], match_phrases: list[str]) -> bool:
     payload = shard_filter.get(shard_id)
     if not isinstance(payload, dict) or payload.get("hash_algorithm") != "bloom-fnv1a32-utf8":
         return False
@@ -783,7 +804,10 @@ def shard_filter_proves_no_match(shard_id: str, shard_filter: dict[str, Any], te
                 return False
         return True
 
-    return all(not may_contain(term) for term in terms)
+    phrases = [tokens for phrase in match_phrases if (tokens := shard_filter_phrase_tokens(phrase))]
+    if not phrases:
+        return False
+    return all(any(not may_contain(token) for token in tokens) for tokens in phrases)
 
 
 def sorted_ranked(results: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -986,7 +1010,7 @@ def recall_documents_with_stats(
     for shard in in_scope_shards:
         shard_id = str(shard["shard_id"])
         source_id = str(shard.get("source_id") or "")
-        if shard_filter_proves_no_match(shard_id, shard_filters.get(source_id, {}), terms):
+        if shard_filter_proves_no_match(shard_id, shard_filters.get(source_id, {}), match_phrases):
             proved_no_match_shards += 1
             continue
         path = str(shard["path"])

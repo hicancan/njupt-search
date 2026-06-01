@@ -52,6 +52,26 @@ const encodeVarint = (value: number): number[] => {
     return bytes;
 };
 
+const filterTokenHashInt = (text: string, seed: number): number => {
+    let value = (2166136261 ^ seed) >>> 0;
+    for (const byte of new TextEncoder().encode(text)) {
+        value ^= byte;
+        value = Math.imul(value, 16777619) >>> 0;
+    }
+    return value;
+};
+
+const shardFilterBase64For = (tokens: string[], bitCount = 2048, hashCount = 1): string => {
+    const bytes = new Uint8Array(Math.ceil(bitCount / 8));
+    for (const token of tokens) {
+        for (let seed = 0; seed < hashCount; seed += 1) {
+            const bit = filterTokenHashInt(token, seed) % bitCount;
+            bytes[Math.floor(bit / 8)] |= 1 << (bit % 8);
+        }
+    }
+    return btoa(String.fromCharCode(...bytes));
+};
+
 const packedImpactIndexFixture = (payload: SitegraphImpactIndex): ArrayBuffer => {
     const encoder = new TextEncoder();
     const metadata = encoder.encode(JSON.stringify(Object.fromEntries(
@@ -245,6 +265,8 @@ const makeRoutedFixture = (
         intentRoutes?: Record<string, QueryDirectoryRoute>;
         facet?: string;
         filterBase64?: string;
+        filterBitCount?: number;
+        filterHashCount?: number;
     } = {}
 ): RoutedFixture => {
     const shard = fullShard(prefix, documents.length, options.facet || documents[0]?.facet || 'policy');
@@ -508,8 +530,8 @@ const makeRoutedFixture = (
     const shardFilter = {
         [shard.shard_id]: {
             bitset_base64: options.filterBase64 || '/w==',
-            bit_count: 8,
-            hash_count: 1,
+            bit_count: options.filterBitCount || 8,
+            hash_count: options.filterHashCount || 1,
             token_count: 4,
             sha256: '0123456789abcdef0123456789abcdef',
             hash_algorithm: 'bloom-fnv1a32-utf8'
@@ -904,6 +926,27 @@ describe('sitegraph search contract', () => {
             expect(complete?.type).toBe('global_exhaustive_complete');
             expect(complete?.coverage.proved_no_match_shards).toBe(1);
             expect(complete?.coverage.scanned_shards).toBe(0);
+            expect(complete?.results).toEqual([]);
+        });
+    });
+
+    it('uses absent phrase tokens to prove a full-scan phrase cannot match', async () => {
+        const fixture = makeRoutedFixture('filter-phrase-skip', [makeDocument()], {
+            queryTerms: ['材料提交'],
+            lightTerms: {},
+            bodyTerms: {},
+            filterBase64: shardFilterBase64For(['材料']),
+            filterBitCount: 2048
+        });
+
+        await withMockFetch(fixture, async () => {
+            const events: SitegraphSearchEvent[] = [];
+            await searchSitegraphProgressively(fixture.session, '材料提交', new AbortController().signal, event => events.push(event), { limit: 5 });
+            const complete = events.at(-1);
+            expect(complete?.type).toBe('global_exhaustive_complete');
+            expect(complete?.coverage.proved_no_match_shards).toBe(1);
+            expect(complete?.coverage.scanned_shards).toBe(0);
+            expect(complete?.coverage.hydrated_shard_bytes).toBe(0);
             expect(complete?.results).toEqual([]);
         });
     });

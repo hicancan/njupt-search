@@ -1,6 +1,20 @@
 from __future__ import annotations
 
+from njupt_search_eval.sitegraph_search import shard_filter_proves_no_match
 from njupt_search_eval.sitegraph_lower_bound_report import build_lower_bound_report, render_markdown_report
+from njupt_search_indexer.sitegraph_shards import build_filter_bitset
+
+
+def test_shard_filter_proves_no_match_when_phrase_token_is_absent() -> None:
+    payload = {
+        "shard-1": {
+            **build_filter_bitset(["材料"], bit_count=2048, hash_count=1),
+            "hash_algorithm": "bloom-fnv1a32-utf8",
+        }
+    }
+
+    assert shard_filter_proves_no_match("shard-1", payload, ["材料提交"]) is True
+    assert shard_filter_proves_no_match("shard-1", payload, ["材料"]) is False
 
 
 def test_lower_bound_report_contains_rerunnable_evidence() -> None:
