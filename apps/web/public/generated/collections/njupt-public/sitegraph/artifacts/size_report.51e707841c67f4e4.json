@@ -1,0 +1,72 @@
+{
+  "generated_at": "2026-06-01T11:38:05.126495+00:00",
+  "first_screen_files": [],
+  "first_screen_bytes": 0,
+  "routed_first_screen_files": [
+    {
+      "name": "bootstrap_manifest",
+      "path": "generated/collections/njupt-public/manifest.json",
+      "bytes": 14287
+    },
+    {
+      "name": "source_registry",
+      "path": "generated/collections/njupt-public/sitegraph/artifacts/source_registry.9655ec64a485f210.json",
+      "bytes": 4804
+    },
+    {
+      "name": "global_query_directory",
+      "path": "generated/collections/njupt-public/sitegraph/artifacts/global_query_directory.424a1cbdb39c1407.json",
+      "bytes": 196981
+    },
+    {
+      "name": "query_aliases",
+      "path": "generated/collections/njupt-public/sitegraph/artifacts/query_aliases.4025b911a712ffee.json",
+      "bytes": 2809
+    }
+  ],
+  "routed_first_screen_bytes": 218881,
+  "routed_first_screen_total_bytes": 218881,
+  "global_query_directory_bytes": 196981,
+  "source_registry_bytes": 4804,
+  "query_aliases_bytes": 2809,
+  "local_impact_light_index_total_bytes": 0,
+  "local_impact_light_index_meta_total_bytes": 11963981,
+  "local_impact_light_index_packed_total_bytes": 9006823,
+  "local_impact_body_index_total_bytes": 0,
+  "local_impact_body_index_packed_total_bytes": 16850782,
+  "local_index_count": 246,
+  "light_index_runtime_bytes": 20970804,
+  "body_index_bytes": 0,
+  "body_index_runtime_bytes": 16850782,
+  "local_index_runtime_bytes": 37821586,
+  "full_scan_total_bytes": 45701341,
+  "shard_count": 942,
+  "max_shard_bytes": 499697,
+  "avg_shard_bytes": 48515.22,
+  "full_shard_count": 942,
+  "max_full_shard_bytes": 499697,
+  "avg_full_shard_bytes": 48515.22,
+  "max_full_shard_documents": 152,
+  "avg_full_shard_documents": 10.89,
+  "artifact_count": 1219,
+  "artifact_total_bytes": 77289672,
+  "binary_artifact_count": 492,
+  "binary_artifact_total_bytes": 25857605,
+  "runtime_artifact_total_bytes": 103147277,
+  "representative_query_phase_timings": {
+    "query": "校历",
+    "planning_ms": 0,
+    "local_index_ms": 0,
+    "hydrate_ms": 0,
+    "verify_scan_ms": 2053.611
+  },
+  "exhaustive_scan": {
+    "shard_count": 942,
+    "max_shard_bytes": 499697,
+    "avg_shard_bytes": 48515.22,
+    "estimated_full_scan_bytes": 45701341,
+    "representative_query": "校历",
+    "representative_query_full_scan_time_ms": 2053.611
+  },
+  "bootstrap_manifest_bytes": 14287
+}
