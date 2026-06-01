@@ -45,6 +45,26 @@ def write_hashed_json(
     }
 
 
+def write_hashed_bytes(
+    public_root: Path,
+    directory: Path,
+    logical_name: str,
+    data: bytes,
+    *,
+    extension: str,
+) -> dict[str, Any]:
+    digest = hashlib.sha256(data).hexdigest()
+    filename = f"{logical_name}.{digest[:16]}.{extension.lstrip('.')}"
+    path = directory / filename
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(data)
+    return {
+        "path": str(path.relative_to(public_root)).replace("\\", "/"),
+        "sha256": digest,
+        "bytes": len(data),
+    }
+
+
 def artifact_entry(
     artifact: dict[str, Any],
     *,

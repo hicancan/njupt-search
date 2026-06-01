@@ -10,6 +10,7 @@ type SnippetField = SitegraphMatchSnippet['field'];
 interface SnippetCandidate {
     field: SnippetField;
     text: string;
+    evidenceLevel: SitegraphMatchSnippet['evidence_level'];
 }
 
 interface SearchableText {
@@ -150,10 +151,11 @@ const sliceAroundMatch = (text: string, match: TextMatch): string => {
 const fallbackSnippet = (candidate: SnippetCandidate): SitegraphMatchSnippet | null => {
     const text = compactText(candidate.text);
     if (!text) return null;
-    return {
-        field: candidate.field,
-        text: text.length > FALLBACK_SNIPPET_LENGTH ? `${text.slice(0, FALLBACK_SNIPPET_LENGTH).trim()}...` : text,
-        matched_terms: [],
+        return {
+            field: candidate.field,
+            evidence_level: candidate.evidenceLevel,
+            text: text.length > FALLBACK_SNIPPET_LENGTH ? `${text.slice(0, FALLBACK_SNIPPET_LENGTH).trim()}...` : text,
+            matched_terms: [],
         highlights: [],
         fallback: true,
     };
@@ -165,12 +167,16 @@ export const buildSitegraphMatchSnippet = (
     terms: string[]
 ): SitegraphMatchSnippet | undefined => {
     const candidates: SnippetCandidate[] = [
-        { field: 'content', text: document.content },
-        { field: 'summary', text: document.summary },
-        { field: 'attachments', text: document.attachments.map(attachment => attachment.name).join(' ') },
-        { field: 'title', text: document.title },
-        { field: 'nav_path', text: document.nav_path_text || document.section },
-        { field: 'url', text: document.url },
+        { field: 'content', text: document.content, evidenceLevel: 'full_content' },
+        { field: 'summary', text: document.summary, evidenceLevel: 'snippet' },
+        {
+            field: 'attachments',
+            text: document.attachments.map(attachment => attachment.name).join(' '),
+            evidenceLevel: 'filename_only'
+        },
+        { field: 'title', text: document.title, evidenceLevel: 'source_metadata' },
+        { field: 'nav_path', text: document.nav_path_text || document.section, evidenceLevel: 'source_metadata' },
+        { field: 'url', text: document.url, evidenceLevel: 'source_metadata' },
     ];
     const matchTerms = normalizedTerms(query, terms);
     const normalizedQuery = normalize(query);
@@ -183,6 +189,7 @@ export const buildSitegraphMatchSnippet = (
             .sort((a, b) => b.length - a.length);
         return {
             field: best.candidate.field,
+            evidence_level: best.candidate.evidenceLevel,
             text: snippet,
             matched_terms: matchedTerms,
             highlights,

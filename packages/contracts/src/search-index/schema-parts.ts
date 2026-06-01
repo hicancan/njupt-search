@@ -1,11 +1,13 @@
 import { z } from 'zod';
 import type {
+    SitegraphAttachmentEvidenceLevel,
     SitegraphDocMeta,
     SitegraphFacet,
     SitegraphFullDocument
 } from '../source-sitegraph';
 
 export type {
+    SitegraphAttachmentEvidenceLevel,
     SitegraphDocMeta,
     SitegraphFacet,
     SitegraphFullDocument

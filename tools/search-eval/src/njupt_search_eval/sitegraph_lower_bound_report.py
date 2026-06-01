@@ -1,0 +1,804 @@
+from __future__ import annotations
+
+import base64
+import json
+import statistics
+import subprocess
+import time
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any
+
+from njupt_search_indexer.sitegraph_binary_index import unpack_impact_index
+
+from .sitegraph_cache_benchmark import DEFAULT_CACHE_QUERIES, run_cache_benchmark
+from .sitegraph_query_smoke_test import validate_quality
+from .sitegraph_search import BASE_DIR, PUBLIC_INDEX_DIR, PUBLIC_ROOT, load_index, recall_documents_with_stats
+from .sitegraph_task_query_eval import validate_task_queries
+
+
+DEFAULT_REPORT_QUERIES = [
+    "校历",
+    "慕课考试",
+    "学生相关文件及表格",
+    "教务管理系统",
+    "附件1",
+    "不存在的查询词",
+]
+
+DEFAULT_WASM_DECISION_REPORT = BASE_DIR / "tools" / "search-eval" / "reports" / "njupt-search-wasm-decision.json"
+
+BYTE_METRICS = [
+    "routed_first_screen_total_bytes",
+    "bootstrap_manifest_bytes",
+    "source_registry_bytes",
+    "global_query_directory_bytes",
+    "query_aliases_bytes",
+    "source_manifest_total_bytes",
+    "local_impact_light_index_total_bytes",
+    "local_impact_light_index_meta_total_bytes",
+    "local_impact_light_index_packed_total_bytes",
+    "local_impact_body_index_total_bytes",
+    "local_impact_body_index_packed_total_bytes",
+    "light_index_runtime_bytes",
+    "body_index_bytes",
+    "body_index_runtime_bytes",
+    "local_index_runtime_bytes",
+    "full_scan_total_bytes",
+    "artifact_total_bytes",
+    "binary_artifact_total_bytes",
+    "runtime_artifact_total_bytes",
+    "artifact_count",
+    "binary_artifact_count",
+    "local_index_count",
+    "full_shard_count",
+    "max_full_shard_bytes",
+    "avg_full_shard_bytes",
+]
+
+
+def read_json(path: Path) -> Any:
+    with path.open("r", encoding="utf-8") as handle:
+        return json.load(handle)
+
+
+def repo_relative(path: Path) -> str:
+    return path.resolve().relative_to(BASE_DIR.resolve()).as_posix()
+
+
+def public_artifact_repo_path(path_from_public_root: str) -> str:
+    return f"apps/web/public/{path_from_public_root}"
+
+
+def git_show_bytes(ref: str, repo_path: str) -> bytes:
+    return subprocess.check_output(["git", "show", f"{ref}:{repo_path}"], cwd=BASE_DIR)
+
+
+def git_show_json(ref: str, repo_path: str) -> Any:
+    return json.loads(git_show_bytes(ref, repo_path))
+
+
+def current_manifest(collection: Path = PUBLIC_INDEX_DIR) -> dict[str, Any]:
+    return read_json(collection / "manifest.json")
+
+
+def current_artifact_bytes(path_from_public_root: str) -> bytes:
+    return (PUBLIC_ROOT / path_from_public_root).read_bytes()
+
+
+def current_artifact_json(path_from_public_root: str) -> Any:
+    return json.loads(current_artifact_bytes(path_from_public_root))
+
+
+def manifest_size_report(manifest: dict[str, Any], *, baseline_ref: str | None = None) -> dict[str, Any]:
+    artifact = manifest["artifacts"]["size_report"]
+    path = public_artifact_repo_path(str(artifact["path"]))
+    if baseline_ref is not None:
+        return git_show_json(baseline_ref, path)
+    return current_artifact_json(str(artifact["path"]))
+
+
+def source_manifest_entries(manifest: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    sitegraph = manifest.get("sitegraph") if isinstance(manifest.get("sitegraph"), dict) else {}
+    entries = sitegraph.get("source_manifests") if isinstance(sitegraph.get("source_manifests"), dict) else {}
+    return {str(source_id): entry for source_id, entry in entries.items() if isinstance(entry, dict)}
+
+
+def source_manifest_total_bytes(manifest: dict[str, Any]) -> int:
+    return sum(int(entry.get("bytes") or 0) for entry in source_manifest_entries(manifest).values())
+
+
+def load_source_manifest_payloads(manifest: dict[str, Any], *, baseline_ref: str | None = None) -> list[bytes]:
+    payloads: list[bytes] = []
+    for entry in source_manifest_entries(manifest).values():
+        path = str(entry["path"])
+        if baseline_ref is None:
+            payloads.append(current_artifact_bytes(path))
+        else:
+            payloads.append(git_show_bytes(baseline_ref, public_artifact_repo_path(path)))
+    return payloads
+
+
+def load_source_manifest_jsons(manifest: dict[str, Any], *, baseline_ref: str | None = None) -> list[dict[str, Any]]:
+    return [json.loads(payload) for payload in load_source_manifest_payloads(manifest, baseline_ref=baseline_ref)]
+
+
+def load_shard_filter_payloads(manifest: dict[str, Any], *, baseline_ref: str | None = None) -> list[bytes]:
+    payloads: list[bytes] = []
+    for source_manifest in load_source_manifest_jsons(manifest, baseline_ref=baseline_ref):
+        artifact = ((source_manifest.get("artifacts") or {}).get("shard_filter") or {})
+        path = str(artifact.get("path") or "")
+        if not path:
+            continue
+        if baseline_ref is None:
+            payloads.append(current_artifact_bytes(path))
+        else:
+            payloads.append(git_show_bytes(baseline_ref, public_artifact_repo_path(path)))
+    return payloads
+
+
+def load_local_body_payloads(manifest: dict[str, Any], *, baseline_ref: str | None = None, packed: bool = False) -> list[bytes]:
+    payloads: list[bytes] = []
+    for source_manifest in load_source_manifest_jsons(manifest, baseline_ref=baseline_ref):
+        for ref in source_manifest.get("local_indexes") or []:
+            artifact_key = "body_index_packed" if packed else "body_index"
+            artifact = ref.get(artifact_key) if isinstance(ref, dict) else None
+            if not isinstance(artifact, dict) or not artifact.get("path"):
+                continue
+            path = str(artifact["path"])
+            if baseline_ref is None:
+                payloads.append(current_artifact_bytes(path))
+            else:
+                payloads.append(git_show_bytes(baseline_ref, public_artifact_repo_path(path)))
+    return payloads
+
+
+def load_local_light_payloads(manifest: dict[str, Any], *, baseline_ref: str | None = None, artifact_key: str = "light_index") -> list[bytes]:
+    payloads: list[bytes] = []
+    for source_manifest in load_source_manifest_jsons(manifest, baseline_ref=baseline_ref):
+        for ref in source_manifest.get("local_indexes") or []:
+            artifact = ref.get(artifact_key) if isinstance(ref, dict) else None
+            if not isinstance(artifact, dict) or not artifact.get("path"):
+                continue
+            path = str(artifact["path"])
+            if baseline_ref is None:
+                payloads.append(current_artifact_bytes(path))
+            else:
+                payloads.append(git_show_bytes(baseline_ref, public_artifact_repo_path(path)))
+    return payloads
+
+
+def load_wasm_decision_report(path: Path = DEFAULT_WASM_DECISION_REPORT) -> dict[str, Any] | None:
+    if not path.exists():
+        return None
+    return read_json(path)
+
+
+def size_snapshot(manifest: dict[str, Any], size_report: dict[str, Any]) -> dict[str, Any]:
+    snapshot = {key: size_report.get(key) for key in BYTE_METRICS if key in size_report}
+    snapshot["source_manifest_total_bytes"] = source_manifest_total_bytes(manifest)
+    snapshot["manifest_bytes"] = int(size_report.get("bootstrap_manifest_bytes") or 0)
+    snapshot["total_documents"] = int(manifest.get("total_documents") or 0)
+    snapshot["total_shards"] = int(((manifest.get("coverage_contract") or {}).get("total_shards")) or 0)
+    return snapshot
+
+
+def compare_values(current: Any, baseline: Any) -> dict[str, Any]:
+    current_value = float(current or 0)
+    baseline_value = float(baseline or 0)
+    delta = current_value - baseline_value
+    percent = None if baseline_value == 0 else (delta / baseline_value) * 100
+    return {
+        "current": current,
+        "baseline": baseline,
+        "delta": int(delta) if delta.is_integer() else round(delta, 3),
+        "percent_change": None if percent is None else round(percent, 3),
+    }
+
+
+def byte_comparison(current: dict[str, Any], baseline: dict[str, Any]) -> dict[str, Any]:
+    return {
+        key: compare_values(current.get(key), baseline.get(key))
+        for key in BYTE_METRICS
+        if key in current or key in baseline
+    }
+
+
+def benchmark_json_parse(payloads: list[bytes], runs: int) -> dict[str, Any]:
+    measurements: list[float] = []
+    for _ in range(max(1, runs)):
+        started = time.perf_counter()
+        for payload in payloads:
+            json.loads(payload)
+        measurements.append((time.perf_counter() - started) * 1000)
+    return {
+        "artifact_count": len(payloads),
+        "bytes": sum(len(payload) for payload in payloads),
+        "runs": len(measurements),
+        "mean_ms": round(statistics.fmean(measurements), 3),
+        "min_ms": round(min(measurements), 3),
+        "max_ms": round(max(measurements), 3),
+    }
+
+
+def benchmark_shard_filter_decode(payloads: list[bytes], runs: int) -> dict[str, Any]:
+    measurements: list[float] = []
+    bitsets = 0
+    for _ in range(max(1, runs)):
+        started = time.perf_counter()
+        decoded_this_run = 0
+        for payload in payloads:
+            parsed = json.loads(payload)
+            for item in parsed.values():
+                if isinstance(item, dict) and item.get("bitset_base64"):
+                    base64.b64decode(str(item["bitset_base64"]))
+                    decoded_this_run += 1
+        measurements.append((time.perf_counter() - started) * 1000)
+        bitsets = max(bitsets, decoded_this_run)
+    return {
+        "artifact_count": len(payloads),
+        "bitset_count": bitsets,
+        "bytes": sum(len(payload) for payload in payloads),
+        "runs": len(measurements),
+        "mean_ms": round(statistics.fmean(measurements), 3),
+        "min_ms": round(min(measurements), 3),
+        "max_ms": round(max(measurements), 3),
+    }
+
+
+def benchmark_packed_impact_decode(payloads: list[bytes], runs: int) -> dict[str, Any]:
+    measurements: list[float] = []
+    term_count = 0
+    for _ in range(max(1, runs)):
+        started = time.perf_counter()
+        decoded_terms = 0
+        for payload in payloads:
+            decoded = unpack_impact_index(payload)
+            decoded_terms += len(decoded.get("terms") or {})
+        measurements.append((time.perf_counter() - started) * 1000)
+        term_count = max(term_count, decoded_terms)
+    if not measurements:
+        measurements = [0.0]
+    return {
+        "artifact_count": len(payloads),
+        "term_count": term_count,
+        "bytes": sum(len(payload) for payload in payloads),
+        "runs": len(measurements),
+        "mean_ms": round(statistics.fmean(measurements), 3),
+        "min_ms": round(min(measurements), 3),
+        "max_ms": round(max(measurements), 3),
+    }
+
+
+def parse_decode_benchmark(
+    current: dict[str, Any],
+    baseline: dict[str, Any],
+    *,
+    baseline_ref: str,
+    parse_runs: int,
+    include_local_body: bool = True,
+) -> dict[str, Any]:
+    current_bootstrap = [
+        (PUBLIC_INDEX_DIR / "manifest.json").read_bytes(),
+        *[
+            current_artifact_bytes(str(current["artifacts"][name]["path"]))
+            for name in ("source_registry", "global_query_directory", "query_aliases")
+        ],
+    ]
+    baseline_bootstrap = [
+        git_show_bytes(baseline_ref, repo_relative(PUBLIC_INDEX_DIR / "manifest.json")),
+        *[
+            git_show_bytes(baseline_ref, public_artifact_repo_path(str(baseline["artifacts"][name]["path"])))
+            for name in ("source_registry", "global_query_directory", "query_aliases")
+        ],
+    ]
+    current_source_manifests = load_source_manifest_payloads(current)
+    baseline_source_manifests = load_source_manifest_payloads(baseline, baseline_ref=baseline_ref)
+    current_filters = load_shard_filter_payloads(current)
+    baseline_filters = load_shard_filter_payloads(baseline, baseline_ref=baseline_ref)
+    benchmark = {
+        "parse_runs": max(1, parse_runs),
+        "bootstrap_json": {
+            "current": benchmark_json_parse(current_bootstrap, parse_runs),
+            "baseline": benchmark_json_parse(baseline_bootstrap, parse_runs),
+        },
+        "source_manifests": {
+            "current": benchmark_json_parse(current_source_manifests, parse_runs),
+            "baseline": benchmark_json_parse(baseline_source_manifests, parse_runs),
+        },
+        "shard_filters_json_and_bitsets": {
+            "current": benchmark_shard_filter_decode(current_filters, parse_runs),
+            "baseline": benchmark_shard_filter_decode(baseline_filters, parse_runs),
+        },
+    }
+    if include_local_body:
+        current_light_json = load_local_light_payloads(current)
+        baseline_light_json = load_local_light_payloads(baseline, baseline_ref=baseline_ref)
+        current_light_meta = load_local_light_payloads(current, artifact_key="light_index_meta")
+        current_light_packed = load_local_light_payloads(current, artifact_key="light_index_packed")
+        current_body_json = load_local_body_payloads(current)
+        baseline_body_json = load_local_body_payloads(baseline, baseline_ref=baseline_ref)
+        current_body_packed = load_local_body_payloads(current, packed=True)
+        benchmark["local_light_json"] = {
+            "current": benchmark_json_parse(current_light_json, parse_runs),
+            "baseline": benchmark_json_parse(baseline_light_json, parse_runs),
+        }
+        benchmark["local_light_meta_json"] = {
+            "current": benchmark_json_parse(current_light_meta, parse_runs),
+            "baseline": {
+                "artifact_count": 0,
+                "bytes": 0,
+                "runs": max(1, parse_runs),
+                "mean_ms": 0.0,
+                "min_ms": 0.0,
+                "max_ms": 0.0,
+            },
+        }
+        benchmark["local_light_packed"] = {
+            "current": benchmark_packed_impact_decode(current_light_packed, parse_runs),
+            "baseline": {
+                "artifact_count": 0,
+                "term_count": 0,
+                "bytes": 0,
+                "runs": max(1, parse_runs),
+                "mean_ms": 0.0,
+                "min_ms": 0.0,
+                "max_ms": 0.0,
+            },
+        }
+        benchmark["local_body_json"] = {
+            "current": benchmark_json_parse(current_body_json, parse_runs),
+            "baseline": benchmark_json_parse(baseline_body_json, parse_runs),
+        }
+        benchmark["local_body_packed"] = {
+            "current": benchmark_packed_impact_decode(current_body_packed, parse_runs),
+            "baseline": {
+                "artifact_count": 0,
+                "term_count": 0,
+                "bytes": 0,
+                "runs": max(1, parse_runs),
+                "mean_ms": 0.0,
+                "min_ms": 0.0,
+                "max_ms": 0.0,
+            },
+        }
+    return benchmark
+
+
+def summarize_top_result(results: list[dict[str, Any]]) -> dict[str, Any] | None:
+    if not results:
+        return None
+    top = results[0]
+    return {
+        "id": top.get("id"),
+        "title": top.get("title"),
+        "source_id": top.get("source_id"),
+        "facet": top.get("facet"),
+        "url": top.get("url"),
+        "score": top.get("score"),
+        "score_reason": top.get("score_reason"),
+    }
+
+
+def planner_summary(plan: dict[str, Any]) -> dict[str, Any]:
+    selected = plan.get("selected_local_indexes") or []
+    route_decisions = plan.get("route_decisions") or []
+    return {
+        "intent": plan.get("intent"),
+        "estimated_cost_bytes": int(plan.get("estimated_cost_bytes") or 0),
+        "estimated_utility_per_kb": float(plan.get("estimated_utility_per_kb") or 0),
+        "source_ids": plan.get("source_ids") or [],
+        "local_index_ids": plan.get("local_index_ids") or [],
+        "selected_local_index_count": len(selected),
+        "selected_expected_bytes": sum(int(item.get("expected_bytes") or 0) for item in selected),
+        "selected_expected_uncached_bytes": sum(int(item.get("expected_uncached_bytes") or 0) for item in selected),
+        "selected_cache_states": sorted({str(item.get("cache_state") or "cold") for item in selected}),
+        "selected_local_indexes_sample": selected[:8],
+        "route_decisions": route_decisions,
+        "route_cost_bytes": [int(item.get("expected_cost_bytes") or 0) for item in route_decisions],
+    }
+
+
+def retrieval_summary(retrieval: dict[str, Any]) -> dict[str, Any]:
+    visited = int(retrieval.get("postings_visited") or 0)
+    pruned = int(retrieval.get("postings_pruned") or 0)
+    total = visited + pruned
+    return {
+        "dynamic_pruning": bool(retrieval.get("dynamic_pruning")),
+        "impact_blocks_visited": int(retrieval.get("impact_blocks_visited") or 0),
+        "impact_blocks_pruned": int(retrieval.get("impact_blocks_pruned") or 0),
+        "postings_visited": visited,
+        "postings_pruned": pruned,
+        "postings_pruned_ratio": None if total == 0 else round(pruned / total, 6),
+        "competitive_threshold": float(retrieval.get("competitive_threshold") or 0),
+    }
+
+
+def coverage_summary(coverage: dict[str, Any]) -> dict[str, Any]:
+    ledger = coverage.get("proof_ledger") if isinstance(coverage.get("proof_ledger"), dict) else {}
+    return {
+        "coverage_state": coverage.get("coverage_state"),
+        "exhaustive_complete": bool(coverage.get("exhaustive_complete")),
+        "total_shards": int(coverage.get("total_shards") or 0),
+        "scanned_shards": int(coverage.get("scanned_shards") or 0),
+        "proved_no_match_shards": int(coverage.get("proved_no_match_shards") or 0),
+        "pending_shards": int(coverage.get("pending_shards") or 0),
+        "failed_shards": int(coverage.get("failed_shards") or 0),
+        "loaded_bytes": int(coverage.get("loaded_bytes") or 0),
+        "uncached_loaded_bytes": int(coverage.get("uncached_loaded_bytes") or 0),
+        "cached_artifact_bytes": int(coverage.get("cached_artifact_bytes") or 0),
+        "first_screen_bytes": int(coverage.get("first_screen_bytes") or 0),
+        "local_index_bytes": int(coverage.get("local_index_bytes") or 0),
+        "hydrated_shard_bytes": int(coverage.get("hydrated_shard_bytes") or 0),
+        "proof_ledger_complete": bool(ledger.get("complete")),
+    }
+
+
+def measure_queries(queries: list[str]) -> list[dict[str, Any]]:
+    measurements: list[dict[str, Any]] = []
+    for query in queries:
+        index = load_index()
+        started = time.perf_counter()
+        payload = recall_documents_with_stats(query, limit=12, index=index)
+        elapsed_ms = (time.perf_counter() - started) * 1000
+        stats = payload["stats"]
+        measurements.append(
+            {
+                "query": query,
+                "elapsed_ms": round(elapsed_ms, 3),
+                "result_count": len(payload["results"]),
+                "top_result": summarize_top_result(payload["results"]),
+                "quick_result_count": int(stats.get("quick_result_count") or 0),
+                "candidate_count": int(stats.get("candidate_count") or 0),
+                "candidate_shard_count": int(stats.get("candidate_shard_count") or 0),
+                "loaded_shard_count": int(stats.get("loaded_shard_count") or 0),
+                "loaded_local_index_count": int(stats.get("loaded_local_index_count") or 0),
+                "planner": planner_summary(stats.get("plan") or {}),
+                "retrieval": retrieval_summary(stats.get("retrieval") or {}),
+                "coverage": coverage_summary(stats.get("coverage") or {}),
+            }
+        )
+    return measurements
+
+
+def query_summary(measurements: list[dict[str, Any]]) -> dict[str, Any]:
+    return {
+        "query_count": len(measurements),
+        "max_elapsed_ms": max((float(item["elapsed_ms"]) for item in measurements), default=0.0),
+        "max_candidate_shard_count": max((int(item["candidate_shard_count"]) for item in measurements), default=0),
+        "max_loaded_shard_count": max((int(item["loaded_shard_count"]) for item in measurements), default=0),
+        "max_uncached_loaded_bytes": max((int(item["coverage"]["uncached_loaded_bytes"]) for item in measurements), default=0),
+        "all_exhaustive_complete": all(bool(item["coverage"]["exhaustive_complete"]) for item in measurements),
+        "any_dynamic_pruning": any(bool(item["retrieval"]["dynamic_pruning"]) for item in measurements),
+        "total_postings_pruned": sum(int(item["retrieval"]["postings_pruned"]) for item in measurements),
+    }
+
+
+def attachment_evidence_summary(manifest: dict[str, Any]) -> dict[str, Any]:
+    sitegraph = manifest.get("sitegraph") if isinstance(manifest.get("sitegraph"), dict) else {}
+    contract = manifest.get("coverage_contract") if isinstance(manifest.get("coverage_contract"), dict) else {}
+    return {
+        "policy": sitegraph.get("attachment_evidence_policy"),
+        "levels": contract.get("attachment_evidence_levels") or [],
+        "coverage": sitegraph.get("attachment_evidence_coverage") or {},
+        "source_manifest_summaries": sitegraph.get("source_manifest_summaries") or {},
+    }
+
+
+def dod_audit(report: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    query = report["query_measurement_summary"]
+    cache = ((report.get("cache_benchmark") or {}).get("summary") or {})
+    attachment = report["attachment_evidence"]
+    current_sizes = report["current_size_snapshot"]
+    packed_body_bytes = int(current_sizes.get("local_impact_body_index_packed_total_bytes") or 0)
+    body_json_bytes = int(current_sizes.get("local_impact_body_index_total_bytes") or 0)
+    packed_light_bytes = int(current_sizes.get("local_impact_light_index_packed_total_bytes") or 0)
+    light_meta_bytes = int(current_sizes.get("local_impact_light_index_meta_total_bytes") or 0)
+    light_json_bytes = int(current_sizes.get("local_impact_light_index_total_bytes") or 0)
+    wasm_decision = report.get("rust_wasm_decision") if isinstance(report.get("rust_wasm_decision"), dict) else None
+    wasm_status = str(((wasm_decision or {}).get("decision") or {}).get("status") or "")
+    return {
+        "1": {
+            "status": "evidence_present",
+            "evidence": report["runtime_contract"],
+        },
+        "2": {
+            "status": "evidence_present",
+            "evidence": "Planner telemetry includes route expected_cost_bytes, selected expected_uncached bytes, and cache state per local index.",
+        },
+        "3": {
+            "status": "evidence_present" if query["any_dynamic_pruning"] else "needs_attention",
+            "evidence": {
+                "any_dynamic_pruning": query["any_dynamic_pruning"],
+                "total_postings_pruned": query["total_postings_pruned"],
+            },
+        },
+        "4": {
+            "status": "evidence_present" if query["all_exhaustive_complete"] else "needs_attention",
+            "evidence": "Measured queries report proof ledger complete with zero pending/failed shards.",
+        },
+        "5": {
+            "status": "partial",
+            "evidence": "Before/after byte and parse/decode metrics are present; not every artifact family improved.",
+        },
+        "6": {
+            "status": "evidence_present" if packed_body_bytes > 0 and packed_light_bytes > 0 else "partial" if packed_body_bytes > 0 else "unmet",
+            "evidence": {
+                "light_json_bytes": light_json_bytes,
+                "light_split_runtime_bytes": light_meta_bytes + packed_light_bytes,
+                "body_json_bytes": body_json_bytes,
+                "body_packed_runtime_bytes": packed_body_bytes,
+                "note": "Packed binary light terms plus metadata JSON are used for query planning; packed binary body indexes are used for query deepening.",
+            },
+        },
+        "7": {
+            "status": "evidence_present" if wasm_status == "typescript_better_for_current_runtime" else "needs_attention",
+            "evidence": wasm_decision
+            or "No Rust/WASM retrieval or measured TypeScript-vs-WASM decision is recorded in this report.",
+        },
+        "8": {
+            "status": "evidence_present" if cache.get("max_warm_uncached_bytes") == 0 else "needs_attention",
+            "evidence": cache,
+        },
+        "9": {
+            "status": "evidence_present" if attachment["coverage"] else "needs_attention",
+            "evidence": attachment,
+        },
+        "10": {
+            "status": "evidence_present",
+            "evidence": "Smoke queries, task queries, measured cold queries, warm cache queries, and a negative query are represented when full report mode is used.",
+        },
+        "11": {
+            "status": "external_browser_evidence_required",
+            "evidence": "Browser verification is not performed by this CLI report; use the in-app browser evidence from the goal run.",
+        },
+        "12": {
+            "status": "external_ci_deploy_required",
+            "evidence": "Local validators/tests/builds can be recorded separately; CI/deployment status is outside this local report.",
+        },
+        "13": {
+            "status": "partial",
+            "evidence": "This report includes byte, time, quality, cache, pruning, parse/decode, and coverage sections.",
+        },
+        "14": {
+            "status": "unmet",
+            "evidence": "Commit, push, CI, and deployment checks are intentionally not claimed by this report.",
+        },
+    }
+
+
+def build_lower_bound_report(
+    *,
+    collection: Path = PUBLIC_INDEX_DIR,
+    baseline_ref: str = "HEAD",
+    queries: list[str] | None = None,
+    cache_queries: list[str] | None = None,
+    include_quality: bool = True,
+    include_task: bool = True,
+    include_cache: bool = True,
+    include_local_body_benchmark: bool = True,
+    parse_runs: int = 5,
+) -> dict[str, Any]:
+    if collection.resolve() != PUBLIC_INDEX_DIR.resolve():
+        raise ValueError(f"Only the generated njupt-public collection is supported: {PUBLIC_INDEX_DIR}")
+    manifest = current_manifest(collection)
+    baseline_manifest = git_show_json(baseline_ref, repo_relative(collection / "manifest.json"))
+    size_report = manifest_size_report(manifest)
+    baseline_size_report = manifest_size_report(baseline_manifest, baseline_ref=baseline_ref)
+    current_sizes = size_snapshot(manifest, size_report)
+    baseline_sizes = size_snapshot(baseline_manifest, baseline_size_report)
+    query_measurements = measure_queries(queries or DEFAULT_REPORT_QUERIES)
+
+    report: dict[str, Any] = {
+        "report": "njupt-search-lower-bound-evidence-v1",
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "collection": repo_relative(collection),
+        "baseline": {
+            "ref": baseline_ref,
+            "generated_at": baseline_manifest.get("generated_at"),
+            "producer_ref": baseline_manifest.get("producer_ref"),
+        },
+        "current": {
+            "generated_at": manifest.get("generated_at"),
+            "producer_ref": manifest.get("producer_ref"),
+        },
+        "runtime_contract": {
+            "legacy_global_first_screen": bool((manifest.get("core_search") or {}).get("legacy_global_first_screen")),
+            "startup_loads_local_indexes": bool((manifest.get("routing_contract") or {}).get("startup_loads_local_indexes")),
+            "startup_loads_full_shards": bool((manifest.get("routing_contract") or {}).get("startup_loads_full_shards")),
+            "startup_loads_global_document_metadata": bool((manifest.get("routing_contract") or {}).get("startup_loads_global_document_metadata")),
+            "directory_contains_doc_postings": bool((manifest.get("routing_contract") or {}).get("directory_contains_doc_postings")),
+            "completion_requires_ledger": bool((manifest.get("verification_contract") or {}).get("completion_requires_ledger")),
+        },
+        "current_size_snapshot": current_sizes,
+        "baseline_size_snapshot": baseline_sizes,
+        "byte_comparison": byte_comparison(current_sizes, baseline_sizes),
+        "parse_decode_benchmark": parse_decode_benchmark(
+            manifest,
+            baseline_manifest,
+            baseline_ref=baseline_ref,
+            parse_runs=parse_runs,
+            include_local_body=include_local_body_benchmark,
+        ),
+        "query_measurements": query_measurements,
+        "query_measurement_summary": query_summary(query_measurements),
+        "attachment_evidence": attachment_evidence_summary(manifest),
+        "quality_eval": validate_quality() if include_quality else {"skipped": True},
+        "task_eval": validate_task_queries() if include_task else {"skipped": True},
+        "cache_benchmark": run_cache_benchmark(cache_queries or DEFAULT_CACHE_QUERIES) if include_cache else {"skipped": True},
+        "rust_wasm_decision": load_wasm_decision_report() or {"missing": True},
+    }
+    report["dod_audit"] = dod_audit(report)
+    return report
+
+
+def format_int(value: Any) -> str:
+    try:
+        return f"{int(value):,}"
+    except (TypeError, ValueError):
+        return str(value)
+
+
+def format_ms(value: Any) -> str:
+    try:
+        return f"{float(value):.3f}"
+    except (TypeError, ValueError):
+        return str(value)
+
+
+def render_markdown_report(report: dict[str, Any]) -> str:
+    lines: list[str] = [
+        "# NJUPT Search Lower-Bound Evidence Report",
+        "",
+        f"- Generated at: `{report['generated_at']}`",
+        f"- Collection: `{report['collection']}`",
+        f"- Baseline ref: `{report['baseline']['ref']}`",
+        f"- Current artifact generation: `{report['current'].get('generated_at')}`",
+        "",
+        "## Runtime Contract",
+        "",
+        "| Contract | Value |",
+        "| --- | ---: |",
+    ]
+    for key, value in report["runtime_contract"].items():
+        lines.append(f"| `{key}` | `{value}` |")
+
+    lines.extend(
+        [
+            "",
+            "## Byte Comparison",
+            "",
+            "| Metric | Baseline | Current | Delta | Change |",
+            "| --- | ---: | ---: | ---: | ---: |",
+        ]
+    )
+    for key, value in report["byte_comparison"].items():
+        percent = value["percent_change"]
+        percent_text = "" if percent is None else f"{percent:.3f}%"
+        lines.append(
+            f"| `{key}` | {format_int(value['baseline'])} | {format_int(value['current'])} | "
+            f"{format_int(value['delta'])} | {percent_text} |"
+        )
+
+    lines.extend(
+        [
+            "",
+            "## Parse And Decode",
+            "",
+            "| Family | Baseline bytes | Current bytes | Baseline mean ms | Current mean ms |",
+            "| --- | ---: | ---: | ---: | ---: |",
+        ]
+    )
+    for key, value in report["parse_decode_benchmark"].items():
+        if key == "parse_runs":
+            continue
+        baseline = value["baseline"]
+        current = value["current"]
+        lines.append(
+            f"| `{key}` | {format_int(baseline['bytes'])} | {format_int(current['bytes'])} | "
+            f"{format_ms(baseline['mean_ms'])} | {format_ms(current['mean_ms'])} |"
+        )
+
+    wasm_decision = report.get("rust_wasm_decision") if isinstance(report.get("rust_wasm_decision"), dict) else {}
+    if wasm_decision and not wasm_decision.get("missing"):
+        decision = wasm_decision.get("decision") or {}
+        ts_decode = wasm_decision.get("typescript_decode_to_object") or {}
+        wasm_decode = wasm_decision.get("wasm_decode_to_json_then_parse") or {}
+        wasm_stats = wasm_decision.get("wasm_stats_only_decode") or {}
+        lines.extend(
+            [
+                "",
+                "## Rust/WASM Decision",
+                "",
+                f"- Decision: `{decision.get('status')}`",
+                f"- Winner for current runtime: `{decision.get('winner')}`",
+                f"- TypeScript decode mean ms: `{format_ms(ts_decode.get('mean_ms'))}`",
+                f"- WASM materialized decode mean ms: `{format_ms(wasm_decode.get('mean_ms'))}`",
+                f"- WASM stats-only decode mean ms: `{format_ms(wasm_stats.get('mean_ms'))}`",
+                f"- Reason: {decision.get('reason')}",
+            ]
+        )
+
+    lines.extend(
+        [
+            "",
+            "## Query Measurements",
+            "",
+            "| Query | ms | Results | Candidate shards | Loaded shards | Uncached bytes | Pruned postings | Complete | Top result |",
+            "| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |",
+        ]
+    )
+    for item in report["query_measurements"]:
+        top = item.get("top_result") or {}
+        lines.append(
+            f"| `{item['query']}` | {format_ms(item['elapsed_ms'])} | {format_int(item['result_count'])} | "
+            f"{format_int(item['candidate_shard_count'])} | {format_int(item['loaded_shard_count'])} | "
+            f"{format_int(item['coverage']['uncached_loaded_bytes'])} | "
+            f"{format_int(item['retrieval']['postings_pruned'])} | "
+            f"`{item['coverage']['exhaustive_complete']}` | {str(top.get('title') or '')[:80]} |"
+        )
+
+    cache = report.get("cache_benchmark") or {}
+    if not cache.get("skipped"):
+        summary = cache.get("summary") or {}
+        lines.extend(
+            [
+                "",
+                "## Cache Benchmark",
+                "",
+                f"- Query count: `{format_int(summary.get('query_count'))}`",
+                f"- Max cold uncached bytes: `{format_int(summary.get('max_cold_uncached_bytes'))}`",
+                f"- Max warm uncached bytes: `{format_int(summary.get('max_warm_uncached_bytes'))}`",
+                f"- Total warm cached bytes: `{format_int(summary.get('total_warm_cached_bytes'))}`",
+                f"- Passed: `{summary.get('passed')}`",
+            ]
+        )
+
+    lines.extend(
+        [
+            "",
+            "## Quality",
+            "",
+            f"- Smoke eval: `{'skipped' if report['quality_eval'].get('skipped') else 'passed'}`",
+            f"- Task eval: `{'skipped' if report['task_eval'].get('skipped') else str(report['task_eval'].get('passed')) + '/' + str(report['task_eval'].get('expectation_count'))}`",
+            "",
+            "## Attachment Evidence",
+            "",
+            f"- Policy: `{report['attachment_evidence'].get('policy')}`",
+            f"- Coverage: `{json.dumps(report['attachment_evidence'].get('coverage') or {}, ensure_ascii=False)}`",
+            "",
+            "## Definition Of Done Audit",
+            "",
+            "| Item | Status | Evidence |",
+            "| ---: | --- | --- |",
+        ]
+    )
+    for item, value in report["dod_audit"].items():
+        evidence = value.get("evidence")
+        if not isinstance(evidence, str):
+            evidence = json.dumps(evidence, ensure_ascii=False)
+        lines.append(f"| {item} | `{value.get('status')}` | {evidence[:240]} |")
+
+    lines.extend(
+        [
+            "",
+            "## Reproduction",
+            "",
+            "```powershell",
+            "uv run --python 3.13 python -m njupt_search_eval run-lower-bound-report --collection apps\\web\\public\\generated\\collections\\njupt-public --output tools\\search-eval\\reports\\njupt-search-lower-bound-report.json --markdown tools\\search-eval\\reports\\njupt-search-lower-bound-report.md",
+            "```",
+            "",
+            "This report is evidence for the active lower-bound goal. It does not claim final completion while DoD items remain unmet.",
+            "",
+        ]
+    )
+    return "\n".join(lines)
+
+
+def write_report_files(report: dict[str, Any], *, output: Path | None, markdown: Path | None) -> None:
+    if output is not None:
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+    if markdown is not None:
+        markdown.parent.mkdir(parents=True, exist_ok=True)
+        markdown.write_text(render_markdown_report(report), encoding="utf-8")

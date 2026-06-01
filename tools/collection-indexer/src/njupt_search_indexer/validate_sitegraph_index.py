@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from . import sitegraph_public_index as public_index
+from .sitegraph_binary_index import unpack_impact_index
 from .sitegraph_public_index import aggregate_counts
 from .sitegraph_source import load_collection_source_packages, package_source_id, validate_sitegraph_package
 
@@ -46,6 +47,7 @@ OBSOLETE_FIELDS = {
     "github_resource_production_enabled",
 }
 LEGACY_RUNTIME_ARTIFACTS = {"doc_meta_light", "light_inverted_index"}
+ATTACHMENT_EVIDENCE_LEVELS = {"metadata_only", "filename_only", "text_extracted", "snippet", "full_content"}
 
 
 def read_json(path: Path) -> Any:
@@ -69,10 +71,11 @@ def ensure_no_obsolete_fields(payload: Any, path: str = "$") -> None:
             ensure_no_obsolete_fields(item, f"{path}[{index}]")
 
 
-def ensure_public_hashed_path(path: str, label: str) -> Path:
+def ensure_public_hashed_path(path: str, label: str, *, extension: str = "json") -> Path:
     if "\\" in path or re.search(r"^[A-Za-z]:", path):
         fail(f"{label} must be public-relative: {path}")
-    if not re.search(r"\.[0-9a-f]{16}\.json$", path):
+    escaped_extension = re.escape(extension.lstrip("."))
+    if not re.search(rf"\.[0-9a-f]{{16}}\.{escaped_extension}$", path):
         fail(f"{label} must use content hash filename: {path}")
     resolved = public_index.PUBLIC_ROOT / path
     if not resolved.exists():
@@ -103,29 +106,66 @@ def load_source_manifests(manifest: dict[str, Any]) -> list[dict[str, Any]]:
     return payloads
 
 
-def load_full_documents(source_manifests: list[dict[str, Any]]) -> list[dict[str, Any]]:
+def load_proof_catalogs(source_manifests: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    catalogs: list[dict[str, Any]] = []
+    for source_manifest in source_manifests:
+        source_id = str(source_manifest.get("source_id") or "")
+        if "full_shards" in source_manifest:
+            fail(f"source {source_id} manifest must not embed full_shards; use proof_catalog")
+        entry = source_manifest.get("artifacts", {}).get("proof_catalog")
+        if not isinstance(entry, dict) or not entry.get("path"):
+            fail(f"source {source_id} missing artifact proof_catalog")
+        payload = read_json(ensure_public_hashed_path(str(entry["path"]), f"source {source_id} artifact proof_catalog"))
+        if payload.get("version") != "sitegraph-proof-ledger-catalog-v2":
+            fail(f"source {source_id} proof catalog has unexpected version")
+        if payload.get("source_id") != source_id:
+            fail(f"source {source_id} proof catalog source_id mismatch")
+        if not {"pending", "failed"} <= set(payload.get("complete_requires_no_states") or []):
+            fail(f"source {source_id} proof catalog must reject completion with pending or failed states")
+        catalogs.append(payload)
+    return catalogs
+
+
+def proof_catalog_shards(proof_catalogs: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    shards: list[dict[str, Any]] = []
+    for catalog in proof_catalogs:
+        catalog_shards = catalog.get("shards")
+        if not isinstance(catalog_shards, list) or not catalog_shards:
+            fail(f"proof catalog has no shards: {catalog.get('source_id')}")
+        shards.extend(catalog_shards)
+    return shards
+
+
+def load_full_documents(proof_catalogs: list[dict[str, Any]]) -> list[dict[str, Any]]:
     documents: list[dict[str, Any]] = []
     seen_shards: set[str] = set()
-    for source_manifest in source_manifests:
-        shards = source_manifest.get("full_shards")
-        if not isinstance(shards, list) or not shards:
-            fail(f"source {source_manifest.get('source_id')} has no full_shards")
-        for shard in shards:
+    for catalog in proof_catalogs:
+        for shard in catalog.get("shards") or []:
             if not isinstance(shard, dict):
-                fail("source manifest full_shards contains a non-object shard")
+                fail("proof catalog shards contains a non-object shard")
             shard_id = str(shard.get("shard_id") or "")
             if shard_id in seen_shards:
-                fail(f"duplicate shard id across source manifests: {shard_id}")
+                fail(f"duplicate shard id across proof catalogs: {shard_id}")
             seen_shards.add(shard_id)
-            for field in ("source_id", "shard_id", "facet_range", "section_range", "year_range", "hash_bucket", "sha256", "bytes", "filter_token_count", "filter_sha256"):
+            scope = shard.get("scope") if isinstance(shard.get("scope"), dict) else {}
+            filter_contract = shard.get("filter_contract") if isinstance(shard.get("filter_contract"), dict) else {}
+            for field in ("source_id", "shard_id", "path", "sha256", "bytes", "document_count", "scope", "filter_contract"):
                 if field not in shard:
                     fail(f"full shard missing {field}: {shard_id}")
+            for field in ("facets", "record_types", "sections", "years", "hash_bucket"):
+                if field not in scope:
+                    fail(f"proof catalog shard scope missing {field}: {shard_id}")
+            for field in ("artifact_family", "hash_algorithm", "false_negative", "filter_sha256", "filter_token_count"):
+                if field not in filter_contract:
+                    fail(f"proof catalog shard filter_contract missing {field}: {shard_id}")
+            if filter_contract.get("artifact_family") != "shard_filters" or filter_contract.get("hash_algorithm") != "bloom-fnv1a32-utf8" or filter_contract.get("false_negative") is not False:
+                fail(f"proof catalog shard has invalid filter contract: {shard_id}")
             shard_path = ensure_public_hashed_path(str(shard.get("path") or ""), f"full_shard.{shard_id}.path")
             payload = read_json(shard_path)
             if not isinstance(payload, list):
                 fail(f"full shard must be a list: {shard_path}")
-            if int(shard.get("count", -1)) != len(payload):
-                fail(f"full shard count mismatch for {shard_path}: manifest={shard.get('count')} actual={len(payload)}")
+            if int(shard.get("document_count", -1)) != len(payload):
+                fail(f"full shard count mismatch for {shard_path}: manifest={shard.get('document_count')} actual={len(payload)}")
             for document in payload:
                 if document.get("source_id") != shard.get("source_id"):
                     fail(f"full shard source_id mismatch: {document.get('id')}")
@@ -148,8 +188,58 @@ def validate_local_indexes(source_manifests: list[dict[str, Any]], expected_sour
                 fail(f"local index source mismatch: {ref.get('index_id')}")
             if scope.get("source_id") not in expected_source_ids:
                 fail(f"local index has unexpected source: {scope.get('source_id')}")
-            light_payload = read_json(ensure_public_hashed_path(str(ref["light_index"]["path"]), f"local_light.{ref.get('index_id')}"))
+            shard_refs = ref.get("shards")
+            if not isinstance(shard_refs, list) or not shard_refs:
+                fail(f"local index ref missing minimal shard refs: {ref.get('index_id')}")
+            if {str(item.get("shard_id")) for item in shard_refs if isinstance(item, dict)} != set(str(item) for item in scope.get("shard_ids") or []):
+                fail(f"local index ref shard refs must match scope shard_ids: {ref.get('index_id')}")
+            for shard_ref in shard_refs:
+                if not isinstance(shard_ref, dict):
+                    fail(f"local index shard ref must be an object: {ref.get('index_id')}")
+                for field in ("shard_id", "path", "bytes", "count"):
+                    if field not in shard_ref:
+                        fail(f"local index shard ref missing {field}: {ref.get('index_id')}")
+                ensure_public_hashed_path(str(shard_ref.get("path") or ""), f"local index {ref.get('index_id')} shard_ref")
+            light_entry = ref.get("light_index") if isinstance(ref.get("light_index"), dict) else None
+            light_meta_entry = ref.get("light_index_meta") if isinstance(ref.get("light_index_meta"), dict) else None
+            light_packed_entry = ref.get("light_index_packed") if isinstance(ref.get("light_index_packed"), dict) else None
+            if light_meta_entry is not None or light_packed_entry is not None:
+                if light_meta_entry is None or light_packed_entry is None:
+                    fail(f"local light split index must include both meta and packed artifacts: {ref.get('index_id')}")
+                light_meta_payload = read_json(ensure_public_hashed_path(str(light_meta_entry.get("path") or ""), f"local_light_meta.{ref.get('index_id')}"))
+                light_packed_path = ensure_public_hashed_path(str(light_packed_entry.get("path") or ""), f"local_light_packed.{ref.get('index_id')}", extension="bin")
+                light_packed_payload = unpack_impact_index(light_packed_path.read_bytes())
+                if light_meta_payload.get("scope") != scope or light_packed_payload.get("scope") != scope:
+                    fail(f"split local light index scope mismatch: {ref.get('index_id')}")
+                if "terms" in light_meta_payload:
+                    fail(f"local light meta index must not include terms: {ref.get('index_id')}")
+                if "documents" in light_packed_payload:
+                    fail(f"local light packed index must not include document metadata: {ref.get('index_id')}")
+                for field in ("version", "tokenizer", "field_codes", "field_impacts", "block_size", "scoring_model"):
+                    if light_meta_payload.get(field) != light_packed_payload.get(field):
+                        fail(f"split local light index metadata mismatch for {field}: {ref.get('index_id')}")
+                light_payload = {**light_meta_payload, "terms": light_packed_payload.get("terms")}
+                if light_entry is not None:
+                    legacy_light_payload = read_json(ensure_public_hashed_path(str(light_entry.get("path") or ""), f"local_light.{ref.get('index_id')}"))
+                    if legacy_light_payload.get("scope") != scope:
+                        fail(f"legacy local light index scope mismatch: {ref.get('index_id')}")
+                    if light_meta_payload.get("documents") != legacy_light_payload.get("documents"):
+                        fail(f"local light meta document mismatch: {ref.get('index_id')}")
+                    if light_packed_payload.get("terms") != legacy_light_payload.get("terms"):
+                        fail(f"local light packed term mismatch: {ref.get('index_id')}")
+            elif light_entry is not None:
+                light_payload = read_json(ensure_public_hashed_path(str(light_entry.get("path") or ""), f"local_light.{ref.get('index_id')}"))
+            else:
+                fail(f"local index missing light artifacts: {ref.get('index_id')}")
             body_payload = read_json(ensure_public_hashed_path(str(ref["body_index"]["path"]), f"local_body.{ref.get('index_id')}"))
+            packed_entry = ref.get("body_index_packed") if isinstance(ref.get("body_index_packed"), dict) else None
+            if packed_entry is not None:
+                packed_path = ensure_public_hashed_path(str(packed_entry.get("path") or ""), f"local_body_packed.{ref.get('index_id')}", extension="bin")
+                packed_payload = unpack_impact_index(packed_path.read_bytes())
+                if packed_payload.get("scope") != body_payload.get("scope"):
+                    fail(f"packed local body index scope mismatch: {ref.get('index_id')}")
+                if packed_payload.get("terms") != body_payload.get("terms"):
+                    fail(f"packed local body index terms mismatch: {ref.get('index_id')}")
             if set((light_payload.get("field_codes") or {}).values()).difference({"t", "s", "n", "g", "a", "e", "y"}):
                 fail(f"local light index has invalid field codes: {ref.get('index_id')}")
             if set((body_payload.get("field_codes") or {}).values()).difference({"m", "c"}):
@@ -174,6 +264,75 @@ def validate_local_indexes(source_manifests: list[dict[str, Any]], expected_sour
                         fail(f"local index metadata missing ranking field {field}: {item.get('id')}")
                 local_documents.append(item)
     return local_documents
+
+
+def validate_attachment_evidence(
+    manifest: dict[str, Any],
+    source_manifests: list[dict[str, Any]],
+    source_registry: dict[str, Any],
+    full_documents: list[dict[str, Any]],
+) -> None:
+    coverage_contract = manifest.get("coverage_contract") if isinstance(manifest.get("coverage_contract"), dict) else {}
+    levels = set(coverage_contract.get("attachment_evidence_levels") or [])
+    if not ATTACHMENT_EVIDENCE_LEVELS.issubset(levels):
+        fail("coverage_contract.attachment_evidence_levels must enumerate metadata, filename, extracted text, snippet, and full content")
+    sitegraph = manifest.get("sitegraph") if isinstance(manifest.get("sitegraph"), dict) else {}
+    if sitegraph.get("attachment_evidence_policy") != "metadata_and_filename_only_no_extracted_attachment_content":
+        fail("manifest.sitegraph.attachment_evidence_policy must honestly declare metadata/filename-only attachment coverage")
+    global_coverage = sitegraph.get("attachment_evidence_coverage")
+    if not isinstance(global_coverage, dict):
+        fail("manifest.sitegraph.attachment_evidence_coverage missing")
+
+    source_entries = {
+        str(item.get("source_id")): item
+        for item in source_registry.get("sources") or []
+        if isinstance(item, dict)
+    }
+    observed_by_source = {str(item.get("source_id")): 0 for item in source_manifests}
+    observed_total = 0
+    for document in full_documents:
+        for attachment in document.get("attachments") or []:
+            observed_total += 1
+            source_id = str(attachment.get("source_id") or document.get("source_id") or "")
+            observed_by_source[source_id] = observed_by_source.get(source_id, 0) + 1
+            if attachment.get("metadata_only") is not True:
+                fail(f"attachment must explicitly be metadata_only: {attachment.get('attachment_id')}")
+            if attachment.get("evidence_level") != "filename_only":
+                fail(f"attachment evidence_level must be filename_only until extracted text exists: {attachment.get('attachment_id')}")
+            available = set(attachment.get("available_evidence") or ["metadata_only", "filename_only"])
+            unavailable = set(attachment.get("unavailable_evidence") or ["text_extracted", "snippet", "full_content"])
+            if not {"metadata_only", "filename_only"}.issubset(available):
+                fail(f"attachment available_evidence must include metadata_only and filename_only: {attachment.get('attachment_id')}")
+            if not {"text_extracted", "snippet", "full_content"}.issubset(unavailable):
+                fail(f"attachment unavailable_evidence must include text_extracted, snippet, and full_content: {attachment.get('attachment_id')}")
+            if attachment.get("text_extracted") is not False or attachment.get("snippet_available") is not False or attachment.get("full_content_available") is not False:
+                fail(f"attachment must not claim extracted/snippet/full-content coverage: {attachment.get('attachment_id')}")
+
+    if int(global_coverage.get("total", -1)) != observed_total:
+        fail(f"global attachment evidence total mismatch: manifest={global_coverage.get('total')} observed={observed_total}")
+    for field in ("metadata_only", "filename_only"):
+        if int(global_coverage.get(field, -1)) != observed_total:
+            fail(f"global attachment evidence {field} must equal observed metadata attachments")
+    for field in ("text_extracted", "snippet", "full_content"):
+        if int(global_coverage.get(field, -1)) != 0:
+            fail(f"global attachment evidence {field} must be zero until extracted attachment text artifacts exist")
+
+    for source_manifest in source_manifests:
+        source_id = str(source_manifest.get("source_id"))
+        expected = observed_by_source.get(source_id, 0)
+        for owner, coverage in (
+            (f"source_manifest.{source_id}", source_manifest.get("attachment_evidence_coverage")),
+            (f"source_registry.{source_id}", source_entries.get(source_id, {}).get("attachment_evidence_coverage")),
+        ):
+            if not isinstance(coverage, dict):
+                fail(f"{owner}.attachment_evidence_coverage missing")
+            if int(coverage.get("total", -1)) != expected:
+                fail(f"{owner}.attachment_evidence_coverage.total mismatch")
+            if int(coverage.get("filename_only", -1)) != expected:
+                fail(f"{owner}.attachment_evidence_coverage.filename_only mismatch")
+            for field in ("text_extracted", "snippet", "full_content"):
+                if int(coverage.get(field, -1)) != 0:
+                    fail(f"{owner}.attachment_evidence_coverage.{field} must be zero")
 
 
 def validate_generated_index(packages: list[dict[str, Any]] | dict[str, Any]) -> dict[str, Any]:
@@ -306,14 +465,17 @@ def validate_generated_index(packages: list[dict[str, Any]] | dict[str, Any]) ->
         fail("global_query_directory.entries must be non-empty")
 
     source_manifests = load_source_manifests(manifest)
-    full_documents = load_full_documents(source_manifests)
+    proof_catalogs = load_proof_catalogs(source_manifests)
+    proof_shards = proof_catalog_shards(proof_catalogs)
+    full_documents = load_full_documents(proof_catalogs)
     local_documents = validate_local_indexes(source_manifests, expected_source_ids)
+    validate_attachment_evidence(manifest, source_manifests, source_registry, full_documents)
     if len(local_documents) != len(full_documents):
         fail(f"local metadata/full document count mismatch: local={len(local_documents)} full={len(full_documents)}")
     if int(manifest.get("total_documents", -1)) != len(full_documents):
         fail(f"manifest total_documents mismatch: manifest={manifest.get('total_documents')} full={len(full_documents)}")
-    if int(progressive_search.get("total_shards", -1)) != sum(len(item["full_shards"]) for item in source_manifests):
-        fail("manifest.progressive_search.total_shards must equal source manifest shard total")
+    if int(progressive_search.get("total_shards", -1)) != len(proof_shards):
+        fail("manifest.progressive_search.total_shards must equal proof catalog shard total")
     if int(coverage_contract.get("total_documents", -1)) != int(manifest.get("total_documents", -2)):
         fail("manifest.coverage_contract.total_documents must equal manifest.total_documents")
 

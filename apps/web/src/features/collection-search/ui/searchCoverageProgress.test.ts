@@ -17,6 +17,8 @@ const coverage = (partial: Partial<SitegraphSearchCoverage>): SitegraphSearchCov
     searched_documents: 0,
     total_documents: 1000,
     loaded_bytes: 0,
+    uncached_loaded_bytes: 0,
+    cached_artifact_bytes: 0,
     first_screen_bytes: 0,
     local_index_bytes: 0,
     hydrated_shard_bytes: 0,
@@ -31,6 +33,14 @@ const coverage = (partial: Partial<SitegraphSearchCoverage>): SitegraphSearchCov
         excluded_by_declared_scope_shards: 0,
         failed_shards: 0,
         complete: false,
+    },
+    cache: {
+        scope: 'memory_content_hash',
+        artifact_hits: 0,
+        artifact_misses: 0,
+        cached_bytes: 0,
+        uncached_bytes: 0,
+        cacheable_bytes: 0,
     },
     ...partial,
 });

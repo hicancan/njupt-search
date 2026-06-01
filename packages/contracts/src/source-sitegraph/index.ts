@@ -15,6 +15,15 @@ export const SitegraphFacetSchema = z.enum([
 ]);
 export type SitegraphFacet = z.infer<typeof SitegraphFacetSchema>;
 
+export const SitegraphAttachmentEvidenceLevelSchema = z.enum([
+    'metadata_only',
+    'filename_only',
+    'text_extracted',
+    'snippet',
+    'full_content'
+]);
+export type SitegraphAttachmentEvidenceLevel = z.infer<typeof SitegraphAttachmentEvidenceLevelSchema>;
+
 export const SitegraphProvenanceSchema = z.object({
     site_id: z.string(),
     section_id: z.string().nullable().optional(),
@@ -74,6 +83,13 @@ export const SitegraphAttachmentSchema = z.object({
     section: z.string().min(1),
     nav_path: z.array(z.string()).default([]),
     metadata_only: z.literal(true),
+    evidence_level: SitegraphAttachmentEvidenceLevelSchema.default('filename_only'),
+    available_evidence: z.array(SitegraphAttachmentEvidenceLevelSchema).default(['metadata_only', 'filename_only']),
+    unavailable_evidence: z.array(SitegraphAttachmentEvidenceLevelSchema).default(['text_extracted', 'snippet', 'full_content']),
+    text_extracted: z.literal(false).default(false),
+    snippet_available: z.literal(false).default(false),
+    full_content_available: z.literal(false).default(false),
+    coverage_note: z.string().min(1).optional(),
     position: z.number().nullable().optional()
 }).passthrough();
 export type SitegraphAttachment = z.infer<typeof SitegraphAttachmentSchema>;

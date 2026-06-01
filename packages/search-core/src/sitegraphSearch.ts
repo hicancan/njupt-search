@@ -1,12 +1,17 @@
 import {
     QueryDirectoryRoute,
     RankedSitegraphDocument,
+    SitegraphArtifactCacheStats,
     SitegraphDocMeta,
     SitegraphFullDocument,
     SitegraphFullShard,
+    SitegraphImpactIndex,
     SitegraphLocalBodyIndex,
     SitegraphLocalIndexRef,
+    SitegraphLocalShardRef,
     SitegraphLocalLightIndex,
+    SitegraphProofCatalog,
+    SitegraphProofCatalogShard,
     SitegraphProofLedgerEntry,
     SitegraphProofLedgerState,
     SitegraphProofLedgerSummary,
@@ -21,14 +26,16 @@ import {
     SitegraphSourceManifest,
     SourceRegistryEntry
 } from '@njupt-search/contracts';
-import { fetchJson } from './fetchJson';
+import { fetchArrayBuffer, fetchJson } from './fetchJson';
 import {
     parseSitegraphFullDocuments,
     parseSitegraphLocalBodyIndex,
     parseSitegraphLocalLightIndex,
+    parseSitegraphProofCatalog,
     parseSitegraphSourceManifest,
     SearchContractError
 } from './sitegraphContract';
+import { decodePackedImpactIndex, decodePackedLocalBodyIndex } from './sitegraphBinaryIndex';
 import { sitegraphDocumentMatchesFilters } from './sitegraphFilters';
 import { rankingDateSortValue, rankSitegraphDocument, SITEGRAPH_FIELD_WEIGHTS } from './ranking/rankDocument';
 import { detectQueryIntent } from './intent/queryIntent';
@@ -58,8 +65,24 @@ interface LoadedPlanningScope {
     localRefs: SitegraphLocalIndexRef[];
     sourceManifestBytes: number;
     shardPathById: Map<string, string>;
-    shardById: Map<string, SitegraphFullShard>;
+    shardBytesByPath: Map<string, number>;
     selectedLocalIndexes: NonNullable<SitegraphQueryPlan['selected_local_indexes']>;
+}
+
+interface VerificationShard {
+    shard_id: string;
+    source_id: string;
+    path: string;
+    sha256: string;
+    bytes: number;
+    count: number;
+    facet_range: string[];
+    record_type_range: string[];
+    section_range: string[];
+    year_range: string[];
+    hash_bucket: string;
+    filter_token_count?: number;
+    filter_sha256?: string;
 }
 
 interface SearchTelemetry {
@@ -78,8 +101,37 @@ interface SearchTelemetry {
 const sourceManifestCache = new Map<string, SitegraphSourceManifest>();
 const localLightIndexCache = new Map<string, SitegraphLocalLightIndex>();
 const localBodyIndexCache = new Map<string, SitegraphLocalBodyIndex>();
+const proofCatalogCache = new Map<string, SitegraphProofCatalog>();
 const shardFilterCache = new Map<string, ShardFilterMap>();
 const shardCache = new Map<string, SitegraphFullDocument[]>();
+
+const createCacheStats = (): SitegraphArtifactCacheStats => ({
+    scope: 'memory_content_hash',
+    artifact_hits: 0,
+    artifact_misses: 0,
+    cached_bytes: 0,
+    uncached_bytes: 0,
+    cacheable_bytes: 0,
+});
+
+const snapshotCacheStats = (stats: SitegraphArtifactCacheStats): SitegraphArtifactCacheStats => ({ ...stats });
+
+const recordArtifactCache = (
+    stats: SitegraphArtifactCacheStats | undefined,
+    cached: boolean,
+    bytes: number
+): void => {
+    if (!stats) return;
+    const safeBytes = Math.max(0, Number(bytes) || 0);
+    stats.cacheable_bytes += safeBytes;
+    if (cached) {
+        stats.artifact_hits += 1;
+        stats.cached_bytes += safeBytes;
+    } else {
+        stats.artifact_misses += 1;
+        stats.uncached_bytes += safeBytes;
+    }
+};
 
 const publicAssetPath = (path: string): string => {
     if (/^https?:\/\//.test(path) || path.startsWith('/')) return path;
@@ -91,6 +143,8 @@ const throwIfAborted = (signal: AbortSignal): void => {
         throw new DOMException('Search cancelled', 'AbortError');
     }
 };
+
+const isAbortError = (error: unknown): boolean => error instanceof DOMException && error.name === 'AbortError';
 
 const yieldToWorker = async (): Promise<void> => {
     await new Promise(resolve => setTimeout(resolve, 0));
@@ -133,7 +187,7 @@ const scopeMatchesFilters = (
 };
 
 const shardMatchesFilters = (
-    shard: SitegraphFullShard,
+    shard: VerificationShard,
     filters: SitegraphSearchFilters,
     now: number
 ): boolean => {
@@ -233,23 +287,117 @@ const buildQueryPlan = (
 
 const loadSourceManifest = async (
     entry: SourceRegistryEntry,
-    signal: AbortSignal
+    signal: AbortSignal,
+    cacheStats?: SitegraphArtifactCacheStats
 ): Promise<SitegraphSourceManifest> => {
     const path = entry.artifact_manifest.path;
     const existing = sourceManifestCache.get(path);
-    if (existing) return existing;
+    if (existing) {
+        recordArtifactCache(cacheStats, true, entry.artifact_manifest.bytes);
+        return existing;
+    }
     const payload = await fetchJson(publicAssetPath(path), signal, 'index');
     const parsed = parseSitegraphSourceManifest(payload, path);
     sourceManifestCache.set(path, parsed);
+    recordArtifactCache(cacheStats, false, entry.artifact_manifest.bytes);
     return parsed;
 };
+
+const loadProofCatalog = async (
+    sourceManifest: SitegraphSourceManifest,
+    signal: AbortSignal,
+    cacheStats?: SitegraphArtifactCacheStats
+): Promise<SitegraphProofCatalog> => {
+    const artifact = sourceManifest.artifacts.proof_catalog;
+    if (!artifact) {
+        throw new SearchContractError(`Source manifest ${sourceManifest.source_id} is missing proof_catalog`);
+    }
+    const path = artifact.path;
+    const existing = proofCatalogCache.get(path);
+    if (existing) {
+        recordArtifactCache(cacheStats, true, artifact.bytes);
+        return existing;
+    }
+    const payload = await fetchJson(publicAssetPath(path), signal, 'index');
+    const parsed = parseSitegraphProofCatalog(payload, path);
+    if (parsed.source_id !== sourceManifest.source_id) {
+        throw new SearchContractError(`Validation failed for ${path}: proof catalog source_id does not match ${sourceManifest.source_id}`);
+    }
+    proofCatalogCache.set(path, parsed);
+    recordArtifactCache(cacheStats, false, artifact.bytes);
+    return parsed;
+};
+
+const localShardRefsFor = (ref: SitegraphLocalIndexRef): SitegraphLocalShardRef[] => {
+    const shards = ref.shards ?? [];
+    if (shards.length > 0) return shards;
+    return ref.scope.shard_ids.map(shardId => ({
+        shard_id: shardId,
+        path: '',
+        bytes: 0,
+        count: 0,
+    }));
+};
+
+const lightIndexArtifactKey = (ref: SitegraphLocalIndexRef): string => {
+    if (ref.light_index_meta && ref.light_index_packed) {
+        return `${ref.light_index_meta.path}|${ref.light_index_packed.path}`;
+    }
+    if (!ref.light_index) {
+        throw new SearchContractError(`Local index ${ref.index_id} is missing split light artifacts`);
+    }
+    return ref.light_index.path;
+};
+
+const lightIndexRuntimeBytes = (ref: SitegraphLocalIndexRef): number => {
+    if (ref.light_index_meta && ref.light_index_packed) {
+        return ref.light_index_meta.bytes + ref.light_index_packed.bytes;
+    }
+    if (!ref.light_index) {
+        throw new SearchContractError(`Local index ${ref.index_id} is missing split light artifacts`);
+    }
+    return ref.light_index.bytes;
+};
+
+const verificationShardFromFullShard = (shard: SitegraphFullShard): VerificationShard => ({
+    shard_id: shard.shard_id,
+    source_id: String(shard.source_id || ''),
+    path: shard.path,
+    sha256: shard.sha256,
+    bytes: shard.bytes,
+    count: shard.count,
+    facet_range: shard.facet_range,
+    record_type_range: shard.record_type_range,
+    section_range: shard.section_range,
+    year_range: shard.year_range,
+    hash_bucket: shard.hash_bucket,
+    filter_token_count: Number(shard.filter_token_count || 0),
+    filter_sha256: String(shard.filter_sha256 || ''),
+});
+
+const verificationShardFromProofCatalog = (shard: SitegraphProofCatalogShard): VerificationShard => ({
+    shard_id: shard.shard_id,
+    source_id: shard.source_id,
+    path: shard.path,
+    sha256: shard.sha256,
+    bytes: shard.bytes,
+    count: shard.document_count,
+    facet_range: shard.scope.facets,
+    record_type_range: shard.scope.record_types,
+    section_range: shard.scope.sections,
+    year_range: shard.scope.years,
+    hash_bucket: shard.scope.hash_bucket,
+    filter_token_count: shard.filter_contract.filter_token_count,
+    filter_sha256: shard.filter_contract.filter_sha256,
+});
 
 const loadPlanningScope = async (
     session: SitegraphRoutedSession,
     plan: SitegraphQueryPlan,
     filters: SitegraphSearchFilters,
     now: number,
-    signal: AbortSignal
+    signal: AbortSignal,
+    cacheStats: SitegraphArtifactCacheStats
 ): Promise<LoadedPlanningScope> => {
     const entries = sourceEntriesById(session);
     const sourceManifests: SitegraphSourceManifest[] = [];
@@ -257,7 +405,7 @@ const loadPlanningScope = async (
     for (const sourceId of plan.source_ids) {
         const entry = entries.get(sourceId);
         if (!entry) continue;
-        const manifest = await loadSourceManifest(entry, signal);
+        const manifest = await loadSourceManifest(entry, signal, cacheStats);
         sourceManifests.push(manifest);
         sourceManifestBytes += entry.artifact_manifest.bytes;
     }
@@ -271,11 +419,24 @@ const loadPlanningScope = async (
         if (!Number.isFinite(numeric)) return 0.2;
         return Math.max(0.2, Math.min(1.2, (numeric - 2015) / 10));
     };
+    const cacheStateForRef = (ref: SitegraphLocalIndexRef): 'cold' | 'partial' | 'warm' => {
+        const lightCached = localLightIndexCache.has(lightIndexArtifactKey(ref));
+        const bodyCached = localBodyIndexCache.has(bodyIndexArtifact(ref).path);
+        if (lightCached && bodyCached) return 'warm';
+        if (lightCached || bodyCached) return 'partial';
+        return 'cold';
+    };
+    const expectedUncachedBytesForRef = (ref: SitegraphLocalIndexRef): number => {
+        const lightBytes = localLightIndexCache.has(lightIndexArtifactKey(ref)) ? 0 : lightIndexRuntimeBytes(ref);
+        const bodyArtifact = bodyIndexArtifact(ref);
+        const bodyBytes = localBodyIndexCache.has(bodyArtifact.path) ? 0 : bodyArtifact.bytes;
+        return lightBytes + bodyBytes;
+    };
     const utilityForRef = (ref: SitegraphLocalIndexRef): number => {
         const routed = plannedIndexIds.has(ref.index_id) ? 4 : 1;
         const sourcePrior = routeSourcePriors.has(ref.scope.source_id) || plan.authority_sources.includes(ref.scope.source_id) ? 2 : 1;
         const facetPrior = routeFacetPriors.has(ref.scope.facet) ? 1.5 : 1;
-        const costKb = Math.max(1, (ref.light_index.bytes + ref.body_index.bytes) / 1024);
+        const costKb = Math.max(1, expectedUncachedBytesForRef(ref) / 1024);
         return Number((routed * sourcePrior * facetPrior * yearScore(ref.scope.year) * Math.log2(ref.doc_count + 2) / costKb).toFixed(6));
     };
     let localRefs = sourceManifests
@@ -309,11 +470,19 @@ const loadPlanningScope = async (
     }
 
     const shardPathById = new Map<string, string>();
-    const shardById = new Map<string, SitegraphFullShard>();
+    const shardBytesByPath = new Map<string, number>();
+    for (const ref of localRefs) {
+        for (const shard of localShardRefsFor(ref)) {
+            if (shard.path) {
+                shardPathById.set(shard.shard_id, shard.path);
+                shardBytesByPath.set(shard.path, shard.bytes);
+            }
+        }
+    }
     for (const sourceManifest of sourceManifests) {
         for (const shard of sourceManifest.full_shards) {
             shardPathById.set(shard.shard_id, shard.path);
-            shardById.set(shard.shard_id, shard);
+            shardBytesByPath.set(shard.path, shard.bytes);
         }
     }
 
@@ -322,10 +491,12 @@ const loadPlanningScope = async (
         localRefs,
         sourceManifestBytes,
         shardPathById,
-        shardById,
+        shardBytesByPath,
         selectedLocalIndexes: localRefs.map(ref => ({
             index_id: ref.index_id,
-            expected_bytes: ref.light_index.bytes + ref.body_index.bytes,
+            expected_bytes: lightIndexRuntimeBytes(ref) + bodyIndexArtifact(ref).bytes,
+            expected_uncached_bytes: expectedUncachedBytesForRef(ref),
+            cache_state: cacheStateForRef(ref),
             utility_score: utilityForRef(ref),
             source_id: ref.scope.source_id,
             facet: ref.scope.facet,
@@ -336,33 +507,72 @@ const loadPlanningScope = async (
 
 const loadLocalLightIndex = async (
     ref: SitegraphLocalIndexRef,
-    signal: AbortSignal
+    signal: AbortSignal,
+    cacheStats?: SitegraphArtifactCacheStats
 ): Promise<SitegraphLocalLightIndex> => {
-    const path = ref.light_index.path;
+    const path = lightIndexArtifactKey(ref);
+    const bytes = lightIndexRuntimeBytes(ref);
     const existing = localLightIndexCache.get(path);
-    if (existing) return existing;
-    const payload = await fetchJson(publicAssetPath(path), signal, 'index');
+    if (existing) {
+        recordArtifactCache(cacheStats, true, bytes);
+        return existing;
+    }
+    let payload: unknown;
+    if (ref.light_index_meta && ref.light_index_packed) {
+        payload = {
+            ...(
+                await fetchJson<Omit<SitegraphLocalLightIndex, 'terms'>>(
+                    publicAssetPath(ref.light_index_meta.path),
+                    signal,
+                    'index'
+                )
+            ),
+            terms: decodePackedImpactIndex<SitegraphImpactIndex>(
+                await fetchArrayBuffer(publicAssetPath(ref.light_index_packed.path), signal, 'index'),
+                ref.light_index_packed.path
+            ).terms,
+        };
+    } else {
+        if (!ref.light_index) {
+            throw new SearchContractError(`Local index ${ref.index_id} is missing split light artifacts`);
+        }
+        payload = await fetchJson(publicAssetPath(ref.light_index.path), signal, 'index');
+    }
     const parsed = parseSitegraphLocalLightIndex(payload, path);
     localLightIndexCache.set(path, parsed);
+    recordArtifactCache(cacheStats, false, bytes);
     return parsed;
 };
 
 const loadLocalBodyIndex = async (
     ref: SitegraphLocalIndexRef,
-    signal: AbortSignal
+    signal: AbortSignal,
+    cacheStats?: SitegraphArtifactCacheStats
 ): Promise<SitegraphLocalBodyIndex> => {
-    const path = ref.body_index.path;
+    const artifact = bodyIndexArtifact(ref);
+    const path = artifact.path;
     const existing = localBodyIndexCache.get(path);
-    if (existing) return existing;
-    const payload = await fetchJson(publicAssetPath(path), signal, 'index');
+    if (existing) {
+        recordArtifactCache(cacheStats, true, artifact.bytes);
+        return existing;
+    }
+    const payload = path.endsWith('.bin')
+        ? decodePackedLocalBodyIndex(await fetchArrayBuffer(publicAssetPath(path), signal, 'index'), path)
+        : await fetchJson(publicAssetPath(path), signal, 'index');
     const parsed = parseSitegraphLocalBodyIndex(payload, path);
     localBodyIndexCache.set(path, parsed);
+    recordArtifactCache(cacheStats, false, artifact.bytes);
     return parsed;
+};
+
+const bodyIndexArtifact = (ref: SitegraphLocalIndexRef): SitegraphLocalIndexRef['body_index'] => {
+    return ref.body_index_packed ?? ref.body_index;
 };
 
 const loadShardFilter = async (
     sourceManifest: SitegraphSourceManifest,
-    signal: AbortSignal
+    signal: AbortSignal,
+    cacheStats?: SitegraphArtifactCacheStats
 ): Promise<ShardFilterMap> => {
     const artifact = sourceManifest.artifacts.shard_filter;
     if (!artifact) {
@@ -370,22 +580,35 @@ const loadShardFilter = async (
     }
     const path = artifact.path;
     const existing = shardFilterCache.get(path);
-    if (existing) return existing;
+    if (existing) {
+        recordArtifactCache(cacheStats, true, artifact.bytes);
+        return existing;
+    }
     const payload = await fetchJson(publicAssetPath(path), signal, 'index');
     if (!payload || typeof payload !== 'object' || Array.isArray(payload)) {
         throw new SearchContractError(`Validation failed for ${path}: shard_filter must be an object`);
     }
     shardFilterCache.set(path, payload as ShardFilterMap);
+    recordArtifactCache(cacheStats, false, artifact.bytes);
     return payload as ShardFilterMap;
 };
 
-const loadShard = (path: string, signal: AbortSignal): Promise<SitegraphFullDocument[]> => {
+const loadShard = (
+    path: string,
+    signal: AbortSignal,
+    cacheStats?: SitegraphArtifactCacheStats,
+    bytes = 0
+): Promise<SitegraphFullDocument[]> => {
     const existing = shardCache.get(path);
-    if (existing) return Promise.resolve(existing);
+    if (existing) {
+        recordArtifactCache(cacheStats, true, bytes);
+        return Promise.resolve(existing);
+    }
     return fetchJson(publicAssetPath(path), signal, 'shard')
         .then(payload => {
             const documents = parseSitegraphFullDocuments(payload, path);
             shardCache.set(path, documents);
+            recordArtifactCache(cacheStats, false, bytes);
             return documents;
         });
 };
@@ -559,12 +782,14 @@ const loadShardBatch = async (
     paths: string[],
     signal: AbortSignal,
     loadedShardPaths: Set<string>,
-    fullDocsByIndex: Map<number, SitegraphFullDocument>
+    fullDocsByIndex: Map<number, SitegraphFullDocument>,
+    shardBytesByPath: Map<string, number>,
+    cacheStats: SitegraphArtifactCacheStats
 ): Promise<void> => {
     for (let index = 0; index < paths.length; index += SHARD_BATCH_SIZE) {
         throwIfAborted(signal);
         const batch = paths.slice(index, index + SHARD_BATCH_SIZE);
-        const shardResults = await Promise.all(batch.map(path => loadShard(path, signal)));
+        const shardResults = await Promise.all(batch.map(path => loadShard(path, signal, cacheStats, shardBytesByPath.get(path) || 0)));
         shardResults.forEach((documents, batchIndex) => {
             const path = batch[batchIndex];
             if (path) loadedShardPaths.add(path);
@@ -638,7 +863,8 @@ const coverageFor = (
     usedBodyIndex: boolean,
     exhaustiveComplete: boolean,
     scoped: boolean,
-    ledgerEntries: SitegraphProofLedgerEntry[] | null = null
+    ledgerEntries: SitegraphProofLedgerEntry[] | null = null,
+    cacheStats: SitegraphArtifactCacheStats = createCacheStats()
 ): SitegraphSearchCoverage => {
     const ledger = proofLedgerSummary(ledgerEntries, {
         totalShards,
@@ -646,6 +872,7 @@ const coverageFor = (
         provedNoMatchShards,
         exhaustiveComplete,
     });
+    const cache = snapshotCacheStats(cacheStats);
     return {
         phase,
         coverage_state: phase,
@@ -661,12 +888,15 @@ const coverageFor = (
         searched_documents: searchedDocuments,
         total_documents: totalDocuments,
         loaded_bytes: loadedBytesFor(session, localIndexBytes, hydratedShardBytes, filterBytes),
+        uncached_loaded_bytes: cache.uncached_bytes,
+        cached_artifact_bytes: cache.cached_bytes,
         first_screen_bytes: firstScreenBytes(session),
         local_index_bytes: localIndexBytes,
         hydrated_shard_bytes: hydratedShardBytes,
         used_body_index: usedBodyIndex,
         exhaustive_complete: exhaustiveComplete && ledger.complete,
         proof_ledger: ledger,
+        cache,
     };
 };
 
@@ -693,6 +923,9 @@ const statsFor = (
     resultCount: resultMap.size,
     localIndexBytes: coverage.local_index_bytes,
     hydratedShardBytes: coverage.hydrated_shard_bytes,
+    uncachedLoadedBytes: coverage.uncached_loaded_bytes,
+    cachedArtifactBytes: coverage.cached_artifact_bytes,
+    cache: coverage.cache,
     fallbacks: {
         localMetaFallbackDocuments: telemetry.localMetaFallbackDocIndices.size,
         snippetFallbackResults: Array.from(resultMap.values()).filter(result => result.match_snippet?.fallback === true).length,
@@ -739,6 +972,8 @@ const hydrateCandidatePhase = async (
     signal: AbortSignal,
     loadedShardPaths: Set<string>,
     fullDocsByIndex: Map<number, SitegraphFullDocument>,
+    shardBytesByPath: Map<string, number>,
+    cacheStats: SitegraphArtifactCacheStats,
     candidateLimit: number,
     maxShardLoads: number,
     matchPhrases: string[],
@@ -747,7 +982,7 @@ const hydrateCandidatePhase = async (
 ): Promise<{ ranked: RankedSitegraphDocument[]; candidateCount: number }> => {
     const candidates = candidateShardPaths(docsByIndex, scores, shardPathById, candidateLimit, maxShardLoads, filters, now);
     const pathsToLoad = candidates.paths.filter(path => !loadedShardPaths.has(path));
-    await loadShardBatch(pathsToLoad, signal, loadedShardPaths, fullDocsByIndex);
+    await loadShardBatch(pathsToLoad, signal, loadedShardPaths, fullDocsByIndex, shardBytesByPath, cacheStats);
     return {
         ranked: rankHydratedCandidates(candidates.indices, fullDocsByIndex, scores, query, terms, matchPhrases, filters, now),
         candidateCount: candidates.indices.length,
@@ -841,7 +1076,7 @@ const proofLedgerSummary = (
 };
 
 const buildProofLedger = (
-    shards: SitegraphFullShard[],
+    shards: VerificationShard[],
     filters: SitegraphSearchFilters,
     now: number
 ): SitegraphProofLedgerEntry[] => shards.map(shard => {
@@ -904,6 +1139,7 @@ export const searchSitegraphProgressively = async (
     const loadedLocalIndexIds = new Set<string>();
     const docsByIndex = new Map<number, SitegraphDocMeta>();
     const fullDocsByIndex = new Map<number, SitegraphFullDocument>();
+    const cacheStats = createCacheStats();
     const telemetry: SearchTelemetry = {
         localMetaFallbackDocIndices: new Set<number>(),
         fullScanMatchDocIndices: new Set<number>(),
@@ -955,21 +1191,23 @@ export const searchSitegraphProgressively = async (
         0,
         false,
         false,
-        scoped
+        scoped,
+        null,
+        cacheStats
     );
     emitResults('plan_started', startedCoverage, false);
     throwIfAborted(signal);
 
     if (trimmed.length < 2) {
         const completePhase = scoped ? 'scoped_exhaustive_complete' : 'global_exhaustive_complete';
-        const completeCoverage = coverageFor(session, completePhase, FULL_SCAN_FIELDS, 0, 0, 0, totalScopeShards, totalScopeDocuments, 0, 0, 0, false, true, scoped);
+        const completeCoverage = coverageFor(session, completePhase, FULL_SCAN_FIELDS, 0, 0, 0, totalScopeShards, totalScopeDocuments, 0, 0, 0, false, true, scoped, null, cacheStats);
         emitResults(completePhase, completeCoverage, true);
         return;
     }
 
-    const planningScope = await loadPlanningScope(session, plan, filters, now, signal);
+    const planningScope = await loadPlanningScope(session, plan, filters, now, signal, cacheStats);
     plan.selected_local_indexes = planningScope.selectedLocalIndexes;
-    plan.estimated_cost_bytes = planningScope.selectedLocalIndexes.reduce((sum, item) => sum + item.expected_bytes, plan.estimated_cost_bytes);
+    plan.estimated_cost_bytes = planningScope.selectedLocalIndexes.reduce((sum, item) => sum + item.expected_uncached_bytes, plan.estimated_cost_bytes);
     localIndexBytes += planningScope.sourceManifestBytes;
     const localIndexStartedCoverage = coverageFor(
         session,
@@ -985,14 +1223,16 @@ export const searchSitegraphProgressively = async (
         filterBytes,
         false,
         false,
-        scoped
+        scoped,
+        null,
+        cacheStats
     );
     emitResults('local_index_started', localIndexStartedCoverage, false);
 
-    const localLightIndexes = await Promise.all(planningScope.localRefs.map(ref => loadLocalLightIndex(ref, signal)));
+    const localLightIndexes = await Promise.all(planningScope.localRefs.map(ref => loadLocalLightIndex(ref, signal, cacheStats)));
     planningScope.localRefs.forEach(ref => {
         loadedLocalIndexIds.add(ref.index_id);
-        localIndexBytes += ref.light_index.bytes;
+        localIndexBytes += lightIndexRuntimeBytes(ref);
     });
     for (const localIndex of localLightIndexes) {
         for (const document of localIndex.documents) {
@@ -1013,6 +1253,8 @@ export const searchSitegraphProgressively = async (
         signal,
         loadedShardPaths,
         fullDocsByIndex,
+        planningScope.shardBytesByPath,
+        cacheStats,
         Math.min(candidateLimit, 48),
         Math.min(maxShardLoads, QUICK_MAX_SHARD_LOADS),
         matchPhrases,
@@ -1021,8 +1263,7 @@ export const searchSitegraphProgressively = async (
     );
     candidateCount = quick.candidateCount;
     for (const path of loadedShardPaths) {
-        const shard = Array.from(planningScope.shardById.values()).find(item => item.path === path);
-        hydratedShardBytes += shard?.bytes || 0;
+        hydratedShardBytes += planningScope.shardBytesByPath.get(path) || 0;
     }
     mergeRankedResults(resultMap, quick.ranked);
     const firstTrustedCoverage = coverageFor(
@@ -1039,7 +1280,9 @@ export const searchSitegraphProgressively = async (
         filterBytes,
         false,
         false,
-        scoped
+        scoped,
+        null,
+        cacheStats
     );
     emitResults('first_trusted_results', firstTrustedCoverage, true);
 
@@ -1057,13 +1300,15 @@ export const searchSitegraphProgressively = async (
         filterBytes,
         false,
         false,
-        scoped
+        scoped,
+        null,
+        cacheStats
     );
     emitResults('body_index_started', bodyStartedCoverage, false);
     throwIfAborted(signal);
-    const bodyIndexes = await Promise.all(planningScope.localRefs.map(ref => loadLocalBodyIndex(ref, signal)));
+    const bodyIndexes = await Promise.all(planningScope.localRefs.map(ref => loadLocalBodyIndex(ref, signal, cacheStats)));
     planningScope.localRefs.forEach(ref => {
-        localIndexBytes += ref.body_index.bytes;
+        localIndexBytes += bodyIndexArtifact(ref).bytes;
     });
     usedBodyIndex = true;
     for (const bodyIndex of bodyIndexes) {
@@ -1082,6 +1327,8 @@ export const searchSitegraphProgressively = async (
         signal,
         loadedShardPaths,
         fullDocsByIndex,
+        planningScope.shardBytesByPath,
+        cacheStats,
         Math.min(candidateLimit, 96),
         Math.min(maxShardLoads, BODY_MAX_SHARD_LOADS),
         matchPhrases,
@@ -1091,8 +1338,7 @@ export const searchSitegraphProgressively = async (
     candidateCount = body.candidateCount;
     for (const path of loadedShardPaths) {
         if (beforeBodyShardPaths.has(path)) continue;
-        const shard = Array.from(planningScope.shardById.values()).find(item => item.path === path);
-        hydratedShardBytes += shard?.bytes || 0;
+        hydratedShardBytes += planningScope.shardBytesByPath.get(path) || 0;
     }
     mergeRankedResults(resultMap, body.ranked);
 
@@ -1106,6 +1352,8 @@ export const searchSitegraphProgressively = async (
         signal,
         loadedShardPaths,
         fullDocsByIndex,
+        planningScope.shardBytesByPath,
+        cacheStats,
         candidateLimit,
         Math.min(maxShardLoads, HYDRATE_MAX_SHARD_LOADS),
         matchPhrases,
@@ -1115,8 +1363,7 @@ export const searchSitegraphProgressively = async (
     candidateCount = hydrate.candidateCount;
     for (const path of loadedShardPaths) {
         if (beforeHydrateShardPaths.has(path)) continue;
-        const shard = Array.from(planningScope.shardById.values()).find(item => item.path === path);
-        hydratedShardBytes += shard?.bytes || 0;
+        hydratedShardBytes += planningScope.shardBytesByPath.get(path) || 0;
     }
     mergeRankedResults(resultMap, hydrate.ranked);
     const hydratedCoverage = coverageFor(
@@ -1133,22 +1380,30 @@ export const searchSitegraphProgressively = async (
         filterBytes,
         usedBodyIndex,
         false,
-        scoped
+        scoped,
+        null,
+        cacheStats
     );
     emitResults('top_results_hydrated', hydratedCoverage, true);
 
     const verificationEntries = sourceEntriesById(session);
     const verificationManifests: SitegraphSourceManifest[] = [];
+    const allVerificationShards: VerificationShard[] = [];
     for (const sourceId of plan.verification_source_ids) {
         const entry = verificationEntries.get(sourceId);
         if (!entry) continue;
-        const sourceManifest = await loadSourceManifest(entry, signal);
+        const sourceManifest = await loadSourceManifest(entry, signal, cacheStats);
         verificationManifests.push(sourceManifest);
         if (!planningScope.sourceManifests.some(item => item.source_id === sourceManifest.source_id)) {
             localIndexBytes += entry.artifact_manifest.bytes;
         }
+        const proofCatalog = await loadProofCatalog(sourceManifest, signal, cacheStats);
+        filterBytes += sourceManifest.artifacts.proof_catalog?.bytes || 0;
+        allVerificationShards.push(...proofCatalog.shards.map(verificationShardFromProofCatalog));
     }
-    const allVerificationShards = verificationManifests.flatMap(sourceManifest => sourceManifest.full_shards);
+    if (allVerificationShards.length === 0) {
+        allVerificationShards.push(...verificationManifests.flatMap(sourceManifest => sourceManifest.full_shards.map(verificationShardFromFullShard)));
+    }
     proofLedgerEntries = buildProofLedger(allVerificationShards, filters, now);
     const inScopeShards = allVerificationShards
         .filter(shard => proofLedgerEntries?.find(entry => entry.shard_id === shard.shard_id)?.state === 'pending');
@@ -1169,13 +1424,14 @@ export const searchSitegraphProgressively = async (
         usedBodyIndex,
         false,
         scoped,
-        proofLedgerEntries
+        proofLedgerEntries,
+        cacheStats
     );
     emitResults('verification_started', verificationStartedCoverage, false);
 
     const shardFiltersBySource = new Map<string, ShardFilterMap>();
     for (const sourceManifest of verificationManifests) {
-        const filter = await loadShardFilter(sourceManifest, signal);
+        const filter = await loadShardFilter(sourceManifest, signal, cacheStats);
         shardFiltersBySource.set(sourceManifest.source_id, filter);
         filterBytes += sourceManifest.artifacts.shard_filter?.bytes || 0;
     }
@@ -1195,11 +1451,22 @@ export const searchSitegraphProgressively = async (
             }
             return !canSkip;
         });
-        const shardResults = await Promise.all(scanBatch.map(shard => loadShard(shard.path, signal)));
+        const shardResults = await Promise.allSettled(scanBatch.map(shard => loadShard(shard.path, signal, cacheStats, shard.bytes)));
         const verifyMatches: RankedSitegraphDocument[] = [];
-        shardResults.forEach((documents, batchIndex) => {
+        let firstShardError: unknown = null;
+        shardResults.forEach((result, batchIndex) => {
             const shard = scanBatch[batchIndex];
             if (!shard) return;
+            if (result.status === 'rejected') {
+                if (isAbortError(result.reason)) {
+                    firstShardError = result.reason;
+                    return;
+                }
+                firstShardError ??= result.reason;
+                if (proofLedgerEntries) setLedgerState(proofLedgerEntries, shard.shard_id, 'failed', result.reason instanceof Error ? result.reason.message : 'failed to load full shard for completion proof');
+                return;
+            }
+            const documents = result.value;
             const firstLoad = !loadedShardPaths.has(shard.path);
             loadedShardPaths.add(shard.path);
             if (firstLoad) hydratedShardBytes += shardBytesByPath.get(shard.path) || 0;
@@ -1216,6 +1483,30 @@ export const searchSitegraphProgressively = async (
             }
         });
 
+        if (firstShardError) {
+            if (isAbortError(firstShardError)) throw firstShardError;
+            const failedCoverage = coverageFor(
+                session,
+                'error',
+                FULL_SCAN_FIELDS,
+                provedNoMatchShards,
+                scannedShards,
+                searchedDocuments,
+                totalScopeShards,
+                totalScopeDocuments,
+                localIndexBytes,
+                hydratedShardBytes,
+                filterBytes,
+                usedBodyIndex,
+                false,
+                scoped,
+                proofLedgerEntries,
+                cacheStats
+            );
+            emitResults('error', failedCoverage, true);
+            throw firstShardError;
+        }
+
         const progressCoverage = coverageFor(
             session,
             'partial_verified',
@@ -1231,7 +1522,8 @@ export const searchSitegraphProgressively = async (
             usedBodyIndex,
             false,
             scoped,
-            proofLedgerEntries
+            proofLedgerEntries,
+            cacheStats
         );
         if (mergeRankedResults(resultMap, verifyMatches) > 0) {
             emitResults('partial_verified', progressCoverage, true);
@@ -1263,7 +1555,8 @@ export const searchSitegraphProgressively = async (
         usedBodyIndex,
         ledgerComplete,
         scoped,
-        proofLedgerEntries
+        proofLedgerEntries,
+        cacheStats
     );
     emitResults(completePhase, completeCoverage, true);
 };

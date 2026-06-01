@@ -31,3 +31,17 @@ export const fetchJson = async <T = unknown>(
         throw new Error(`数据文件不是有效 JSON: ${url}`);
     }
 };
+
+export const fetchArrayBuffer = async (
+    url: string,
+    signal?: AbortSignal,
+    resourceType: FetchResourceType = 'default'
+): Promise<ArrayBuffer> => {
+    const response = await fetch(url, { cache: cacheModeFor(resourceType), signal });
+
+    if (!response.ok) {
+        throw new Error(`数据请求失败: ${url} HTTP ${response.status}`);
+    }
+
+    return response.arrayBuffer();
+};

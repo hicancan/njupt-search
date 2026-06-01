@@ -8,7 +8,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from .sitegraph_artifact_io import artifact_entry, json_bytes, write_hashed_json, write_json
+from .sitegraph_artifact_io import artifact_entry, json_bytes, write_hashed_bytes, write_hashed_json, write_json
+from .sitegraph_binary_index import pack_impact_index
 from .sitegraph_documents import section_label, site_display_name
 from .sitegraph_index_postings import (
     QUERY_SYNONYMS,
@@ -35,8 +36,10 @@ PUBLIC_INDEX_DIR = PUBLIC_ROOT / "generated" / "collections" / COLLECTION_ID
 PUBLIC_SITEGRAPH_DIR = PUBLIC_INDEX_DIR / "sitegraph"
 PUBLIC_ARTIFACT_DIR = PUBLIC_SITEGRAPH_DIR / "artifacts"
 PUBLIC_SOURCE_MANIFEST_DIR = PUBLIC_SITEGRAPH_DIR / "source_manifests"
-PUBLIC_LOCAL_LIGHT_DIR = PUBLIC_SITEGRAPH_DIR / "local_impact_light_indexes"
+PUBLIC_LOCAL_LIGHT_META_DIR = PUBLIC_SITEGRAPH_DIR / "local_impact_light_meta_indexes"
+PUBLIC_LOCAL_LIGHT_PACKED_DIR = PUBLIC_SITEGRAPH_DIR / "local_impact_light_packed_indexes"
 PUBLIC_LOCAL_BODY_DIR = PUBLIC_SITEGRAPH_DIR / "local_impact_body_indexes"
+PUBLIC_LOCAL_BODY_PACKED_DIR = PUBLIC_SITEGRAPH_DIR / "local_impact_body_packed_indexes"
 PUBLIC_PROOF_CATALOG_DIR = PUBLIC_SITEGRAPH_DIR / "proof_catalogs"
 PUBLIC_SHARD_FILTER_DIR = PUBLIC_SITEGRAPH_DIR / "shard_filters"
 PUBLIC_FULL_SHARD_DIR = PUBLIC_SITEGRAPH_DIR / "full_shards"
@@ -115,10 +118,29 @@ SOURCE_AUTHORITY: dict[str, dict[str, Any]] = {
     },
 }
 
+ATTACHMENT_EVIDENCE_LEVELS = ("metadata_only", "filename_only", "text_extracted", "snippet", "full_content")
+
+
+def attachment_evidence_coverage(attachments: list[dict[str, Any]]) -> dict[str, int]:
+    coverage = {level: 0 for level in ATTACHMENT_EVIDENCE_LEVELS}
+    for attachment in attachments:
+        available = attachment.get("available_evidence")
+        if isinstance(available, list) and available:
+            for level in available:
+                if level in coverage:
+                    coverage[level] += 1
+        else:
+            if attachment.get("metadata_only") is True:
+                coverage["metadata_only"] += 1
+            level = str(attachment.get("evidence_level") or "metadata_only")
+            coverage[level if level in coverage else "metadata_only"] += 1
+    return {"total": len(attachments), **coverage}
+
 
 def configure_collection_output(collection_id: str = COLLECTION_ID, output_dir: Path | None = None) -> None:
     global COLLECTION_ID, PUBLIC_INDEX_DIR, PUBLIC_SITEGRAPH_DIR, PUBLIC_ARTIFACT_DIR
-    global PUBLIC_SOURCE_MANIFEST_DIR, PUBLIC_LOCAL_LIGHT_DIR, PUBLIC_LOCAL_BODY_DIR
+    global PUBLIC_SOURCE_MANIFEST_DIR, PUBLIC_LOCAL_LIGHT_META_DIR, PUBLIC_LOCAL_LIGHT_PACKED_DIR
+    global PUBLIC_LOCAL_BODY_DIR, PUBLIC_LOCAL_BODY_PACKED_DIR
     global PUBLIC_PROOF_CATALOG_DIR, PUBLIC_SHARD_FILTER_DIR, PUBLIC_FULL_SHARD_DIR, PUBLIC_SHARD_DIR
     global PUBLIC_ATTACHMENT_META_DIR, PUBLIC_ATTACHMENT_FILENAME_DIR, PUBLIC_ATTACHMENT_TEXT_DIR
     global PUBLIC_SECTION_DIR, PUBLIC_EXTERNAL_DIR
@@ -136,8 +158,10 @@ def configure_collection_output(collection_id: str = COLLECTION_ID, output_dir: 
     PUBLIC_SITEGRAPH_DIR = PUBLIC_INDEX_DIR / "sitegraph"
     PUBLIC_ARTIFACT_DIR = PUBLIC_SITEGRAPH_DIR / "artifacts"
     PUBLIC_SOURCE_MANIFEST_DIR = PUBLIC_SITEGRAPH_DIR / "source_manifests"
-    PUBLIC_LOCAL_LIGHT_DIR = PUBLIC_SITEGRAPH_DIR / "local_impact_light_indexes"
+    PUBLIC_LOCAL_LIGHT_META_DIR = PUBLIC_SITEGRAPH_DIR / "local_impact_light_meta_indexes"
+    PUBLIC_LOCAL_LIGHT_PACKED_DIR = PUBLIC_SITEGRAPH_DIR / "local_impact_light_packed_indexes"
     PUBLIC_LOCAL_BODY_DIR = PUBLIC_SITEGRAPH_DIR / "local_impact_body_indexes"
+    PUBLIC_LOCAL_BODY_PACKED_DIR = PUBLIC_SITEGRAPH_DIR / "local_impact_body_packed_indexes"
     PUBLIC_PROOF_CATALOG_DIR = PUBLIC_SITEGRAPH_DIR / "proof_catalogs"
     PUBLIC_SHARD_FILTER_DIR = PUBLIC_SITEGRAPH_DIR / "shard_filters"
     PUBLIC_FULL_SHARD_DIR = PUBLIC_SITEGRAPH_DIR / "full_shards"
@@ -198,6 +222,23 @@ def local_doc_meta(document: dict[str, Any], shard_by_id: dict[str, dict[str, An
     return payload
 
 
+def local_shard_refs(shard_ids: list[str], shard_by_id: dict[str, dict[str, Any]]) -> list[dict[str, Any]]:
+    refs: list[dict[str, Any]] = []
+    for shard_id in shard_ids:
+        shard = shard_by_id.get(shard_id)
+        if not shard:
+            continue
+        refs.append(
+            {
+                "shard_id": shard_id,
+                "path": shard["path"],
+                "bytes": shard["bytes"],
+                "count": shard["count"],
+            }
+        )
+    return refs
+
+
 def source_counts(documents: list[dict[str, Any]], source_id: str, field: str) -> dict[str, int]:
     counts = Counter(str(document.get(field) or "unknown") for document in documents if source_id_for_document(document) == source_id)
     return dict(sorted(counts.items()))
@@ -244,6 +285,11 @@ def attachment_filename_index(attachments: list[dict[str, Any]]) -> list[dict[st
             "url": item.get("url"),
             "section": item.get("section"),
             "nav_path": item.get("nav_path") or [],
+            "metadata_only": item.get("metadata_only") is True,
+            "evidence_level": item.get("evidence_level") or "filename_only",
+            "text_extracted": item.get("text_extracted") is True,
+            "snippet_available": item.get("snippet_available") is True,
+            "full_content_available": item.get("full_content_available") is True,
         }
         for item in attachments
     ]
@@ -400,14 +446,33 @@ def build_local_indexes(
             "version": "sitegraph-local-body-impact-v2",
             "scope": scope,
         }
-        light_artifact = write_hashed_json(PUBLIC_ROOT, PUBLIC_LOCAL_LIGHT_DIR, f"local_impact_light.{index_id}", light_payload, compact=True)
+        light_meta_payload = {key: value for key, value in light_payload.items() if key != "terms"}
+        light_terms_payload = {key: value for key, value in light_payload.items() if key != "documents"}
+        light_meta_artifact = write_hashed_json(PUBLIC_ROOT, PUBLIC_LOCAL_LIGHT_META_DIR, f"local_impact_light_meta.{index_id}", light_meta_payload, compact=True)
+        light_packed_artifact = write_hashed_bytes(
+            PUBLIC_ROOT,
+            PUBLIC_LOCAL_LIGHT_PACKED_DIR,
+            f"local_impact_light.{index_id}",
+            pack_impact_index(light_terms_payload),
+            extension="bin",
+        )
         body_artifact = write_hashed_json(PUBLIC_ROOT, PUBLIC_LOCAL_BODY_DIR, f"local_impact_body.{index_id}", body_payload, compact=True)
+        body_packed_artifact = write_hashed_bytes(
+            PUBLIC_ROOT,
+            PUBLIC_LOCAL_BODY_PACKED_DIR,
+            f"local_impact_body.{index_id}",
+            pack_impact_index(body_payload),
+            extension="bin",
+        )
         ref = {
             "index_id": index_id,
             "scope": scope,
             "doc_count": len(sorted_docs),
-            "light_index": artifact_entry(light_artifact, role="local_impact_light_index", count=len(sorted_docs), load="query_planned"),
+            "shards": local_shard_refs(shard_ids, shard_by_id),
+            "light_index_meta": artifact_entry(light_meta_artifact, role="local_impact_light_index_meta", count=len(sorted_docs), load="query_planned"),
+            "light_index_packed": artifact_entry(light_packed_artifact, role="local_impact_light_index_packed", load="query_planned"),
             "body_index": artifact_entry(body_artifact, role="local_impact_body_index", load="query_deepening"),
+            "body_index_packed": artifact_entry(body_packed_artifact, role="local_impact_body_index_packed", load="query_deepening"),
         }
         local_refs.append(ref)
         refs_by_source[source_id].append(ref)
@@ -448,6 +513,7 @@ def build_source_manifests(
             if shard_id in source_shard_ids
         }
         attachment_meta = attachments_by_source.get(source_id, [])
+        attachment_coverage = attachment_evidence_coverage(attachment_meta)
         proof_catalog = {
             "version": "sitegraph-proof-ledger-catalog-v2",
             "source_id": source_id,
@@ -501,17 +567,17 @@ def build_source_manifests(
         section_artifact = write_hashed_json(PUBLIC_ROOT, PUBLIC_SECTION_DIR, f"section_index.{source_id}", sections_by_source.get(source_id, []), compact=True)
         external_artifact = write_hashed_json(PUBLIC_ROOT, PUBLIC_EXTERNAL_DIR, f"external_index.{source_id}", external_by_source.get(source_id, []), compact=True)
         payload = {
-            "version": "sitegraph-source-manifest-proof-ledger-v2",
+            "version": "sitegraph-source-manifest-proof-ledger-v3",
             "source_id": source_id,
             "display_name": site_display_name(package["site"]),
             "domain": source_domain(package),
             "doc_count": len(source_docs),
             "attachment_count": len(attachment_meta),
+            "attachment_evidence_coverage": attachment_coverage,
             "facet_counts": source_counts(documents, source_id, "facet"),
             "record_counts": source_counts(documents, source_id, "record_type"),
             "year_counts": Counter(shard_year(document) for document in source_docs),
             "local_indexes": local_refs_by_source.get(source_id, []),
-            "full_shards": source_shards,
             "artifacts": {
                 "proof_catalog": artifact_entry(proof_catalog_artifact, role="proof_catalog", count=len(source_shards), load="verify"),
                 "shard_filter": artifact_entry(shard_filter_artifact, role="shard_filter", count=len(source_filter), load="verify"),
@@ -542,6 +608,7 @@ def build_source_registry(
         authority = SOURCE_AUTHORITY.get(source_id, {})
         source_docs = [document for document in documents if source_id_for_document(document) == source_id]
         source_attachments = [item for item in built["attachment_index"] if str(item.get("source_id") or "") == source_id]
+        attachment_coverage = attachment_evidence_coverage(source_attachments)
         quality = package.get("manifest", {}).get("quality") if isinstance(package.get("manifest"), dict) else {}
         sources.append(
             {
@@ -556,6 +623,7 @@ def build_source_registry(
                 "artifact_manifest": source_manifest_artifacts[source_id],
                 "doc_count": len(source_docs),
                 "attachment_count": len(source_attachments),
+                "attachment_evidence_coverage": attachment_coverage,
                 "updated_at": clean_text(package.get("manifest", {}).get("generated_at")) or None,
                 "quality_status": "ok" if isinstance(quality, dict) and quality.get("errors", 0) == 0 else "degraded",
                 "coverage_status": "audited" if isinstance(quality, dict) and quality.get("all_discovered_urls_have_outcomes") is True else "partial",
@@ -585,8 +653,10 @@ def public_artifact_dirs() -> tuple[Path, ...]:
     return (
         PUBLIC_ARTIFACT_DIR,
         PUBLIC_SOURCE_MANIFEST_DIR,
-        PUBLIC_LOCAL_LIGHT_DIR,
+        PUBLIC_LOCAL_LIGHT_META_DIR,
+        PUBLIC_LOCAL_LIGHT_PACKED_DIR,
         PUBLIC_LOCAL_BODY_DIR,
+        PUBLIC_LOCAL_BODY_PACKED_DIR,
         PUBLIC_PROOF_CATALOG_DIR,
         PUBLIC_SHARD_FILTER_DIR,
         PUBLIC_FULL_SHARD_DIR,
@@ -596,6 +666,24 @@ def public_artifact_dirs() -> tuple[Path, ...]:
         PUBLIC_SECTION_DIR,
         PUBLIC_EXTERNAL_DIR,
     )
+
+
+def local_light_runtime_bytes(ref: dict[str, Any]) -> int:
+    meta = ref.get("light_index_meta") if isinstance(ref.get("light_index_meta"), dict) else None
+    packed = ref.get("light_index_packed") if isinstance(ref.get("light_index_packed"), dict) else None
+    if meta is not None and packed is not None:
+        return int(meta.get("bytes") or 0) + int(packed.get("bytes") or 0)
+    fallback = ref.get("light_index") if isinstance(ref.get("light_index"), dict) else None
+    if fallback is not None:
+        return int(fallback.get("bytes") or 0)
+    raise ValueError(f"local index missing light artifacts: {ref.get('index_id')}")
+
+
+def local_body_runtime_bytes(ref: dict[str, Any]) -> int:
+    packed = ref.get("body_index_packed") if isinstance(ref.get("body_index_packed"), dict) else None
+    if packed is not None:
+        return int(packed.get("bytes") or 0)
+    return int(ref["body_index"]["bytes"])
 
 
 def write_public_index(packages: list[dict[str, Any]], built: dict[str, Any], *, shard_size: int) -> dict[str, Any]:
@@ -629,7 +717,7 @@ def write_public_index(packages: list[dict[str, Any]], built: dict[str, Any], *,
     )
     source_registry = build_source_registry(packages, documents, built, source_manifest_artifacts)
     local_index_costs = {
-        ref["index_id"]: int(ref["light_index"]["bytes"]) + int(ref["body_index"]["bytes"])
+        ref["index_id"]: local_light_runtime_bytes(ref) + local_body_runtime_bytes(ref)
         for ref in local_refs
     }
     global_query_directory = build_global_query_directory(documents, query_aliases, local_index_costs)
@@ -681,6 +769,7 @@ def write_public_index(packages: list[dict[str, Any]], built: dict[str, Any], *,
     generated_at = now_iso()
     upstream_generated_at = latest_upstream_generated_at(packages) or generated_at
     first_screen_artifacts = ["source_registry", "global_query_directory", "query_aliases"]
+    global_attachment_coverage = attachment_evidence_coverage(built["attachment_index"])
 
     def make_manifest() -> dict[str, Any]:
         return {
@@ -719,8 +808,10 @@ def write_public_index(packages: list[dict[str, Any]], built: dict[str, Any], *,
                     "global_query_directory",
                     "query_aliases",
                     "source_manifest",
-                    "local_impact_light_index",
+                    "local_impact_light_index_meta",
+                    "local_impact_light_index_packed",
                     "local_impact_body_index",
+                    "local_impact_body_index_packed",
                     "proof_catalog",
                     "shard_filter",
                     "full_shards",
@@ -744,6 +835,7 @@ def write_public_index(packages: list[dict[str, Any]], built: dict[str, Any], *,
                     "error",
                 ],
                 "coverage_fields": ["title", "section", "nav_path", "summary", "content", "attachments", "url"],
+                "attachment_evidence_levels": list(ATTACHMENT_EVIDENCE_LEVELS),
                 "proof": {
                     "indexed_fields": ["title", "section", "nav_path", "tags", "attachments", "external", "system", "summary", "content"],
                     "full_scan_fields": ["title", "section", "nav_path", "summary", "content", "attachments", "url"],
@@ -776,6 +868,8 @@ def write_public_index(packages: list[dict[str, Any]], built: dict[str, Any], *,
                 "upstream_generated_at": upstream_generated_at,
                 "detail_page_records": record_counts.get("detail", 0),
                 "attachment_metadata_records": len(built["attachment_index"]),
+                "attachment_evidence_policy": "metadata_and_filename_only_no_extracted_attachment_content",
+                "attachment_evidence_coverage": global_attachment_coverage,
                 "direct_attachment_records": record_counts.get("attachment", 0),
                 "external_link_records": len(built["external_index"]),
                 "external_document_records": record_counts.get("external", 0),
@@ -786,7 +880,11 @@ def write_public_index(packages: list[dict[str, Any]], built: dict[str, Any], *,
                 "source_manifest_summaries": {
                     source_id: {
                         "doc_count": payload["doc_count"],
-                        "shard_count": len(payload["full_shards"]),
+                        "attachment_count": payload["attachment_count"],
+                        "attachment_filename_only": payload["attachment_evidence_coverage"]["filename_only"],
+                        "attachment_text_extracted": payload["attachment_evidence_coverage"]["text_extracted"],
+                        "attachment_full_content": payload["attachment_evidence_coverage"]["full_content"],
+                        "shard_count": int(payload["artifacts"]["proof_catalog"]["count"]),
                         "local_index_count": len(payload["local_indexes"]),
                     }
                     for source_id, payload in source_manifest_payloads.items()
@@ -814,10 +912,16 @@ def write_public_index(packages: list[dict[str, Any]], built: dict[str, Any], *,
         "global_query_directory_bytes": artifacts["global_query_directory"]["bytes"],
         "source_registry_bytes": artifacts["source_registry"]["bytes"],
         "query_aliases_bytes": artifacts["query_aliases"]["bytes"],
-        "local_impact_light_index_total_bytes": sum(int(ref["light_index"]["bytes"]) for ref in local_refs),
+        "local_impact_light_index_total_bytes": sum(int((ref.get("light_index") or {}).get("bytes") or 0) for ref in local_refs),
+        "local_impact_light_index_meta_total_bytes": sum(int(ref["light_index_meta"]["bytes"]) for ref in local_refs),
+        "local_impact_light_index_packed_total_bytes": sum(int(ref["light_index_packed"]["bytes"]) for ref in local_refs),
         "local_impact_body_index_total_bytes": sum(int(ref["body_index"]["bytes"]) for ref in local_refs),
+        "local_impact_body_index_packed_total_bytes": sum(int(ref["body_index_packed"]["bytes"]) for ref in local_refs),
         "local_index_count": len(local_refs),
+        "light_index_runtime_bytes": sum(local_light_runtime_bytes(ref) for ref in local_refs),
         "body_index_bytes": sum(int(ref["body_index"]["bytes"]) for ref in local_refs),
+        "body_index_runtime_bytes": sum(local_body_runtime_bytes(ref) for ref in local_refs),
+        "local_index_runtime_bytes": sum(local_light_runtime_bytes(ref) + local_body_runtime_bytes(ref) for ref in local_refs),
         "full_scan_total_bytes": total_full_scan_bytes,
         "shard_count": len(full_shards),
         "max_shard_bytes": max_full_shard_bytes,
@@ -829,6 +933,9 @@ def write_public_index(packages: list[dict[str, Any]], built: dict[str, Any], *,
         "avg_full_shard_documents": round(sum(int(item["count"]) for item in full_shards) / max(1, len(full_shards)), 2),
         "artifact_count": sum(1 for _ in PUBLIC_SITEGRAPH_DIR.rglob("*.json")),
         "artifact_total_bytes": sum(path.stat().st_size for path in PUBLIC_SITEGRAPH_DIR.rglob("*.json")),
+        "binary_artifact_count": sum(1 for _ in PUBLIC_SITEGRAPH_DIR.rglob("*.bin")),
+        "binary_artifact_total_bytes": sum(path.stat().st_size for path in PUBLIC_SITEGRAPH_DIR.rglob("*.bin")),
+        "runtime_artifact_total_bytes": sum(path.stat().st_size for path in PUBLIC_SITEGRAPH_DIR.rglob("*") if path.is_file()),
         "representative_query_phase_timings": {
             "query": "校历",
             "planning_ms": 0,
@@ -864,6 +971,9 @@ def write_public_index(packages: list[dict[str, Any]], built: dict[str, Any], *,
     size_report["routed_first_screen_total_bytes"] = size_report["routed_first_screen_bytes"]
     size_report["artifact_count"] = sum(1 for _ in PUBLIC_SITEGRAPH_DIR.rglob("*.json"))
     size_report["artifact_total_bytes"] = sum(path.stat().st_size for path in PUBLIC_SITEGRAPH_DIR.rglob("*.json"))
+    size_report["binary_artifact_count"] = sum(1 for _ in PUBLIC_SITEGRAPH_DIR.rglob("*.bin"))
+    size_report["binary_artifact_total_bytes"] = sum(path.stat().st_size for path in PUBLIC_SITEGRAPH_DIR.rglob("*.bin"))
+    size_report["runtime_artifact_total_bytes"] = sum(path.stat().st_size for path in PUBLIC_SITEGRAPH_DIR.rglob("*") if path.is_file())
     size_artifact = write_hashed_json(PUBLIC_ROOT, PUBLIC_ARTIFACT_DIR, "size_report", size_report, compact=False)
     artifacts["size_report"] = artifact_entry(size_artifact, role="size_report", load="audit")
     manifest = make_manifest()

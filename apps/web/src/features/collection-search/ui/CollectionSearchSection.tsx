@@ -51,6 +51,15 @@ function methodLabel(method: string): string {
     return '站点图收录';
 }
 
+function evidenceLevelLabel(level: string | undefined): string | null {
+    if (level === 'filename_only') return '附件文件名';
+    if (level === 'metadata_only' || level === 'source_metadata') return '来源元数据';
+    if (level === 'text_extracted') return '附件文本';
+    if (level === 'snippet') return '摘要片段';
+    if (level === 'full_content') return '正文全文';
+    return null;
+}
+
 function phaseLabel(phase: SitegraphSearchPhase | null, searching: boolean): string {
     if (phase === 'scoped_exhaustive_complete' || phase === 'global_exhaustive_complete') return '';
     if (phase === 'cancelled') return '已取消本次核查';
@@ -183,6 +192,7 @@ function resultSummary(
 function SearchResultCard({ document }: SearchResultCardProps) {
     const recallReason = (document as Partial<RankedSitegraphDocument>).score_reason || '';
     const snippet = (document as Partial<RankedSitegraphDocument>).match_snippet;
+    const snippetEvidenceLabel = evidenceLevelLabel(snippet?.evidence_level);
     const snippetText = snippet?.text || document.summary || document.content;
     const wrapperProps = {
         href: document.url,
@@ -241,6 +251,12 @@ function SearchResultCard({ document }: SearchResultCardProps) {
                     <span className="inline-flex items-center gap-1 rounded bg-[#e8f0fe] dark:bg-[#263850] px-2 py-1 text-[#1967d2] dark:text-[#8ab4f8]">
                         <FileText size={12} />
                         附件 {document.attachment_count}
+                    </span>
+                ) : null}
+                {snippetEvidenceLabel ? (
+                    <span className="inline-flex items-center gap-1 rounded bg-[#f1f3f4] dark:bg-[#303134] px-2 py-1">
+                        <ShieldCheck size={12} />
+                        {snippetEvidenceLabel}
                     </span>
                 ) : null}
                 <span className="rounded bg-[#f1f3f4] dark:bg-[#303134] px-2 py-1">
@@ -458,6 +474,8 @@ export function CollectionSearchSection({
                             <span>已扫描 {coverage.scanned_shards}/{coverage.total_shards}</span>
                             <span>文档 {coverage.searched_documents}/{coverage.total_documents}</span>
                             <span>已加载 {formatBytes(coverage.loaded_bytes)}</span>
+                            <span>新读 {formatBytes(coverage.uncached_loaded_bytes)}</span>
+                            <span>缓存命中 {formatBytes(coverage.cached_artifact_bytes)} / {coverage.cache.artifact_hits}</span>
                             <span>阶段：{coverage.phase}</span>
                             <span>字段：{fieldLabel(coverage.searched_fields)}</span>
                             {queryStats ? (

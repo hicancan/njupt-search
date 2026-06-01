@@ -4,6 +4,7 @@ import {
     SitegraphFullShardSchema
 } from './schema-parts';
 import type {
+    SitegraphAttachmentEvidenceLevel,
     SitegraphFacet,
     SitegraphDocMeta,
     SitegraphFullDocument
@@ -40,6 +41,14 @@ export const SitegraphLocalIndexScopeSchema = z.object({
 }).passthrough();
 export type SitegraphLocalIndexScope = z.infer<typeof SitegraphLocalIndexScopeSchema>;
 
+export const SitegraphLocalShardRefSchema = z.object({
+    shard_id: z.string().min(1),
+    path: z.string().min(1),
+    bytes: z.number(),
+    count: z.number()
+}).passthrough();
+export type SitegraphLocalShardRef = z.infer<typeof SitegraphLocalShardRefSchema>;
+
 export const SitegraphLocalLightIndexSchema = SitegraphImpactIndexSchema.extend({
     scope: SitegraphLocalIndexScopeSchema,
     documents: z.array(z.custom<SitegraphDocMeta>())
@@ -55,10 +64,73 @@ export const SitegraphLocalIndexRefSchema = z.object({
     index_id: z.string().min(1),
     scope: SitegraphLocalIndexScopeSchema,
     doc_count: z.number(),
-    light_index: SitegraphArtifactSchema,
-    body_index: SitegraphArtifactSchema
-}).passthrough();
+    shards: z.array(SitegraphLocalShardRefSchema).default([]),
+    light_index: SitegraphArtifactSchema.optional(),
+    light_index_meta: SitegraphArtifactSchema.optional(),
+    light_index_packed: SitegraphArtifactSchema.optional(),
+    body_index: SitegraphArtifactSchema,
+    body_index_packed: SitegraphArtifactSchema.optional()
+}).passthrough().superRefine((ref, ctx) => {
+    const hasSplitLight = Boolean(ref.light_index_meta) && Boolean(ref.light_index_packed);
+    const hasPartialSplitLight = Boolean(ref.light_index_meta) !== Boolean(ref.light_index_packed);
+    if (hasPartialSplitLight) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'light_index_meta and light_index_packed must be published together'
+        });
+    }
+    if (!ref.light_index && !hasSplitLight) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'local index must publish split light artifacts or a legacy full light_index'
+        });
+    }
+});
 export type SitegraphLocalIndexRef = z.infer<typeof SitegraphLocalIndexRefSchema>;
+
+export const SitegraphProofCatalogShardSchema = z.object({
+    shard_id: z.string().min(1),
+    source_id: z.string().min(1),
+    path: z.string().min(1),
+    sha256: z.string().min(16),
+    bytes: z.number(),
+    document_count: z.number(),
+    scope: z.object({
+        facets: z.array(z.string()),
+        record_types: z.array(z.string()),
+        sections: z.array(z.string()),
+        years: z.array(z.string()),
+        hash_bucket: z.string().min(1)
+    }).passthrough(),
+    filter_contract: z.object({
+        artifact_family: z.literal('shard_filters'),
+        hash_algorithm: z.literal('bloom-fnv1a32-utf8'),
+        false_negative: z.literal(false),
+        filter_sha256: z.string().min(16),
+        filter_token_count: z.number()
+    }).passthrough()
+}).passthrough();
+export type SitegraphProofCatalogShard = z.infer<typeof SitegraphProofCatalogShardSchema>;
+
+export const SitegraphProofCatalogSchema = z.object({
+    version: z.literal('sitegraph-proof-ledger-catalog-v2'),
+    source_id: z.string().min(1),
+    state_model: z.array(z.string()),
+    complete_requires_no_states: z.array(z.string()),
+    covered_fields: z.array(z.string()),
+    shards: z.array(SitegraphProofCatalogShardSchema)
+}).passthrough();
+export type SitegraphProofCatalog = z.infer<typeof SitegraphProofCatalogSchema>;
+
+export const SitegraphAttachmentEvidenceCoverageSchema = z.object({
+    total: z.number(),
+    metadata_only: z.number(),
+    filename_only: z.number(),
+    text_extracted: z.number(),
+    snippet: z.number(),
+    full_content: z.number()
+}).passthrough();
+export type SitegraphAttachmentEvidenceCoverage = z.infer<typeof SitegraphAttachmentEvidenceCoverageSchema>;
 
 export const SitegraphSourceManifestSchema = z.object({
     version: z.string().min(1),
@@ -67,11 +139,12 @@ export const SitegraphSourceManifestSchema = z.object({
     domain: z.string().min(1).optional(),
     doc_count: z.number(),
     attachment_count: z.number(),
+    attachment_evidence_coverage: SitegraphAttachmentEvidenceCoverageSchema.optional(),
     facet_counts: z.record(z.string(), z.number()),
     record_counts: z.record(z.string(), z.number()),
     year_counts: z.record(z.string(), z.number()),
     local_indexes: z.array(SitegraphLocalIndexRefSchema),
-    full_shards: z.array(SitegraphFullShardSchema),
+    full_shards: z.array(SitegraphFullShardSchema).default([]),
     artifacts: z.record(z.string(), SitegraphArtifactSchema)
 }).passthrough();
 export type SitegraphSourceManifest = z.infer<typeof SitegraphSourceManifestSchema>;
@@ -88,6 +161,7 @@ export const SourceRegistryEntrySchema = z.object({
     artifact_manifest: SitegraphArtifactSchema,
     doc_count: z.number(),
     attachment_count: z.number(),
+    attachment_evidence_coverage: SitegraphAttachmentEvidenceCoverageSchema.optional(),
     updated_at: z.string().nullable().optional(),
     quality_status: z.string().min(1),
     coverage_status: z.string().min(1),
@@ -193,6 +267,7 @@ export const SitegraphSearchManifestSchema = z.object({
     coverage_contract: z.object({
         states: z.array(z.string()),
         coverage_fields: z.array(z.string()),
+        attachment_evidence_levels: z.array(z.string()).optional(),
         proof: z.object({
             indexed_fields: z.array(z.string()),
             full_scan_fields: z.array(z.string()),
@@ -236,6 +311,8 @@ export const SitegraphSearchManifestSchema = z.object({
         external_document_records: z.number(),
         utility_link_records: z.number(),
         attachment_policy: z.literal('metadata_only'),
+        attachment_evidence_policy: z.string().min(1).optional(),
+        attachment_evidence_coverage: SitegraphAttachmentEvidenceCoverageSchema.optional(),
         external_link_policy: z.literal('record_only'),
         source_manifests: z.record(z.string(), SitegraphArtifactSchema),
         source_manifest_summaries: z.record(z.string(), z.record(z.string(), z.number())),
@@ -300,6 +377,15 @@ export interface SitegraphProofLedgerSummary {
     complete: boolean;
 }
 
+export interface SitegraphArtifactCacheStats {
+    scope: 'memory_content_hash';
+    artifact_hits: number;
+    artifact_misses: number;
+    cached_bytes: number;
+    uncached_bytes: number;
+    cacheable_bytes: number;
+}
+
 export interface SitegraphSearchCoverage {
     phase: SitegraphSearchPhase;
     coverage_state: SitegraphSearchPhase;
@@ -315,12 +401,15 @@ export interface SitegraphSearchCoverage {
     searched_documents: number;
     total_documents: number;
     loaded_bytes: number;
+    uncached_loaded_bytes: number;
+    cached_artifact_bytes: number;
     first_screen_bytes: number;
     local_index_bytes: number;
     hydrated_shard_bytes: number;
     used_body_index: boolean;
     exhaustive_complete: boolean;
     proof_ledger: SitegraphProofLedgerSummary;
+    cache: SitegraphArtifactCacheStats;
 }
 
 export interface SitegraphFallbackStats {
@@ -352,6 +441,8 @@ export interface SitegraphQueryPlan {
     selected_local_indexes?: Array<{
         index_id: string;
         expected_bytes: number;
+        expected_uncached_bytes: number;
+        cache_state: 'cold' | 'partial' | 'warm';
         utility_score: number;
         source_id: string;
         facet: string;
@@ -373,6 +464,9 @@ export interface SitegraphQueryStats {
     resultCount: number;
     localIndexBytes: number;
     hydratedShardBytes: number;
+    uncachedLoadedBytes: number;
+    cachedArtifactBytes: number;
+    cache: SitegraphArtifactCacheStats;
     fallbacks: SitegraphFallbackStats;
     retrieval: {
         dynamicPruning: boolean;
@@ -414,6 +508,7 @@ export interface SitegraphMatchHighlight {
 export interface SitegraphMatchSnippet {
     text: string;
     field: 'title' | 'summary' | 'content' | 'attachments' | 'nav_path' | 'url';
+    evidence_level: SitegraphAttachmentEvidenceLevel | 'source_metadata';
     matched_terms: string[];
     highlights: SitegraphMatchHighlight[];
     primary_term?: string;

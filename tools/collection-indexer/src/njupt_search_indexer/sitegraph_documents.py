@@ -187,6 +187,10 @@ def attachment_metadata(
         "section": section_name,
         "nav_path": nav_path,
         "metadata_only": True,
+        "evidence_level": "filename_only",
+        "text_extracted": False,
+        "snippet_available": False,
+        "full_content_available": False,
         "position": item.get("position"),
     }
 
