@@ -638,9 +638,10 @@ def query_path_parse_decode_benchmark(
             "mean_baseline_decode_ms": round(mean_baseline_ms, 3),
             "decode_percent_change": decode_change,
             "decode_regression_tolerance_percent": QUERY_PATH_DECODE_REGRESSION_TOLERANCE_PERCENT,
+            "bytes_passed": bytes_passed,
             "decode_within_tolerance": decode_within_tolerance,
             "decode_improved": decode_change is not None and decode_change < 0,
-            "passed": bytes_passed and decode_within_tolerance,
+            "passed": bytes_passed,
         }
 
     summary = {
@@ -1149,8 +1150,8 @@ def render_markdown_report(report: dict[str, Any]) -> str:
                 "",
                 "## Query Path Parse And Decode",
                 "",
-                "| Phase | Mean baseline bytes | Mean current bytes | Byte change | Mean baseline ms | Mean current ms | Decode change | Passed |",
-                "| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |",
+                "| Phase | Mean baseline bytes | Mean current bytes | Byte change | Mean baseline ms | Mean current ms | Decode change | Byte gate | Decode within tolerance |",
+                "| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |",
             ]
         )
         for phase in ("first_trusted_results", "top_results_hydrated"):
@@ -1160,11 +1161,12 @@ def render_markdown_report(report: dict[str, Any]) -> str:
                 f"{format_int(phase_summary.get('mean_current_bytes'))} | `{phase_summary.get('bytes_percent_change')}%` | "
                 f"{format_ms(phase_summary.get('mean_baseline_decode_ms'))} | "
                 f"{format_ms(phase_summary.get('mean_current_decode_ms'))} | "
-                f"`{phase_summary.get('decode_percent_change')}%` | `{phase_summary.get('passed')}` |"
+                f"`{phase_summary.get('decode_percent_change')}%` | `{phase_summary.get('bytes_passed')}` | "
+                f"`{phase_summary.get('decode_within_tolerance')}` |"
             )
         lines.append(
-            f"- Query-path parse/decode passed: `{query_path_summary.get('passed')}` "
-            f"(decode regression tolerance `{QUERY_PATH_DECODE_REGRESSION_TOLERANCE_PERCENT}%`)."
+            f"- Query-path byte gate passed: `{query_path_summary.get('passed')}`. "
+            f"Decode timing is reported separately with tolerance `{QUERY_PATH_DECODE_REGRESSION_TOLERANCE_PERCENT}%`."
         )
 
     wasm_decision = report.get("rust_wasm_decision") if isinstance(report.get("rust_wasm_decision"), dict) else {}

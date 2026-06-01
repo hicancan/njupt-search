@@ -46,7 +46,11 @@ def test_lower_bound_report_contains_rerunnable_evidence() -> None:
     assert measurement["phase_measurements"]["first_trusted_results"]["uncached_loaded_bytes"] <= 5 * 1024 * 1024
     assert measurement["phase_gate"]["passed"] is True
     assert report["query_measurement_summary"]["phase_gates_passed"] is True
-    assert report["query_path_parse_decode_benchmark"]["summary"]["passed"] is True
+    query_path_summary = report["query_path_parse_decode_benchmark"]["summary"]
+    assert query_path_summary["passed"] is True
+    assert query_path_summary["first_trusted_results"]["bytes_passed"] is True
+    assert query_path_summary["top_results_hydrated"]["bytes_passed"] is True
+    assert query_path_summary["first_trusted_results"]["decode_percent_change"] is not None
 
     assert report["cache_benchmark"]["summary"]["passed"] is True
     assert report["cache_benchmark"]["summary"]["max_warm_uncached_bytes"] == 0

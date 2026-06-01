@@ -117,17 +117,25 @@ def _unpack_term_fields(data: bytes, offset: int, end: int, *, collect: bool = T
     return fields, offset
 
 
+def _selected_term_bytes(selected_terms: set[str] | None) -> set[bytes] | None:
+    if selected_terms is None:
+        return None
+    return {term.encode("utf-8") for term in selected_terms}
+
+
 def _unpack_v1_terms(data: bytes, offset: int, selected_terms: set[str] | None = None) -> tuple[dict[str, dict[str, list[int]]], int]:
     term_count, offset = decode_varint(data, offset)
+    selected_bytes = _selected_term_bytes(selected_terms)
     terms: dict[str, dict[str, list[int]]] = {}
     for _ in range(term_count):
         term_length, offset = decode_varint(data, offset)
         term_end = offset + term_length
         if term_end > len(data):
             raise ValueError("packed impact term is truncated")
-        term = data[offset:term_end].decode("utf-8")
+        term_bytes = data[offset:term_end]
         offset = term_end
-        collect = selected_terms is None or term in selected_terms
+        collect = selected_bytes is None or term_bytes in selected_bytes
+        term = term_bytes.decode("utf-8") if collect else ""
         field_count, offset = decode_varint(data, offset)
         fields: dict[str, list[int]] = {}
         for _ in range(field_count):
@@ -153,28 +161,31 @@ def _unpack_v1_terms(data: bytes, offset: int, selected_terms: set[str] | None =
 
 def _unpack_v2_terms(data: bytes, offset: int, selected_terms: set[str] | None = None) -> tuple[dict[str, dict[str, list[int]]], int]:
     term_count, offset = decode_varint(data, offset)
-    directory: list[tuple[str, int]] = []
+    selected_bytes = _selected_term_bytes(selected_terms)
+    directory: list[tuple[str, int, bool]] = []
     payload_length_total = 0
     for _ in range(term_count):
         term_length, offset = decode_varint(data, offset)
         term_end = offset + term_length
         if term_end > len(data):
             raise ValueError("packed impact term is truncated")
-        term = data[offset:term_end].decode("utf-8")
+        term_bytes = data[offset:term_end]
         offset = term_end
         payload_length, offset = decode_varint(data, offset)
-        directory.append((term, payload_length))
+        collect = selected_bytes is None or term_bytes in selected_bytes
+        term = term_bytes.decode("utf-8") if collect else ""
+        directory.append((term, payload_length, collect))
         payload_length_total += payload_length
     payload_start = offset
     if payload_start + payload_length_total != len(data):
         raise ValueError("packed impact payload directory length mismatch")
 
     terms: dict[str, dict[str, list[int]]] = {}
-    for term, payload_length in directory:
+    for term, payload_length, collect in directory:
         payload_end = offset + payload_length
         if payload_end > len(data):
             raise ValueError("packed impact term payload is truncated")
-        if selected_terms is None or term in selected_terms:
+        if collect:
             fields, _ = _unpack_term_fields(data, offset, payload_end, collect=True)
             terms[term] = fields
         offset = payload_end

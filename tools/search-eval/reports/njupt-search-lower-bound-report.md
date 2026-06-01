@@ -1,6 +1,6 @@
 # NJUPT Search Lower-Bound Evidence Report
 
-- Generated at: `2026-06-01T12:33:16.795333+00:00`
+- Generated at: `2026-06-01T12:53:28.579289+00:00`
 - Collection: `apps/web/public/generated/collections/njupt-public`
 - Baseline ref: `1a0996e`
 - Current artifact generation: `2026-06-01T11:41:42.782193+00:00`
@@ -50,35 +50,35 @@
 
 | Family | Baseline bytes | Current bytes | Baseline mean ms | Current mean ms |
 | --- | ---: | ---: | ---: | ---: |
-| `bootstrap_json` | 217,034 | 219,564 | 0.700 | 0.768 |
-| `source_manifests` | 1,066,061 | 686,225 | 3.670 | 1.643 |
-| `shard_filters_json_and_bitsets` | 2,843,792 | 2,843,792 | 7.146 | 7.217 |
-| `local_light_json` | 28,563,086 | 0 | 245.847 | 0.000 |
-| `local_light_meta_json` | 0 | 11,962,895 | 0.000 | 44.474 |
-| `local_light_packed` | 0 | 9,006,665 | 0.000 | 789.117 |
-| `local_light_packed_query_terms` | 0 | 9,006,665 | 0.000 | 212.885 |
-| `local_body_json` | 30,920,155 | 0 | 437.745 | 0.000 |
-| `local_body_packed` | 0 | 16,850,611 | 0.000 | 1643.720 |
-| `local_body_packed_query_terms` | 0 | 16,850,611 | 0.000 | 417.945 |
+| `bootstrap_json` | 217,034 | 219,564 | 0.901 | 0.967 |
+| `source_manifests` | 1,066,061 | 686,225 | 4.486 | 1.962 |
+| `shard_filters_json_and_bitsets` | 2,843,792 | 2,843,792 | 8.269 | 8.388 |
+| `local_light_json` | 28,563,086 | 0 | 262.079 | 0.000 |
+| `local_light_meta_json` | 0 | 11,962,895 | 0.000 | 41.042 |
+| `local_light_packed` | 0 | 9,006,665 | 0.000 | 833.850 |
+| `local_light_packed_query_terms` | 0 | 9,006,665 | 0.000 | 208.363 |
+| `local_body_json` | 30,920,155 | 0 | 428.641 | 0.000 |
+| `local_body_packed` | 0 | 16,850,611 | 0.000 | 1697.137 |
+| `local_body_packed_query_terms` | 0 | 16,850,611 | 0.000 | 384.721 |
 
 ## Runtime Query-Term Decode Summary
 
 - Baseline local-index runtime bytes: `59,483,241`
 - Current local-index runtime bytes: `37,820,171`
 - Runtime byte change: `-36.419%`
-- Baseline local-index parse/decode mean: `683.592` ms
-- Current query-term parse/decode mean: `675.304` ms
-- Parse/decode change: `-1.212%`
+- Baseline local-index parse/decode mean: `690.720` ms
+- Current query-term parse/decode mean: `634.126` ms
+- Parse/decode change: `-8.193%`
 - Light decode mode: `metadata_json_plus_packed_query_term_selective`
 - Body decode mode: `packed_query_term_selective`
 
 ## Query Path Parse And Decode
 
-| Phase | Mean baseline bytes | Mean current bytes | Byte change | Mean baseline ms | Mean current ms | Decode change | Passed |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
-| `first_trusted_results` | 3,594,643 | 2,695,326 | `-25.018%` | 30.473 | 29.384 | `-3.574%` | `True` |
-| `top_results_hydrated` | 10,938,208 | 7,004,252 | `-35.965%` | 126.185 | 121.349 | `-3.832%` | `True` |
-- Query-path parse/decode passed: `True` (decode regression tolerance `5.0%`).
+| Phase | Mean baseline bytes | Mean current bytes | Byte change | Mean baseline ms | Mean current ms | Decode change | Byte gate | Decode within tolerance |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |
+| `first_trusted_results` | 3,594,643 | 2,695,326 | `-25.018%` | 31.636 | 26.563 | `-16.038%` | `True` | `True` |
+| `top_results_hydrated` | 10,938,208 | 7,004,252 | `-35.965%` | 125.469 | 111.247 | `-11.335%` | `True` | `True` |
+- Query-path byte gate passed: `True`. Decode timing is reported separately with tolerance `5.0%`.
 
 ## Rust/WASM Decision
 
@@ -97,23 +97,23 @@
 
 | Query | ms | Results | Candidate shards | Loaded shards | Uncached bytes | Pruned postings | Complete | Top result |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |
-| `校历` | 1381.998 | 12 | 18 | 472 | 50,246,788 | 265 | `True` | 2025-2026学年校历 |
-| `慕课考试` | 1580.541 | 12 | 18 | 569 | 53,223,215 | 70 | `True` | 【教务管理办公室】2025-2026学年第二学期在线开放课程（慕课）线下考试报名通知 |
-| `学生相关文件及表格` | 2481.385 | 12 | 18 | 628 | 54,178,693 | 250 | `True` | 南京邮电大学学生毕业申请表 2026-04-16 |
-| `教务管理系统` | 2128.552 | 12 | 18 | 483 | 51,723,971 | 309 | `True` | 教务管理系统 |
-| `附件1` | 2187.388 | 12 | 18 | 601 | 52,191,611 | 189 | `True` | 【科创竞赛】第九届“外教社杯”全国高校学生跨文化能力大赛南京邮电大学校园赛通知 |
-| `不存在的查询词` | 967.202 | 0 | 8 | 148 | 34,775,972 | 0 | `True` |  |
+| `校历` | 1409.170 | 12 | 18 | 472 | 50,246,788 | 265 | `True` | 2025-2026学年校历 |
+| `慕课考试` | 1636.469 | 12 | 18 | 569 | 53,223,215 | 70 | `True` | 【教务管理办公室】2025-2026学年第二学期在线开放课程（慕课）线下考试报名通知 |
+| `学生相关文件及表格` | 2320.912 | 12 | 18 | 628 | 54,178,693 | 250 | `True` | 南京邮电大学学生毕业申请表 2026-04-16 |
+| `教务管理系统` | 2132.762 | 12 | 18 | 483 | 51,723,971 | 309 | `True` | 教务管理系统 |
+| `附件1` | 2250.969 | 12 | 18 | 601 | 52,191,611 | 189 | `True` | 【科创竞赛】第九届“外教社杯”全国高校学生跨文化能力大赛南京邮电大学校园赛通知 |
+| `不存在的查询词` | 1091.161 | 0 | 8 | 148 | 34,775,972 | 0 | `True` |  |
 
 ## Phase Gates
 
 | Query | First trusted bytes | First trusted ms | Top hydrated bytes | Top hydrated ms | Proof bytes | Passed |
 | --- | ---: | ---: | ---: | ---: | ---: | --- |
-| `校历` | 4,014,830 | 45.198 | 9,315,740 | 146.071 | 50,246,788 | `True` |
-| `慕课考试` | 4,386,232 | 58.888 | 10,366,630 | 201.540 | 53,223,215 | `True` |
-| `学生相关文件及表格` | 3,505,996 | 60.271 | 7,750,789 | 203.738 | 54,178,693 | `True` |
-| `教务管理系统` | 4,118,978 | 65.700 | 9,923,870 | 262.740 | 51,723,971 | `True` |
-| `附件1` | 4,219,284 | 58.947 | 9,755,672 | 197.992 | 52,191,611 | `True` |
-| `不存在的查询词` | 3,440,203 | 35.654 | 8,743,962 | 125.329 | 34,775,972 | `True` |
+| `校历` | 4,014,830 | 45.628 | 9,315,740 | 140.361 | 50,246,788 | `True` |
+| `慕课考试` | 4,386,232 | 60.009 | 10,366,630 | 201.469 | 53,223,215 | `True` |
+| `学生相关文件及表格` | 3,505,996 | 57.218 | 7,750,789 | 192.708 | 54,178,693 | `True` |
+| `教务管理系统` | 4,118,978 | 58.000 | 9,923,870 | 245.895 | 51,723,971 | `True` |
+| `附件1` | 4,219,284 | 57.528 | 9,755,672 | 185.460 | 52,191,611 | `True` |
+| `不存在的查询词` | 3,440,203 | 43.324 | 8,743,962 | 146.242 | 34,775,972 | `True` |
 
 - First trusted hard gate: `<=5,242,880` bytes or `<=10%` of proof bytes.
 - Top hydrated hard gate: `<=10,485,760` bytes or `<=25%` of proof bytes.
@@ -156,7 +156,7 @@
 | 5 | `evidence_present` | {"artifact_total_bytes_current": 77279822, "artifact_total_bytes_baseline": 122264702, "runtime_parse_decode_summary": {"baseline_local_index_runtime_bytes": 59483241, "current_local_index_runtime_bytes": 37820171, "bytes_delta": -21663070, |
 | 6 | `evidence_present` | {"light_json_bytes": 0, "light_split_runtime_bytes": 20969560, "body_json_bytes": 0, "body_packed_runtime_bytes": 16850611, "note": "Packed binary light terms plus metadata JSON are used for query planning; packed binary light/body indexes  |
 | 7 | `evidence_present` | {"artifact_count": 246, "benchmark": "packed-impact-retrieval-wasm-vs-typescript-v2", "collection": "apps/web/public/generated/collections/njupt-public", "decision": {"reason": "The browser runtime can consume Rust/WASM stateful score entri |
-| 8 | `evidence_present` | {"query_count": 8, "max_cold_uncached_bytes": 54178693, "max_warm_uncached_bytes": 0, "total_warm_cached_bytes": 412248327, "max_warm_ms": 1708.912, "passed": true, "failure_count": 0, "cache_invalidation_test": "Changed content-hash artifa |
+| 8 | `evidence_present` | {"query_count": 8, "max_cold_uncached_bytes": 54178693, "max_warm_uncached_bytes": 0, "total_warm_cached_bytes": 412248327, "max_warm_ms": 1747.481, "passed": true, "failure_count": 0, "cache_invalidation_test": "Changed content-hash artifa |
 | 9 | `evidence_present` | {"policy": "metadata_and_filename_only_no_extracted_attachment_content", "levels": ["metadata_only", "filename_only", "text_extracted", "snippet", "full_content"], "coverage": {"total": 8094, "metadata_only": 8094, "filename_only": 8094, "t |
 | 10 | `evidence_present` | Smoke queries, task queries, measured cold queries, warm cache queries, and a negative query are represented when full report mode is used. |
 | 11 | `evidence_present` | {"report": "njupt-search-browser-verification-v3", "generated_at": "2026-06-01T11:58:52.526Z", "target": "http://127.0.0.1:4177", "summary": {"passed": true, "persistent_cache_passed": true, "wasm_runtime_passed": true, "dynamic_pruning_pas |
