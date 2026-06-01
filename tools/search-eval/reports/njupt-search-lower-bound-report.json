@@ -1,6 +1,6 @@
 {
   "report": "njupt-search-lower-bound-evidence-v1",
-  "generated_at": "2026-06-01T04:01:10.290156+00:00",
+  "generated_at": "2026-06-01T05:51:09.106325+00:00",
   "collection": "apps/web/public/generated/collections/njupt-public",
   "baseline": {
     "ref": "1a0996e",
@@ -229,17 +229,17 @@
         "artifact_count": 4,
         "bytes": 218304,
         "runs": 5,
-        "mean_ms": 1.024,
-        "min_ms": 0.916,
-        "max_ms": 1.248
+        "mean_ms": 1.046,
+        "min_ms": 0.983,
+        "max_ms": 1.113
       },
       "baseline": {
         "artifact_count": 4,
         "bytes": 217034,
         "runs": 5,
-        "mean_ms": 0.968,
-        "min_ms": 0.898,
-        "max_ms": 1.035
+        "mean_ms": 0.94,
+        "min_ms": 0.88,
+        "max_ms": 0.983
       }
     },
     "source_manifests": {
@@ -247,17 +247,17 @@
         "artifact_count": 3,
         "bytes": 686225,
         "runs": 5,
-        "mean_ms": 1.933,
-        "min_ms": 1.513,
-        "max_ms": 2.566
+        "mean_ms": 2.136,
+        "min_ms": 1.98,
+        "max_ms": 2.591
       },
       "baseline": {
         "artifact_count": 3,
         "bytes": 1066061,
         "runs": 5,
-        "mean_ms": 3.483,
-        "min_ms": 3.008,
-        "max_ms": 3.888
+        "mean_ms": 3.859,
+        "min_ms": 3.704,
+        "max_ms": 4.128
       }
     },
     "shard_filters_json_and_bitsets": {
@@ -266,18 +266,18 @@
         "bitset_count": 942,
         "bytes": 2843792,
         "runs": 5,
-        "mean_ms": 8.426,
-        "min_ms": 7.895,
-        "max_ms": 8.802
+        "mean_ms": 8.474,
+        "min_ms": 8.334,
+        "max_ms": 8.766
       },
       "baseline": {
         "artifact_count": 3,
         "bitset_count": 942,
         "bytes": 2843792,
         "runs": 5,
-        "mean_ms": 9.201,
-        "min_ms": 8.25,
-        "max_ms": 10.823
+        "mean_ms": 8.54,
+        "min_ms": 8.315,
+        "max_ms": 8.811
       }
     },
     "local_light_json": {
@@ -293,9 +293,9 @@
         "artifact_count": 246,
         "bytes": 28563086,
         "runs": 5,
-        "mean_ms": 269.725,
-        "min_ms": 254.739,
-        "max_ms": 289.116
+        "mean_ms": 271.419,
+        "min_ms": 250.923,
+        "max_ms": 284.55
       }
     },
     "local_light_meta_json": {
@@ -303,9 +303,9 @@
         "artifact_count": 246,
         "bytes": 11962895,
         "runs": 5,
-        "mean_ms": 39.103,
-        "min_ms": 35.303,
-        "max_ms": 40.863
+        "mean_ms": 44.478,
+        "min_ms": 42.855,
+        "max_ms": 45.959
       },
       "baseline": {
         "artifact_count": 0,
@@ -322,9 +322,9 @@
         "term_count": 440255,
         "bytes": 9006665,
         "runs": 5,
-        "mean_ms": 846.197,
-        "min_ms": 799.75,
-        "max_ms": 883.745
+        "mean_ms": 831.848,
+        "min_ms": 803.18,
+        "max_ms": 847.122
       },
       "baseline": {
         "artifact_count": 0,
@@ -343,9 +343,9 @@
         "matched_term_count": 2879,
         "bytes": 9006665,
         "runs": 5,
-        "mean_ms": 220.604,
-        "min_ms": 216.944,
-        "max_ms": 230.409
+        "mean_ms": 213.944,
+        "min_ms": 205.477,
+        "max_ms": 224.1
       },
       "baseline": {
         "artifact_count": 0,
@@ -371,9 +371,9 @@
         "artifact_count": 246,
         "bytes": 30920155,
         "runs": 5,
-        "mean_ms": 429.553,
-        "min_ms": 401.078,
-        "max_ms": 443.689
+        "mean_ms": 437.222,
+        "min_ms": 398.434,
+        "max_ms": 457.495
       }
     },
     "local_body_packed": {
@@ -382,9 +382,9 @@
         "term_count": 879433,
         "bytes": 16850611,
         "runs": 5,
-        "mean_ms": 1729.125,
-        "min_ms": 1682.406,
-        "max_ms": 1823.714
+        "mean_ms": 1676.294,
+        "min_ms": 1599.298,
+        "max_ms": 1738.686
       },
       "baseline": {
         "artifact_count": 0,
@@ -403,9 +403,9 @@
         "matched_term_count": 3512,
         "bytes": 16850611,
         "runs": 5,
-        "mean_ms": 424.408,
-        "min_ms": 416.651,
-        "max_ms": 429.814
+        "mean_ms": 422.771,
+        "min_ms": 385.887,
+        "max_ms": 444.152
       },
       "baseline": {
         "artifact_count": 0,
@@ -424,17 +424,17 @@
     "current_local_index_runtime_bytes": 37820171,
     "bytes_delta": -21663070,
     "bytes_percent_change": -36.419,
-    "baseline_local_index_parse_decode_mean_ms": 699.278,
-    "current_local_index_query_term_parse_decode_mean_ms": 684.115,
-    "parse_decode_delta_ms": -15.163,
-    "parse_decode_percent_change": -2.168,
+    "baseline_local_index_parse_decode_mean_ms": 708.641,
+    "current_local_index_query_term_parse_decode_mean_ms": 681.193,
+    "parse_decode_delta_ms": -27.448,
+    "parse_decode_percent_change": -3.873,
     "body_decode_mode": "packed_query_term_selective",
     "light_decode_mode": "metadata_json_plus_packed_query_term_selective"
   },
   "query_measurements": [
     {
       "query": "校历",
-      "elapsed_ms": 1634.271,
+      "elapsed_ms": 1650.148,
       "result_count": 12,
       "top_result": {
         "id": "jwc-detail-d025005cdf2077c9b754",
@@ -442,8 +442,8 @@
         "source_id": "jwc",
         "facet": "notice_article",
         "url": "https://jwc.njupt.edu.cn/2025/0904/c1528a288083/page.htm",
-        "score": 12091.6698,
-        "score_reason": "标题包含；正文命中；词项: 2025-2026学年校历、2025-2026、学年校历、年校历、学年校；权威来源；任务匹配；时间较新；历史内容降权"
+        "score": 12183.2931,
+        "score_reason": "标题包含；正文命中；词项: 2025-2026学年校历、2025-2026、学年校历、学年校、年校历、校历；权威来源；任务匹配；时间较新；历史内容降权"
       },
       "quick_result_count": 5,
       "candidate_count": 75,
@@ -673,7 +673,7 @@
     },
     {
       "query": "慕课考试",
-      "elapsed_ms": 2088.913,
+      "elapsed_ms": 2019.865,
       "result_count": 12,
       "top_result": {
         "id": "jwc-detail-f4e153accff4499084a5",
@@ -681,8 +681,8 @@
         "source_id": "jwc",
         "facet": "exam",
         "url": "https://jwc.njupt.edu.cn/2026/0327/c1594a298565/page.htm",
-        "score": 15595.6971,
-        "score_reason": "词项: 在线开放课程、在线开放课、线开放课程、在线开放、开放课程、mooc；权威来源；考试相关；任务匹配；时间较新"
+        "score": 15503.3204,
+        "score_reason": "词项: 在线开放课程、线开放课程、在线开放课、线下考试、在线开放、mooc；权威来源；考试相关；任务匹配；时间较新"
       },
       "quick_result_count": 16,
       "candidate_count": 86,
@@ -723,13 +723,11 @@
           "jwc__download__2016",
           "jwc__news__2025",
           "jwc__exam__2024",
-          "jwc__exam__2023",
-          "jwc__exam__2026",
-          "jwc__notice_article__2018",
-          "jwc__policy__2018",
           "jwc__exam__2014",
+          "jwc__exam__2023",
           "jwc__external__undated",
           "cxcy__external__undated",
+          "jwc__exam__2026",
           "cxcy__exam__2026",
           "cxcy__exam__2025",
           "jwc__exam__2013",
@@ -737,6 +735,8 @@
           "cxcy__exam__2022",
           "cxcy__exam__2020",
           "cxcy__exam__2019",
+          "jwc__notice_article__2018",
+          "jwc__policy__2018",
           "cxcy__exam__2018",
           "xsc__exam__2024",
           "xsc__exam__2021",
@@ -856,34 +856,6 @@
             ]
           },
           {
-            "term": "线下考试",
-            "local_index_count": 11,
-            "expected_cost_bytes": 4524758,
-            "expected_utility_per_kb": 0.018105,
-            "likely_sources": [
-              "jwc"
-            ],
-            "likely_facets": [
-              "exam"
-            ]
-          },
-          {
-            "term": "spoc",
-            "local_index_count": 15,
-            "expected_cost_bytes": 5589449,
-            "expected_utility_per_kb": 0.01407,
-            "likely_sources": [
-              "jwc"
-            ],
-            "likely_facets": [
-              "exam",
-              "workflow",
-              "notice_article",
-              "policy",
-              "news"
-            ]
-          },
-          {
             "term": "慕课考试",
             "local_index_count": 3,
             "expected_cost_bytes": 1898994,
@@ -907,6 +879,34 @@
             "likely_facets": [
               "exam",
               "external"
+            ]
+          },
+          {
+            "term": "spoc",
+            "local_index_count": 15,
+            "expected_cost_bytes": 5589449,
+            "expected_utility_per_kb": 0.01407,
+            "likely_sources": [
+              "jwc"
+            ],
+            "likely_facets": [
+              "exam",
+              "workflow",
+              "notice_article",
+              "policy",
+              "news"
+            ]
+          },
+          {
+            "term": "线下考试",
+            "local_index_count": 11,
+            "expected_cost_bytes": 4524758,
+            "expected_utility_per_kb": 0.018105,
+            "likely_sources": [
+              "jwc"
+            ],
+            "likely_facets": [
+              "exam"
             ]
           },
           {
@@ -941,10 +941,10 @@
         ],
         "route_cost_bytes": [
           8050231,
-          4524758,
-          5589449,
           1898994,
           7534743,
+          5589449,
+          4524758,
           6753143,
           9958065
         ]
@@ -977,7 +977,7 @@
     },
     {
       "query": "学生相关文件及表格",
-      "elapsed_ms": 2545.631,
+      "elapsed_ms": 2440.457,
       "result_count": 12,
       "top_result": {
         "id": "jwc-attachment-313fb4931f69ecbe0b09",
@@ -985,8 +985,8 @@
         "source_id": "jwc",
         "facet": "download",
         "url": "https://jwc.njupt.edu.cn/_upload/article/files/4b/5d/3a171854465dbd4cdece8a543011/e1e9c0ff-0a68-4f1c-8c0a-3fdc2bb1a28d.doc",
-        "score": 14675.5842,
-        "score_reason": "附件名命中；栏目路径命中；正文命中；词项: 学生相关文件及表格、学生相关文件、相关文件及、生相关文件、学生相关文、关文件及表；权威来源；下载资源；任务匹配；版本较新"
+        "score": 14753.5256,
+        "score_reason": "附件名命中；栏目路径命中；正文命中；词项: 学生相关文件及表格、学生相关文件、关文件及表、学生相关文、文件及表格、生相关文件；权威来源；下载资源；任务匹配；版本较新"
       },
       "quick_result_count": 25,
       "candidate_count": 96,
@@ -1031,10 +1031,6 @@
           "jwc__workflow__2010",
           "jwc__exam__2016",
           "cxcy__download__2022",
-          "xsc__workflow__2020",
-          "xsc__workflow__2021",
-          "xsc__download__2020",
-          "cxcy__workflow__2022",
           "jwc__exam__2017",
           "jwc__exam__2018",
           "jwc__exam__2014",
@@ -1049,6 +1045,10 @@
           "jwc__external__2016",
           "jwc__exam__2020",
           "jwc__download__2019",
+          "xsc__workflow__2020",
+          "xsc__workflow__2021",
+          "xsc__download__2020",
+          "cxcy__workflow__2022",
           "jwc__exam__2011",
           "jwc__exam__2010",
           "jwc__exam__2012",
@@ -1207,21 +1207,6 @@
             ]
           },
           {
-            "term": "表格下载",
-            "local_index_count": 8,
-            "expected_cost_bytes": 1187558,
-            "expected_utility_per_kb": 0.017935,
-            "likely_sources": [
-              "jwc",
-              "xsc",
-              "cxcy"
-            ],
-            "likely_facets": [
-              "workflow",
-              "download"
-            ]
-          },
-          {
             "term": "xlsx",
             "local_index_count": 24,
             "expected_cost_bytes": 8745902,
@@ -1238,6 +1223,21 @@
               "policy",
               "notice_article",
               "external"
+            ]
+          },
+          {
+            "term": "表格下载",
+            "local_index_count": 8,
+            "expected_cost_bytes": 1187558,
+            "expected_utility_per_kb": 0.017935,
+            "likely_sources": [
+              "jwc",
+              "xsc",
+              "cxcy"
+            ],
+            "likely_facets": [
+              "workflow",
+              "download"
             ]
           },
           {
@@ -1314,8 +1314,8 @@
           3652148,
           3652148,
           4040313,
-          1187558,
           8745902,
+          1187558,
           3652148,
           10060907,
           7480996,
@@ -1350,7 +1350,7 @@
     },
     {
       "query": "教务管理系统",
-      "elapsed_ms": 2071.93,
+      "elapsed_ms": 2178.573,
       "result_count": 12,
       "top_result": {
         "id": "jwc-external-a9c8af1d87288879e64f",
@@ -1358,8 +1358,8 @@
         "source_id": "jwc",
         "facet": "system",
         "url": "http://jwxt.njupt.edu.cn/",
-        "score": 17263.0,
-        "score_reason": "标题精确；外部系统/外链命中；正文命中；标签命中；词项: 教务管理系统、教务管理系、务管理系统、管理系统、务管理系、教务管理；权威来源；系统入口；任务匹配；官方入口"
+        "score": 17355.0,
+        "score_reason": "标题精确；外部系统/外链命中；正文命中；标签命中；词项: 教务管理系统、务管理系统、教务管理系、教务管理、管理系统、务管理系；权威来源；系统入口；任务匹配；官方入口"
       },
       "quick_result_count": 9,
       "candidate_count": 65,
@@ -1372,8 +1372,8 @@
         "estimated_utility_per_kb": 0.884151,
         "source_ids": [
           "jwc",
-          "cxcy",
-          "xsc"
+          "xsc",
+          "cxcy"
         ],
         "local_index_ids": [
           "jwc__exam__2017",
@@ -1400,21 +1400,21 @@
           "jwc__exam__2026",
           "jwc__download__2018",
           "jwc__workflow__2022",
+          "jwc__workflow__2025",
+          "jwc__workflow__2024",
+          "jwc__workflow__2023",
+          "jwc__workflow__2018",
           "jwc__notice_article__2015",
+          "jwc__download__2026",
+          "jwc__workflow__2026",
           "jwc__notice_article__2016",
           "jwc__notice_article__2019",
           "jwc__workflow__2019",
           "jwc__notice_article__2017",
           "jwc__notice_article__2020",
-          "jwc__workflow__2018",
           "jwc__workflow__2017",
           "jwc__workflow__2016",
           "jwc__workflow__2015",
-          "jwc__workflow__2025",
-          "jwc__workflow__2024",
-          "jwc__workflow__2023",
-          "jwc__download__2026",
-          "jwc__workflow__2026",
           "xsc__system__undated",
           "jwc__system__undated",
           "cxcy__system__undated"
@@ -1528,6 +1528,25 @@
             ]
           },
           {
+            "term": "教务系统",
+            "local_index_count": 24,
+            "expected_cost_bytes": 8096052,
+            "expected_utility_per_kb": 0.039057,
+            "likely_sources": [
+              "jwc",
+              "xsc",
+              "cxcy"
+            ],
+            "likely_facets": [
+              "exam",
+              "workflow",
+              "download",
+              "notice_article",
+              "policy",
+              "news"
+            ]
+          },
+          {
             "term": "正方教务",
             "local_index_count": 24,
             "expected_cost_bytes": 10385451,
@@ -1562,25 +1581,6 @@
             ]
           },
           {
-            "term": "教务系统",
-            "local_index_count": 24,
-            "expected_cost_bytes": 8096052,
-            "expected_utility_per_kb": 0.039057,
-            "likely_sources": [
-              "jwc",
-              "xsc",
-              "cxcy"
-            ],
-            "likely_facets": [
-              "exam",
-              "workflow",
-              "download",
-              "notice_article",
-              "policy",
-              "news"
-            ]
-          },
-          {
             "term": "system_entry",
             "local_index_count": 3,
             "expected_cost_bytes": 36389,
@@ -1597,9 +1597,9 @@
         ],
         "route_cost_bytes": [
           10646962,
+          8096052,
           10385451,
           8198684,
-          8096052,
           36389
         ]
       },
@@ -1631,7 +1631,7 @@
     },
     {
       "query": "附件1",
-      "elapsed_ms": 2325.286,
+      "elapsed_ms": 2413.229,
       "result_count": 12,
       "top_result": {
         "id": "cxcy-detail-49c00d6c21aad94b2f18",
@@ -1639,7 +1639,7 @@
         "source_id": "cxcy",
         "facet": "download",
         "url": "https://cxcy.njupt.edu.cn/2026/0417/c11336a300284/page.htm",
-        "score": 7638.3513,
+        "score": 7638.2927,
         "score_reason": "附件名命中；正文命中；词项: 附件1、附件；权威来源；下载资源；任务匹配；版本较新"
       },
       "quick_result_count": 8,
@@ -1657,41 +1657,41 @@
           "cxcy"
         ],
         "local_index_ids": [
-          "jwc__workflow__2016",
-          "jwc__workflow__2015",
-          "jwc__download__2015",
-          "jwc__workflow__2014",
-          "jwc__download__2014",
-          "jwc__download__2016",
-          "jwc__workflow__2018",
-          "cxcy__workflow__2022",
-          "cxcy__download__2025",
-          "cxcy__download__2024",
-          "jwc__exam__2017",
-          "jwc__exam__2016",
-          "jwc__exam__2015",
-          "jwc__exam__2014",
-          "jwc__download__2013",
-          "jwc__download__2024",
-          "jwc__download__2023",
-          "jwc__download__2021",
-          "jwc__workflow__2019",
           "jwc__exam__2018",
-          "jwc__download__2018",
-          "jwc__workflow__2017",
-          "jwc__download__2017",
+          "jwc__exam__2016",
+          "jwc__exam__2017",
           "jwc__exam__2013",
           "jwc__exam__2019",
+          "jwc__exam__2014",
+          "jwc__workflow__2018",
           "jwc__exam__2024",
+          "jwc__exam__2015",
           "jwc__exam__2021",
+          "jwc__workflow__2019",
           "jwc__exam__2023",
           "jwc__exam__2022",
           "jwc__exam__2025",
           "jwc__exam__2012",
           "jwc__exam__2020",
+          "jwc__workflow__2016",
+          "jwc__workflow__2017",
           "jwc__workflow__2013",
+          "jwc__workflow__2015",
+          "jwc__workflow__2014",
           "jwc__workflow__2012",
+          "jwc__download__2013",
           "jwc__workflow__2021",
+          "jwc__download__2015",
+          "jwc__download__2014",
+          "jwc__download__2016",
+          "cxcy__workflow__2022",
+          "cxcy__download__2025",
+          "cxcy__download__2024",
+          "jwc__download__2024",
+          "jwc__download__2023",
+          "jwc__download__2021",
+          "jwc__download__2018",
+          "jwc__download__2017",
           "jwc__download__2026",
           "jwc__download__2012",
           "jwc__download__2019",
@@ -1806,22 +1806,6 @@
         ],
         "route_decisions": [
           {
-            "term": "附件一",
-            "local_index_count": 24,
-            "expected_cost_bytes": 7211742,
-            "expected_utility_per_kb": 0.032033,
-            "likely_sources": [
-              "jwc",
-              "cxcy"
-            ],
-            "likely_facets": [
-              "download",
-              "workflow",
-              "exam",
-              "policy"
-            ]
-          },
-          {
             "term": "附件1",
             "local_index_count": 24,
             "expected_cost_bytes": 9961735,
@@ -1837,6 +1821,22 @@
               "download",
               "policy",
               "external"
+            ]
+          },
+          {
+            "term": "附件一",
+            "local_index_count": 24,
+            "expected_cost_bytes": 7211742,
+            "expected_utility_per_kb": 0.032033,
+            "likely_sources": [
+              "jwc",
+              "cxcy"
+            ],
+            "likely_facets": [
+              "download",
+              "workflow",
+              "exam",
+              "policy"
             ]
           },
           {
@@ -1878,8 +1878,8 @@
           }
         ],
         "route_cost_bytes": [
-          7211742,
           9961735,
+          7211742,
           9688413,
           7291540
         ]
@@ -1912,7 +1912,7 @@
     },
     {
       "query": "不存在的查询词",
-      "elapsed_ms": 1162.092,
+      "elapsed_ms": 1194.109,
       "result_count": 0,
       "top_result": null,
       "quick_result_count": 0,
@@ -2107,7 +2107,7 @@
   ],
   "query_measurement_summary": {
     "query_count": 6,
-    "max_elapsed_ms": 2545.631,
+    "max_elapsed_ms": 2440.457,
     "max_candidate_shard_count": 32,
     "max_loaded_shard_count": 628,
     "max_uncached_loaded_bytes": 60195348,
@@ -2227,7 +2227,7 @@
         "matched_facet": "notice_article",
         "matched_nav_path": "首页 / 直接详情链接",
         "matched_url": "https://jwc.njupt.edu.cn/2025/0904/c1528a288083/page.htm",
-        "matched_score_reason": "标题包含；正文命中；词项: 2025-2026学年校历、2025-2026、学年校历、年校历、学年校；权威来源；任务匹配；时间较新；历史内容降权"
+        "matched_score_reason": "标题包含；正文命中；词项: 2025-2026学年校历、2025-2026、学年校历、学年校、年校历、校历；权威来源；任务匹配；时间较新；历史内容降权"
       },
       {
         "query": "慕课考试",
@@ -2292,7 +2292,7 @@
         "matched_facet": "exam",
         "matched_nav_path": "首页 / 通知公告",
         "matched_url": "https://jwc.njupt.edu.cn/2026/0327/c1594a298565/page.htm",
-        "matched_score_reason": "词项: 在线开放课程、在线开放课、线开放课程、在线开放、开放课程、mooc；权威来源；考试相关；任务匹配；时间较新"
+        "matched_score_reason": "词项: 在线开放课程、线开放课程、在线开放课、线下考试、在线开放、mooc；权威来源；考试相关；任务匹配；时间较新"
       },
       {
         "query": "期末考试",
@@ -2422,7 +2422,7 @@
         "matched_facet": "exam",
         "matched_nav_path": "首页 / 通知公告",
         "matched_url": "https://jwc.njupt.edu.cn/2026/0416/c1594a300221/page.htm",
-        "matched_score_reason": "标题包含；附件名命中；正文命中；词项: 转专业管理办法、业管理办法、专业管理办、转专业管理、专业管理、管理办法；权威来源；任务匹配；时间较新"
+        "matched_score_reason": "标题包含；附件名命中；正文命中；词项: 转专业管理办法、专业管理办、业管理办法、转专业管理、转专业管、业管理办；权威来源；任务匹配；时间较新"
       },
       {
         "query": "规章制度",
@@ -2487,7 +2487,7 @@
         "matched_facet": "download",
         "matched_nav_path": "规章制度",
         "matched_url": "https://jwc.njupt.edu.cn/_upload/article/files/7d/c6/5d5c9f574ec2bdc36563ba2e416b/864b214c-a95d-4ee3-9f64-b618bac07f52.docx",
-        "matched_score_reason": "附件名命中；栏目路径命中；正文命中；词项: 管理办法、规章制度、规章制、管理办、章制度、理办法；权威来源；时间较新"
+        "matched_score_reason": "附件名命中；栏目路径命中；正文命中；词项: 规章制度、管理办法、管理办、章制度、规章制、理办法；权威来源；时间较新"
       },
       {
         "query": "办事流程",
@@ -2552,7 +2552,7 @@
         "matched_facet": "workflow",
         "matched_nav_path": "首页 / 服务指南",
         "matched_url": "https://xsc.njupt.edu.cn/2024/0508/c16462a262119/page.htm",
-        "matched_score_reason": "词项: 申请流程、请流程、申请流；权威来源；时间较新"
+        "matched_score_reason": "词项: 申请流程、申请流、请流程；权威来源；时间较新"
       },
       {
         "query": "学生相关文件及表格",
@@ -2617,7 +2617,7 @@
         "matched_facet": "download",
         "matched_nav_path": "常用下载 / 学生相关文件及表格",
         "matched_url": "https://jwc.njupt.edu.cn/_upload/article/files/4b/5d/3a171854465dbd4cdece8a543011/e1e9c0ff-0a68-4f1c-8c0a-3fdc2bb1a28d.doc",
-        "matched_score_reason": "附件名命中；栏目路径命中；正文命中；词项: 学生相关文件及表格、学生相关文件、相关文件及、生相关文件、学生相关文、关文件及表；权威来源；下载资源；任务匹配；版本较新"
+        "matched_score_reason": "附件名命中；栏目路径命中；正文命中；词项: 学生相关文件及表格、学生相关文件、关文件及表、学生相关文、文件及表格、生相关文件；权威来源；下载资源；任务匹配；版本较新"
       },
       {
         "query": "教务管理系统",
@@ -2682,7 +2682,7 @@
         "matched_facet": "system",
         "matched_nav_path": "首页",
         "matched_url": "http://jwxt.njupt.edu.cn/",
-        "matched_score_reason": "标题精确；外部系统/外链命中；正文命中；标签命中；词项: 教务管理系统、教务管理系、务管理系统、管理系统、务管理系、教务管理；权威来源；系统入口；任务匹配；官方入口"
+        "matched_score_reason": "标题精确；外部系统/外链命中；正文命中；标签命中；词项: 教务管理系统、务管理系统、教务管理系、教务管理、管理系统、务管理系；权威来源；系统入口；任务匹配；官方入口"
       },
       {
         "query": "大创",
@@ -2747,7 +2747,7 @@
         "matched_facet": "download",
         "matched_nav_path": "首页 / 大创项目",
         "matched_url": "https://cxcy.njupt.edu.cn/2026/0210/c15464a297052/page.htm",
-        "matched_score_reason": "附件名命中；栏目路径命中；词项: 大学生创新创业、学生创新创、生创新创业、大学生创新、学生创新、大学生创；权威来源；时间较新；历史内容降权"
+        "matched_score_reason": "附件名命中；栏目路径命中；词项: 大学生创新创业、生创新创业、学生创新创、大学生创新、创新创业、生创新创；权威来源；时间较新；历史内容降权"
       },
       {
         "query": "推免",
@@ -2812,7 +2812,7 @@
         "matched_facet": "notice_article",
         "matched_nav_path": "首页 / 通知公告",
         "matched_url": "https://jwc.njupt.edu.cn/2025/0902/c1594a288035/page.htm",
-        "matched_score_reason": "词项: 免试攻读研究生、免试攻读研、攻读研究生、试攻读研究、读研究生、免试攻读；权威来源；任务匹配；时间较新"
+        "matched_score_reason": "词项: 免试攻读研究生、免试攻读研、试攻读研究、攻读研究生、免试攻读、试攻读研；权威来源；任务匹配；时间较新"
       },
       {
         "query": "成绩",
@@ -2877,7 +2877,7 @@
         "matched_facet": "exam",
         "matched_nav_path": "首页 / 通知公告",
         "matched_url": "https://jwc.njupt.edu.cn/2026/0228/c1594a297173/page.htm",
-        "matched_score_reason": "标题包含；附件名命中；正文命中；词项: 成绩复核、绩复核、成绩复、绩复、复核、成绩；权威来源；时间较新"
+        "matched_score_reason": "标题包含；附件名命中；正文命中；词项: 成绩复核、绩复核、成绩复、成绩、绩复、复核；权威来源；时间较新"
       },
       {
         "query": "附件1",
@@ -3072,7 +3072,7 @@
         "matched_facet": "notice_article",
         "matched_nav_path": "首页 / 通知公告",
         "matched_url": "https://xsc.njupt.edu.cn/2026/0509/c1173a301592/page.htm",
-        "matched_score_reason": "标题包含；附件名命中；正文命中；词项: 奖学金、奖学、学金；权威来源；任务匹配；时间较新"
+        "matched_score_reason": "标题包含；附件名命中；正文命中；词项: 奖学金、学金、奖学；权威来源；任务匹配；时间较新"
       },
       {
         "query": "辅导员",
@@ -3137,7 +3137,7 @@
         "matched_facet": "notice_article",
         "matched_nav_path": "首页 / 辅导员队伍建设",
         "matched_url": "https://xsc.njupt.edu.cn/2025/0422/c1152a282142/page.htm",
-        "matched_score_reason": "标题包含；栏目路径命中；正文命中；词项: 辅导员队伍建设、辅导员宣讲团、辅导员队伍、辅导员宣讲、员队伍建设、导员队伍建；权威来源；任务匹配；时间较新"
+        "matched_score_reason": "标题包含；栏目路径命中；正文命中；词项: 辅导员队伍建设、辅导员宣讲团、导员队伍建、员队伍建设、导员宣讲团、辅导员队伍；权威来源；任务匹配；时间较新"
       },
       {
         "query": "双创",
@@ -3202,7 +3202,7 @@
         "matched_facet": "system",
         "matched_nav_path": "首页 / 双创信息管理系统",
         "matched_url": "http://njupt.cxcyedu.com/tyds/index.html",
-        "matched_score_reason": "标题包含；外部系统/外链命中；栏目路径命中；正文命中；标签命中；词项: 双创信息管理系统、息管理系统、信息管理系、双创信息管、创信息管理、管理系统；权威来源"
+        "matched_score_reason": "标题包含；外部系统/外链命中；栏目路径命中；正文命中；标签命中；词项: 双创信息管理系统、双创信息管、息管理系统、创信息管理、信息管理系、息管理系；权威来源"
       },
       {
         "query": "互联网+",
@@ -3267,7 +3267,7 @@
         "matched_facet": "notice_article",
         "matched_nav_path": "首页 / 通知公告",
         "matched_url": "https://cxcy.njupt.edu.cn/2023/0906/c11336a246103/page.htm",
-        "matched_score_reason": "标题包含；标题短语命中；附件名命中；正文命中；词项: 互联网+、互联网、互联、联网；权威来源；时间较新；历史内容降权"
+        "matched_score_reason": "标题包含；标题短语命中；附件名命中；正文命中；词项: 互联网+、互联网、联网、互联；权威来源；时间较新；历史内容降权"
       }
     ],
     "max_candidate_shards": 32,
@@ -3285,7 +3285,7 @@
         "top_title": "【教务管理办公室】关于做好2025-2026学年第二学期期末考试工作安排的通知",
         "top_source_id": "jwc",
         "top_facet": "exam",
-        "top_score": 16530.131,
+        "top_score": 16529.7542,
         "loaded_shard_count": 494,
         "candidate_shard_count": 32
       },
@@ -3295,7 +3295,7 @@
         "top_title": "【教务管理办公室】2025-2026学年第二学期考试安排表",
         "top_source_id": "jwc",
         "top_facet": "exam",
-        "top_score": 17744.3775,
+        "top_score": 17822.0007,
         "loaded_shard_count": 494,
         "candidate_shard_count": 32
       },
@@ -3305,7 +3305,7 @@
         "top_title": "关于举办“2026年南京邮电大学集成电路创新创业校选拔赛”的通知",
         "top_source_id": "cxcy",
         "top_facet": "workflow",
-        "top_score": 11055.3226,
+        "top_score": 11158.9458,
         "loaded_shard_count": 396,
         "candidate_shard_count": 32
       },
@@ -3315,7 +3315,7 @@
         "top_title": "2024年度大学生创新创业训练计划项目结题验收成绩公示",
         "top_source_id": "cxcy",
         "top_facet": "download",
-        "top_score": 14070.7745,
+        "top_score": 14070.3978,
         "loaded_shard_count": 591,
         "candidate_shard_count": 32
       },
@@ -3325,7 +3325,7 @@
         "top_title": "2024年度大学生创新创业训练计划项目结题验收成绩公示",
         "top_source_id": "cxcy",
         "top_facet": "download",
-        "top_score": 17730.7744,
+        "top_score": 17730.3977,
         "loaded_shard_count": 591,
         "candidate_shard_count": 32
       },
@@ -3345,7 +3345,7 @@
         "top_title": "关于组织2026年全国大学生电子设计竞赛(TI杯)及电子信息类系列学科竞赛宣讲及选拔的通知",
         "top_source_id": "cxcy",
         "top_facet": "workflow",
-        "top_score": 13701.9111,
+        "top_score": 13701.5344,
         "loaded_shard_count": 399,
         "candidate_shard_count": 32
       },
@@ -3355,7 +3355,7 @@
         "top_title": "【教务管理办公室】关于2026年上半年普通话考试的通知",
         "top_source_id": "jwc",
         "top_facet": "exam",
-        "top_score": 17743.0481,
+        "top_score": 17742.6713,
         "loaded_shard_count": 188,
         "candidate_shard_count": 32
       },
@@ -3365,7 +3365,7 @@
         "top_title": "南邮获“挑战杯”国赛特等奖7项 再捧“优胜杯”",
         "top_source_id": "cxcy",
         "top_facet": "news",
-        "top_score": 11578.4179,
+        "top_score": 11578.0411,
         "loaded_shard_count": 309,
         "candidate_shard_count": 29
       },
@@ -3375,7 +3375,7 @@
         "top_title": "双创信息管理系统",
         "top_source_id": "cxcy",
         "top_facet": "system",
-        "top_score": 22751.0,
+        "top_score": 22843.0,
         "loaded_shard_count": 488,
         "candidate_shard_count": 32
       },
@@ -3385,7 +3385,7 @@
         "top_title": "南京邮电大学2024-2025学年“甘霖励志奖学金”拟推荐名单公示",
         "top_source_id": "xsc",
         "top_facet": "notice_article",
-        "top_score": 12395.9089,
+        "top_score": 12395.6745,
         "loaded_shard_count": 458,
         "candidate_shard_count": 32
       },
@@ -3395,7 +3395,7 @@
         "top_title": "本科学生国家奖学金评审办法",
         "top_source_id": "xsc",
         "top_facet": "download",
-        "top_score": 10902.1828,
+        "top_score": 10901.9484,
         "loaded_shard_count": 458,
         "candidate_shard_count": 32
       },
@@ -3405,7 +3405,7 @@
         "top_title": "校学发〔2024〕7号南京邮电大学“鼓楼区绿色低碳奖助学金”实施细则（试行）",
         "top_source_id": "xsc",
         "top_facet": "notice_article",
-        "top_score": 9613.9225,
+        "top_score": 9521.6881,
         "loaded_shard_count": 458,
         "candidate_shard_count": 32
       },
@@ -3415,7 +3415,7 @@
         "top_title": "家庭经济困难学生认定工作实施办法",
         "top_source_id": "xsc",
         "top_facet": "notice_article",
-        "top_score": 10597.1827,
+        "top_score": 10504.9483,
         "loaded_shard_count": 294,
         "candidate_shard_count": 32
       },
@@ -3425,7 +3425,7 @@
         "top_title": "红色校史润心田，南邮精神永相传 —— 第四届辅导员宣讲团 走进教育科学与技术学院",
         "top_source_id": "xsc",
         "top_facet": "workflow",
-        "top_score": 10911.8215,
+        "top_score": 10867.8027,
         "loaded_shard_count": 401,
         "candidate_shard_count": 32
       },
@@ -3435,7 +3435,7 @@
         "top_title": "心理健康",
         "top_source_id": "xsc",
         "top_facet": "system",
-        "top_score": 13842.0,
+        "top_score": 13750.0,
         "loaded_shard_count": 328,
         "candidate_shard_count": 32
       },
@@ -3445,7 +3445,7 @@
         "top_title": "心理健康",
         "top_source_id": "xsc",
         "top_facet": "system",
-        "top_score": 7962.0,
+        "top_score": 7870.0,
         "loaded_shard_count": 328,
         "candidate_shard_count": 32
       },
@@ -3455,7 +3455,7 @@
         "top_title": "【教务管理办公室】关于做好2025-2026学年第二学期全日制本科生转专业工作的通知",
         "top_source_id": "jwc",
         "top_facet": "exam",
-        "top_score": 12373.3015,
+        "top_score": 12477.0838,
         "loaded_shard_count": 409,
         "candidate_shard_count": 32
       },
@@ -3465,7 +3465,7 @@
         "top_title": "2026年各学院推荐优秀应届本科毕业生免试攻读研究生工作方案",
         "top_source_id": "jwc",
         "top_facet": "notice_article",
-        "top_score": 10467.5069,
+        "top_score": 10467.2893,
         "loaded_shard_count": 395,
         "candidate_shard_count": 32
       },
@@ -3475,7 +3475,7 @@
         "top_title": "推荐免试研究生管理办法",
         "top_source_id": "jwc",
         "top_facet": "exam",
-        "top_score": 13670.0685,
+        "top_score": 13669.8508,
         "loaded_shard_count": 395,
         "candidate_shard_count": 32
       },
@@ -3485,7 +3485,7 @@
         "top_title": "南京邮电大学学生毕业申请表 2026-04-16",
         "top_source_id": "jwc",
         "top_facet": "download",
-        "top_score": 14675.5832,
+        "top_score": 14753.5246,
         "loaded_shard_count": 628,
         "candidate_shard_count": 32
       },
@@ -3495,7 +3495,7 @@
         "top_title": "南京邮电大学学生缓考申请表 2026-04-16",
         "top_source_id": "jwc",
         "top_facet": "download",
-        "top_score": 14256.3207,
+        "top_score": 14255.9439,
         "loaded_shard_count": 205,
         "candidate_shard_count": 32
       },
@@ -3505,7 +3505,7 @@
         "top_title": "南京邮电大学学生成绩复核申请表 2026-04-16",
         "top_source_id": "jwc",
         "top_facet": "download",
-        "top_score": 15832.5832,
+        "top_score": 15924.5246,
         "loaded_shard_count": 650,
         "candidate_shard_count": 32
       },
@@ -3515,7 +3515,7 @@
         "top_title": "教务管理系统",
         "top_source_id": "jwc",
         "top_facet": "system",
-        "top_score": 17263.0,
+        "top_score": 17355.0,
         "loaded_shard_count": 470,
         "candidate_shard_count": 32
       },
@@ -3525,7 +3525,7 @@
         "top_title": "【教务管理办公室】2025-2026学年第二学期2022-2025级学生选课通知",
         "top_source_id": "jwc",
         "top_facet": "exam",
-        "top_score": 11292.593,
+        "top_score": 11292.3585,
         "loaded_shard_count": 486,
         "candidate_shard_count": 32
       },
@@ -3535,7 +3535,7 @@
         "top_title": "http://jwxt.njupt.edu.cn/ ，亦可通过学校主页（www.njupt.edu.cn ）—教务处主 页—综合信息服务—教务管理系统，登录选课系统。",
         "top_source_id": "jwc",
         "top_facet": "external",
-        "top_score": 6528.0,
+        "top_score": 6344.0,
         "loaded_shard_count": 316,
         "candidate_shard_count": 32
       },
@@ -3545,7 +3545,7 @@
         "top_title": "南京邮电大学本科教材供应管理办法 2024-04-26",
         "top_source_id": "jwc",
         "top_facet": "download",
-        "top_score": 9488.9448,
+        "top_score": 9488.7271,
         "loaded_shard_count": 586,
         "candidate_shard_count": 32
       },
@@ -3574,8 +3574,8 @@
     "queries": [
       {
         "query": "校历",
-        "cold_ms": 1750.581,
-        "warm_ms": 1313.941,
+        "cold_ms": 1854.634,
+        "warm_ms": 1417.907,
         "cold_uncached_bytes": 52362058,
         "warm_uncached_bytes": 0,
         "warm_cached_bytes": 58514724,
@@ -3611,8 +3611,8 @@
       },
       {
         "query": "慕课考试",
-        "cold_ms": 2148.472,
-        "warm_ms": 1568.593,
+        "cold_ms": 2168.61,
+        "warm_ms": 1627.521,
         "cold_uncached_bytes": 60195348,
         "warm_uncached_bytes": 0,
         "warm_cached_bytes": 68171760,
@@ -3648,8 +3648,8 @@
       },
       {
         "query": "转专业",
-        "cold_ms": 1921.237,
-        "warm_ms": 1322.388,
+        "cold_ms": 1988.338,
+        "warm_ms": 1357.165,
         "cold_uncached_bytes": 57582404,
         "warm_uncached_bytes": 0,
         "warm_cached_bytes": 62808914,
@@ -3685,8 +3685,8 @@
       },
       {
         "query": "学生相关文件及表格",
-        "cold_ms": 2358.218,
-        "warm_ms": 1750.864,
+        "cold_ms": 2409.885,
+        "warm_ms": 2057.844,
         "cold_uncached_bytes": 54763613,
         "warm_uncached_bytes": 0,
         "warm_cached_bytes": 56514035,
@@ -3722,8 +3722,8 @@
       },
       {
         "query": "教务管理系统",
-        "cold_ms": 2023.114,
-        "warm_ms": 1519.037,
+        "cold_ms": 2050.318,
+        "warm_ms": 1652.636,
         "cold_uncached_bytes": 58035908,
         "warm_uncached_bytes": 0,
         "warm_cached_bytes": 63100807,
@@ -3759,8 +3759,8 @@
       },
       {
         "query": "奖学金",
-        "cold_ms": 2000.152,
-        "warm_ms": 1441.116,
+        "cold_ms": 2025.382,
+        "warm_ms": 1501.301,
         "cold_uncached_bytes": 56383464,
         "warm_uncached_bytes": 0,
         "warm_cached_bytes": 61347164,
@@ -3796,8 +3796,8 @@
       },
       {
         "query": "大创",
-        "cold_ms": 2159.27,
-        "warm_ms": 1716.272,
+        "cold_ms": 2249.396,
+        "warm_ms": 1756.135,
         "cold_uncached_bytes": 53053960,
         "warm_uncached_bytes": 0,
         "warm_cached_bytes": 55392198,
@@ -3833,8 +3833,8 @@
       },
       {
         "query": "不存在的查询词",
-        "cold_ms": 1214.79,
-        "warm_ms": 801.697,
+        "cold_ms": 1205.28,
+        "warm_ms": 782.736,
         "cold_uncached_bytes": 44130320,
         "warm_uncached_bytes": 0,
         "warm_cached_bytes": 51393802,
@@ -3874,7 +3874,7 @@
       "max_cold_uncached_bytes": 60195348,
       "max_warm_uncached_bytes": 0,
       "total_warm_cached_bytes": 477243404,
-      "max_warm_ms": 1750.864,
+      "max_warm_ms": 2057.844,
       "passed": true,
       "failure_count": 0
     },
@@ -3961,7 +3961,7 @@
     },
     "4": {
       "status": "evidence_present",
-      "evidence": "Measured queries report proof ledger complete with zero pending/failed shards."
+      "evidence": "Measured queries report proof ledger complete with zero pending/failed shards; runtime tests cover no-match proof, failed shard refusal, and cancelled pending-ledger refusal."
     },
     "5": {
       "status": "evidence_present",
@@ -3973,10 +3973,10 @@
           "current_local_index_runtime_bytes": 37820171,
           "bytes_delta": -21663070,
           "bytes_percent_change": -36.419,
-          "baseline_local_index_parse_decode_mean_ms": 699.278,
-          "current_local_index_query_term_parse_decode_mean_ms": 684.115,
-          "parse_decode_delta_ms": -15.163,
-          "parse_decode_percent_change": -2.168,
+          "baseline_local_index_parse_decode_mean_ms": 708.641,
+          "current_local_index_query_term_parse_decode_mean_ms": 681.193,
+          "parse_decode_delta_ms": -27.448,
+          "parse_decode_percent_change": -3.873,
           "body_decode_mode": "packed_query_term_selective",
           "light_decode_mode": "metadata_json_plus_packed_query_term_selective"
         },
@@ -4059,9 +4059,10 @@
         "max_cold_uncached_bytes": 60195348,
         "max_warm_uncached_bytes": 0,
         "total_warm_cached_bytes": 477243404,
-        "max_warm_ms": 1750.864,
+        "max_warm_ms": 2057.844,
         "passed": true,
-        "failure_count": 0
+        "failure_count": 0,
+        "cache_invalidation_test": "Changed content-hash artifact paths are treated as cold cache misses."
       }
     },
     "9": {

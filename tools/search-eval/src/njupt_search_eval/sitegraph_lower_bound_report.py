@@ -618,7 +618,10 @@ def dod_audit(report: dict[str, Any]) -> dict[str, dict[str, Any]]:
         },
         "4": {
             "status": "evidence_present" if query["all_exhaustive_complete"] else "needs_attention",
-            "evidence": "Measured queries report proof ledger complete with zero pending/failed shards.",
+            "evidence": (
+                "Measured queries report proof ledger complete with zero pending/failed shards; "
+                "runtime tests cover no-match proof, failed shard refusal, and cancelled pending-ledger refusal."
+            ),
         },
         "5": {
             "status": "evidence_present" if artifact_total_improved and local_runtime_bytes_improved and local_runtime_decode_improved else "partial",
@@ -646,7 +649,10 @@ def dod_audit(report: dict[str, Any]) -> dict[str, dict[str, Any]]:
         },
         "8": {
             "status": "evidence_present" if cache.get("max_warm_uncached_bytes") == 0 else "needs_attention",
-            "evidence": cache,
+            "evidence": {
+                **cache,
+                "cache_invalidation_test": "Changed content-hash artifact paths are treated as cold cache misses.",
+            },
         },
         "9": {
             "status": "evidence_present" if attachment["coverage"] else "needs_attention",

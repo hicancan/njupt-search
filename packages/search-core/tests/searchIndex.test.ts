@@ -612,7 +612,10 @@ const withMockFetch = async (
         [shardFilterArtifact.path, fixture.shardFilter],
         [shard.path, fixture.documents]
     ]);
-    globalThis.fetch = (async (input: RequestInfo | URL) => {
+    globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
+        if (init?.signal?.aborted) {
+            throw new DOMException('Search cancelled', 'AbortError');
+        }
         const url = String(input).replace(/^\//, '');
         if ((options.failPaths || []).some(path => url.endsWith(path))) {
             return new Response('fixture failure', { status: 503 });
@@ -971,6 +974,37 @@ describe('sitegraph search contract', () => {
             expect(complete?.coverage.proved_no_match_shards).toBe(1);
             expect(complete?.coverage.scanned_shards).toBe(0);
             expect(complete?.results).toEqual([]);
+        });
+    });
+
+    it('refuses exhaustive completion when cancellation leaves proof ledger shards pending', async () => {
+        const fixture = makeRoutedFixture('proof-cancelled', [makeDocument()], {
+            queryTerms: ['不存在的查询'],
+            lightTerms: {},
+            bodyTerms: {},
+            filterBase64: '/w=='
+        });
+
+        await withMockFetch(fixture, async () => {
+            const controller = new AbortController();
+            const events: SitegraphSearchEvent[] = [];
+            await expect(searchSitegraphProgressively(
+                fixture.session,
+                '不存在的查询',
+                controller.signal,
+                event => {
+                    events.push(event);
+                    if (event.type === 'verification_started') {
+                        controller.abort();
+                    }
+                },
+                { limit: 5 }
+            )).rejects.toMatchObject({ name: 'AbortError' });
+            const verification = events.find(event => event.type === 'verification_started');
+            expect(verification?.coverage.pending_shards).toBe(1);
+            expect(verification?.coverage.failed_shards).toBe(0);
+            expect(verification?.coverage.exhaustive_complete).toBe(false);
+            expect(events.some(event => event.type === 'global_exhaustive_complete')).toBe(false);
         });
     });
 
