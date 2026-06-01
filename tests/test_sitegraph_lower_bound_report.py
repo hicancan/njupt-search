@@ -19,13 +19,14 @@ def test_shard_filter_proves_no_match_when_phrase_token_is_absent() -> None:
 
 def test_lower_bound_report_contains_rerunnable_evidence() -> None:
     report = build_lower_bound_report(
+        baseline_ref="1a0996e",
         queries=["校历"],
         cache_queries=["校历"],
         include_quality=False,
         include_task=False,
         include_cache=True,
         include_local_body_benchmark=False,
-        parse_runs=1,
+        parse_runs=3,
     )
 
     assert report["report"] == "njupt-search-lower-bound-evidence-v1"
@@ -40,7 +41,12 @@ def test_lower_bound_report_contains_rerunnable_evidence() -> None:
     assert measurement["coverage"]["exhaustive_complete"] is True
     assert measurement["coverage"]["pending_shards"] == 0
     assert measurement["planner"]["selected_local_index_count"] > 0
+    assert measurement["planner"]["phase_local_index_ids"]["first_trusted_results"]
     assert measurement["retrieval"]["dynamic_pruning"] is True
+    assert measurement["phase_measurements"]["first_trusted_results"]["uncached_loaded_bytes"] <= 5 * 1024 * 1024
+    assert measurement["phase_gate"]["passed"] is True
+    assert report["query_measurement_summary"]["phase_gates_passed"] is True
+    assert report["query_path_parse_decode_benchmark"]["summary"]["passed"] is True
 
     assert report["cache_benchmark"]["summary"]["passed"] is True
     assert report["cache_benchmark"]["summary"]["max_warm_uncached_bytes"] == 0

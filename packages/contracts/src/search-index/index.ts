@@ -465,6 +465,11 @@ export interface SitegraphQueryPlan {
         facet: string;
         year: string;
     }>;
+    phase_local_index_ids?: {
+        first_trusted_results: string[];
+        top_results_hydrated: string[];
+        proof_complete: string[];
+    };
 }
 
 export interface SitegraphQueryStats {

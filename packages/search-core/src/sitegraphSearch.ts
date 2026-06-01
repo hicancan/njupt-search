@@ -51,8 +51,15 @@ const DEFAULT_CANDIDATE_LIMIT = 160;
 const DEFAULT_MAX_SHARD_LOADS = 40;
 const QUICK_MAX_SHARD_LOADS = 8;
 const BODY_MAX_SHARD_LOADS = 18;
-const HYDRATE_MAX_SHARD_LOADS = 40;
+const HYDRATE_MAX_SHARD_LOADS = 18;
 const SHARD_BATCH_SIZE = 4;
+const ONE_MIB = 1024 * 1024;
+const FIRST_TRUSTED_MAX_UNCACHED_BYTES = 5 * ONE_MIB;
+const FIRST_TRUSTED_HYDRATION_RESERVE_BYTES = Math.floor(1.5 * ONE_MIB);
+const TOP_RESULTS_MAX_UNCACHED_BYTES = 10 * ONE_MIB;
+const TOP_RESULTS_HYDRATION_RESERVE_BYTES = Math.floor(2.25 * ONE_MIB);
+const MIN_FIRST_TRUSTED_LOCAL_INDEXES = 6;
+const MIN_TOP_RESULTS_LOCAL_INDEXES = 12;
 const LIGHT_SEARCH_FIELDS = ['title', 'section', 'nav_path', 'tags', 'attachments', 'external', 'system'];
 const BODY_SEARCH_FIELDS = [...LIGHT_SEARCH_FIELDS, 'summary', 'content'];
 const FULL_SCAN_FIELDS = ['title', 'section', 'nav_path', 'summary', 'content', 'attachments', 'url'];
@@ -814,6 +821,37 @@ const bodyIndexCachedBytes = (ref: SitegraphLocalIndexRef): number => {
         return localBodyPackedBytesCache.has(artifact.path) ? artifact.bytes : 0;
     }
     return localBodyIndexCache.has(artifact.path) ? artifact.bytes : 0;
+};
+
+const selectLocalRefsWithinBudget = (
+    refs: SitegraphLocalIndexRef[],
+    byteBudget: number,
+    byteSize: (ref: SitegraphLocalIndexRef) => number,
+    minimumRefs: number
+): SitegraphLocalIndexRef[] => {
+    const selected: SitegraphLocalIndexRef[] = [];
+    let selectedBytes = 0;
+    for (const ref of refs) {
+        const bytes = byteSize(ref);
+        const needMinimumCoverage = selected.length < minimumRefs;
+        if (!needMinimumCoverage && selected.length > 0 && selectedBytes + bytes > byteBudget) {
+            continue;
+        }
+        selected.push(ref);
+        selectedBytes += bytes;
+    }
+    return selected.length > 0 ? selected : refs.slice(0, 1);
+};
+
+const uniqueLocalRefs = (refs: SitegraphLocalIndexRef[]): SitegraphLocalIndexRef[] => {
+    const seen = new Set<string>();
+    const selected: SitegraphLocalIndexRef[] = [];
+    for (const ref of refs) {
+        if (seen.has(ref.index_id)) continue;
+        seen.add(ref.index_id);
+        selected.push(ref);
+    }
+    return selected;
 };
 
 const loadShardFilter = async (
@@ -1603,6 +1641,40 @@ export const searchSitegraphProgressively = async (
     const planningScope = await loadPlanningScope(session, plan, filters, now, signal, cacheStats);
     plan.selected_local_indexes = planningScope.selectedLocalIndexes;
     plan.estimated_cost_bytes = planningScope.selectedLocalIndexes.reduce((sum, item) => sum + item.expected_uncached_bytes, plan.estimated_cost_bytes);
+    const firstTrustedLocalBudget = Math.max(
+        0,
+        FIRST_TRUSTED_MAX_UNCACHED_BYTES
+        - firstScreenBytes(session)
+        - planningScope.sourceManifestBytes
+        - FIRST_TRUSTED_HYDRATION_RESERVE_BYTES
+    );
+    const firstTrustedRefs = selectLocalRefsWithinBudget(
+        planningScope.localRefs,
+        firstTrustedLocalBudget,
+        lightIndexRuntimeBytes,
+        MIN_FIRST_TRUSTED_LOCAL_INDEXES
+    );
+    const topResultsLocalBudget = Math.max(
+        0,
+        TOP_RESULTS_MAX_UNCACHED_BYTES
+        - firstScreenBytes(session)
+        - planningScope.sourceManifestBytes
+        - TOP_RESULTS_HYDRATION_RESERVE_BYTES
+    );
+    const topResultsRefs = uniqueLocalRefs([
+        ...firstTrustedRefs,
+        ...selectLocalRefsWithinBudget(
+            planningScope.localRefs,
+            topResultsLocalBudget,
+            ref => lightIndexRuntimeBytes(ref) + bodyIndexArtifact(ref).bytes,
+            MIN_TOP_RESULTS_LOCAL_INDEXES
+        ),
+    ]);
+    plan.phase_local_index_ids = {
+        first_trusted_results: firstTrustedRefs.map(ref => ref.index_id),
+        top_results_hydrated: topResultsRefs.map(ref => ref.index_id),
+        proof_complete: planningScope.localRefs.map(ref => ref.index_id),
+    };
     localIndexBytes += planningScope.sourceManifestBytes;
     const localIndexStartedCoverage = coverageFor(
         session,
@@ -1625,7 +1697,7 @@ export const searchSitegraphProgressively = async (
     emitResults('local_index_started', localIndexStartedCoverage, false);
 
     const packedImpactSessionPromise = packedImpactRetriever?.createSession?.(candidateLimit);
-    const localLightIndexes = await Promise.all(planningScope.localRefs.map(ref => loadLocalLightIndex(
+    const localLightIndexes = await Promise.all(firstTrustedRefs.map(ref => loadLocalLightIndex(
         ref,
         terms,
         signal,
@@ -1635,7 +1707,7 @@ export const searchSitegraphProgressively = async (
     )));
     const packedImpactSession = await packedImpactSessionPromise;
     let packedImpactSessionDirty = false;
-    planningScope.localRefs.forEach(ref => {
+    firstTrustedRefs.forEach(ref => {
         loadedLocalIndexIds.add(ref.index_id);
         localIndexBytes += lightIndexRuntimeBytes(ref);
     });
@@ -1724,7 +1796,8 @@ export const searchSitegraphProgressively = async (
     );
     emitResults('body_index_started', bodyStartedCoverage, false);
     throwIfAborted(signal);
-    const bodyIndexes = await Promise.all(planningScope.localRefs.map(ref => loadLocalBodyIndex(
+    const additionalTopLightRefs = topResultsRefs.filter(ref => !loadedLocalIndexIds.has(ref.index_id));
+    const additionalTopLightIndexes = await Promise.all(additionalTopLightRefs.map(ref => loadLocalLightIndex(
         ref,
         terms,
         signal,
@@ -1732,7 +1805,37 @@ export const searchSitegraphProgressively = async (
         artifactCache,
         packedImpactRetriever
     )));
-    planningScope.localRefs.forEach(ref => {
+    additionalTopLightRefs.forEach(ref => {
+        loadedLocalIndexIds.add(ref.index_id);
+        localIndexBytes += lightIndexRuntimeBytes(ref);
+    });
+    for (const localIndex of additionalTopLightIndexes) {
+        for (const document of localIndex.documents) {
+            docsByIndex.set(document.doc_index, document);
+        }
+        packedImpactSessionDirty = await applyImpactIndexRuntime(
+            scores,
+            localIndex,
+            terms,
+            candidateLimit,
+            telemetry,
+            packedImpactRetriever,
+            packedImpactSession
+        ) || packedImpactSessionDirty;
+    }
+    if (packedImpactSessionDirty) {
+        await syncPackedImpactSessionScores(scores, packedImpactSession, telemetry);
+        packedImpactSessionDirty = false;
+    }
+    const bodyIndexes = await Promise.all(topResultsRefs.map(ref => loadLocalBodyIndex(
+        ref,
+        terms,
+        signal,
+        cacheStats,
+        artifactCache,
+        packedImpactRetriever
+    )));
+    topResultsRefs.forEach(ref => {
         localIndexBytes += bodyIndexArtifact(ref).bytes;
     });
     usedBodyIndex = true;

@@ -1,0 +1,82 @@
+{
+  "generated_at": "2026-06-01T11:41:42.780841+00:00",
+  "truth_counts": {
+    "sections": 212,
+    "nav_nodes": 178,
+    "homepage_modules": 23,
+    "list_pages": 976,
+    "detail_pages": 9143,
+    "low_content_detail_pages": 1005,
+    "attachments": 8094,
+    "external_links": 875,
+    "edges": 19278,
+    "url_outcomes": 26844
+  },
+  "source_truth_counts": {
+    "jwc": {
+      "sections": 139,
+      "nav_nodes": 119,
+      "homepage_modules": 8,
+      "list_pages": 661,
+      "detail_pages": 6942,
+      "low_content_detail_pages": 811,
+      "attachments": 7873,
+      "external_links": 740,
+      "edges": 16315,
+      "url_outcomes": 19119
+    },
+    "xsc": {
+      "sections": 34,
+      "nav_nodes": 30,
+      "homepage_modules": 10,
+      "list_pages": 232,
+      "detail_pages": 1589,
+      "low_content_detail_pages": 112,
+      "attachments": 17,
+      "external_links": 75,
+      "edges": 1878,
+      "url_outcomes": 6414
+    },
+    "cxcy": {
+      "sections": 39,
+      "nav_nodes": 29,
+      "homepage_modules": 5,
+      "list_pages": 83,
+      "detail_pages": 612,
+      "low_content_detail_pages": 82,
+      "attachments": 204,
+      "external_links": 60,
+      "edges": 1085,
+      "url_outcomes": 1311
+    }
+  },
+  "quality": {
+    "all_discovered_urls_have_outcomes": true,
+    "errors": 0,
+    "attachment_policy": "metadata_only",
+    "external_link_policy": "record_only",
+    "sources": {
+      "jwc": {
+        "all_discovered_urls_have_outcomes": true,
+        "errors": 0,
+        "attachment_policy": "metadata_only",
+        "external_link_policy": "record_only"
+      },
+      "xsc": {
+        "all_discovered_urls_have_outcomes": true,
+        "errors": 0,
+        "attachment_policy": "metadata_only",
+        "external_link_policy": "record_only"
+      },
+      "cxcy": {
+        "all_discovered_urls_have_outcomes": true,
+        "errors": 0,
+        "attachment_policy": "metadata_only",
+        "external_link_policy": "record_only"
+      }
+    }
+  },
+  "all_discovered_urls_have_outcomes": true,
+  "attachment_policy": "metadata_only",
+  "external_link_policy": "record_only"
+}
