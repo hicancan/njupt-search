@@ -25,7 +25,7 @@ fi
 
 is_transient_edgeone_failure() {
   local log_file="$1"
-  grep -Eiq 'ECONNRESET|ETIMEDOUT|EAI_AGAIN|ENOTFOUND|API request failed \(5[0-9][0-9]\)|API request failed \(522\)|API request failed \(524\)|HTTP 5[0-9][0-9]|502|503|504|522|524' "$log_file"
+  grep -Eiq 'ECONNRESET|ECONNABORTED|ETIMEDOUT|EAI_AGAIN|ENOTFOUND|AxiosError: timeout|timeout of [0-9]+ms exceeded|timed out|network is unreachable|API request failed \(5[0-9][0-9]\)|API request failed \(522\)|API request failed \(524\)|HTTP 5[0-9][0-9]|502|503|504|522|524' "$log_file"
 }
 
 rm -f "$result_path" "${result_path}.failure.log"

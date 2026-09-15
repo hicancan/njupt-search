@@ -111,4 +111,4 @@ jobs:
               --arg sha256 "$ARCHIVE_SHA256" \
               '{ref:$ref,id:$id,archive:$archive,sha256:$sha256}'
           )"
-          gh variable set TEACHING_SOURCE_ARTIFACT --body "$source_artifact"
+          bash .github/scripts/gh-variable-set-with-retry.sh TEACHING_SOURCE_ARTIFACT "$source_artifact"

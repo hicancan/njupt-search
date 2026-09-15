@@ -56,3 +56,34 @@ test('production deploy uses the Makers namespace and structured output only', (
   assert.match(deployScript, /PAGES_SOURCE=skills/u);
   assert.doesNotMatch(deployScript, /edgeone@latest pages deploy/u);
 });
+
+test('deployment retry recognizes the Axios region timeout seen in production', () => {
+  const deployScript = readFileSync(
+    new URL('./deploy-edgeone-with-retry.sh', import.meta.url),
+    'utf8',
+  );
+
+  assert.ok(deployScript.includes('AxiosError: timeout'));
+  assert.ok(deployScript.includes('timeout of [0-9]+ms exceeded'));
+  assert.ok(deployScript.includes('ECONNABORTED'));
+});
+
+test('artifact pointer workflows use the GitHub variable retry wrapper', () => {
+  const retryScript = readFileSync(
+    new URL('./gh-variable-set-with-retry.sh', import.meta.url),
+    'utf8',
+  );
+  assert.match(retryScript, /gh variable set/u);
+  assert.match(retryScript, /HTTP \(429\|5\[0-9\]\{2\}\)/u);
+
+  const workflows = [
+    '../workflows/build-corpus.yml',
+    '../workflows/update-exam-data.yml',
+    '../workflows/publish-teaching-source.yml',
+  ].map(relative => readFileSync(new URL(relative, import.meta.url), 'utf8'));
+
+  for (const workflow of workflows) {
+    assert.match(workflow, /gh-variable-set-with-retry\.sh/u);
+    assert.doesNotMatch(workflow, /\bgh variable set\b/u);
+  }
+});

@@ -160,8 +160,8 @@ jobs:
               --arg sha256 "$archive_sha256" \
               '{ref:$ref,id:$id,archive:$archive,sha256:$sha256}'
           )"
-          gh variable set CURRENT_CORPUS_ARTIFACT --body "$corpus_artifact"
-          gh variable set SEARCH_ARTIFACT --body "$search_artifact"
+          bash .github/scripts/gh-variable-set-with-retry.sh CURRENT_CORPUS_ARTIFACT "$corpus_artifact"
+          bash .github/scripts/gh-variable-set-with-retry.sh SEARCH_ARTIFACT "$search_artifact"
 
       - uses: actions/upload-artifact@v7
         with:

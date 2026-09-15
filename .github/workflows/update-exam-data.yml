@@ -292,7 +292,7 @@ jobs:
                 space:{id:$space_id,archive:$space_archive,sha256:$space_sha256}
               }'
           )"
-          gh variable set ACADEMICS_ARTIFACT --body "$academics_artifact"
+          bash .github/scripts/gh-variable-set-with-retry.sh ACADEMICS_ARTIFACT "$academics_artifact"
 
       - uses: actions/upload-artifact@v7
         with:
