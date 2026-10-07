@@ -7,7 +7,7 @@ import time
 from email.utils import parsedate_to_datetime
 from pathlib import Path
 from typing import Any
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlsplit
 
 import requests
 from bs4 import BeautifulSoup
@@ -67,16 +67,23 @@ def get_url_with_retries(
 ) -> requests.Response:
     if attempts < 1:
         raise ExamDataError("download attempts must be positive")
+    retryable_http_status_codes = RETRYABLE_HTTP_STATUS_CODES
+    parsed_url = urlsplit(url)
+    if parsed_url.scheme == "https" and parsed_url.hostname == "jwc.njupt.edu.cn":
+        # This public source intermittently returns 403 to cloud runners.
+        retryable_http_status_codes = retryable_http_status_codes | {403}
     for attempt in range(1, attempts + 1):
         try:
             response = requests.get(url, headers=headers, timeout=timeout, verify=verify)
-            if response.status_code in RETRYABLE_HTTP_STATUS_CODES and attempt < attempts:
+            if response.status_code in retryable_http_status_codes and attempt < attempts:
                 print(
                     f"[exam_source] {purpose} returned HTTP {response.status_code}; retrying {attempt}/{attempts}",
                     file=sys.stderr,
                     flush=True,
                 )
-                time.sleep(min(2 ** (attempt - 1), 8))
+                delay = min(5 * 2 ** (attempt - 1), 20) if response.status_code == 403 else min(2 ** (attempt - 1), 8)
+                response.close()
+                time.sleep(delay)
                 continue
             response.raise_for_status()
             return response
@@ -91,13 +98,16 @@ def get_url_with_retries(
             time.sleep(min(2 ** (attempt - 1), 8))
         except requests.exceptions.HTTPError as exc:
             status_code = exc.response.status_code if exc.response is not None else None
-            if status_code in RETRYABLE_HTTP_STATUS_CODES and attempt < attempts:
+            if status_code in retryable_http_status_codes and attempt < attempts:
                 print(
                     f"[exam_source] {purpose} returned HTTP {status_code}; retrying {attempt}/{attempts}",
                     file=sys.stderr,
                     flush=True,
                 )
-                time.sleep(min(2 ** (attempt - 1), 8))
+                delay = min(5 * 2 ** (attempt - 1), 20) if status_code == 403 else min(2 ** (attempt - 1), 8)
+                if exc.response is not None:
+                    exc.response.close()
+                time.sleep(delay)
                 continue
             raise ExamDataError(f"{purpose} returned HTTP {status_code}: {url}") from exc
     raise ExamDataError(f"{purpose} failed without returning a response: {url}")
@@ -208,11 +218,14 @@ def source_descriptor_id(descriptor: dict[str, Any]) -> str:
     return hashlib.sha256(_canonical_json(identity)).hexdigest()
 
 
-def discover_exam_source(output_path: Path, *, tls_verify: bool) -> None:
+def discover_exam_source(
+    output_path: Path, *, tls_verify: bool, cache_root: Path | None = None
+) -> None:
     if output_path.exists():
         raise ExamDataError(f"Refusing to overwrite exam source descriptor: {output_path}")
     source_url, source_title = discover_latest_exam_notice(tls_verify=tls_verify)
     files = []
+    downloaded_content: list[tuple[str, bytes]] = []
     for item in discover_exam_files(source_url, tls_verify=tls_verify):
         response = get_url_with_retries(
             item["url"],
@@ -221,11 +234,14 @@ def discover_exam_source(output_path: Path, *, tls_verify: bool) -> None:
             verify=tls_verify,
             purpose=f"download exam source candidate {item['name']}",
         )
+        content = response.content
+        if cache_root is not None:
+            downloaded_content.append((item["name"], content))
         files.append(
             {
                 "name": item["name"],
                 "url": item["url"],
-                "sha256": hashlib.sha256(response.content).hexdigest(),
+                "sha256": hashlib.sha256(content).hexdigest(),
                 "etag": response.headers.get("etag"),
                 "last_modified": response.headers.get("last-modified"),
             }
@@ -252,6 +268,14 @@ def discover_exam_source(output_path: Path, *, tls_verify: bool) -> None:
         "files": files,
     }
     descriptor["source_id"] = source_descriptor_id(descriptor)
+    if cache_root is not None:
+        cache_dir = cache_root / descriptor["source_id"]
+        cache_dir.mkdir(parents=True, exist_ok=True)
+        for name, content in downloaded_content:
+            cache_target = cache_dir / name
+            tmp_target = cache_target.with_suffix(cache_target.suffix + ".tmp")
+            tmp_target.write_bytes(content)
+            tmp_target.replace(cache_target)
     write_json(output_path, descriptor)
 
 

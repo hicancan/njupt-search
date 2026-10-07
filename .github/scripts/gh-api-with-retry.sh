@@ -16,9 +16,10 @@ for attempt in 1 2 3 4 5; do
     cat "$stdout_file"
     rm -f "$stdout_file" "$stderr_file"
     exit 0
+  else
+    last_status=$?
   fi
 
-  last_status=$?
   last_error="$(cat "$stderr_file")"
   cat "$stderr_file" >&2
   rm -f "$stdout_file" "$stderr_file"

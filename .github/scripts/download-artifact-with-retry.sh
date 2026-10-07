@@ -16,8 +16,9 @@ for attempt in 1 2 3 4 5; do
   rm -rf "$output_dir"
   if gh run download "$run_id" --repo "$repo" --name "$artifact_name" --dir "$output_dir"; then
     exit 0
+  else
+    last_status=$?
   fi
-  last_status="$?"
   if [ "$attempt" -lt 5 ]; then
     sleep_seconds=$((attempt * 10))
     echo "artifact download failed on attempt $attempt; retrying in ${sleep_seconds}s..." >&2

@@ -100,6 +100,7 @@ jobs:
       - name: Compile and measure SearchBundle
         shell: pwsh
         run: |
+          $PSNativeCommandUseErrorActionPreference = $true
           ./ops/build-search-bundle.ps1 `
             -CorpusPath corpus `
             -BundlePath "$env:RUNNER_TEMP/search-bundle"
@@ -257,6 +258,7 @@ jobs:
       - name: Assemble the complete Web product
         shell: pwsh
         run: |
+          $PSNativeCommandUseErrorActionPreference = $true
           npm run build:wasm:web
           node benchmarks/search/consistency.mjs `
             --bundle "$env:RUNNER_TEMP/search-bundle"

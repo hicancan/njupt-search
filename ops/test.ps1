@@ -56,6 +56,11 @@ try {
     Invoke-Checked {
         node --test .github/scripts/parse-edgeone-deploy-result.test.mjs
     } 'Deployment helper tests failed'
+    if ($IsLinux) {
+        Invoke-Checked {
+            bash .github/scripts/github-retry.test.sh
+        } 'GitHub retry helper tests failed'
+    }
     Invoke-Checked { cargo test --manifest-path search/Cargo.toml --workspace } 'Rust tests failed'
     Invoke-Checked { npm run build:wasm:web } 'WASM build failed'
     Invoke-Checked { npm run lint } 'Lint failed'

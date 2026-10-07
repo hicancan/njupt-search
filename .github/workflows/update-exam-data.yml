@@ -127,11 +127,16 @@ jobs:
           tar --zstd -xf "$RUNNER_TEMP/teaching-source-registry/$archive" -C "$RUNNER_TEMP/teaching-source"
           test "$(jq -r .source_id "$RUNNER_TEMP/teaching-source/manifest.json")" = "$source_id"
 
-      - name: Discover and build explicit academic artifacts
+      - name: Discover the current exam source
         shell: pwsh
         run: |
           uv run python -m academics.exam discover `
-            --output "$env:RUNNER_TEMP/exam-source.json"
+            --output "$env:RUNNER_TEMP/exam-source.json" `
+            --cache "$env:RUNNER_TEMP/exam-cache"
+
+      - name: Build explicit academic artifacts
+        shell: pwsh
+        run: |
           ./ops/build-academics.ps1 `
             -SourcePath "$env:RUNNER_TEMP/exam-source.json" `
             -MaterializedPath "$env:RUNNER_TEMP/exam-materialized" `
@@ -425,6 +430,7 @@ jobs:
       - name: Assemble the complete Web product
         shell: pwsh
         run: |
+          $PSNativeCommandUseErrorActionPreference = $true
           npm run build:wasm:web
           ./ops/assemble-web.ps1 `
             -SearchBundlePath "$env:RUNNER_TEMP/search-bundle" `

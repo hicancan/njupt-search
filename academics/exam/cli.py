@@ -14,6 +14,7 @@ def main() -> None:
         "discover", help="Discover one exam source descriptor at an explicit external path."
     )
     discover.add_argument("--output", type=Path, required=True)
+    discover.add_argument("--cache", type=Path, help="Reuse downloaded attachments during materialization.")
     discover.add_argument("--insecure", action="store_true")
 
     materialize = subparsers.add_parser("materialize", help="Materialize an explicit exam source.")
@@ -34,7 +35,7 @@ def main() -> None:
     args = parser.parse_args()
 
     if args.command == "discover":
-        discover_exam_source(args.output, tls_verify=not args.insecure)
+        discover_exam_source(args.output, tls_verify=not args.insecure, cache_root=args.cache)
     elif args.command == "materialize":
         materialize_exam_files(
             source_path=args.source,
