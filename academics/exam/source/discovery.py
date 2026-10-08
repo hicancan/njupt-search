@@ -59,6 +59,7 @@ def sha256_file(path: Path) -> str:
 def get_url_with_retries(
     url: str,
     *,
+    session: requests.Session,
     headers: dict[str, str] | None = None,
     timeout: int,
     verify: bool,
@@ -74,7 +75,7 @@ def get_url_with_retries(
         retryable_http_status_codes = retryable_http_status_codes | {403}
     for attempt in range(1, attempts + 1):
         try:
-            response = requests.get(url, headers=headers, timeout=timeout, verify=verify)
+            response = session.get(url, headers=headers, timeout=(10, timeout), verify=verify)
             if response.status_code in retryable_http_status_codes and attempt < attempts:
                 print(
                     f"[exam_source] {purpose} returned HTTP {response.status_code}; retrying {attempt}/{attempts}",
@@ -88,14 +89,17 @@ def get_url_with_retries(
             response.raise_for_status()
             return response
         except RETRYABLE_REQUEST_EXCEPTIONS as exc:
+            detail = f"{exc.__class__.__name__}: {exc}"
             if attempt >= attempts:
-                raise ExamDataError(f"{purpose} failed after {attempts} attempts: {url}") from exc
+                raise ExamDataError(
+                    f"{purpose} failed after {attempts} attempts: {url}; {detail}"
+                ) from exc
             print(
-                f"[exam_source] {purpose} failed with {exc.__class__.__name__}; retrying {attempt}/{attempts}",
+                f"[exam_source] {purpose} failed with {detail}; retrying {attempt}/{attempts}",
                 file=sys.stderr,
                 flush=True,
             )
-            time.sleep(min(2 ** (attempt - 1), 8))
+            time.sleep(min(5 * 2 ** (attempt - 1), 20))
         except requests.exceptions.HTTPError as exc:
             status_code = exc.response.status_code if exc.response is not None else None
             if status_code in retryable_http_status_codes and attempt < attempts:
@@ -129,10 +133,11 @@ def is_teacher_exam_file(name: str) -> bool:
     return any(keyword in name for keyword in ("监考", "教师", "巡考", "教务员"))
 
 
-def discover_latest_exam_notice(*, tls_verify: bool) -> tuple[str, str]:
+def discover_latest_exam_notice(*, tls_verify: bool, session: requests.Session) -> tuple[str, str]:
     seen_urls: set[str] = set()
     response = get_url_with_retries(
         JWC_LIST_URL,
+        session=session,
         headers=JWC_HEADERS,
         timeout=30,
         verify=tls_verify,
@@ -147,6 +152,7 @@ def discover_latest_exam_notice(*, tls_verify: bool) -> tuple[str, str]:
         if list_url != JWC_LIST_URL:
             response = get_url_with_retries(
                 list_url,
+                session=session,
                 headers=JWC_HEADERS,
                 timeout=30,
                 verify=tls_verify,
@@ -173,9 +179,12 @@ def discover_latest_exam_notice(*, tls_verify: bool) -> tuple[str, str]:
     raise ExamDataError(f"no valid current exam schedule notice found in {len(JWC_LIST_URLS)} notice pages")
 
 
-def discover_exam_files(source_url: str, *, tls_verify: bool) -> list[dict[str, str]]:
+def discover_exam_files(
+    source_url: str, *, tls_verify: bool, session: requests.Session
+) -> list[dict[str, str]]:
     response = get_url_with_retries(
         source_url,
+        session=session,
         headers=JWC_HEADERS,
         timeout=30,
         verify=tls_verify,
@@ -223,29 +232,33 @@ def discover_exam_source(
 ) -> None:
     if output_path.exists():
         raise ExamDataError(f"Refusing to overwrite exam source descriptor: {output_path}")
-    source_url, source_title = discover_latest_exam_notice(tls_verify=tls_verify)
     files = []
     downloaded_content: list[tuple[str, bytes]] = []
-    for item in discover_exam_files(source_url, tls_verify=tls_verify):
-        response = get_url_with_retries(
-            item["url"],
-            headers=JWC_HEADERS,
-            timeout=60,
-            verify=tls_verify,
-            purpose=f"download exam source candidate {item['name']}",
+    with requests.Session() as session:
+        source_url, source_title = discover_latest_exam_notice(
+            tls_verify=tls_verify, session=session
         )
-        content = response.content
-        if cache_root is not None:
-            downloaded_content.append((item["name"], content))
-        files.append(
-            {
-                "name": item["name"],
-                "url": item["url"],
-                "sha256": hashlib.sha256(content).hexdigest(),
-                "etag": response.headers.get("etag"),
-                "last_modified": response.headers.get("last-modified"),
-            }
-        )
+        for item in discover_exam_files(source_url, tls_verify=tls_verify, session=session):
+            response = get_url_with_retries(
+                item["url"],
+                session=session,
+                headers=JWC_HEADERS,
+                timeout=60,
+                verify=tls_verify,
+                purpose=f"download exam source candidate {item['name']}",
+            )
+            content = response.content
+            if cache_root is not None:
+                downloaded_content.append((item["name"], content))
+            files.append(
+                {
+                    "name": item["name"],
+                    "url": item["url"],
+                    "sha256": hashlib.sha256(content).hexdigest(),
+                    "etag": response.headers.get("etag"),
+                    "last_modified": response.headers.get("last-modified"),
+                }
+            )
     updated_values = []
     for item in files:
         raw_value = item.get("last_modified")
@@ -298,39 +311,41 @@ def materialize_exam_files(*, source_path: Path, exam_dir: Path, cache_root: Pat
     cache_dir.mkdir(parents=True, exist_ok=True)
     downloaded_names: list[str] = []
     verify_tls = str(source.get("tls_verify", True)).strip().lower() not in {"0", "false", "no"}
-    for item in files:
-        if not isinstance(item, dict):
-            raise ExamDataError(f"{source_path} files entries must be objects")
-        name = str(item.get("name") or "").strip()
-        url = str(item.get("url") or "").strip()
-        expected_sha256 = str(item.get("sha256") or "").strip().lower()
-        if not name or not url or not expected_sha256:
-            raise ExamDataError(f"{source_path} file entry missing name/url/sha256")
-        target = exam_dir / name
-        cache_target = cache_dir / name
-        if target.exists() and sha256_file(target) == expected_sha256:
-            pass
-        elif cache_target.exists() and sha256_file(cache_target) == expected_sha256:
-            target.write_bytes(cache_target.read_bytes())
-        else:
-            response = get_url_with_retries(
-                url,
-                headers=JWC_HEADERS,
-                timeout=60,
-                verify=verify_tls,
-                purpose=f"download exam file {name}",
-            )
-            tmp_target = cache_target.with_suffix(cache_target.suffix + ".tmp")
-            tmp_target.write_bytes(response.content)
-            actual_sha256 = sha256_file(tmp_target)
-            if actual_sha256 != expected_sha256:
-                tmp_target.unlink(missing_ok=True)
-                raise ExamDataError(
-                    f"exam source hash mismatch for {name}: expected {expected_sha256}, got {actual_sha256}"
+    with requests.Session() as session:
+        for item in files:
+            if not isinstance(item, dict):
+                raise ExamDataError(f"{source_path} files entries must be objects")
+            name = str(item.get("name") or "").strip()
+            url = str(item.get("url") or "").strip()
+            expected_sha256 = str(item.get("sha256") or "").strip().lower()
+            if not name or not url or not expected_sha256:
+                raise ExamDataError(f"{source_path} file entry missing name/url/sha256")
+            target = exam_dir / name
+            cache_target = cache_dir / name
+            if target.exists() and sha256_file(target) == expected_sha256:
+                pass
+            elif cache_target.exists() and sha256_file(cache_target) == expected_sha256:
+                target.write_bytes(cache_target.read_bytes())
+            else:
+                response = get_url_with_retries(
+                    url,
+                    session=session,
+                    headers=JWC_HEADERS,
+                    timeout=60,
+                    verify=verify_tls,
+                    purpose=f"download exam file {name}",
                 )
-            tmp_target.replace(cache_target)
-            target.write_bytes(cache_target.read_bytes())
-        downloaded_names.append(name)
+                tmp_target = cache_target.with_suffix(cache_target.suffix + ".tmp")
+                tmp_target.write_bytes(response.content)
+                actual_sha256 = sha256_file(tmp_target)
+                if actual_sha256 != expected_sha256:
+                    tmp_target.unlink(missing_ok=True)
+                    raise ExamDataError(
+                        f"exam source hash mismatch for {name}: expected {expected_sha256}, got {actual_sha256}"
+                    )
+                tmp_target.replace(cache_target)
+                target.write_bytes(cache_target.read_bytes())
+            downloaded_names.append(name)
 
     expected_names = set(downloaded_names)
     actual_names = {path.name for path in exam_dir.glob("*.xls*")}
